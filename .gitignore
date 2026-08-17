@@ -62,3 +62,4 @@ desktop.ini
 # ── Misc local scratch ───────────────────────────────────────────────
 *.log
 .env
+**/*.quarto_ipynb

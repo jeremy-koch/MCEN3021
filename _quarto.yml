@@ -3,6 +3,7 @@ project:
   render:
     - "*.qmd"
     - "modules/*.qmd"
+    - "!homework/"
   pre-render: python scripts/make_bundle.py
   resources:
     - fluidtools_bundle.py
