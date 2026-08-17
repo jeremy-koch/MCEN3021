@@ -1,0 +1,225 @@
+---
+title: "6.2 Reading flow profiles"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+A velocity profile is a free-body diagram in disguise. **Slope is shear
+stress** ($\tau = \mu\, du/dy$), **curvature is pressure gradient**
+($\mu\, d^2u/dy^2 = dp/dx$ in these flows), and an engineer who can read
+those off a picture can diagnose a flow — where it's being pushed, where
+it's being dragged, where it's about to reverse — without integrating
+anything.
+
+## Think first
+
+**Recall**
+
+1. Newton's law of viscosity: $\tau = \mu\, du/dy$. In words, what is being multiplied by what?
+2. The no-slip condition: what is the fluid velocity *at* a solid wall?
+3. From 6.1: what did the Navier-Stokes equations collapse to for steady flow in one direction?
+
+**Look ahead**
+
+1. Where in a channel is the shear stress highest — and how can you *see* it without computing?
+2. Why can part of a flow run backward while the rest goes forward?
+3. Given measured velocity data points, how do you extract the wall shear stress?
+
+## The dictionary
+
+Last module gave us the Navier–Stokes equations; you may also have seen
+(or will see in the notebook) that for steady flow in one direction they
+collapse to a statement you can read: *pressure gradient is balanced by the
+change in shear across the layer.* Here is what that buys you when you look
+at any $u(y)$ plot:
+
+**Slope → shear.** Wherever the profile is steep, the fluid is being
+sheared hard. Wherever the slope is zero — a free surface, a symmetry line,
+a velocity maximum — the shear is exactly zero. A wall with a steep profile
+is a wall taking a beating.
+
+**Curvature → pressure gradient.** In unidirectional flow, $d^2u/dy^2 =
+(dp/dx)/\mu$ is *constant across the layer*: every one of these profiles is
+a parabola (or a line, if $dp/dx = 0$). A profile bulging forward means
+pressure is pushing the flow along (favorable gradient); a straight line
+means the walls alone drive it; a profile sagging backward means pressure
+is fighting the flow (adverse gradient).
+
+That's the whole dictionary. Now use it on the classic hard case.
+
+## Couette–Poiseuille: drag vs. push
+
+Lower wall fixed, upper wall moving at $U$, and a pressure gradient along
+the channel. The moving wall drags fluid forward; make $dp/dx$ adverse
+enough and part of the channel gives up and flows *backward* — while the
+rest still moves forward. Find that moment with the sliders.
+
+```{ojs}
+//| echo: false
+viewof U_wall = Inputs.range([0, 3], {value: 1.0, step: 0.1, label: "Upper wall speed U (m/s)"})
+viewof dpdx_Pam = Inputs.range([-60, 60], {value: 0, step: 2, label: "Pressure gradient dp/dx (Pa/m)"})
+```
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+#| echo: false
+#| input:
+#|   - U_wall
+#|   - dpdx_Pam
+h, mu = 0.01, 1.0e-3
+y = np.linspace(0, h, 200)
+u = couette_poiseuille(y, h, U=U_wall, dpdx=dpdx_Pam, mu=mu)
+tau = shear_couette_poiseuille(y, h, U=U_wall, dpdx=dpdx_Pam, mu=mu)
+crit = backflow_threshold(h, U_wall, mu) if U_wall > 0 else 0.0
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 4.2), sharey=True)
+ax1.plot(u*1000, y*1000, lw=2.5)
+ax1.axvline(0, color='k', lw=0.8)
+ax1.fill_betweenx(y*1000, np.minimum(u, 0)*1000, 0, color='crimson', alpha=0.3)
+ax1.set_xlabel('u (mm/s)'); ax1.set_ylabel('y (mm)')
+ax1.set_title('velocity profile'); ax1.grid(alpha=0.3)
+ax2.plot(tau, y*1000, lw=2.5, color='darkorange')
+ax2.axvline(0, color='k', lw=0.8)
+ax2.set_xlabel('shear stress τ (Pa)')
+ax2.set_title('shear = slope of the profile'); ax2.grid(alpha=0.3)
+if U_wall > 0:
+    verdict = ("BACKFLOW near the lower wall" 
+               if dpdx_Pam > crit else "no backflow")
+    fig.suptitle(f"backflow begins above dp/dx = {crit:.0f} Pa/m  →  {verdict}",
+                 color=('crimson' if dpdx_Pam > crit else 'green'))
+plt.tight_layout(); plt.show()
+```
+
+Three things to make yourself see. **Where is the shear highest?** Watch
+the right panel: with any pressure gradient, the extremes are at the
+*walls*, and the two walls generally carry *different* loads — the shear
+plot is a straight line (constant curvature!) crossing zero exactly where
+the velocity peaks. **Why does the flow reverse near the *lower* wall
+first?** The pressure pushes backward on every layer equally, but the
+moving wall's forward drag arrives only by viscous handshake, layer to
+layer — and the layers near the stationary wall are at the end of that
+supply chain. They surrender first, at exactly $dp/dx = 2\mu U/h^2$ (set
+the wall slope to zero and this falls out — one line of algebra, not two
+integrations). **What does zero slope at the moving wall mean?** Slide to a
+strongly *favorable* gradient and find it: the moving wall momentarily does
+no work at all — pressure is doing the whole job.
+
+## Reading a measured profile
+
+Real profiles arrive as *data* — PIV, hot-wire traverses, CFD samples. The
+skill is identical. Here are near-wall velocity measurements from a water
+channel; extract the wall shear (edit the data — it's yours):
+
+```{pyodide}
+y_data = np.array([0.4, 0.8, 1.2, 1.6, 2.0]) * 1e-3        # m
+u_data = np.array([0.061, 0.118, 0.171, 0.219, 0.263])      # m/s
+
+tau_w, fit = wall_shear_from_data(y_data, u_data, mu=1.0e-3)
+print(f"wall shear stress ≈ {tau_w:.3f} Pa")
+print(f"(a 2 m² panel under this flow feels ~{2*tau_w:.2f} N of friction drag)")
+```
+
+::: {.callout-important}
+## The misconception to leave behind
+"Negative velocity means something is wrong with the solution." Reversed
+flow is *routine* — it is what an adverse pressure gradient does to the
+slowest-moving fluid, and spotting the conditions for it is a professional
+skill: this same reading (adverse gradient → near-wall reversal) is
+*separation* in next unit's boundary layers, recirculation zones in CFD
+reviews, and reverse flow in bearing films.
+:::
+
+## Earn it — 2 quick gates
+
+Profiles are documents; two gates practice reading them. Ungraded; hints after a miss; **Show me** after two. Arguing about a gate with a classmate is the assignment, not a violation.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="A measured water profile has slope du/dy = 400 s⁻¹ at the wall. Wall shear stress?"
+     data-answer="0.40" data-tol="0.03" data-units="Pa"
+     data-hint="τ_w = μ (du/dy) at the wall — the slope at one point, times the viscosity. Nothing else on the profile matters for this number."
+     data-solution="τ_w = 10⁻³ × 400 = 0.40 Pa."
+     data-target="rfp-s2"></div>
+```
+
+::: {#rfp-s2 .fl-hidden}
+And the dictionary's most useful warning label — Couette flow with an adverse pressure gradient (h = 5 mm, wall speed U = 0.2 m/s, μ = 0.05 Pa·s):
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="The adverse dp/dx at which backflow first appears at the fixed wall?"
+     data-answer="800" data-tol="0.03" data-units="Pa/m"
+     data-hint="2μU/h² — and h² in the denominator means the millimeters bite twice."
+     data-solution="dp/dx = 2(0.05)(0.2)/(0.005)² = 800 Pa/m. Past this, a reversed sliver hugs the wall."></div>
+```
+
+Slope at the wall = stress; zero slope at the wall = the eve of separation. Unit 7 spends that sentence.
+
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** Pure Poiseuille flow (both walls fixed): where is the shear stress largest, and what is it at the centerline?</summary>
+Largest at both walls (steepest slope), exactly zero at the centerline
+(profile peak → zero slope). And yet the center fluid feels the same
+pressure push as everywhere else — it's held at constant speed by shear on
+its *flanks*, not at its own midline.
+</details>
+
+<details><summary>**Q2.** A liquid film drains down a vertical wall, open to still air. What is the slope of $u(y)$ at the free surface, and where is the fastest fluid?</summary>
+Zero slope at the surface — air can't supply meaningful shear — so the
+maximum velocity is *at the surface itself*. Try `film_on_wall` and look.
+</details>
+
+<details><summary>**Q3.** Two immiscible layers in pure shear (no pressure gradient), top fluid three times as viscous as the bottom. What does the profile look like at the interface?</summary>
+A kink: shear stress must be *continuous* across the interface (Newton's
+third law), so $\mu\,du/dy$ matches — meaning the less viscous bottom layer
+has a slope three times steeper. Slope jumps; stress doesn't.
+</details>
+
+## Bring to class
+
+We'll put profiles on the screen — some healthy, some pathological — and
+you'll diagnose them by eye. Be ready to defend: *which wall is working
+harder, and how can you tell?*

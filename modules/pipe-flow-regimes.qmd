@@ -1,0 +1,273 @@
+---
+title: "8.1 Laminar & turbulent pipe flow"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+Below Re ≈ 2300, pipe flow is orderly, layered, and exactly solvable. Above
+it, the flow is chaotic — but chaotic with *reliable statistics*, which is
+what every practical correlation is built on. Nearly everything in a plant,
+a building, or a body of consequence is the second kind, and the Reynolds
+number is how you find out which kind you have.
+
+::: {.callout-note}
+### The number in charge: Re
+$\mathrm{Re}_D = \rho U D / \mu$, with $U = Q/A$ the average speed and $D$
+the pipe diameter. Below ~2300: laminar. Above ~4000: turbulent. Between:
+transitional — avoid designing there.
+:::
+
+## Think first
+
+**Recall**
+
+1. From Unit 2: what physical contest does the Reynolds number score — what's upstairs, what's downstairs?
+2. From 6.2: on a velocity profile, what does the slope at the wall tell you?
+3. What is the average speed $U$ in terms of $Q$ and the pipe area?
+
+**Look ahead**
+
+1. What physically changes when a flow "goes turbulent" — and what do we lose the moment it does?
+2. Two flows, same $Q$, one laminar and one turbulent: which one drags harder on the pipe wall?
+3. Where does the $\alpha$ in the head equation come from, and when is it 2?
+
+::: {.callout-tip}
+### Video
+Placeholder — Canvas video link here (Reynolds' dye experiment + regime tour).
+:::
+
+## Reynolds' experiment, and yours
+
+In 1883 Osborne Reynolds injected a thread of dye into water flowing down a
+glass pipe. At low speed the thread ran straight and unbroken the length of
+the pipe: each layer of fluid kept to itself, sliding past its neighbors —
+*laminar*, from the Latin for layered. Crank the speed and the thread
+suddenly wobbled, broke, and smeared across the whole cross-section:
+*turbulent*, chaotic mixing all the way down. You've run this experiment
+yourself with a kitchen faucet — the glassy low-flow stream versus the
+churning full-open one.
+
+Reynolds' great contribution was showing *when* it happens: not at a
+particular speed, or diameter, or viscosity, but at a particular value of
+the combination
+
+$$\mathrm{Re}_D = \frac{\rho U D}{\mu},$$
+
+which is exactly the kind of result Unit 2 taught you to expect. (Nature
+doesn't care about meters per second; it cares about dimensionless
+contests — here, inertia versus viscosity.) Transition begins near
+$\mathrm{Re}_D \approx 2300$. In a vibration-free lab with a mirror-polished
+inlet you can nurse laminar flow to much higher values; in a plant with
+pumps thumping and elbows everywhere, you cannot count on it. So we treat
+2300–4000 as a no-man's-land: flow there flickers between regimes, and the
+honest answer to "what's the friction factor?" is "it depends on the
+minute."
+
+::: {.column-margin}
+Flows also need a running start: near the inlet, the profile is still
+developing. The "fully developed" results below apply after an entrance
+length — roughly $0.05\,\mathrm{Re}_D\, D$ for laminar flow, or a mere
+~10 diameters for turbulent. For long pipes we shrug this off.
+:::
+
+## Laminar: the flow you can solve
+
+For laminar flow, the machinery of Unit 6 gives the *exact* answer — the
+Poiseuille profile, a parabola with its maximum on the centerline at twice
+the average speed. You already know how to read it: steepest slope at the
+wall (that's where the shear lives), zero slope at the center. What's new
+here is the price tag. Push the profile through the momentum balance and
+out comes the pressure drop:
+
+$$\Delta p = \frac{32\,\mu L U}{D^2} \qquad \Longleftrightarrow \qquad f = \frac{64}{\mathrm{Re}_D}.$$
+
+::: {.callout-note collapse="true"}
+### Click here to see where $f = 64/\mathrm{Re}$ comes from.
+
+The head equation writes the friction loss as
+$H_L = \frac{fL}{D}\frac{U^2}{2g}$, i.e.
+$\Delta p = f \frac{L}{D}\frac{\rho U^2}{2}$. Set this equal to the exact
+laminar result $\Delta p = 32 \mu L U / D^2$ and solve for $f$:
+
+$$f = \frac{32\,\mu L U}{D^2} \cdot \frac{2D}{L \rho U^2}
+    = \frac{64\,\mu}{\rho U D} = \frac{64}{\mathrm{Re}_D}.$$
+
+Note what this says: in laminar flow, friction loss is *linear* in $U$
+(the $U^2$ in the head equation is softened by $f \sim 1/U$), and pipe
+roughness never appears. Layers sliding over layers don't care about
+bumps buried in the slow fluid at the wall.
+:::
+
+Two laminar facts worth owning. First, the loss is linear in flow: double
+$Q$, double $\Delta p$. (Hold that thought — turbulent flow will behave
+much worse.) Second, this is where the kinetic-energy correction factor in
+the head equation earns its keep: a parabolic profile carries more kinetic
+energy than a uniform stream with the same average speed (the fast core is
+weighted by $u^3$), and the bookkeeping works out to exactly $\alpha = 2$.
+
+## Turbulent: the flow you measure
+
+Above transition, no formula for the profile exists — the flow is an
+unsteady, three-dimensional mess. But its *time-averaged* behavior is
+stubbornly repeatable, and that average profile is **blunt**: turbulent
+mixing shuttles fast fluid toward the wall and slow fluid toward the core,
+flattening the middle and steepening the wall region. Read that with your
+6.2 eyes and the consequence is immediate: at the same $Q$, the turbulent
+profile has the *steeper wall slope* — more wall shear, more friction, more
+pumping cost. (The blunt profile also means $\alpha \approx 1.05$, close
+enough to 1 that we usually don't bother — now you know what we're
+neglecting, and that it's a *choice*.)
+
+What we lose in analysis we recover in correlations: the next module's
+Moody chart is nothing but a century of turbulent measurements organized by
+the two numbers that matter.
+
+## Play with it
+
+Same flow rate through the same pipe; the only thing that changes below is
+*which regime you're in*. Watch the wall slope.
+
+```{ojs}
+//| echo: false
+viewof Q_Ls81 = Inputs.range([0.02, 8], {value: 0.5, step: 0.02, label: "Flow rate Q (L/s)"})
+viewof D_mm81 = Inputs.range([10, 150], {value: 50, step: 5, label: "Diameter D (mm)"})
+```
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+#| echo: false
+#| input:
+#|   - Q_Ls81
+#|   - D_mm81
+w = water(20)
+Q, D = Q_Ls81/1000, D_mm81/1000
+R = D/2
+U = Q/(np.pi*R**2)
+Re = reynolds(w.rho, U, D, w.mu)
+verdict = regime('reynolds', Re, context='pipe')
+
+r = np.linspace(-R, R, 200)
+u_lam = 2*U*(1-(r/R)**2)                    # Poiseuille, u_max = 2U
+u_turb = U*(60/49)*(1-np.abs(r)/R)**(1/7)   # 1/7-power law, same average U
+
+fig, ax = plt.subplots(figsize=(8, 4.2))
+ax.plot(u_lam, r*1000, lw=2.5, label='laminar (parabola, α = 2)')
+ax.plot(u_turb, r*1000, lw=2.5, label='turbulent, time-avg (blunt, α ≈ 1.05)')
+ax.axvline(U, color='gray', ls=':', lw=1)
+ax.annotate(' U (same for both)', (U, -R*1000*0.95), fontsize=9, color='gray')
+ax.set_xlabel('u (m/s)'); ax.set_ylabel('r (mm)')
+ax.legend(loc='center left', fontsize=9); ax.grid(alpha=0.3)
+ax.set_title(f"Re = {Re:,.0f}  →  {verdict}",
+             color=('tab:blue' if Re < 2300 else ('darkorange' if Re < 4000 else 'crimson')))
+plt.tight_layout(); plt.show()
+print(f"U = {U:.2f} m/s | at this Re, nature picks the "
+      f"{'PARABOLA' if Re < 2300 else ('...coin flip' if Re < 4000 else 'BLUNT profile')}")
+```
+
+Find the transition: fix the diameter and slide $Q$ until the verdict
+changes. Then repeat the crossing with a fat pipe and a skinny one — notice
+that "fast" is not the criterion; *Re* is.
+
+::: {.callout-important}
+## The misconception to leave behind
+Turbulence is not a defect. Intro courses accidentally teach that laminar =
+good (it's the one you can solve) and turbulent = failure. In practice
+turbulence is the normal condition *and often the goal*: it's why your
+radiator works, why fuel mixes with air, why static mixers exist. We pay
+for it in friction; we're usually happy to.
+:::
+
+## Earn it — 2 quick gates
+
+Slow water (0.08 m/s) in a 20 mm tube — the drip line on a shelf of tomatoes. Ungraded; hints after a miss; **Show me** after two. Arguing about a gate with a classmate is the assignment, not a violation.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Reynolds number?"
+     data-answer="1597" data-tol="0.03" data-units="(dimensionless)"
+     data-hint="ρVD/μ with D = 0.020 m. The answer sits on the laminar side of 2300 — barely."
+     data-solution="Re = 998 × 0.08 × 0.020/10⁻³ ≈ 1597: laminar, with ~40% margin to transition."
+     data-target="pfr-s2"></div>
+```
+
+::: {#pfr-s2 .fl-hidden}
+Laminar means the friction factor is not looked up but *derived* (the collapsible above):
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Friction factor f = 64/Re?"
+     data-answer="0.040" data-tol="0.03" data-units="(dimensionless)"
+     data-hint="Just divide — no Moody chart, no roughness, no iteration. Laminar flow is the one regime that hands you f on a plate."
+     data-solution="f = 64/1597 = 0.040. Note it does not care about the pipe wall at all — laminar flow never touches the roughness."></div>
+```
+
+Compute Re, declare the regime, then—and only then—reach for a friction law. The order is the discipline.
+
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** Same $Q$, same pipe: which regime exerts more wall shear, and how do you know from the *picture* alone?</summary>
+Turbulent — its blunt profile is steeper at the wall, and $\tau_w = \mu\,
+du/dy|_\text{wall}$. Slope is shear; you can read it without computing.
+</details>
+
+<details><summary>**Q2.** Honey ($\mu \approx 5$ Pa·s) moving at 0.5 m/s in a 3 cm tube, versus water at the same speed in the same tube. Regimes?</summary>
+Honey: Re $\approx (1400)(0.5)(0.03)/5 \approx 4$ — deeply laminar. Water:
+Re $\approx (1000)(0.5)(0.03)/10^{-3} = 15{,}000$ — solidly turbulent. Same
+speed, same geometry, different regime: the fluid properties vote too.
+</details>
+
+<details><summary>**Q3.** Why is $\alpha = 2$ for laminar flow but only ~1.05 for turbulent, when both profiles have "fast middles"?</summary>
+Kinetic energy flux weights the profile by $u^3$, so the *shape* matters
+enormously. The parabola's core at $2U$ is heavily overweighted; the blunt
+turbulent profile barely exceeds $U$ anywhere, so the correction nearly
+vanishes.
+</details>
+
+## Bring to class
+
+One sentence: why does the *same pipe carrying the same fluid* obey a
+different law on Tuesday (cold, slow) than it did on Monday (hot, fast) —
+and what number would have warned you?

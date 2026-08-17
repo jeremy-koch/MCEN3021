@@ -1,0 +1,208 @@
+---
+title: "3.1 Pressure fields & manometry"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+In a static fluid, pressure varies with **elevation only**: $dp/dz =
+-\rho g$. Everything else — manometers of any shape, connected reservoirs,
+the entire logic of Unit 3 — is that one fact plus bookkeeping. The
+bookkeeping rule: *walking down adds $\rho g h$; walking up subtracts it;
+walking sideways costs nothing.*
+
+## Think first
+
+**Recall**
+
+1. From 1.2: pressure is a scalar; where does force direction come from?
+2. Why must pressure be the *same* at two points at the same depth in the same connected fluid?
+
+**Look ahead**
+
+1. Why does a manometer's twisty tube path not matter at all?
+2. How do you read a multi-fluid manometer without memorizing a formula?
+3. What makes mercury the classic manometer fluid?
+
+::: {.callout-tip}
+### Video
+Placeholder — Canvas video link here (deriving dp/dz; walking a manometer).
+:::
+
+## One derivative rules everything
+
+Isolate a thin horizontal slab of static fluid, thickness $dz$, area $A$.
+Vertically, three forces: pressure pushing up on the bottom, $p(z)A$;
+pressure pushing down on the top, $p(z{+}dz)A$; and weight, $\rho g A\,
+dz$. Static means they balance:
+
+$$\frac{dp}{dz} = -\rho g.$$
+
+(Horizontally, the same argument has no weight term, so no horizontal
+variation — which is *why* same depth means same pressure in a connected
+fluid, and why the ocean surface is level.) For constant density this
+integrates to the workhorse:
+
+$$p_2 = p_1 + \rho g h \qquad (h = \text{depth increase from 1 to 2}).$$
+
+Every hydrostatics result you will ever use is this line wearing
+different costumes. In Boulder terms: 10 m of water ≈ 98 kPa ≈ one full
+local atmosphere and change — depth is a serious pressure machine.
+
+## Manometry: pressure by walking
+
+A manometer converts a pressure difference into something a ruler can
+measure: fluid column heights. To read one, don't hunt for a formula —
+**take a walk.** Start at a point of known pressure, traverse the tube to
+the point you want, and keep a running tally: descend a height $h$ in a
+fluid of density $\rho$, add $\rho g h$; ascend, subtract; move
+horizontally within one fluid, change nothing. The tube's *path* —
+loops, shelves, spirals — is irrelevant, because only elevation appears
+in $dp/dz$. All that matters is the elevation of each fluid *interface*.
+
+Do one, with the tally printed at every station. This cell is yours to
+edit — change heights, swap fluids, add a leg:
+
+```{pyodide}
+# U-tube: tank of water, mercury manometer leg, open to Boulder air.
+# Walk: tank surface -> down through water -> across -> up through mercury -> air
+p = 0.0                                  # start: tank surface, 0 gauge
+print(f"{'station':38s}{'p (kPa gauge)':>14s}")
+print(f"{'A: tank free surface':38s}{p/1000:14.2f}")
+
+p += LIQUIDS['water'] * 9.81 * 1.35      # DOWN 1.35 m of water
+print(f"{'B: bottom of water leg (down 1.35 m)':38s}{p/1000:14.2f}")
+
+p -= LIQUIDS['mercury'] * 9.81 * 0.20    # UP 0.20 m of mercury
+print(f"{'C: mercury meniscus (up 0.20 m)':38s}{p/1000:14.2f}")
+
+print()
+print("...and station C is open to the atmosphere: it SHOULD read 0.")
+print("It doesn't -> the tank surface wasn't at 0 gauge. Solve: the tank")
+print(f"pressure is {-(p)/1000:.2f} kPa gauge. (The walk works in reverse.)")
+```
+
+Notice the trick in the last lines: if the endpoint pressure is known
+(open to air = 0 gauge) and the start isn't, run the walk anyway and
+solve for the unknown — the tally is just an equation. Notice also why
+mercury earns its job: at 13.6× water's density, it compresses large
+pressure differences into desk-sized columns. (Measure a 27 kPa
+difference in water and you'd need a 2.7 m tube; in mercury, 20 cm.)
+
+::: {.column-margin}
+Common assumptions to look out for: "open to atmosphere" → 0 gauge at
+that meniscus; gas columns (air above a liquid) → too light to matter,
+skip them in the tally; "the fluids don't mix" → each leg keeps its own ρ.
+:::
+
+::: {.callout-important}
+## The misconception to leave behind
+More tube is not more pressure. A manometer coiled through 10 m of tubing
+reads the same as a straight one — column *length* is nothing, interface
+*elevation* is everything. If your tally ever includes a horizontal
+distance, you've left the physics.
+:::
+
+## Earn it — 3 quick gates
+
+Three gates walk a pressure from a pool to a pipe gauge — the daily bread of Unit 3. Ungraded; hints after a miss; **Show me** after two. Arguing about a gate with a classmate is the assignment, not a violation.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Gauge pressure 3.2 m under a pool surface?"
+     data-answer="31.3" data-tol="0.03" data-units="kPa"
+     data-hint="ρgh, then divide by 1000 for kPa. The ≈9.8 kPa-per-meter exchange rate is worth memorizing."
+     data-solution="p = 998 × 9.81 × 3.2 = 31.3 kPa gauge."
+     data-target="pm-s2"></div>
+```
+
+::: {#pm-s2 .fl-hidden}
+Gauge is what the diver's ears feel *extra*. Absolute is what physics (boiling, gas laws) uses:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Absolute pressure at that depth, in Boulder (p_atm = 83 kPa)?"
+     data-answer="114.3" data-tol="0.03" data-units="kPa"
+     data-hint="Absolute = gauge + local atmosphere — and Boulder's atmosphere is 83, not 101.3."
+     data-solution="p_abs = 31.3 + 83.0 = 114.3 kPa. The same dive in Miami reads 18 kPa higher absolute."
+     data-target="pm-s3"></div>
+```
+
+::: {#pm-s3 .fl-hidden}
+Now the workhorse instrument. A mercury U-tube manometer taps a water pipe; the mercury legs differ by 250 mm:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Pipe gauge pressure indicated?"
+     data-answer="30.9" data-tol="0.03" data-units="kPa"
+     data-hint="Δp = (ρ_Hg − ρ_water) g h — the water sitting on the near leg buys back some of the mercury's weight. Forgetting the subtraction is the classic."
+     data-solution="Δp = (13600 − 998)(9.81)(0.25) = 30.9 kPa."></div>
+```
+
+Every manometer in the lab is these three moves in a trench coat.
+
+:::
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** Two open tanks of water sit side by side, connected by a hose at the bottom. One tank is wide, one narrow. Compare pressures at the hose.</summary>
+Equal — if the *surface elevations* are equal (and they will be: any
+difference drives flow until they match). Width never entered $dp/dz$.
+</details>
+
+<details><summary>**Q2.** Your manometer walk crosses a 30 cm column of trapped air. How much does it add to the tally?</summary>
+About $1.2 \times 9.81 \times 0.3 \approx 3.5$ Pa — versus ~2,900 Pa for
+the same height of water. Skipping gas columns isn't laziness; it's a
+0.1% decision, and now you know its size.
+</details>
+
+<details><summary>**Q3.** An inclined manometer lays its tube at 15° from horizontal. Same fluids, same Δp — what changed, and why do instrument makers bother?</summary>
+The fluid must travel $1/\sin 15° \approx 3.9\times$ farther *along the
+tube* per unit elevation. The reading is stretched — a sensitivity gain
+of ~4× for free. The physics didn't change; the ruler got longer.
+</details>
+
+## Bring to class
+
+We'll read a three-fluid manometer cold, as a class, one station at a
+time. Be ready to call out the sign at each leg — and to catch me when I
+try to sneak in a horizontal term.

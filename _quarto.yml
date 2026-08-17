@@ -1,0 +1,110 @@
+project:
+  type: website
+  render:
+    - "*.qmd"
+    - "modules/*.qmd"
+  pre-render: python scripts/make_bundle.py
+  resources:
+    - fluidtools_bundle.py
+
+website:
+  title: "MCEN 3021 Fluid Mechanics"
+  navbar:
+    left:
+      - href: index.qmd
+        text: How This Course Works
+      - href: syllabus.qmd
+        text: Syllabus
+      - href: project.qmd
+        text: Project
+      - href: tools.qmd
+        text: Tools
+      - href: reference.qmd
+        text: Reference
+    right:
+      - icon: github
+        href: https://github.com/YOURUSERNAME/fluidtools
+  sidebar:
+    style: docked
+    search: true
+    contents:
+      - index.qmd
+      - syllabus.qmd
+      - project.qmd
+      - section: "Unit 1 · Fluids & Properties"
+        contents:
+          - modules/what-is-a-fluid.qmd
+          - modules/fluid-properties.qmd
+          - modules/properties-worked.qmd
+      - section: "Unit 2 · Dimensional Analysis"
+        contents:
+          - modules/dimensional-analysis.qmd
+          - modules/similitude-model-testing.qmd
+          - modules/dimensional-worked.qmd
+      - section: "Unit 3 · Hydrostatics"
+        contents:
+          - modules/pressure-and-manometry.qmd
+          - modules/statics-plane-surfaces.qmd
+          - modules/curved-surfaces-buoyancy.qmd
+          - modules/statics-stability.qmd
+          - modules/statics-worked.qmd
+      - section: "Unit 4 · Bernoulli"
+        contents:
+          - modules/bernoulli.qmd
+          - modules/flow-measurement.qmd
+          - modules/bernoulli-worked.qmd
+      - section: "Unit 5 · Integral Conservation Laws"
+        contents:
+          - modules/control-volumes-mass.qmd
+          - modules/energy-equation.qmd
+          - modules/momentum.qmd
+          - modules/cv-worked.qmd
+      - section: "Unit 6 · Differential Analysis"
+        contents:
+          - modules/differential-analysis.qmd
+          - modules/reading-flow-profiles.qmd
+          - modules/profiles-worked.qmd
+      - section: "Unit 7 · Boundary Layers & External Flow"
+        contents:
+          - modules/boundary-layers.qmd
+          - modules/drag.qmd
+          - modules/lift.qmd
+          - modules/external-worked.qmd
+      - section: "Unit 8 · Pipe Flow"
+        contents:
+          - modules/pipe-flow-regimes.qmd
+          - modules/major-losses.qmd
+          - modules/minor-losses-networks.qmd
+          - modules/pumped-systems.qmd
+          - modules/pipe-worked.qmd
+      - section: "Unit 9 · Open-Channel Flow"
+        contents:
+          - modules/channel-critical-flow.qmd
+          - modules/channel-uniform-flow.qmd
+          - modules/hydraulic-jumps.qmd
+          - modules/channel-worked.qmd
+      - section: "Unit 10 · Turbomachinery"
+        contents:
+          - modules/pump-theory.qmd
+          - modules/pump-performance.qmd
+          - modules/turbines.qmd
+          - modules/turbo-worked.qmd
+      - homework.qmd
+      - tools.qmd
+      - reference.qmd
+  page-footer: "MCEN 3021 · live Python in your browser via Quarto Live + Pyodide"
+
+format:
+  live-html:
+    toc: true
+    theme:
+      light: cosmo
+      dark: darkly
+
+pyodide:
+  packages:
+    - numpy
+    - scipy
+    - matplotlib
+
+engine: jupyter

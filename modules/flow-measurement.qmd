@@ -1,0 +1,226 @@
+---
+title: "4.2 Flow measurement"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+A flow meter is Bernoulli wearing a hard hat: **squeeze the flow, read
+the pressure drop**, and one honest fudge factor — the discharge
+coefficient $C_d$ — pays for everything the ideal equation ignored. The
+engineering is in the trade-offs: a sharp orifice is cheap and wasteful,
+a venturi is expensive and gentle, and a pitot tube measures a point
+instead of the whole pipe.
+
+::: {.callout-note}
+### The number in charge: β = d/D
+The bore-to-pipe ratio. It sets the signal ($\Delta p \sim \beta^{-4}$ish
+— small bore, big reading) *and* the permanent loss. Meter sizing is the
+art of picking β so the transmitter can read the signal without the pump
+paying forever.
+:::
+
+## Think first
+
+**Recall**
+
+1. Bernoulli between a pipe and a constriction: which way does the pressure go, and why?
+2. Conservation of mass: if area halves, what does $U$ do?
+
+**Look ahead**
+
+1. Why does the ideal meter equation *over*-predict flow, and how is that repaired?
+2. What's the difference between the ΔP a meter *reads* and the ΔP the system *loses*?
+3. When is a pitot tube the right instrument instead?
+
+::: {.callout-tip}
+### Video
+Placeholder — Canvas video link here (venturi & pitot on the bench; reading the taps).
+:::
+
+## Squeeze and read
+
+Send flow through a smooth contraction from pipe diameter $D$ to throat
+diameter $d$. Mass conservation speeds it up; Bernoulli converts the
+speed-up into a pressure *drop* between pipe tap and throat tap. Run the
+two equations together and solve for flow:
+
+$$Q_\text{ideal} = A_t\,\sqrt{\frac{2\,\Delta p}{\rho}}\;
+\frac{1}{\sqrt{1-\beta^4}}, \qquad \beta = d/D.$$
+
+The $\sqrt{1-\beta^4}$ factor is Bernoulli's upstream kinetic-energy term
+kept honest (the "velocity of approach" correction — drop it and you've
+pretended the pipe fluid starts from rest). Reality then under-delivers
+relative to this ideal: the jet contracts past a sharp edge (the vena
+contracta you met in 4.1), boundary layers thin the throat, a little
+friction taxes the trip. Rather than model each sin, industry measures
+their combined toll once and bottles it:
+
+$$Q = C_d \, Q_\text{ideal}.$$
+
+For a sharp **orifice plate**, $C_d \approx 0.61$ — the contraction is
+severe. For a **venturi**'s guided contraction, $C_d \approx 0.98$ —
+nearly ideal. A **flow nozzle** splits the difference at ~0.96. One
+number per geometry, tabulated for a century, standardized in ISO 5167;
+this is the productive way to be wrong.
+
+## The reading is not the bill
+
+Here is the distinction that separates instrument engineers from
+catalog-readers. The $\Delta p$ between the taps is the **signal** — most
+of it is speed, and speed can be *slowed back down* into pressure. What
+the system permanently loses depends on how gracefully that happens. A
+venturi's long diffuser recovers all but ~12% of the reading. An orifice
+recovers almost nothing — the jet bursts into a churn of eddies and the
+head is gone ($\approx (1-\beta^{1.9})$ of the reading, i.e. most of it).
+You will feed `permanent_loss` into Unit 8's head equation as a minor
+loss, forever, on every liter.
+
+```{ojs}
+//| echo: false
+viewof meter42 = Inputs.select(["orifice", "venturi", "nozzle"], {value: "orifice", label: "meter type"})
+viewof beta42 = Inputs.range([0.3, 0.75], {value: 0.5, step: 0.01, label: "β = d/D"})
+```
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+#| echo: false
+#| input:
+#|   - meter42
+#|   - beta42
+w = water(20)
+D, Q = 0.10, 0.008                       # 100 mm line, 8 L/s design flow
+d = beta42 * D
+dP = meter_dP(meter42, D, d, Q, w.rho)
+loss = permanent_loss(meter42, dP, beta42)
+fig, ax = plt.subplots(figsize=(7, 3.4))
+ax.barh(['ΔP the transmitter reads', 'ΔP the system loses forever'],
+        [dP/1000, loss/1000], color=['steelblue', 'crimson'])
+for i, v in enumerate([dP, loss]):
+    ax.annotate(f' {v/1000:.2f} kPa', (v/1000, i), va='center')
+ax.set_xlabel('kPa'); ax.set_xlim(0, max(dP/1000*1.25, 1))
+ax.set_title(f"{meter42}, β = {beta42:.2f}, 8 L/s in a 100 mm line "
+             f"— loss is {100*loss/dP:.0f}% of the reading")
+plt.tight_layout(); plt.show()
+```
+
+Two sweeps to run. **Shrink β** on the orifice: the signal balloons
+(great for a cheap transmitter) and so does the bill. **Switch to the
+venturi at the same β**: nearly the same signal, a tenth the bill — which
+is why venturis guard the big permanent lines and orifice plates get the
+utility taps. The sizing problem runs backwards too — given a
+transmitter's range, `size_meter` finds the bore. That's the instrument
+engineer's daily bread, and homework will serve it.
+
+**The pitot tube** answers a different question. Point a tube into the
+flow; the fluid entering it stops (a *stagnation point*), converting its
+velocity head into extra pressure. Read stagnation minus static and
+invert: $U = \sqrt{2\Delta p/\rho}$ — a **point** velocity, not a pipe
+average. It's the airspeed indicator on every aircraft (and the thing
+whose icing has caused real crashes — a blunt fact worth carrying), and
+in the lab it's how you traverse a duct to map a profile… which you then
+read with your 6.2 eyes.
+
+::: {.callout-important}
+## The misconception to leave behind
+The meter's ΔP reading is **not** the price of the measurement. The
+reading is mostly recoverable speed; the *permanent* loss is what the
+diffuser fails to reclaim. Confusing them makes the venturi look
+pointless (same reading!) and the orifice look free (it isn't — you pay
+its toll on every liter for the life of the plant).
+:::
+
+## Earn it — 2 quick gates
+
+Two gates on the two numbers every obstruction meter lives by: the reading, and the bill. Ungraded; hints after a miss; **Show me** after two. Arguing about a gate with a classmate is the assignment, not a violation.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Your orifice ΔP reading rises from 8 kPa to 32 kPa. Flow rate rose by a factor of…?"
+     data-answer="2.0" data-tol="0.02" data-units="×"
+     data-hint="Q ∝ √ΔP — the ½ρV² heart of the meter. Four times the signal is twice the flow."
+     data-solution="√(32/8) = 2.0×. The square root is also why turndown haunts orifice meters: 10:1 in flow is 100:1 in signal."
+     data-target="fme-s2"></div>
+```
+
+::: {#fme-s2 .fl-hidden}
+The reading is the signal. The *permanent loss* is what the pump pays forever — and it depends on the geometry downstream:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="A venturi (β ≈ 0.5) keeps ~12% of its reading as permanent loss. At a 20 kPa reading, the everlasting bill is…?"
+     data-answer="2.4" data-tol="0.03" data-units="kPa"
+     data-hint="12% of 20. The point is not the arithmetic — it is that an orifice at the same reading keeps ~55%."
+     data-solution="0.12 × 20 = 2.4 kPa forever, vs ~11 kPa for an orifice showing the same signal. The diffuser is the difference."></div>
+```
+
+Signal scales with √, rent scales with geometry — pick meters with both numbers on the table.
+
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** Why does $C_d$ for an orifice (0.61) sit so close to the vena-contracta area ratio, while a venturi's sits near 1?</summary>
+The orifice's dominant "sin" *is* the contraction — the jet necks down to
+~60% of the bore area, so the ideal equation overcounts area by exactly
+that. The venturi's guided walls prevent the contraction, leaving only
+minor friction to apologize for.
+</details>
+
+<details><summary>**Q2.** Your orifice reads ΔP = 25 kPa at design flow. Flow drops to half. What does it read now?</summary>
+About 6.2 kPa — the reading scales with $Q^2$. This quadratic squash is
+the DP meter's real weakness: at 25% flow the signal is 1/16th of range,
+drowning in transmitter noise. ("Turndown ratio" is the catalog word.)
+</details>
+
+<details><summary>**Q3.** A pitot tube in the center of a pipe reads a velocity of 2.0 m/s in fully turbulent flow. Is $Q$ = 2.0 × (pipe area) an over- or under-estimate, and roughly by how much?</summary>
+Over — the centerline is the profile's fastest point. For turbulent flow
+the average is ~0.8–0.85 of centerline (blunt profile), so ~15–20% high.
+For laminar flow you'd be 100% high (center = 2× average): the regime
+changes the correction. Everything connects.
+</details>
+
+## Bring to class
+
+Your plant has one transmitter model (range 0–30 kPa) and a 100 mm water
+line at 8 L/s. Come with a defensible choice — meter type and β — and the
+one-sentence bill your choice sends to the pump.

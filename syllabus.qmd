@@ -1,0 +1,77 @@
+---
+title: "Syllabus & Schedule"
+---
+
+## What this course is
+
+MCEN 3021 teaches fluid mechanics the way working engineers use it: identify
+**the number in charge** (a dimensionless group that says which physics
+rules), pick the law that survives your control volume, and check your hand
+work against a computational tool you understand well enough to distrust.
+Class time is peer instruction — you vote, you argue, you vote again —
+which only works if the reading happened first. That's the deal.
+
+## How a week works
+
+1. **Before class:** the module reading on this site (with its live demo),
+   then the short reading quiz on Canvas. Both close at class time.
+2. **In class:** ConcepTests — vote, convince your neighbor, revote — plus
+   the derivations and demos that earn their whiteboard time.
+3. **After class:** homework notebooks, *verify-then-apply*: hand
+   calculation first, toolbox confirmation second, design question third.
+
+## Grading
+
+| Component | Weight | Notes |
+|---|---|---|
+| Reading quizzes | 10% | lowest four dropped — life happens |
+| Class participation (clickers) | 10% | graded on voting, not on being right |
+| Homework (6 notebooks) | 25% | pair-programming allowed; write-ups solo |
+| Term project — *The Pump Station* | 20% | pairs; see [Project](project.qmd) |
+| Midterm (Units 1–5) | 15% | one page of notes, any tool-free calculator |
+| Final (cumulative, Units 6–10 weighted) | 20% | same rules |
+
+**Exam philosophy:** exams test the hand-side of verify-then-apply — reading
+a flow curve, auditing a Bernoulli permit, one iteration of a friction
+factor by hand, an NPSH ledger. Nothing on an exam requires software; the
+software exists so that class problems can be real.
+
+## Schedule (TR, 14 weeks — 28 meetings, 28 modules)
+
+| Wk | Tues | Thurs |
+|---|---|---|
+| 1 | 1.1 What is a fluid | 1.2 Fluid properties |
+| 2 | 2.1 Dimensional analysis | 2.2 Similitude & model testing |
+| 3 | 3.1 Pressure & manometry | 3.2 Plane surfaces |
+| 4 | 3.3 Curved surfaces & buoyancy | 3.4 Stability *(HW1 due)* |
+| 5 | 4.1 Bernoulli | 4.2 Flow measurement |
+| 6 | 5.1 Control volumes & mass *(HW2 due)* | 5.2 The energy equation |
+| 7 | 5.3 Momentum | **Midterm** *(HW3 due)* |
+| 8 | 6.1 Conservation at a point | 6.2 Reading flow profiles |
+| 9 | 7.1 Boundary layers | 7.2 Drag |
+| 10 | 7.3 Lift *(HW4 due)* | 8.1 Pipe-flow regimes |
+| 11 | 8.2 Major losses | 8.3 Minor losses & networks *(project M1)* |
+| 12 | 8.4 Pumped systems *(HW5 due)* | 9.1 Energy & critical flow |
+| 13 | 9.2 Uniform flow (Manning) | 9.3 Hydraulic jumps *(project M2)* |
+| 14 | 10.1 Pump theory (Euler) | 10.2 Performance & specific speed |
+| 15 | 10.3 Turbines *(HW6 due)* | Review & pump-chart lab |
+| — | **Finals week** | project memo (M3) + final exam |
+
+*(One module per meeting is the spine; a MWF section spreads the same 28
+across 42 meetings with the extra days going to worked examples and the
+project.)*
+
+## Tools policy
+
+The toolbox (`fluidtools`) is open-source and yours to keep. Use it on
+homework and the project freely — that's what it's for. Every function's
+source is one click away, and "the tool said so" is never a justification;
+"the tool agrees with my hand calculation, and here's the hand calculation"
+always is. AI assistants: same rule. Anything you submit, you defend.
+
+## The fine print
+
+Standard university policies apply (accommodations, honor code, religious
+observances) — see Canvas for the full statements. If the course isn't
+working for you, tell me at week 4, not week 14; the peer-instruction format
+has knobs I can turn.

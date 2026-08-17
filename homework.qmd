@@ -1,0 +1,37 @@
+---
+title: "Homework"
+---
+
+Six notebooks, one per unit-pair, each built on the same **verify-then-apply**
+arc that runs through the whole course: do the problem by hand, watch the
+toolbox reproduce your number, then use the now-trusted tool to answer the
+question that was too tedious for paper.
+
+Open any notebook in Colab or Jupyter; the first cell installs the toolbox
+(uncomment the `%pip` line on first run).
+
+| # | Notebook | Units | Anchored on |
+|---|---|---|---|
+| 1 | `hw1-properties-dimensions` | 1–2 | a rheometer that hides its yield stress; the Buckingham bubble; a 1:25 Froude spillway |
+| 2 | `hw2-hydrostatics` | 3 | gate + hinge reaction; a suction-tank manometer walk; barge stability with deck cargo |
+| 3 | `hw3-bernoulli-cv` | 4–5 | two holes / equal range; venturi-vs-orifice five-year rent; firefighter recoil |
+| 4 | `hw4-profiles-external` | 6–7 | Couette backflow onset; a towed plate's drag; the knuckleball Reynolds number and hail |
+| 5 | `hw5-pipeflow-pumps` | 8 | the (legally dubious) fire hydrant; a shower loss-audit; **pick-a-pump A/B/C**; throttle vs. VFD |
+| 6 | `hw6-channels-turbo` | 9–10 | a stilling-basin's megawatts; a canal that needs mowing; specific-speed machine safari; Pelton's ½ |
+
+::: {.callout-note}
+### For instructors
+Worked solution notebooks live in `homework/solutions/` — every hand
+calculation shown, every code cell executed, so the printed numbers are the
+ones to expect. They are `.gitignore`d so a public push won't publish them; distribute
+via your LMS.
+:::
+
+::: {.callout-tip}
+### The pump problem is the capstone
+Homework 5, Problem 3 is the course in miniature: three real pump curves, a
+piping system students have been building since Unit 8, and a decision that
+punishes both the cheapest sticker (B costs \$2,300 more to *own*) and the
+biggest pump (A cavitates at −2.47 m and is disqualified on the spot). The
+answer is C, and the memo they write to justify it is the assessment.
+:::

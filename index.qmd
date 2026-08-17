@@ -1,0 +1,49 @@
+---
+title: "How This Course Works"
+subtitle: "MCEN 3021 Fluid Mechanics"
+---
+
+This course runs on **peer instruction**. The short version: you meet the
+ideas *before* class, we spend class time arguing about them, and you apply
+them *after* class with professional-style analysis tools. Here is the loop,
+and your part in it:
+
+**Before class — read one module (20-30 min).** Each module on this site is
+one class meeting: a short reading built around **one big idea**, a live
+demo you can play with (the Python runs in your browser — nothing to
+install), and a few check questions. Do the LMS reading quiz before the
+deadline; it is graded on effort, not correctness. *It is fine — expected,
+even — to arrive confused about the hard part. It is not fine to arrive
+blank.*
+
+**In class — vote, argue, vote again.** Class is built around concept
+questions. You will commit to an answer, then convince your neighbor (or be
+convinced), then vote again. The research on this is unambiguous: the
+explaining is where the learning happens. Bring your phone for voting.
+
+**After class — verify, then apply.** Homework pairs one handwritten
+calculation with a bigger analysis using the course toolbox
+(`fluidtools`, a Python package you will run in Colab). The handwritten part
+proves the tool — and you — are right; the tool part does what professionals
+do: real systems, real design questions.
+
+::: {.callout-note}
+## First load on each page takes ~15-30 seconds
+The scientific Python stack downloads to your browser once per page and is
+cached afterward. Live cells have a *Run Code* button; edit anything and hit
+*Start Over* if you break it. You cannot hurt anything.
+:::
+
+## Where things live
+
+| What | Where |
+|---|---|
+| Pre-class readings & demos | this site (sidebar, by unit) |
+| Reading quizzes | LMS, due before each class |
+| Homework notebooks | course repo `homework/`, opened in Colab or Jupyter |
+| The toolbox | `%pip install git+https://github.com/YOURUSERNAME/fluidtools` |
+| Tool documentation | [Tools](tools.qmd) page |
+
+No textbook is required — these pages are the course text. If you want to
+hear another voice covering the same topics, *Munson's Fundamentals of
+Fluid Mechanics* is at an appropriate level.

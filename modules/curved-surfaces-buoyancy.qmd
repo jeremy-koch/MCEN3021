@@ -1,0 +1,224 @@
+---
+title: "3.3 Curved surfaces & buoyancy"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+Forces on curved surfaces split into two easy problems: the **horizontal**
+component equals the force on the surface's vertical *projection* (a flat-
+plate problem — 3.2's machinery), and the **vertical** component equals the
+*weight of the fluid above* the surface, real or imaginary. Wrap that
+vertical logic all the way around a submerged body and you have derived
+buoyancy: Archimedes was doing a pressure integral.
+
+## Think first
+
+**Recall**
+
+1. From 3.2: $F = \rho g h_c A$ for a flat surface — what are $h_c$ and $A$?
+2. From 1.2: which way does pressure push on each little patch of a curved wall?
+
+**Look ahead**
+
+1. How do you get the force on a curved dam face without integrating anything nasty?
+2. Where does the buoyant force actually *come from*, mechanically?
+3. When does an object touching the bottom feel *no* buoyancy at all?
+
+::: {.callout-tip}
+### Video
+Placeholder — Canvas video link here (projection method; buoyancy as a closed pressure integral).
+:::
+
+## Divide and conquer
+
+On a curved surface, the pressure force points a different direction at
+every patch — a genuinely vector-valued integral. The trick is to take
+its components separately, and each component collapses to something you
+already own.
+
+**Horizontal:** every patch's horizontal push depends only on its depth
+and its *projected* area on a vertical plane. So $F_H$ = the flat-plate
+force on the surface's vertical projection — compute it with 3.2's
+formulas, center of pressure and all. The curvature literally projects
+away.
+
+**Vertical:** consider the column of fluid directly above the surface,
+up to the free surface. That column is in equilibrium: pressure on the
+curved surface holds it up; therefore the surface feels the column's
+**weight**, downward — $F_V = \rho g V_\text{above}$. And if the fluid is
+*below* a surface (water pushing up on the underside of a curved gate),
+the same bookkeeping runs with an *imaginary* column: $F_V$ acts upward
+with the weight of the fluid that *would* sit above, if it were there.
+Yes, we routinely compute the weight of water that doesn't exist. It
+works because pressure at the surface only knows its depth, not whether
+the column overhead is real.
+
+For the classic quarter-circle gate there's a bonus you met as a
+ConcepTest: every patch's push is normal to the arc, hence aimed at the
+arc's center — so the **resultant passes through the center** too, and
+moment balances about that point become one-liners.
+
+```{ojs}
+//| echo: false
+viewof R_g33 = Inputs.range([0.5, 4], {value: 2, step: 0.25, label: "Gate radius R (m)"})
+viewof d_top33 = Inputs.range([0, 6], {value: 0, step: 0.5, label: "Depth of gate top (m)"})
+```
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+#| echo: false
+#| input:
+#|   - R_g33
+#|   - d_top33
+# Quarter-circle gate, width 3 m, holding water on its concave side:
+# vertical projection is R tall; 'above' volume is the quarter-cylinder complement.
+Wd = 3.0
+r = curved_surface_force(h_proj_top=d_top33, height=R_g33, width=Wd,
+                         volume_above=(R_g33**2 - np.pi*R_g33**2/4)*Wd + d_top33*R_g33*Wd)
+th = np.linspace(0, np.pi/2, 60)
+fig, ax = plt.subplots(figsize=(7, 4.2))
+ax.plot(R_g33*np.sin(th), d_top33 + R_g33*(1-np.cos(th)), 'k-', lw=3)
+ax.axhline(0, color='steelblue', lw=2)
+ax.fill_between([-0.5, R_g33*1.6], 0, d_top33+R_g33*1.25, color='steelblue', alpha=0.12)
+ang = np.radians(r['angle_deg'])
+Fs = 0.9*R_g33
+ax.annotate("", xy=(R_g33*np.sin(np.pi/4), d_top33+R_g33*(1-np.cos(np.pi/4))),
+            xytext=(R_g33*np.sin(np.pi/4)+Fs*np.cos(ang), d_top33+R_g33*(1-np.cos(np.pi/4))+Fs*np.sin(ang)),
+            arrowprops=dict(arrowstyle="-|>", color="crimson", lw=2))
+ax.set_ylim(d_top33+R_g33*1.4, -0.6); ax.set_aspect('equal'); ax.axis('off')
+ax.set_title(f"F_H = {r['F_H']/1e3:,.0f} kN   F_V = {r['F_V']/1e3:,.0f} kN   "
+             f"|F| = {r['magnitude']/1e3:,.0f} kN at {r['angle_deg']:.0f}° below horizontal")
+plt.tight_layout(); plt.show()
+```
+
+Push the gate deeper: $F_H$ grows (projection's centroid sinks) while the
+resultant's *direction* flattens toward horizontal — the imaginary column
+above the gate grows slower than the projection force. Reading that
+trade-off is the design skill.
+
+## Buoyancy is the same integral, closed
+
+Now wrap a surface all the way around a submerged body. Horizontal
+components cancel in pairs (left projection = right projection). The
+vertical bookkeeping leaves exactly: pressure pushing up on the bottom
+beats pressure pushing down on the top, by the weight of the fluid the
+body displaces. That's the whole theorem:
+
+$$F_B = \rho_\text{fluid}\, g\, V_\text{displaced},$$
+
+acting upward through the centroid of the displaced volume (the *center
+of buoyancy* — 3.4 will lean on that location hard). No new physics
+entered: **Archimedes' principle is the hydrostatic pressure integral
+evaluated on a closed surface.** Which is why the misconception below is
+so diagnostic.
+
+```{pyodide}
+# Your bathtub iceberg: what fraction of floating ice sits below water?
+rho_ice, rho_sw = 917.0, LIQUIDS['seawater']
+print(f"submerged fraction = rho_ice/rho_seawater = {rho_ice/rho_sw:.1%}")
+```
+
+::: {.callout-important}
+## The misconception to leave behind
+Buoyancy is not a force the water "decides" to exert on submerged things —
+it is the *net of pressure on the wetted surface*, and it needs water
+under the bottom to exist. Seal an object perfectly against the tank
+floor (no fluid beneath it) and the buoyant force vanishes; the water on
+top just pins it down harder. This is real: flat gates stuck to spillway
+floors, suction-piled anchors, and the reason a plunger works.
+:::
+
+## Earn it — 2 quick gates
+
+A 0.5 m³ concrete block (ρ = 2400 kg/m³) hangs fully submerged from a crane cable in fresh water. Ungraded; hints after a miss; **Show me** after two. Arguing about a gate with a classmate is the assignment, not a violation.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Buoyant force on the block?"
+     data-answer="4.90" data-tol="0.03" data-units="kN"
+     data-hint="Archimedes: ρ_water g V_displaced — the *water's* density, the *block's* volume."
+     data-solution="F_b = 998 × 9.81 × 0.5 = 4.90 kN, regardless of what the block is made of."
+     data-target="cb-s2"></div>
+```
+
+::: {#cb-s2 .fl-hidden}
+The cable feels the difference:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Cable tension (apparent weight)?"
+     data-answer="6.88" data-tol="0.03" data-units="kN"
+     data-hint="True weight ρ_concrete g V, minus the buoyant refund you just computed."
+     data-solution="T = 2400(9.81)(0.5) − 4.90 = 6.88 kN — the water pays about 42% of the lift."></div>
+```
+
+Every curved-surface vertical component in this module is Archimedes in disguise: weigh the water that *would be* there.
+
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** A hemispherical dome (bulging up) sits on the floor of a full tank. Is the vertical pressure force on it up or down, and what volume does the bookkeeping use?</summary>
+Down — the *real* water column above it, tank surface to dome, minus the
+dome's own bulge. No fluid below means no upward contribution: this is
+the sealed-to-the-bottom situation, quantified.
+</details>
+
+<details><summary>**Q2.** Why does $F_H$ on a curved gate not care about the curve's shape at all?</summary>
+Because horizontal pushes depend on depth × projected area, and every
+shape with the same outline projects to the same vertical rectangle. Two
+gates, one deeply dished and one gently bowed, same projection: same
+$F_H$ (their $F_V$'s differ — that's where shape lives).
+</details>
+
+<details><summary>**Q3.** A helium balloon and a lead weight hang in a sealed aquarium on a truck that brakes hard. Which way does each swing? (You met this in class — now explain it with the pressure integral.)</summary>
+Braking tilts the pressure gradient: pressure piles up toward the front.
+The lead swings forward (inertia beats its small buoyant correction); the
+balloon swings *backward*, toward low pressure — its "buoyancy" always
+points down the pressure gradient, which no longer means "up."
+</details>
+
+## Bring to class
+
+One sentence: in what precise sense is Archimedes' principle *not* a new
+law of physics?

@@ -1,0 +1,200 @@
+---
+title: "2.1 Dimensional analysis"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+Nature does not know what a meter is. Any honest physical relationship must
+survive a change of units — and that single demand compresses a problem with
+many variables into one with a few **dimensionless groups**. The Buckingham
+Pi theorem tells you *how many*: (number of variables) − (number of
+independent dimensions).
+
+## Think first
+
+**Recall**
+
+1. In terms of the base dimensions M, L, T — what is a force? A pressure? A viscosity?
+2. What does it mean for an equation to be *dimensionally homogeneous*?
+
+**Look ahead**
+
+1. Characterizing drag on a sphere seems to require sweeping four variables. How many does it *actually* take?
+2. What part of dimensional analysis is mechanical (a computer's job), and what part is engineering judgment (yours)?
+3. Which single number tells you what regime a flow is in?
+
+## Why this is a superpower, not bookkeeping
+
+Suppose drag on a sphere depends on speed, diameter, fluid density, and
+viscosity: $F = f(V, D, \rho, \mu)$ — five variables. An experiment
+sweeping 10 values of each needs $10^4$ runs. But five variables built from
+three dimensions (M, L, T) can only combine into $5-3=2$ dimensionless
+groups:
+
+$$\frac{F}{\rho V^2 D^2} = f\!\left(\frac{\rho V D}{\mu}\right)$$ {#eq-drag}
+
+One curve. Ten runs. And the same curve serves golf balls, raindrops, and
+weather balloons — that is what "the physics can't tell the difference"
+means.
+
+The mechanics of *finding* the groups is linear algebra on the exponents
+(each group is a null-space vector of the dimension matrix), which is
+exactly the kind of thing you should make a computer do:
+
+```{pyodide}
+groups = pi_groups({'F': 'force', 'V': 'velocity', 'D': 'length',
+                    'rho': 'density', 'mu': 'viscosity'},
+                   repeating=['rho', 'V', 'D'])
+```
+
+Run it. The first group is (up to convention) a drag coefficient; the second
+is the reciprocal of the Reynolds number. The `repeating` list is your
+choice of "currency" variables — the ones allowed to appear everywhere. Try
+`repeating=['mu', 'V', 'D']` and see the groups reshuffle into equally
+valid, less conventional forms. **The theorem picks how many groups; you
+pick which.** Taste comes from knowing the named numbers of the field.
+
+Now do a real one yourself. Pump head rise $gH$ (treat as `energy` per
+`mass` — i.e., use `{'L':2,'T':-2}`), flow rate, rotation speed, impeller
+diameter, density, viscosity:
+
+```{pyodide}
+groups = pi_groups({
+    'gH':    {'L': 2, 'T': -2},
+    'Q':     'flow_rate',
+    'omega': 'angular_velocity',
+    'D':     'length',
+    'rho':   'density',
+    'mu':    'viscosity',
+}, repeating=['rho', 'omega', 'D'])
+```
+
+Three groups — and you have just derived the head coefficient, the flow
+coefficient, and a rotational Reynolds number: the entire theoretical
+skeleton of Unit 10, from unit consistency alone.
+
+## The habit this course keeps
+
+Here is why this unit comes *second* in the course rather than buried at the
+end: dimensionless numbers tell you **which regime you are in** — which
+physics is in charge, and therefore which model you are allowed to use. That
+question comes *before* every analysis in this course, and answering it
+takes one line:
+
+```{pyodide}
+Re = reynolds(rho=998.2, V=1.2, L=0.05, mu=1.0e-3)   # water in a 5 cm pipe
+print(f"Re = {Re:,.0f}:", regime('reynolds', Re, context='pipe'))
+
+Fr = froude(V=3.0, L=0.4)                             # a fast, shallow stream
+print(f"Fr = {Fr:.2f}:", regime('froude', Fr))
+
+print(f"Ma = {mach(45):.2f}:", regime('mach', mach(45)))   # a 45 m/s fan jet
+```
+
+Every unit from here on opens by naming its ruling number and the regime
+boundaries that come with it. When a problem stumps you, computing the
+relevant number is move one.
+
+::: {.callout-important}
+## The misconception to leave behind
+Dimensional analysis does not *derive physics* — it cannot tell you the
+shape of the curve in @eq-drag, and it silently fails if you omit a variable
+that matters (add surface roughness to the sphere and a new group appears).
+Garbage variables in, garbage groups out. The variable list **is** the
+physics; everything after is algebra.
+:::
+
+## Earn it — 2 quick gates
+
+Buckingham bookkeeping, then the course's favorite number, in two gates. Ungraded; hints after a miss; **Show me** after two. Arguing about a gate with a classmate is the assignment, not a violation.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Drag problem: F, V, D, ρ, μ — five variables, three base dimensions. How many independent dimensionless groups?"
+     data-answer="2" data-tol="0.01" data-units="groups"
+     data-hint="n − k. Count on fingers if needed; everyone does once."
+     data-solution="5 − 3 = 2 groups: the five-variable problem is one curve, C_D = f(Re)."
+     data-target="da-s2"></div>
+```
+
+::: {#da-s2 .fl-hidden}
+And the group that runs this course:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Re for 20 °C water at 2.0 m/s in a 50 mm pipe?"
+     data-answer="99820" data-tol="0.03" data-units="(dimensionless)"
+     data-hint="ρVD/μ with D = 0.050 m. If you got ~100, the millimeters got you; if ~10⁸, they got you twice."
+     data-solution="Re = 998 × 2.0 × 0.050 / 10⁻³ ≈ 99,820 — inertia utterly in charge; turbulent by a factor of 40."></div>
+```
+
+Two gates, one thesis: count the groups, then ask the group who is in charge.
+
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** Six variables, three dimensions used. You find four dimensionless groups. What went wrong?</summary>
+Nothing may have — the *rank* of the dimension matrix can be less than 3
+(e.g., M appears in only one variable's combination). Groups = variables −
+rank, not variables − dimensions-you-listed. The tool computes the rank.
+</details>
+
+<details><summary>**Q2.** Why must the repeating variables be dimensionally independent?</summary>
+They are the basis you express everything else in. If two of them share a
+dependence (say, two lengths), they can't span the dimension space, some
+variable has no representation, and the textbook recipe jams — the tool
+raises an error for exactly this.
+</details>
+
+<details><summary>**Q3.** Your lab measures the period of a sloshing tank: $t = f(L, g, \rho)$. How many groups, and what does the answer say about $\rho$?</summary>
+Four variables; M appears *only* in $\rho$, so no dimensionless group can
+contain it — density drops out entirely, rank is 2 (L, T), and one group
+remains: $t\sqrt{g/L}$ = const. Dimensional analysis just told you sloshing
+period doesn't care about the fluid. That is physics from algebra.
+</details>
+
+## Bring to class
+
+Bring one variable list from your own experience (any physical system) —
+we will run the theorem on a few of them live.

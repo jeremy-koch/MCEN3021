@@ -1,0 +1,293 @@
+---
+title: "4.1 Bernoulli"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+Along a streamline in steady, frictionless, incompressible flow, three
+currencies exchange at fixed rates and their sum is conserved:
+
+$$\frac{p}{\rho g} + \frac{U^2}{2g} + z = \text{constant}.$$
+
+Bernoulli is the most used — and most *abused* — equation in fluid
+mechanics. The power is the trade; the discipline is the assumption list.
+
+## Think first
+
+**Recall**
+
+1. Each Bernoulli term has units of height ("head"). Verify $U^2/2g$ has units of meters.
+2. From 3.1: what is $p/\rho g$ for 1 atmosphere of water? (You'll recognize the number.)
+
+**Look ahead**
+
+1. Where does the water-speed-from-a-hole formula come from, and what's the fastest it can be?
+2. Which hole in a water tower squirts farthest — top, middle, or bottom?
+3. What's on the assumption checklist, and which item does Unit 8 exist to repair?
+
+::: {.callout-tip}
+### Video
+Placeholder — Canvas video link here (deriving Bernoulli along a streamline; the assumption checklist).
+:::
+
+## The trade
+
+Follow a fluid particle along its streamline in steady flow, with no
+friction acting on it. Newton's second law along the path — pressure
+force plus gravity produce acceleration — integrates into the statement
+above (the details are one clean line of calculus, collapsed below).
+Read it as an exchange rate: a particle can go faster by spending
+pressure or elevation; climbing costs speed or pressure. Nothing is
+created; nothing (yet) is lost.
+
+:::: {.callout-note collapse="true"}
+### Click here for the derivation — skim it in one line, or earn it in four checkpoints.
+
+**The one-liner (for the road):** along the streamline coordinate $s$,
+steady flow: $\rho U \frac{dU}{ds} = -\frac{dp}{ds} - \rho g \frac{dz}{ds}$.
+Every term is an exact derivative along $s$:
+$\frac{d}{ds}\left(\tfrac{1}{2}\rho U^2 + p + \rho g z\right) = 0$.
+Integrate, divide by $\rho g$ to get heads.
+
+---
+
+**Or earn it.** Below, the same derivation in four steps — but before each
+step appears, you predict one number from it (30 seconds each, ungraded,
+calculator encouraged). Getting one wrong costs nothing: you get a hint,
+then a **Show me** button. Arguing about a checkpoint with a classmate is
+not cheating; it is the assignment.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+**Step 1 — the forces on a fluid parcel.** Take a little cylinder of fluid
+riding its streamline: cross-section $A$, length $ds$. Only two forces act
+along the path (we outlawed friction): pressure on its two end faces, and
+the along-path component of its weight. If pressure *drops* by $dp$ from
+the back face to the front face, the parcel feels a net *forward* push.
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="A parcel with cross-section A = 2.0 cm&#178; sits where the pressure falls by 150 Pa from its back face to its front face. Net forward pressure force?"
+     data-answer="0.030" data-tol="0.03" data-units="N"
+     data-hint="Force = pressure difference &#215; area &#8212; and watch the cm&#178;: 2.0 cm&#178; = 2.0&#215;10&#8315;&#8308; m&#178;. The push points from high pressure toward low."
+     data-solution="F = &#916;p &#183; A = 150 Pa &#215; 2.0&#215;10&#8315;&#8308; m&#178; = 0.030 N, pointing forward &#8212; high pressure behind wins."
+     data-target="cp41-s2"></div>
+```
+
+::: {#cp41-s2 .fl-hidden}
+**Step 2 — Newton's second law along the path.** That pressure push, plus
+the weight component $-\rho g \, dz/ds$ per unit volume, must equal mass
+times acceleration. For a particle in *steady* flow, acceleration along the
+path is $U \, dU/ds$ (its speed changes because its *location* changes —
+convective acceleration, module 6.1's opening act). Per unit volume:
+
+$$\rho U \frac{dU}{ds} = -\frac{dp}{ds} - \rho g \frac{dz}{ds}.$$
+
+This is **Euler's equation** along a streamline. Now the one observation
+that makes the whole thing integrable: $U \, dU/ds$ is exactly
+$\frac{d}{ds}(U^2/2)$.
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="On a level streamline, steady water accelerates from 2.0 m/s to 3.0 m/s between two points. What is the change in U&#178;/2 between them?"
+     data-answer="2.5" data-tol="0.02" data-units="m&#178;/s&#178;"
+     data-hint="&#916;(U&#178;/2) = (3.0&#178; &#8722; 2.0&#178;)/2 &#8212; square first, subtract second, then halve. It is not (&#916;U)&#178;/2."
+     data-solution="(9.0 &#8722; 4.0)/2 = 2.5 m&#178;/s&#178;. Multiply by &#961; and that&#8217;s the 2.5 kPa of pressure drop that did the accelerating."
+     data-target="cp41-s3"></div>
+```
+:::
+
+::: {#cp41-s3 .fl-hidden}
+**Step 3 — every term is an exact derivative.** With that observation, and
+$\rho$ constant, Euler's equation is three derivatives of the *same
+variable* $s$ added to zero:
+
+$$\frac{d}{ds}\left(\tfrac{1}{2}\rho U^2 + p + \rho g z\right) = 0.$$
+
+A quantity whose derivative along the path is zero doesn't change along the
+path. Integrating costs nothing — the sum is simply *constant on the
+streamline*. Use it between two level points and only two currencies trade:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Same level streamline (dz = 0), &#961; = 998 kg/m&#179;: p&#8321; = 101.0 kPa absolute where U&#8321; = 2.0 m/s. The flow reaches U&#8322; = 6.0 m/s. What is p&#8322;, in kPa absolute?"
+     data-answer="85.0" data-tol="0.02" data-units="kPa"
+     data-hint="p&#8322; = p&#8321; &#8722; &#961;(U&#8322;&#178; &#8722; U&#8321;&#178;)/2. Faster costs pressure &#8212; if your answer went up, the sign flipped on you."
+     data-solution="p&#8322; = 101,000 &#8722; 998(36 &#8722; 4)/2 = 101,000 &#8722; 15,968 &#8776; 85.0 kPa. Sixteen kilopascals bought a 3&#215; speed-up."
+     data-target="cp41-s4"></div>
+```
+:::
+
+::: {#cp41-s4 .fl-hidden}
+**Step 4 — heads.** Divide the constant sum by $\rho g$ and every term
+becomes a length — pressure head, velocity head, elevation — and the
+equation becomes the form on this page's masthead:
+
+$$\frac{p}{\rho g} + \frac{U^2}{2g} + z = \text{constant along a streamline.}$$
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Express that 16.0 kPa pressure change from Step 3 as a head of water (&#961; = 998 kg/m&#179;)."
+     data-answer="1.63" data-tol="0.03" data-units="m of water"
+     data-hint="head = &#916;p / (&#961;g). Kilopascals are not meters &#8212; the exchange rate is &#961;g &#8776; 9.79 kPa per meter of water."
+     data-solution="16,000 / (998 &#215; 9.81) = 1.63 m &#8212; about the height of the person doing this checkpoint."
+     data-target="cp41-s5"></div>
+```
+:::
+
+::: {#cp41-s5 .fl-hidden}
+**Where each assumption entered — the checklist, earned.** **Steady** was
+used when we wrote acceleration as $U\,dU/ds$ with no $\partial/\partial t$
+(Step 2). **Along a streamline** — that's the only direction we ever
+balanced forces (Steps 1–2). **Frictionless** — no shear force ever
+appeared on the parcel (Step 1). **Constant $\rho$** — that's what let
+density slide through the derivative (Step 3). Four checkpoints, four
+assumptions, and now you know not just the checklist but *the scene of
+each crime*.
+:::
+::::
+
+The checklist deserves respect because each item fails somewhere
+important: **steady** fails during valve slams (water hammer),
+**frictionless** fails in long pipes (all of Unit 8 is the repair bill),
+**along a streamline** fails when you compare points across a pump or a
+churning wake, and **incompressible** fails near the speed of sound
+(`regime('mach', ...)` is the check). Between failures lies an enormous
+kingdom where three terms explain fountains, chimneys, airplane
+airspeed indicators, and your shower curtain's misbehavior.
+
+## The tank and the jet
+
+The signature application: a tank of water, surface open to air, with a
+small hole a depth $h$ below the surface. Streamline from the surface
+(point 1: $p=0$ gauge, $U\approx 0$ since the tank is large, elevation
+$h$) to the jet just outside the hole (point 2: $p=0$ gauge — a free jet
+is at ambient pressure — elevation 0):
+
+$$h = \frac{U_2^2}{2g} \quad\Longrightarrow\quad U_2 = \sqrt{2gh}.$$
+
+Torricelli's result: the jet emerges at exactly the speed of free-fall
+from the surface — elevation head converted to velocity head at par, with
+the pressure terms canceling in gauge. Now the class question: a tank of
+height $H$ has holes at several depths. The deep hole's jet is *fastest*,
+but it starts near the floor; the shallow hole's jet has the longest
+*fall*, but dawdles. **Which hole wins the distance contest?**
+
+```{ojs}
+//| echo: false
+viewof h_hole41 = Inputs.range([0.05, 0.95], {value: 0.3, step: 0.05, label: "Hole depth h below surface (m), tank H = 1 m"})
+```
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+#| echo: false
+#| input:
+#|   - h_hole41
+H = 1.0
+h = h_hole41
+U2 = np.sqrt(2*9.81*h)
+t = np.linspace(0, np.sqrt(2*(H-h)/9.81), 60)
+x, y = U2*t, (H-h) - 9.81*t**2/2
+rng = 2*np.sqrt(h*(H-h))
+fig, ax = plt.subplots(figsize=(7.5, 4))
+ax.add_patch(plt.Rectangle((-0.30, 0), 0.30, H, fc='steelblue', alpha=0.25, ec='k'))
+ax.plot([0], [H-h], 'ko', ms=6)
+ax.plot(x, y, lw=2.5, color='crimson')
+hs = np.linspace(0.02, 0.98, 200)
+ax.plot(2*np.sqrt(hs*(H-hs)), 0*hs, alpha=0)      # keep xlim honest
+ax.plot(rng, 0, 'v', ms=10, color='crimson')
+ax.axhline(0, color='k', lw=1)
+ax.set_xlim(-0.35, 1.15); ax.set_ylim(-0.05, 1.1); ax.set_aspect('equal')
+ax.set_title(f"U = √(2gh) = {U2:.2f} m/s  →  lands at x = 2√(h(H−h)) = {rng:.2f} m"
+             + ("   ← the maximum!" if abs(h-0.5) < 0.026 else ""))
+ax.set_xlabel('x (m)'); ax.set_ylabel('z (m)')
+plt.tight_layout(); plt.show()
+```
+
+Hunt for the winner. The range works out to $x = 2\sqrt{h(H-h)}$ — the
+geometric-mean structure means speed and fall trade *symmetrically*, the
+maximum sits at $h = H/2$, and (a lovely, checkable curiosity) holes at
+equal distances above and below the midpoint land in the *same spot*.
+
+::: {.column-margin}
+Bernoulli also explains its own limits here: a real jet lands a little
+short, because the hole isn't frictionless and the jet contracts as it
+turns the corner (the *vena contracta* — a discharge coefficient of about
+0.6 for a sharp hole, exactly the $C_d$ that module 4.2 institutionalizes).
+:::
+
+::: {.callout-important}
+## The misconception to leave behind
+"Fast air *causes* low pressure" — recited as if speed were a pressure-
+destroying substance. The mechanics runs the other way: a pressure
+*difference* is what accelerates fluid, and Bernoulli is the ledger of
+that acceleration along a streamline. The distinction has teeth: it's why
+you may not compare two points in *different* flows, or across a fan, or
+between a jet and still room air beside it, and expect the ledger to
+balance.
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** A pitot tube on an aircraft brings oncoming air to rest. If the "stagnation" pressure exceeds static by 3 kPa in air of ρ = 1.0 kg/m³, how fast is the plane?</summary>
+$U = \sqrt{2\Delta p/\rho} = \sqrt{6000} \approx 77$ m/s. You've just
+pre-derived module 4.2's pitot equation — Bernoulli with $U_2 = 0$.
+</details>
+
+<details><summary>**Q2.** Can the tank's jet speed exceed $\sqrt{2gH}$ if we make the hole bigger? Smoother? Nozzle-shaped?</summary>
+No — $\sqrt{2gH}$ (surface to floor) is the energy budget's ceiling.
+Geometry decides how close you get to par (smooth nozzle ≈ par; sharp
+hole ≈ 0.98 of the speed but only ~0.6 of the naive flow *rate*), never
+whether you exceed it. Exceeding it needs added energy: a pump, Unit 8.
+</details>
+
+<details><summary>**Q3.** Your teammate applies Bernoulli from the still air of the room, through a fan, to the fast jet behind it, and reports the room's pressure must be enormous. Which checklist item did they violate?</summary>
+"No energy added along the streamline" — the fan is a pump; streamlines
+through it gain head. (Formally: not frictionless/no-work.) Bernoulli's
+ledger doesn't have a column for machines; the head equation (5.2) adds
+one.
+</details>
+
+## Bring to class
+
+Every one of you should arrive with the answer to: *which hole wins, and
+why does the winner sit exactly in the middle?* — argued in currencies
+(what's spent, what's earned), not just algebra.

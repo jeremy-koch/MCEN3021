@@ -1,0 +1,72 @@
+---
+title: "Reference"
+---
+
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("fluidtools_bundle.py", "../fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## Property & coefficient databases
+
+All overridable in every function that uses them.
+
+```{pyodide}
+#| edit: false
+#| autorun: true
+print('LIQUIDS (density, kg/m^3)')
+for k,v in sorted(LIQUIDS.items()): print(f'  {k:20s} {v:8.1f}')
+print()
+print('PIPE ROUGHNESS (m)')
+for k,v in sorted(ROUGHNESS.items()): print(f'  {k:20s} {v:.2e}')
+print()
+print('FITTING LOSS COEFFICIENTS K')
+for k,v in sorted(FITTINGS.items()): print(f'  {k:20s} {v:g}')
+print()
+print('MANNING n')
+for k,v in sorted(MANNING_N.items()): print(f'  {k:20s} {v:.3f}')
+print()
+print('DRAG COEFFICIENTS (frontal area)')
+for k,v in sorted(CD_SHAPES.items()): print(f'  {k:22s} {v:.2f}')
+print()
+print('PUMP CATALOG (term project)')
+catalog_report()
+```
+
+## Water properties
+
+```{pyodide}
+for T in [5, 10, 15, 20, 25, 30, 40, 50, 60, 80, 95]:
+    w = water(T)
+    print(f"{T:3d} C: rho = {w.rho:7.1f} kg/m3   mu = {w.mu*1000:6.3f} mPa*s   "
+          f"pv = {w.pv/1000:7.2f} kPa")
+```

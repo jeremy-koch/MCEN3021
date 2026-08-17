@@ -1,0 +1,219 @@
+---
+title: "Unit 4 · Worked: the siphon, twice"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import numpy as np
+```
+
+This page is for *after* class, before Homework 3. It runs one problem type
+twice: first **fully worked** — every step narrated, including the why —
+then a **faded twin**, same skeleton, where the middle steps are yours and
+checkpoints confirm each one before the next appears. If you can finish the
+twin without the Show-me button, you're ready for the homework. Ungraded
+throughout; classmates encouraged.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+## Part 1 — fully worked: the patio siphon (Boulder)
+
+*A rain barrel on a Boulder patio. Water surface sits 1.5 m above the free
+end of a 20 mm garden hose; getting there, the hose crests a railing 2.0 m
+**above** the barrel's surface. Water at 20 °C; Boulder atmosphere 83 kPa.
+Find the flow rate, the pressure at the crest, and how high that railing
+could be before the siphon quits.*
+
+**Step 0 — the permit audit (always first).** Short hose, smooth flow, no
+machines, effectively steady while the barrel is full: Bernoulli is legal
+along the streamline from surface to exit. We'll ignore friction — a real
+hose delivers a bit less, and Unit 8 sends the exact bill.[^friction]
+
+[^friction]: The honest version: 5 m of 20 mm hose at the speed we're about
+to compute has a friction head around half a meter — real siphons run
+~15–20% slower than the ideal number. The *structure* of every conclusion
+below survives; the decimals soften.
+
+**Step 1 — datum and endpoints.** Put $z = 0$ at the **hose exit** (the
+lowest point in the problem — a datum choice that makes every elevation
+positive). Surface: $z_1 = 1.5$ m, $p_1 = p_\text{atm}$, $U_1 \approx 0$
+(the barrel is wide). Exit: $z_2 = 0$, $p_2 = p_\text{atm}$ (free jet),
+$U_2 = $ what we want. *Why these two points:* both have known pressure —
+you always aim Bernoulli between the points you know most about.
+
+**Step 2 — surface to exit.** Atmospheric pressure appears on both sides
+and cancels (this is why gauge pressure exists):
+
+$$z_1 = \frac{U_2^2}{2g}
+\quad\Longrightarrow\quad
+U_2 = \sqrt{2 g z_1} = \sqrt{2(9.81)(1.5)} = 5.42\ \text{m/s}.$$
+
+Torricelli again — the crest **does not appear in this calculation at
+all**. The exit speed answers only to the total drop, surface to exit. The
+water doesn't care what hill it crossed, only where it started and ended.
+
+**Step 3 — flow rate.** Geometry's turn, not physics':
+
+$$Q = U_2 \cdot \tfrac{\pi}{4} D^2 = 5.42 \times \tfrac{\pi}{4}(0.020)^2
+= 1.70\ \text{L/s}.$$
+
+**Step 4 — the crest, where the danger lives.** Same streamline, surface to
+crest. The hose has one diameter, so mass conservation says the speed at
+the crest is already the full $U_2 = 5.42$ m/s. The crest sits $2.0$ m
+above the surface, and it must pay for *both* the climb and the speed —
+this time in **absolute** pressure, because we're about to compare against
+a phase boundary:
+
+$$p_c = p_\text{atm} - \rho g z_c - \tfrac{1}{2}\rho U_2^2
+= 83{,}000 - (998)(9.81)(2.0) - \tfrac{1}{2}(998)(5.42)^2
+= 48.7\ \text{kPa abs}.$$
+
+Less than half an atmosphere, and the water hasn't climbed even a story.
+*Why absolute:* vapor pressure is an absolute number; a gauge answer here
+is a category error.
+
+**Step 5 — the ceiling.** The siphon dies when $p_c$ reaches the vapor
+pressure ($p_v = 2.3$ kPa at 20 °C) — the water boils at the crest and the
+column severs (module 4.1's misconception, CT-4-6's answer). Set
+$p_c = p_v$ and solve for the crest height:
+
+$$z_\text{max} = \frac{p_\text{atm} - p_v}{\rho g} - \frac{U_2^2}{2g}
+= \frac{83{,}000 - 2{,}330}{(998)(9.81)} - \frac{(5.42)^2}{2(9.81)}
+= 8.24 - 1.50 = 6.74\ \text{m}.$$
+
+Read the structure, because it transfers: the first term is the
+**barometric budget** — all the atmosphere can hold up in Boulder (8.24 m;
+at sea level it'd be 10.3 m). The second is the **velocity tax**: a moving
+siphon can't reach barometric height, because the crest is paying for speed
+too. Faster siphon, lower ceiling.
+
+## Part 2 — the faded twin: draining the aquarium (sea level)
+
+*Same skeleton, your numbers. A 26 °C aquarium at sea level
+($p_\text{atm} = 101.325$ kPa): the water surface sits **0.8 m** above the
+free end of a **12 mm** hose, which crosses the tank rim **0.5 m above**
+the surface. Take $\rho = 997$ kg/m³ and $p_v = 3.4$ kPa (warm water — note
+it's already 50% higher than at 20 °C).*
+
+**Steps 0–1 are on the house:** the permit holds (short hose, steady,
+no machines, friction waived at the same honesty discount as Part 1);
+datum at the **hose exit**; endpoints are surface
+($z_1 = 0.8$ m, atmospheric, $U \approx 0$) and exit ($z = 0$,
+atmospheric, $U_2 = ?$). From here, you drive.
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Step 2 &#8212; surface to exit: the jet speed U&#8322;?"
+     data-answer="3.96" data-tol="0.02" data-units="m/s"
+     data-hint="Torricelli: U&#8322; = &#8730;(2gz&#8321;) with z&#8321; = 0.8 m. The 0.5 m rim never enters &#8212; exit speed answers only to the total drop."
+     data-solution="U&#8322; = &#8730;(2 &#183; 9.81 &#183; 0.8) = 3.96 m/s."
+     data-target="cpw-s3"></div>
+```
+
+::: {#cpw-s3 .fl-hidden}
+✓ And notice what you *didn't* use: the rim height. Same lesson as Part 1 —
+the crest is a hazard, not a participant, in the exit-speed calculation.
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Step 3 &#8212; flow rate Q through the 12 mm hose?"
+     data-answer="0.448" data-tol="0.03" data-units="L/s"
+     data-hint="Q = U&#8322; &#183; &#960;D&#178;/4 with D = 0.012 m. If you got ~1.8 L/s you used &#960;D&#178; &#8212; the classic factor-of-4."
+     data-solution="Q = 3.96 &#215; &#960;/4 &#215; (0.012)&#178; = 4.48&#215;10&#8315;&#8308; m&#179;/s = 0.448 L/s."
+     data-target="cpw-s4"></div>
+```
+:::
+
+::: {#cpw-s4 .fl-hidden}
+✓ About 27 L/min — a 300 L tank drains in ~11 minutes, unsupervised, which
+every aquarium owner learns exactly once.
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Step 4 &#8212; absolute pressure at the rim crest (0.5 m above the surface, hose already at full speed)?"
+     data-answer="88.6" data-tol="0.02" data-units="kPa abs"
+     data-hint="p_c = p_atm &#8722; &#961;gz_c &#8722; &#189;&#961;U&#8322;&#178; &#8212; the crest pays for the climb AND the speed. If you got ~96 kPa you forgot the velocity term; if you got &#8722;12.7 you answered in gauge."
+     data-solution="p_c = 101,325 &#8722; (997)(9.81)(0.5) &#8722; &#189;(997)(3.96)&#178; = 101,325 &#8722; 4,890 &#8722; 7,820 &#8776; 88.6 kPa abs."
+     data-target="cpw-s5"></div>
+```
+:::
+
+::: {#cpw-s5 .fl-hidden}
+✓ Comfortable — 26× the vapor pressure. This siphon isn't close to trouble.
+But *how much* rim does it have in reserve?
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Step 5 &#8212; the ceiling: max rim height before this warm-water siphon quits?"
+     data-answer="9.21" data-tol="0.02" data-units="m"
+     data-hint="z_max = (p_atm &#8722; p_v)/(&#961;g) &#8722; U&#8322;&#178;/(2g) &#8212; barometric budget minus velocity tax, with the warm p_v = 3.4 kPa."
+     data-solution="(101,325 &#8722; 3,400)/(997 &#183; 9.81) &#8722; (3.96)&#178;/(2 &#183; 9.81) = 10.01 &#8722; 0.80 = 9.21 m."
+     data-target="cpw-s6"></div>
+```
+:::
+
+::: {#cpw-s6 .fl-hidden}
+**What transferred — and what changed.** Same skeleton as Part 1: audit →
+datum at the exit → Torricelli (crest silent) → geometry → crest ledger in
+absolute pressure → ceiling = barometric budget − velocity tax. The
+*numbers* moved for three separate reasons worth naming: sea level bought
+~2 m more barometric budget than Boulder; the slower jet cut the velocity
+tax from 1.50 m to 0.80 m; and the warm water raised $p_v$, quietly
+clawing back a tenth of a meter. Three physical effects, one formula, and
+you now own all three knobs. Homework 3 assumes exactly this fluency.
+:::
+
+## Let the toolbox referee
+
+Run the cell — it recomputes both parts,
+pulling $\rho$ and $p_v$ from `water(T)` instead of the rounded values
+above (which is why decimals may wiggle in the third digit).
+
+```{pyodide}
+#| autorun: false
+g = 9.81
+for label, T, patm, z1, D, zc in [
+        ("Part 1 · Boulder patio, 20°C", 20, 83e3, 1.5, 0.020, 2.0),
+        ("Part 2 · sea-level aquarium, 26°C", 26, 101325.0, 0.8, 0.012, 0.5)]:
+    w = water(T)
+    U = (2*g*z1)**0.5
+    Q = U * 3.141592653589793/4 * D**2
+    pc = patm - w.rho*g*zc - 0.5*w.rho*U**2
+    zmax = (patm - w.pv)/(w.rho*g) - U**2/(2*g)
+    print(label)
+    print(f"  U = {U:.2f} m/s   Q = {Q*1000:.3f} L/s")
+    print(f"  crest pressure = {pc/1000:.1f} kPa abs   ceiling z_max = {zmax:.2f} m")
+    print(f"  (rho = {w.rho:.1f} kg/m3, p_v = {w.pv/1000:.2f} kPa)")
+```

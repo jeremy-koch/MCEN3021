@@ -1,0 +1,223 @@
+---
+title: "1.2 Density, pressure & surface tension"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+Pressure is a **scalar** — one number per point, no direction — that
+*manifests* as a force wherever there's a surface, real or imaginary,
+always pushing normal to it. Get that distinction straight now and the
+whole of Unit 3 is bookkeeping. (Surface tension, meanwhile, is the
+property that takes over when things get small.)
+
+## Think first
+
+**Recall**
+
+1. Newton's second and third laws — you'll see both in one molecular argument below.
+2. What is density? Roughly what is it for water? For the air in this room?
+
+**Look ahead**
+
+1. If pressure has no direction, why does it push on things in a definite direction?
+2. What is *gauge* pressure, and why does an engineer in Boulder care about the number 83,000?
+3. When does surface tension matter, and when can we ignore it entirely?
+
+::: {.callout-tip}
+### Video
+Placeholder — Canvas video link here (pressure at the molecular scale; gauge vs absolute).
+:::
+
+## Pressure: a scalar that pushes
+
+Here is the molecular picture, for a gas. A molecule strikes a wall and
+bounces off: its velocity changed, so it accelerated, so (Newton's second
+law) the wall pushed on it — and (Newton's third law) it pushed on the
+wall. For an elastic bounce the velocity change is entirely along the
+wall's normal, so the push is too: **pressure acts perpendicular to
+surfaces**, always. Sum a mole's worth of bounces per second and you have
+a steady, macroscopic force per area.[^liquids]
+
+[^liquids]: For liquids the story is messier at the molecular level —
+liquid molecules are essentially in contact, and it takes enormous force
+to push them even slightly closer. That's why liquid pressure can rise
+dramatically with almost no density change, which is what we mean when we
+call a liquid *incompressible*.
+
+Now the crucial abstraction: we promote pressure from a wall-interaction
+to a property of the fluid *itself*, defined at every point — $p(x, t)$,
+a scalar. Drop an imaginary surface anywhere into the fluid, at any
+orientation, and the fluid on each side pushes on it, normal to it, with
+magnitude $p \times$ area. Pressure itself has no direction; the *surface
+you ask about* supplies one. That's why we can speak of "the pressure at
+a point" without saying which way — it's the same number for every
+orientation of the test surface. (This isotropy is provable, not just
+plausible; the argument is a tiny force balance on a wedge of fluid, and
+it's in the collapsed box below if you want it.)
+
+::: {.callout-note collapse="true"}
+### Click here for the wedge argument (why pressure is direction-free).
+
+Take a small triangular prism of static fluid with legs $\Delta x$,
+$\Delta z$ and hypotenuse at angle $\theta$. Pressure pushes normal to
+each face: $p_x$ on the vertical face, $p_z$ on the horizontal, $p_n$ on
+the slanted one. Force balance in $x$: $p_x \Delta z = p_n \Delta s
+\sin\theta = p_n \Delta z$, so $p_x = p_n$. Balance in $z$ gives $p_z =
+p_n$ plus a weight term that vanishes as the wedge shrinks. Since
+$\theta$ was arbitrary: one pressure, all directions.
+:::
+
+**Absolute vs gauge.** Pressure is fundamentally thermodynamic (it and
+one more state variable pin down a gas's state), and thermodynamics
+demands the *absolute* number. But mechanics only ever feels pressure
+*differences* — a submarine hull cares about outside-minus-inside — so we
+usually measure from a convenient reference:
+
+$$p_\text{absolute} = p_\text{reference} + p_\text{gauge}.$$
+
+The reference is almost always the local atmosphere: about 101,300 Pa at
+sea level, and about **83,000 Pa here in Boulder** — a number worth
+memorizing, because it's the one that will bite you in Unit 8 when
+cavitation calculations demand absolute pressure and you reflexively type
+101325. Saying "the air around us is at zero (gauge)" makes the math
+easier and is mechanically harmless; just know which currency you're in
+before you convert.
+
+## Surface tension: the small-scale specialist
+
+At a liquid's surface, molecules are pulled inward by neighbors they
+don't have on the air side; the surface acts like a stretched membrane
+with tension $\sigma$ (about 0.073 N/m for clean water). Per unit
+*volume* this force is puny — but it scales with *length* while weight
+scales with length *cubed*, so shrink the problem and surface tension
+wins. The crossover is around a millimeter for water; below it live
+droplets, capillary rise, and insects that walk on ponds.
+
+```{ojs}
+//| echo: false
+viewof D_cap12 = Inputs.range([0.2, 10], {value: 1, step: 0.1, label: "Tube inner diameter (mm)"})
+```
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+#| echo: false
+#| input:
+#|   - D_cap12
+sigma, rho, theta = 0.0728, 998.2, 0.0
+D = D_cap12/1000
+h_rise = 4*sigma*np.cos(theta)/(rho*9.81*D)
+Ds = np.linspace(0.2e-3, 10e-3, 200)
+fig, ax = plt.subplots(figsize=(7, 3.6))
+ax.plot(Ds*1000, 4*sigma/(rho*9.81*Ds)*1000, lw=2.5)
+ax.plot(D*1000, h_rise*1000, 'o', ms=11, mfc='gold', mec='k')
+ax.set_xlabel('tube diameter (mm)'); ax.set_ylabel('capillary rise (mm)')
+ax.set_title(f"water climbs {h_rise*1000:.1f} mm in a {D_cap12:g} mm tube  (h = 4σ/ρgD)")
+ax.grid(alpha=0.3)
+plt.tight_layout(); plt.show()
+```
+
+Slide toward small: at 0.2 mm the climb is ~15 cm — this is how paper
+towels and tree capillaries operate. Slide toward 10 mm and the effect is
+a rounding error; that's why none of Units 3–8 will mention $\sigma$
+again, and *when to ignore a physical effect* is exactly the judgment
+module 2.1 will make systematic.
+
+::: {.callout-important}
+## The misconception to leave behind
+"Pressure pushes down." Pressure pushes on *surfaces*, normal to them,
+whichever way they face — down on the top of a submerged plate, **up** on
+its bottom, sideways on its sides. (The *up* push on the bottom is
+slightly bigger, and that imbalance has a famous name coming in 3.3.)
+:::
+
+## Earn it — 2 quick gates
+
+Two properties, two numbers, both for 20 °C water (μ = 1.0×10⁻³ Pa·s, ρ = 998 kg/m³, σ = 0.0728 N/m). Ungraded; hints after a miss; **Show me** after two. Arguing about a gate with a classmate is the assignment, not a violation.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Kinematic viscosity ν = μ/ρ? (scientific notation is fine, e.g. 2e-6)"
+     data-answer="1.00e-06" data-tol="0.03" data-units="m²/s"
+     data-hint="Divide the dynamic viscosity by density — the answer is famously about one micro-unit."
+     data-solution="ν = 1.0×10⁻³ / 998 ≈ 1.0×10⁻⁶ m²/s — the number worth memorizing for water."
+     data-target="fp-s2"></div>
+```
+
+::: {#fp-s2 .fl-hidden}
+That 10⁻⁶ is the water number you will type most often this semester (Re lives on it). One more property earns a gate:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Pressure excess inside a 2.0 mm diameter water droplet, from surface tension?"
+     data-answer="146" data-tol="0.03" data-units="Pa"
+     data-hint="Δp = 2σ/R for a droplet — R, the radius, is 1.0 mm. (A soap bubble would pay 4σ/R: two surfaces.)"
+     data-solution="Δp = 2(0.0728)/0.001 = 146 Pa. Small drops are pressurized little tanks — and mist is furious."></div>
+```
+
+Shrink R and Δp climbs — which is why tiny bubbles dissolve, sprays atomize reluctantly, and CT-1-11's paperclip needed gentle hands.
+
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** A tire gauge in Boulder reads 220 kPa. What's the absolute pressure inside — and what would the same tire's gauge read at sea level?</summary>
+Absolute ≈ 220 + 83 = 303 kPa. At sea level the same air reads about 303
+− 101 ≈ 202 kPa gauge. The tire didn't change; the reference did.
+</details>
+
+<details><summary>**Q2.** Why can you feel water pressure on your eardrums at the bottom of a pool, in every head orientation?</summary>
+Pressure at your depth is one scalar; your eardrum supplies the surface
+and its normal. Face up, down, sideways — same magnitude, always normal
+to the drum.
+</details>
+
+<details><summary>**Q3.** Rank where surface tension matters: a raindrop, a bathtub, an inkjet printer nozzle, Lake Superior.</summary>
+Nozzle (tens of microns — σ *dominates*), raindrop (millimeters — σ
+shapes it), bathtub and lake (negligible: weight and pressure rule).
+Length scale is the whole story.
+</details>
+
+## Bring to class
+
+Be ready to defend, in one breath: pressure is a scalar — so where does
+the direction of the force on a dam come from?

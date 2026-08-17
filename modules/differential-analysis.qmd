@@ -1,0 +1,246 @@
+---
+title: "6.1 Conservation at a point"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+Shrink the control volume to a point and the ledgers of Unit 5 become
+differential equations: continuity and Navier–Stokes. Treat N–S not as
+homework to grind but as **F = ma per unit volume** — a map of forces you
+can point to in a flow picture: pressure pushes, viscosity diffuses,
+inertia carries. Reading that map is the skill; 6.2 turns it loose on
+real profiles.
+
+::: {.callout-note}
+### The number in charge: Re (again — now you can see why)
+Form the ratio of N–S's inertia term to its viscous term and Re falls
+out. The number you've computed since Unit 2 *is* the equation's own
+statement about which of its terms is in charge.
+:::
+
+## Think first
+
+**Recall**
+
+1. The divergence theorem from calc 3: $\oint_S \mathbf{F}\cdot\mathbf{n}\,dS = \int_V \nabla\cdot\mathbf{F}\,dV$. In words?
+2. From 5.1: the mass ledger for a CV. What happens to the surface integral as the CV shrinks?
+
+**Look ahead**
+
+1. What does $\nabla\cdot\mathbf{u} = 0$ demand of a flow picture, visually?
+2. Which N–S term is "the fluid's own momentum carrying itself," and why is it the troublemaker?
+3. If we will rarely solve N–S by hand, what is it *for*?
+
+::: {.callout-tip}
+### Video
+Placeholder — Canvas video link here (shrinking the CV; touring N–S term by term).
+:::
+
+## Continuity: mass at a point
+
+Take Unit 5's mass ledger and apply the divergence theorem to its surface
+integral; since the resulting volume integral must vanish for *every*
+possible CV, the integrand itself must vanish:
+
+$$\frac{\partial \rho}{\partial t} + \nabla\cdot(\rho\,\mathbf{u}) = 0
+\quad\xrightarrow{\;\rho\ \text{const}\;}\quad \nabla\cdot\mathbf{u} = 0.$$
+
+For our incompressible world, the whole law is two words: **zero
+divergence**. Visually: at every point, inflow and outflow balance — flow
+may swirl, shear, and accelerate, but it may not pile up or vanish. This
+gives you a truth-test for any velocity field anyone hands you (a CFD
+result, a textbook "solution," a colleague's sketch): take its
+divergence; if it isn't zero, the field is *fiction* for a liquid. Try
+the test:
+
+```{ojs}
+//| echo: false
+viewof field61 = Inputs.select(["shear: u=y, v=0", "vortex: u=−y, v=x", "source: u=x, v=y", "stretch: u=x, v=−y"], {value: "vortex: u=−y, v=x", label: "candidate velocity field"})
+```
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+#| echo: false
+#| input:
+#|   - field61
+fields = {
+  "shear: u=y, v=0":    (lambda X, Y: (Y, 0*X),   "0        — legal"),
+  "vortex: u=−y, v=x":  (lambda X, Y: (-Y, X),    "0        — legal"),
+  "source: u=x, v=y":   (lambda X, Y: (X, Y),     "2        — FICTION for a liquid (mass appears!)"),
+  "stretch: u=x, v=−y": (lambda X, Y: (X, -Y),    "1−1 = 0  — legal (squeezed, not created)"),
+}
+fn, verdict = fields[field61]
+g = np.linspace(-1, 1, 13)
+X, Y = np.meshgrid(g, g)
+U, V = fn(X, Y)
+fig, ax = plt.subplots(figsize=(5.6, 5.2))
+ax.quiver(X, Y, U, V, color='steelblue')
+ax.set_aspect('equal'); ax.set_xticks([]); ax.set_yticks([])
+ax.set_title(f"∇·u = {verdict}", fontsize=11)
+plt.tight_layout(); plt.show()
+```
+
+Look hard at the "stretch" case — arrows rush apart horizontally, yet the
+verdict is legal, because they crowd together vertically at exactly the
+compensating rate. Divergence is a *net* audit, not a vibe; that's why we
+compute it.
+
+## Navier–Stokes: F = ma per unit volume
+
+Do the same shrink to the momentum ledger and you get, for constant
+$\rho$ and $\mu$:
+
+$$\underbrace{\rho\Big(\frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot\nabla\mathbf{u}\Big)}_{\text{ma: inertia}}
+= \underbrace{-\nabla p}_{\text{pressure pushes}}
+\;+\; \underbrace{\mu \nabla^2 \mathbf{u}}_{\text{viscosity diffuses}}
+\;+\; \underbrace{\rho \mathbf{g}}_{\text{gravity pulls}}.$$
+
+Tour it as a force map, term by term. **$-\nabla p$**: fluid is shoved
+from high pressure toward low — the downhill of the pressure landscape
+(you've used this since the manometer). **$\mu\nabla^2\mathbf{u}$**: the
+Laplacian is a "how do I compare to my neighbors' average?" operator;
+viscosity drags every particle toward its neighbors' velocity — momentum
+*diffusing*, exactly like heat, smoothing out sharp velocity contrasts.
+**$\rho\mathbf{g}$**: weight, per unit volume. And on the left, the
+troublemaker: $\mathbf{u}\cdot\nabla\mathbf{u}$ says the fluid *carries
+its own momentum around* — velocity transported by velocity. That single
+nonlinear term is why turbulence exists, why general solutions don't, and
+why a million-dollar prize for basic N–S theory remains unclaimed. (Also
+why CFD is an industry rather than a formula.)
+
+Now form the ratio inertia/viscous with characteristic scales $U$ and
+$L$: $\rho U^2/L$ over $\mu U/L^2$ gives $\rho U L/\mu$ — **Reynolds'
+number is Navier–Stokes rating its own terms.** High Re: the viscous term
+is a bit player everywhere except thin layers near walls (Unit 7's whole
+premise). Low Re: inertia is negligible and the equation turns docile and
+linear (micro-fluidics, lubrication, that 30-micron sand grain from the
+drag correlations). The regime habit you've had since Unit 2 turns out to
+be *term selection in this equation* — that was the plan all along.
+
+What is N–S *for*, if not hand-solving? Three professional uses: it's
+what CFD discretizes (a reviewer who can name the terms can interrogate
+the solver's assumptions); it generates the handful of exact solutions
+whose profiles you'll read in 6.2; and it's the referee for every
+simplified model — Bernoulli, boundary-layer theory, lubrication — each
+of which is N–S with named terms deliberately dropped, valid exactly
+where the dropped term's regime says so.
+
+::: {.callout-important}
+## The misconception to leave behind
+"We can't solve it, so it's useless." Backwards. N–S is the *audit
+standard*: every model you'll ever use is N–S minus stated terms, and
+every CFD result is N–S plus stated approximations. Engineers who can
+point at the equation and say *which term you neglected and why that's
+fine here* are the ones trusted with the expensive decisions.
+:::
+
+## Earn it — 3 quick gates
+
+A 2-D incompressible velocity field has u = 3x (per second, SI throughout), with v = 0 along y = 0. Ungraded; hints after a miss; **Show me** after two. Arguing about a gate with a classmate is the assignment, not a violation.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Continuity demands ∂v/∂y = ? (a number, 1/s)"
+     data-answer="-3" data-tol="0.02" data-units="1/s"
+     data-hint="∂u/∂x + ∂v/∂y = 0. Whatever x-stretching adds, y must remove — conservation at a point."
+     data-solution="∂u/∂x = 3, so ∂v/∂y = −3: the fluid squeezes in y exactly as fast as it stretches in x."
+     data-target="dif-s2"></div>
+```
+
+::: {#dif-s2 .fl-hidden}
+Integrate down from the wall (v = 0 at y = 0):
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="v at y = 0.5?"
+     data-answer="-1.5" data-tol="0.02" data-units="m/s"
+     data-hint="v = −3y with the wall condition. The minus sign travels with it."
+     data-solution="v = −3(0.5) = −1.5 m/s — flow drifts toward the wall as it accelerates along it."
+     data-target="dif-s3"></div>
+```
+
+::: {#dif-s3 .fl-hidden}
+Steady field — yet a particle still accelerates, because its *location* changes:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Convective acceleration a_x = u·∂u/∂x at x = 2?"
+     data-answer="18" data-tol="0.02" data-units="m/s²"
+     data-hint="u(2) = 6, ∂u/∂x = 3, multiply. Steady ≠ unaccelerated — the field is frozen, the particle is not."
+     data-solution="a_x = 6 × 3 = 18 m/s² — nearly 2g, in a flow where nothing at any point ever changes."></div>
+```
+
+Conservation at a point plus convective acceleration: the two ideas that turn Unit 5's big boxes into calculus.
+
+:::
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** In fully developed pipe flow (steady, straight, unchanging along the pipe), which N–S terms survive?</summary>
+The whole left side dies (steady kills $\partial_t$; "unchanging along
+the pipe" kills $\mathbf{u}\cdot\nabla\mathbf{u}$). What remains:
+$0 = -\nabla p + \mu\nabla^2\mathbf{u}$ (+ gravity) — pressure push
+balancing viscous drag. That two-term balance *is* Poiseuille flow, and
+its solution is the profile 6.2 reads.
+</details>
+
+<details><summary>**Q2.** Why is momentum said to "diffuse" — what's the honest analogy to heat?</summary>
+Same operator, same physics of neighbor-exchange: $\mu\nabla^2\mathbf{u}$
+mirrors $k\nabla^2 T$. A sharp velocity contrast smooths outward with
+time exactly as a hot spot spreads — and $\nu = \mu/\rho$ has the same
+units (m²/s) as thermal diffusivity. Unit 7's boundary layer *is* this
+diffusion, given a flow-length of time to spread from the wall.
+</details>
+
+<details><summary>**Q3.** Your CFD vendor shows a gorgeous velocity field for water where $\nabla\cdot\mathbf{u} = 0.3\ \mathrm{s^{-1}}$ in a region. What do you tell them?</summary>
+That their liquid is manufacturing mass at 30% per second, i.e., the
+result violates continuity — plot artifact, interpolation error, or a
+diverged solve. The one-line audit beats the gorgeous picture.
+</details>
+
+## Bring to class
+
+Pick any flow you've seen this week (faucet, creek, coffee stir). Come
+ready to name, for one location in it, the *two* N–S terms you believe
+are in charge there — and the number you'd compute to defend the claim.

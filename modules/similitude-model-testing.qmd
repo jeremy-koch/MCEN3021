@@ -1,0 +1,247 @@
+---
+title: "2.2 Similitude & model testing"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+Match the governing dimensionless group between a model and the real
+thing, and the physics *cannot tell them apart* — that's why a 1:25 tow-
+tank hull predicts a ship. And when the analysis yields only **one**
+group, you've learned the entire physical law up to a constant, before
+running a single experiment.
+
+::: {.callout-note}
+### The numbers in charge: whichever Π governs
+Re if viscosity is the contest, Fr if gravity waves are, We if surface
+tension is. The engineering act is *choosing which one your problem
+answers to* — and module 2.1's `regime()` habit is how you check.
+:::
+
+## Think first
+
+**Recall**
+
+1. From 2.1: how many dimensionless groups does the Buckingham Pi theorem promise?
+2. What is the Froude number, and what physical contest does it score?
+
+**Look ahead**
+
+1. What exactly must be equal between a model test and the prototype for the data to transfer?
+2. Why can't a single water-tank model match a ship's Reynolds *and* Froude numbers at once?
+3. What can you conclude when the theorem hands you exactly one group?
+
+::: {.callout-tip}
+### Video
+Placeholder — Canvas video link here (model testing + the one-group superpower).
+:::
+
+## When one group is the whole answer
+
+Start with the case from lecture that shows dimensional analysis at full
+power: **the ringing of a bubble.** A small air bubble in water, poked,
+oscillates at some frequency $f$. What does $f$ depend on? Plausibly the
+bubble radius $R$, the water density $\rho$, and the surface tension
+$\sigma$ (the springiness of the interface). Four variables, three
+dimensions — the theorem promises exactly **one** group:
+
+```{pyodide}
+groups = pi_groups({'f': 'frequency', 'R': 'length',
+                    'rho': 'density', 'sigma': 'surface_tension'})
+```
+
+One group means the group must be *constant* — there is nothing else it
+could depend on. So, rearranging:
+
+$$f = C\sqrt{\frac{\sigma}{\rho R^3}}$$
+
+and we have derived, from unit bookkeeping alone, that **big bubbles ring
+low** — frequency falls like $R^{-3/2}$. (The constant $C$ is the one
+thing the theorem can't supply; Rayleigh did that integral for us.) This
+is the sound of a babbling brook and of rain on a pond: a chorus of
+bubble sizes, each singing its $R^{-3/2}$ note. Play the scale:
+
+```{ojs}
+//| echo: false
+viewof R_bub22 = Inputs.range([0.1, 3], {value: 1, step: 0.05, label: "Bubble radius R (mm)"})
+```
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+#| echo: false
+#| input:
+#|   - R_bub22
+sigma, rho = 0.0728, 998.2
+R = R_bub22/1000
+f = (1/(2*np.pi))*np.sqrt(8*sigma/(rho*R**3))   # Rayleigh's C for the n=2 mode
+Rs = np.linspace(0.1e-3, 3e-3, 200)
+fs = (1/(2*np.pi))*np.sqrt(8*sigma/(rho*Rs**3))
+fig, ax = plt.subplots(figsize=(7, 3.4))
+ax.loglog(Rs*1000, fs, lw=2.5)
+ax.plot(R*1000, f, 'o', ms=11, mfc='gold', mec='k')
+ax.set_xlabel('R (mm)'); ax.set_ylabel('f (Hz)')
+ax.set_title(f"R = {R_bub22:g} mm rings at ≈ {f:,.0f} Hz — the slope is the −3/2 law")
+ax.grid(which='both', alpha=0.3)
+plt.tight_layout(); plt.show()
+```
+
+## Model testing: making physics unable to tell
+
+Now the industrial version of the same idea. Suppose drag on a ship hull
+obeys $C_D = \phi(\mathrm{Fr}, \mathrm{Re})$ — the theorem's output for
+that variable list. Build a model at length ratio $L_r$ and run it so its
+dimensionless inputs **equal** the prototype's, and its dimensionless
+*output* must equal the prototype's too: same $\phi$, same arguments,
+same value. The physics has no way to know which one it's computing.
+Everything else — the dimensional speeds, forces, times — then converts
+by fixed ratios, which is what `model_scale` tabulates:
+
+```{pyodide}
+scale_report('froude', Lr=1/25)      # a 1:25 ship model in a tow tank
+```
+
+Read the force line carefully: measure 1 N on the model and you've
+measured 15,625 N on the ship. That's the entire business model of every
+tow tank and wind tunnel on earth.
+
+But here is the classic ambush, straight from the same ship: match
+**Froude** (waves care about gravity) and the model must run at
+$\sqrt{L_r}$ times the prototype speed — *slower*. Match **Reynolds**
+(friction cares about viscosity, same water) and it must run at $1/L_r$
+times — *25× faster*. You cannot do both:
+
+```{pyodide}
+V_ship = 10.0                                   # m/s prototype
+print(f"Froude-matched model speed:   {V_ship*model_scale('froude', 1/25)['V']:.1f} m/s")
+print(f"Reynolds-matched model speed: {V_ship*model_scale('reynolds', 1/25)['V']:.0f} m/s (!)")
+```
+
+One tank, two masters. The professional resolution is a confession plus a
+patch: match Froude (waves are the hard, nonlinear part), accept the
+Reynolds mismatch, and *correct* the friction analytically using the
+flat-plate results you'll meet in Unit 7. Partial similarity, honestly
+bookkept, is the norm — not a failure.
+
+::: {.column-margin}
+This is a modeling decision, not a math one: you ranked the physics
+(waves over friction) and chose which group to honor. Every model test
+begins with that ranking — and computing the relevant numbers with
+`regime()` is how you make it with your eyes open.
+:::
+
+::: {.callout-important}
+## The misconception to leave behind
+A model test is not "a small version that looks right." Geometric
+similarity is the *cheapest* requirement; the test transfers only if the
+governing dimensionless groups match — and when they can't all match, the
+engineer must know which mismatch is being tolerated and what correction
+pays for it. Looking right transfers nothing.
+:::
+
+## Earn it — 3 quick gates
+
+A 1:49 Froude-scaled ship model (√49 = 7 is the only arithmetic you need). Prototype cruises at 14 m/s. Ungraded; hints after a miss; **Show me** after two. Arguing about a gate with a classmate is the assignment, not a violation.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Model towing speed?"
+     data-answer="2.0" data-tol="0.03" data-units="m/s"
+     data-hint="Froude: V scales with √L. The ratio is 7, not 49."
+     data-solution="V_m = 14/√49 = 2.0 m/s — a brisk walk beside the tank."
+     data-target="sm-s2"></div>
+```
+
+::: {#sm-s2 .fl-hidden}
+Time scales the same way (t ~ L/V ~ √L). So:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="You film the model for 30 s. How much prototype time did you capture?"
+     data-answer="210" data-tol="0.03" data-units="s"
+     data-hint="Prototype time = model time × 7. Model worlds run fast — like movie miniatures, which is why they look wrong."
+     data-solution="t_p = 30 × 7 = 210 s: three and a half minutes of full-scale seakeeping in half a minute of tank time."
+     data-target="sm-s3"></div>
+```
+
+::: {#sm-s3 .fl-hidden}
+Forces are the expensive ratio — they scale like ρL³ (weight-like) under Froude:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="The model measures 12 N of wave drag. Prototype wave drag?"
+     data-answer="1.41e+06" data-tol="0.03" data-units="N"
+     data-hint="F ratio = L_r³ = 49³. Yes, cubed — this is why nobody builds prototypes to find out."
+     data-solution="F_p = 12 × 49³ = 1.41e+06 N ≈ 1.4 MN. A 12-newton tank reading is a 140-tonne-force answer."></div>
+```
+
+Speed by √L, time by √L, force by L³ — one matched Π group hands you the entire conversion table.
+
+:::
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** A 1:50 Froude-matched dam-spillway model measures a flow feature lasting 3 s. How long does it last at full scale?</summary>
+`model_scale('froude', 1/50)['t']` = $\sqrt{1/50}$ ≈ 0.141, so prototype
+time = 3/0.141 ≈ 21 s. Model events run fast; slow-motion footage of
+spillway models isn't a style choice.
+</details>
+
+<details><summary>**Q2.** Why do aeronautical labs pressurize wind tunnels (some to 20+ atmospheres)?</summary>
+Re = ρVL/μ: with L small and V capped (compressibility!), the remaining
+dial is ρ. Pressurizing raises density and buys Reynolds number without
+buying speed — matching Re at model scale by brute thermodynamic force.
+</details>
+
+<details><summary>**Q3.** Your bubble result claims $f$ doesn't depend on air properties inside the bubble. Should you believe it?</summary>
+Only as far as the variable list deserves. For gentle surface ringing,
+yes. For volume "breathing" oscillations, the gas's compressibility
+matters and belonged on the list — a different Π, a different law
+(Minnaert's, the one that dominates the actual brook sound). 2.1's
+warning stands: the variable list *is* the physics.
+</details>
+
+## Bring to class
+
+A 1:8 model of a pedestrian bridge will be tested for wind-induced
+vibration. Which number would you match, what does that force the test
+speed to be, and what are you knowingly getting wrong?

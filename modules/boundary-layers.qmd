@@ -1,0 +1,224 @@
+---
+title: "7.1 Boundary layers"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+At high Reynolds number, viscosity doesn't disappear — it **retreats into
+a thin layer at the wall** and rules absolutely there. That layer grows
+like $\sqrt{x}$ while laminar, transitions, then grows faster and drags
+harder. Prandtl's 1904 insight — split the flow into a frictionless
+outside and a viscous skin — rescued fluid mechanics from a century of
+paradox and is the organizing idea of all external flow.
+
+::: {.callout-note}
+### The number in charge: Re_x = ρUx/μ
+The *local* Reynolds number, built on distance from the leading edge —
+so it grows as the flow travels. Below ~5×10⁵: laminar layer. Beyond:
+transition to turbulence *on the same surface*. One plate, two regimes,
+position decides.
+:::
+
+## Think first
+
+**Recall**
+
+1. From 6.1: which N–S term does high Re let you neglect — *almost* everywhere?
+2. The no-slip condition. What must $u$ be at the wall, no matter how fast the outer flow?
+3. From 6.2: what does an inflected near-wall profile warn of?
+
+**Look ahead**
+
+1. How thick is the boundary layer on a real wing or a car roof? (Guess now; check below.)
+2. Why does the layer grow like $\sqrt{x}$ — what's spreading?
+3. What changes at transition, for thickness and for drag?
+
+::: {.callout-tip}
+### Video
+Placeholder — Canvas video link here (Prandtl's idea; watching δ grow).
+:::
+
+## The reconciliation
+
+Here is the paradox Prandtl resolved. At high Re, N–S says viscosity is
+negligible (Unit 6's own scaling) — and frictionless theory then predicts
+**zero drag** on a body, which is absurd (d'Alembert knew it was absurd
+in 1752). But viscosity *can't* be negligible at the wall: no-slip pins
+the fluid to zero there while the free stream roars by at $U$, and that
+velocity contrast must be bridged somewhere. Prandtl's move: it's bridged
+in a layer so thin that the outer flow never notices it — yet inside it,
+velocity gradients are enormous, the viscous term is fully in charge, and
+all the friction of the flow is manufactured.
+
+**Why $\sqrt{x}$?** Recall 6.1: momentum diffuses like heat, with
+diffusivity $\nu = \mu/\rho$. The wall's "message" (*you must stop*)
+spreads outward by diffusion — distance $\sim\sqrt{\nu t}$ — while the
+flow carries the message downstream at $U$, so a station $x$ has been
+exposed for $t = x/U$:
+
+$$\delta \sim \sqrt{\nu\, x / U} \quad\Longrightarrow\quad
+\frac{\delta}{x} \sim \frac{5.0}{\sqrt{\mathrm{Re}_x}} \; \text{(laminar, with the exact constant)}.$$
+
+Run the numbers and the layer is startlingly thin: air at 30 m/s, one
+meter along a surface — Re_x = 2×10⁶, and the laminar formula would give
+δ ≈ 3.5 mm. *Millimeters*, on a meter of car roof. Thin — but 100% of
+the skin friction lives inside it, and its behavior decides whether the
+flow stays attached at all (7.2's stakes).
+
+**Transition.** As the layer thickens downstream, its own local Reynolds
+number grows until, near $\mathrm{Re}_x \approx 5\times10^5$ (sooner with
+roughness, turbulence, vibration — the number is a lab value, not a law),
+the layer trips into turbulence. The turbulent layer mixes momentum far
+faster than molecular diffusion, so it grows faster ($\sim x^{0.8}$),
+sits *blunter* against the wall — and you know from 6.2 exactly what
+blunt-at-the-wall means: steeper slope, more shear, **more drag**. Watch
+all of it happen on one plate:
+
+```{ojs}
+//| echo: false
+viewof U_71 = Inputs.range([1, 60], {value: 15, step: 1, label: "free-stream U (m/s), air"})
+viewof L_71 = Inputs.range([0.3, 5], {value: 2, step: 0.1, label: "plate length (m)"})
+```
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+#| echo: false
+#| input:
+#|   - U_71
+#|   - L_71
+nu = 1.5e-5
+x = np.linspace(1e-4, L_71, 400)
+d = np.array([delta(xi, U_71, nu) for xi in x])
+cf = np.array([cf_local(U_71*xi/nu) for xi in x])
+x_tr = 5e5*nu/U_71
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 5.2), sharex=True)
+ax1.plot(x, d*1000, lw=2.5)
+ax1.set_ylabel('δ (mm)')
+ax2.plot(x, cf*1000, lw=2.5, color='darkorange')
+ax2.set_ylabel('c_f × 1000'); ax2.set_xlabel('x along plate (m)')
+for ax in (ax1, ax2):
+    ax.grid(alpha=0.3)
+    if x_tr < L_71:
+        ax.axvline(x_tr, color='crimson', ls='--', lw=1.2)
+if x_tr < L_71:
+    ax1.annotate(f' transition at x = {x_tr:.2f} m', (x_tr, d.max()*0.55),
+                 color='crimson', fontsize=9)
+    ax1.set_title(f"δ at the trailing edge: {d[-1]*1000:.1f} mm — and the layer restarts thicker & hungrier")
+else:
+    ax1.set_title(f"entirely laminar (Re_L = {U_71*L_71/nu:,.0f}) — δ ends at {d[-1]*1000:.1f} mm")
+plt.tight_layout(); plt.show()
+```
+
+Two things to make yourself see. The **jump at the dashed line**: at
+transition, thickness leaps and — look at the lower panel — the local
+friction roughly *quadruples*, then decays more slowly than before. And
+the **leading edge**: $c_f$ is enormous there (the layer is thinnest, the
+gradient fiercest) — fresh surfaces are expensive surfaces, which is why
+7.2's mixed-plate drag formula weights the front of a body so heavily.
+
+::: {.callout-important}
+## The misconception to leave behind
+δ is not "where the flow stops" and the boundary layer is not stagnant
+fluid stuck to the wall. It's the (conventionally 99%-of-U) zone where
+the velocity climbs from zero to the free stream — fluid inside it moves
+briskly and streams downstream. Nor is thin the same as ignorable: the
+millimeters at the wall set the drag of ships, the range of aircraft, and
+(next module) whether the flow stays attached at all.
+:::
+
+## Earn it — 2 quick gates
+
+Air (ρ = 1.2, μ = 1.81×10⁻⁵) at 15 m/s over a flat plate; station of interest x = 0.4 m. Ungraded; hints after a miss; **Show me** after two. Arguing about a gate with a classmate is the assignment, not a violation.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Local Reynolds number Re_x?"
+     data-answer="3.98e+05" data-tol="0.03" data-units="(dimensionless)"
+     data-hint="ρUx/μ, with x the distance from the leading edge — the BL's clock."
+     data-solution="Re_x = 1.2 × 15 × 0.4 / 1.81×10⁻⁵ ≈ 4.0e+05 — under the ~5×10⁵ transition: still laminar here."
+     data-target="bl-s2"></div>
+```
+
+::: {#bl-s2 .fl-hidden}
+Blasius prices the laminar thickness, δ ≈ 5x/√Re_x:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Boundary-layer thickness δ at that station?"
+     data-answer="3.2" data-tol="0.03" data-units="mm"
+     data-hint="5 × 0.4 / √(your Re_x) — then convert to millimeters; the answer is coin-thickness, not carpet."
+     data-solution="δ = 5(0.4)/√(4.0e+05) = 3.2 mm. Three millimeters deciding a wing's drag budget."></div>
+```
+
+Everything downstream — friction, transition, separation — is bookkeeping inside those few millimeters.
+
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** Same speed, water instead of air. Is the boundary layer on the plate thicker or thinner?</summary>
+Thinner — δ ∼ √(νx/U) and water's kinematic viscosity is ~15× *smaller*
+than air's (its μ is bigger, but its ρ is bigger still). Momentum
+diffuses more sluggishly through water, so the wall's message spreads
+less far.
+</details>
+
+<details><summary>**Q2.** Where on a 3 m car roof at highway speed is the boundary layer laminar?</summary>
+Almost nowhere: x_tr = 5×10⁵ν/U ≈ 5×10⁵ × 1.5×10⁻⁵/30 ≈ 0.25 m — the
+first hand-span, at best, and real-world roughness usually trips it
+sooner. Practical external flows are overwhelmingly turbulent-layer
+flows; the laminar formulas earn their keep on small, slow, smooth things.
+</details>
+
+<details><summary>**Q3.** Why does the *turbulent* layer resist separation better (a teaser this module owes 7.2)?</summary>
+Its mixing continually imports fast fluid down toward the wall, so the
+near-wall region carries more momentum — a fuller wallet for pushing
+through an adverse pressure gradient before the 6.2 diagnosis (zero wall
+slope) arrives. Golf balls are dimpled to buy exactly this.
+</details>
+
+## Bring to class
+
+Estimate — order of magnitude, no calculator ceremony — δ at the trailing
+edge of: a dragonfly wing, a kayak, a container ship. Bring the three
+numbers; we'll argue about which regime each layer is in.

@@ -1,0 +1,260 @@
+---
+title: "9.1 Energy & critical flow"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+Take the lid off the pipe and the pressure budget evaporates: a free surface
+is at atmospheric pressure *everywhere*, so an open channel cannot push with
+pressure — it spends **depth and speed**, and the exchange rate is the
+specific energy, $E = y + U^2/2g$, measured from the channel bed. For a given
+discharge there are generally *two* depths that spend the same $E$ — one deep
+and slow, one shallow and fast — and between them sits a single cheapest
+depth: **critical**, where the Froude number passes through 1 and the channel
+changes character entirely.
+
+::: {.callout-note}
+### The number in charge: the Froude number
+$$Fr = \frac{U}{\sqrt{g\,y}}$$
+— flow speed against the speed of a surface wave. $Fr < 1$ (subcritical):
+waves travel upstream; the flow takes orders from *downstream*. $Fr > 1$
+(supercritical): nothing swims upstream; control comes from *upstream*. Every
+channel question begins by asking which side of 1 you're on.
+:::
+
+## Think first
+
+**Recall**
+
+1. Unit 4's Bernoulli constant had three terms. Which one just died, and which two are left to trade?
+2. What is the speed of a shallow-water surface wave? (You met $\sqrt{gy}$ in Unit 2's Froude scaling.)
+3. Toss a pebble in a creek: rings spread upstream. What did you just measure?
+
+**Look ahead**
+
+1. Why can the *same* flow rate travel deep-and-slow or shallow-and-fast in the same channel?
+2. What's special about the depth where those two options merge?
+3. Why does a weir make an honest flow meter out of one depth reading?
+
+::: {.callout-tip}
+### Video
+Placeholder — Canvas video link here (flume footage: sluice gate making both regimes at once).
+:::
+
+## The energy a channel carries
+
+Per unit width, a rectangular channel moving $q = Q/b$ at depth $y$ has
+$U = q/y$, so
+
+$$E(y) = y + \frac{q^2}{2g\,y^2}.$$
+
+Plot it (the demo below) and the story is already told. At large $y$ the
+curve hugs the line $E = y$: deep water, all elevation, KE a rounding error.
+At small $y$ the $1/y^2$ term detonates: shallow water pays viciously for
+its speed. Between the two regimes the curve turns a corner — a *minimum*
+$E$ — and any energy budget above that minimum is spendable at exactly two
+depths, the **alternate depths**: one on each branch.[^gate]
+
+[^gate]: You can see both at once. A sluice gate takes deep, slow reservoir
+water and fires it out underneath as a shallow, fast sheet — same $q$, same
+$E$ (minus a small toll), two depths. The gate is an alternate-depth machine.
+
+Set $dE/dy = 0$ and the corner names itself:
+
+$$y_c = \left(\frac{q^2}{g}\right)^{1/3}, \qquad
+\text{and at } y_c:\;\; \frac{U^2}{g\,y} = 1 \;\Longleftrightarrow\; Fr = 1.$$
+
+::: {.callout-note collapse="true"}
+## Click for the two-line derivation
+$\dfrac{dE}{dy} = 1 - \dfrac{q^2}{g y^3} = 0 \Rightarrow y_c^3 = q^2/g$.
+And since $q = Uy$, $\;q^2/gy^3 = U^2/gy = Fr^2$ — so the minimum-energy
+condition *is* $Fr = 1$. The cheapest depth and the wave-speed threshold are
+the same place; that coincidence is the spine of the whole unit.
+:::
+
+"Critical," then, is a **threshold, not an extreme**: minimum energy for the
+given flow, waves exactly holding station against the current. Above it
+(subcritical) the flow is deep, calm, and — because ripples can propagate
+upstream — obedient to whatever happens downstream: a dam raises the water
+for kilometers behind it. Below it (supercritical) the flow is shallow,
+fast, and deaf: no signal can climb upstream, so the flow answers only to
+where it came from. Two regimes, two chains of command.
+
+::: {.column-margin}
+Boulder's own irrigation ditches run subcritical almost everywhere — check
+one: toss a leaf-fragment upstream of a stick and watch the ripple ring win
+the race against the current.
+:::
+
+One consequence pays for the whole module. Where a channel forces the flow
+through a geometric squeeze — a raised crest, a narrowed throat — the flow
+passes *through* critical right at the squeeze, because that's the only
+depth that gets the given $Q$ through on the available energy. Pin $Fr = 1$
+at a known section and one depth measurement upstream buys you the
+discharge: that is a **weir**, the flow meter with no moving parts — module
+4.2's venturi, performed in open air.
+
+## Play with it
+
+Fix the discharge; slide the energy budget. The two intersections are the
+alternate depths; watch them slide together as $E$ approaches the minimum.
+
+```{ojs}
+//| echo: false
+viewof q_91 = Inputs.range([0.5, 4], {value: 1.5, step: 0.25, label: "discharge q (m³/s per m width)"})
+viewof E_91 = Inputs.range([0.4, 3.5], {value: 1.6, step: 0.05, label: "specific energy E (m)"})
+```
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+#| echo: false
+#| input:
+#|   - q_91
+#|   - E_91
+g = 9.81
+ys = np.linspace(0.03, 3.6, 400)
+Es = ys + q_91**2/(2*g*ys**2)
+yc = (q_91**2/g)**(1/3)
+Emin = yc + q_91**2/(2*g*yc**2)
+
+fig, ax = plt.subplots(figsize=(7.5, 5))
+ax.plot(Es, ys, lw=2.5, color='steelblue', label='E(y) for this q')
+ax.plot(ys, ys, color='gray', lw=1, ls=':', label='E = y (all elevation)')
+ax.plot(Emin, yc, 'o', ms=11, mfc='gold', mec='k', zorder=5)
+ax.annotate(f"  critical: y_c = {yc:.2f} m, Fr = 1\n  E_min = {Emin:.2f} m",
+            (Emin, yc), fontsize=9)
+if E_91 > Emin + 1e-9:
+    from scipy.optimize import brentq as _bq
+    f = lambda y: y + q_91**2/(2*g*y**2) - E_91
+    y_sub = _bq(f, yc, 6.0)
+    y_sup = _bq(f, 1e-3, yc)
+    for y, lab, c in [(y_sub, 'subcritical (deep, slow)', 'seagreen'),
+                      (y_sup, 'supercritical (shallow, fast)', 'crimson')]:
+        Fr = (q_91/y)/np.sqrt(g*y)
+        ax.plot(E_91, y, 'o', ms=9, mfc='white', mec=c, mew=2, zorder=5)
+        ax.annotate(f"  y = {y:.2f} m, Fr = {Fr:.2f}\n  {lab}", (E_91, y),
+                    fontsize=9, color=c)
+    ax.axvline(E_91, color='k', lw=0.8, alpha=0.4)
+    ax.set_title("one budget, two ways to spend it")
+else:
+    ax.axvline(E_91, color='crimson', lw=0.8)
+    ax.set_title(f"E < E_min: this q cannot pass — the flow must back up and raise E")
+ax.set_xlabel('specific energy E (m)'); ax.set_ylabel('depth y (m)')
+ax.legend(loc='lower right'); ax.grid(alpha=0.3)
+ax.set_xlim(0, 3.7); ax.set_ylim(0, 3.6)
+plt.tight_layout(); plt.show()
+```
+
+Two experiments. **Lower $E$ toward the marked minimum** and watch the
+alternate depths converge on $y_c$ — then push below it and read the title:
+a flow that arrives with less than $E_\text{min}$ simply cannot pass at this
+discharge; it ponds upstream until it can (that ponding is how obstacles
+manufacture the deep water behind them). **Raise $q$** and watch the whole
+curve — and its minimum — climb: more flow needs a bigger budget, with
+$y_c \propto q^{2/3}$ doing the pricing.
+
+::: {.callout-important}
+## The misconception to leave behind
+"Deeper water carries more energy." Depth is only *one* of the two accounts.
+The shallow branch holds exactly as much specific energy as its deep
+alternate — it has simply moved the balance into speed. What deep and
+shallow differ in is *regime*: who gets to send signals to whom. That —
+not the energy — is what changes at $Fr = 1$.
+:::
+
+## Earn it — 2 quick gates
+
+A rectangular channel carries q = 2.0 m³/s per meter of width. Ungraded; hints after a miss; **Show me** after two. Arguing about a gate with a classmate is the assignment, not a violation.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Critical depth y_c?"
+     data-answer="0.742" data-tol="0.03" data-units="m"
+     data-hint="y_c = (q²/g)^(1/3) — cube root, the only one in the course."
+     data-solution="y_c = (4/9.81)^(1/3) = 0.742 m — the cheapest depth that can carry this q."
+     data-target="ccf-s2"></div>
+```
+
+::: {#ccf-s2 .fl-hidden}
+At exactly that depth, the flow speed equals the wave speed:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Shallow-water wave speed c = √(g·y_c) there?"
+     data-answer="2.70" data-tol="0.03" data-units="m/s"
+     data-hint="√(9.81 × your y_c). Check: q/y_c should give the same number — that coincidence is Fr = 1."
+     data-solution="c = √(9.81 × 0.742) = 2.70 m/s = q/y_c exactly. Waves stand still; the depth is critical in both senses."></div>
+```
+
+One cube root and one square root, meeting at Fr = 1: the border crossing every channel problem must locate first.
+
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** A creek 0.5 m deep flows at 0.6 m/s. Which regime — and what everyday observation would confirm it without a ruler?</summary>
+$Fr = 0.6/\sqrt{9.81 \times 0.5} \approx 0.27$: comfortably subcritical.
+Confirmation: drop a pebble — the ripple rings will make visible headway
+upstream. If they only swept downstream, you'd revise your arithmetic.
+</details>
+
+<details><summary>**Q2.** Rain doubles $q$ over a broad-crested weir. By what factor does the depth over the crest rise, and why does the weir still meter honestly?</summary>
+The crest holds the flow at critical, $y_c = (q^2/g)^{1/3}$, so doubling
+$q$ raises the crest depth by $2^{2/3} \approx 1.59$. The metering survives
+because the crest *pins* $Fr = 1$ regardless of flow — geometry keeps the
+calibration, storm or drought.
+</details>
+
+<details><summary>**Q3.** Why can't a supercritical reach be controlled by a gate at its downstream end?</summary>
+Control requires information, and information travels on waves at
+$\sqrt{gy}$. Supercritical flow outruns its own waves — the gate's influence
+cannot propagate upstream to be obeyed. (What actually happens at such a
+gate is a hydraulic jump: module 9.3's business.)
+</details>
+
+## Bring to class
+
+Find moving water this week — gutter, ditch, creek, sink. Bring its Froude
+verdict and the evidence (one sentence). Bonus if you catch the same water
+in both regimes.

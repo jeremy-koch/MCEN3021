@@ -1,0 +1,140 @@
+---
+title: "Unit 8 · Worked: gravity pipeline, twice"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js; js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import numpy as np
+```
+
+This page is for *after* class, before the homework: one problem type run
+twice — **fully worked**, then a **faded twin** where the middle steps are
+yours, each confirmed by a gate. Ungraded; classmates encouraged.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+## Part 1 — fully worked: the cabin supply line
+
+*A spring box sits 25 m above a cabin, feeding it through 60 m of 40 mm
+galvanized pipe (ε = 0.15 mm, so ε/D = 0.0037). Sharp exit (K = 1).
+How much water arrives?*
+
+**Step 0 — the head equation, with the unknown inside the coefficient.**
+$$25 = \left(f\frac{L}{D} + \Sigma K\right)\frac{V^2}{2g}
+= (1500 f + 1)\frac{V^2}{2g}.$$
+$f$ depends on $Re$ depends on $V$ — the circle you already broke once for
+the falling sphere (Unit 7's worked page). Same move: guess, solve, audit.
+
+**Step 1 — guess.** Fully-rough guess for this ε/D: $f \approx 0.028$.
+Then $V = \sqrt{2g(25)/(0.028 \cdot 1500 + 1)} = 3.38$ m/s.
+
+**Step 2 — audit.** $Re = \rho V D/\mu = 1.35e+05$; Haaland at this
+$(Re, \varepsilon/D)$ returns $f = 0.0287$ — the guess was
+3% off, which the square root will shrink further.
+
+**Step 3 — converge.** $V = \sqrt{2g(25)/(0.0287\cdot1500+1)}
+= 3.34$ m/s: the update moved the answer by ~1%. Done — this loop
+almost never needs a third lap, because $V \propto 1/\sqrt{f}$ forgives.
+$$Q = VA = 3.34 \times 1.257\times10^{-3} = 4.19\ \text{L/s}$$
+— a very respectable shower, paid for entirely by elevation.
+
+## Part 2 — the faded twin: the bigger drop
+
+*A tank 30 m above the outlet, 100 m of 50 mm commercial-steel pipe
+(ε/D = 9×10⁻⁴), fittings totaling ΣK = 1.5. Your loop.*
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Step 1 — first-pass velocity with the guess f = 0.020?"
+     data-answer="3.77" data-tol="0.03" data-units="m/s"
+     data-hint="V = √(2g·30/(f·L/D + ΣK)) with L/D = 2000. Everything is inside one square root."
+     data-solution="V = √(588.6/(40 + 1.5)) = 3.77 m/s."
+     data-target="u8w-s2"></div>
+```
+
+::: {#u8w-s2 .fl-hidden}
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Step 2 — the audit: Reynolds number at that velocity?"
+     data-answer="1.88e+05" data-tol="0.04" data-units="(dimensionless)"
+     data-hint="ρVD/μ with D = 0.050 m. You need it to interrogate the Moody chart (or Haaland)."
+     data-solution="Re = 998 × 3.77 × 0.05/10⁻³ = 1.88e+05 — solidly turbulent, transitional-rough zone."
+     data-target="u8w-s3"></div>
+```
+:::
+
+::: {#u8w-s3 .fl-hidden}
+✓ At that $Re$ and ε/D = 9×10⁻⁴, the chart answers **f = 0.021** — your
+guess was 5% light. Fold it back in:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Step 3 — converged velocity with f = 0.021?"
+     data-answer="3.68" data-tol="0.03" data-units="m/s"
+     data-hint="Same square root, new f. Watch how little it moves — that is the 1/√f forgiveness."
+     data-solution="V = √(588.6/43.5) = 3.68 m/s: a 2% correction. Converged."
+     data-target="u8w-s4"></div>
+```
+:::
+
+::: {#u8w-s4 .fl-hidden}
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Step 4 — the deliverable: flow rate?"
+     data-answer="7.22" data-tol="0.03" data-units="L/s"
+     data-hint="Q = V · πD²/4, then to L/s. The area of a 50 mm pipe is 1.963×10⁻³ m²."
+     data-solution="Q = 3.68 × 1.963×10⁻³ = 7.22 L/s."
+     data-target="u8w-s5"></div>
+```
+:::
+
+::: {#u8w-s5 .fl-hidden}
+**What transferred.** Guess → solve → audit → fold back in, with
+convergence in one lap because $V$ rides $1/\sqrt f$. Every gravity-flow,
+pump-sizing, and network problem in this unit is this loop with more
+plumbing attached — and `solve_flow()` below is this loop with the patience
+automated.
+:::
+
+## Let the toolbox referee
+
+```{pyodide}
+#| autorun: false
+from fluidtools.pipeflow import Pipe, PipeSystem, water
+for label, dz, L, D, ext in [("Part 1 (cabin)", 25, 60, 0.040, 'galvanized_iron'),
+                              ("Part 2 (tank)",  30, 100, 0.050, 'commercial_steel')]:
+    p = Pipe(L=L, D=D, roughness=ext); p.add_fitting('exit')
+    if "2" in label: p.add_fitting(K=0.5)
+    s = PipeSystem(water(20), z1=dz, z2=0); s.add(p)
+    Q = s.solve_flow()
+    print(f"{label}: Q = {Q*1000:.2f} L/s")
+```

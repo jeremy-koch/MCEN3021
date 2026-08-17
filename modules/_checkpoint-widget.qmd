@@ -1,0 +1,118 @@
+```{=html}
+<style>
+.fl-hidden { display: none; }
+.fl-cp { border-left: 4px solid #4c6ef5; background: #f5f7ff; border-radius: 6px;
+         padding: 0.8em 1em; margin: 1.1em 0; }
+.fl-cp.pass  { border-left-color: #2f9e44; background: #f2fbf4; }
+.fl-cp.shown { border-left-color: #868e96; background: #f8f9fa; }
+.fl-cp-prompt { font-weight: 600; margin-bottom: 0.55em; }
+.fl-cp-row { display: flex; gap: 0.55em; align-items: center; flex-wrap: wrap; }
+.fl-cp input[type=text] { width: 9em; padding: 0.32em 0.55em; border: 1px solid #adb5bd;
+         border-radius: 4px; font-family: var(--bs-font-monospace, monospace); }
+.fl-cp button { padding: 0.32em 0.95em; border-radius: 4px; border: 1px solid #4c6ef5;
+         background: #4c6ef5; color: #fff; cursor: pointer; font-size: 0.92em; }
+.fl-cp button:disabled { opacity: 0.45; cursor: default; }
+.fl-cp button.fl-showme { background: #fff; color: #495057; border-color: #adb5bd; }
+.fl-cp-units { color: #495057; }
+.fl-cp-fb { margin-top: 0.5em; font-size: 0.95em; }
+.fl-cp-fb.ok { color: #2b8a3e; font-weight: 600; }
+.fl-cp-fb.no { color: #e67700; }
+.fl-cp-hint { margin-top: 0.45em; color: #7048e8; font-size: 0.95em; }
+.fl-cp-sol  { margin-top: 0.45em; color: #495057; font-style: italic; }
+.fl-reveal-all button { padding: 0.3em 0.9em; border-radius: 4px; font-size: 0.85em;
+         border: 1px solid #adb5bd; background: #fff; color: #495057; cursor: pointer; }
+</style>
+<script>
+(function () {
+  function parseNum(s) {
+    s = (s || '').replace(/[,\s]/g, '').replace('\u2212', '-');
+    var v = parseFloat(s);
+    return isNaN(v) ? null : v;
+  }
+  function reveal(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.remove('fl-hidden');
+  }
+  function initCheckpoint(el) {
+    var ans = parseFloat(el.dataset.answer);
+    var tol = parseFloat(el.dataset.tol || '0.02');
+    var target = el.dataset.target || '';
+    var hint = el.dataset.hint || '';
+    var sol = el.dataset.solution || '';
+    var units = el.dataset.units || '';
+    var attempts = 0;
+    el.classList.add('fl-cp');
+    el.innerHTML =
+      '<div class="fl-cp-prompt">\u270B Checkpoint \u2014 ' + el.dataset.prompt + '</div>' +
+      '<div class="fl-cp-row">' +
+      '  <input type="text" inputmode="decimal" aria-label="your answer" placeholder="your number">' +
+      '  <span class="fl-cp-units">' + units + '</span>' +
+      '  <button class="fl-check" type="button">Check</button>' +
+      '</div>' +
+      '<div class="fl-cp-fb" aria-live="polite"></div>' +
+      '<div class="fl-cp-hint fl-hidden">\uD83D\uDCA1 ' + hint + '</div>' +
+      '<div class="fl-cp-sol fl-hidden">' + sol + '</div>';
+    var input = el.querySelector('input');
+    var fb = el.querySelector('.fl-cp-fb');
+    var hintEl = el.querySelector('.fl-cp-hint');
+    var solEl = el.querySelector('.fl-cp-sol');
+    var btn = el.querySelector('.fl-check');
+    var row = el.querySelector('.fl-cp-row');
+    function pass(shown) {
+      el.classList.add(shown ? 'shown' : 'pass');
+      fb.className = 'fl-cp-fb ok';
+      fb.textContent = shown
+        ? '\u2014 shown, no penalty. Read the step below, then try the next prediction yourself.'
+        : '\u2713 correct \u2014 next step unlocked below.';
+      input.disabled = true; btn.disabled = true;
+      var sm = el.querySelector('.fl-showme');
+      if (sm) sm.remove();
+      if (shown && sol) solEl.classList.remove('fl-hidden');
+      if (target) reveal(target);
+    }
+    function check() {
+      var v = parseNum(input.value);
+      if (v === null) {
+        fb.className = 'fl-cp-fb no';
+        fb.textContent = 'Enter a number (units shown at right).';
+        return;
+      }
+      var ok = Math.abs(v - ans) <= Math.max(tol * Math.abs(ans), 1e-9);
+      if (ok) { pass(false); return; }
+      attempts += 1;
+      fb.className = 'fl-cp-fb no';
+      fb.textContent = (attempts === 1)
+        ? 'Not yet \u2014 hint below. (Talking it over with classmates is encouraged, not cheating.)'
+        : 'Still off \u2014 check units and signs, or take the reveal. No penalty either way.';
+      if (hint) hintEl.classList.remove('fl-hidden');
+      if (attempts >= 2 && !el.querySelector('.fl-showme')) {
+        var sm = document.createElement('button');
+        sm.type = 'button';
+        sm.className = 'fl-showme';
+        sm.textContent = 'Show me';
+        sm.addEventListener('click', function () { pass(true); });
+        row.appendChild(sm);
+      }
+    }
+    btn.addEventListener('click', check);
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') check(); });
+  }
+  function revealEverything() {
+    document.querySelectorAll('.fl-hidden').forEach(function (d) { d.classList.remove('fl-hidden'); });
+    document.querySelectorAll('div.fl-checkpoint input, div.fl-checkpoint button')
+      .forEach(function (x) { x.disabled = true; });
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('div.fl-checkpoint').forEach(initCheckpoint);
+    document.querySelectorAll('div.fl-reveal-all').forEach(function (d) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = 'Reveal everything (skip the checkpoints)';
+      b.addEventListener('click', revealEverything);
+      d.appendChild(b);
+    });
+    window.addEventListener('beforeprint', revealEverything);
+  });
+})();
+</script>
+```

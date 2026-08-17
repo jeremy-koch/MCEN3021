@@ -1,0 +1,121 @@
+---
+title: "Unit 7 · Worked: the strut and the sphere, twice"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js; js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import numpy as np
+```
+
+This page is for *after* class, before the homework: one problem type run
+twice — **fully worked**, then a **faded twin** where the middle steps are
+yours, each confirmed by a gate. Ungraded; classmates encouraged.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+## Part 1 — fully worked: drag on a towed strut
+
+*A hydrofoil strut, flat-plate-like, 1.2 m long × 0.3 m deep, towed edge-on
+at 4.0 m/s in 20 °C water, wetted both sides. Find the friction drag.*
+
+**Step 0 — regime first.** $Re_L = \rho U L/\mu = 4.79e+06$. Transition
+($Re_x \approx 5\times10^5$) happens at $x = 125$ mm — the
+first tenth of the strut is laminar, the rest turbulent: **mixed**.
+
+**Step 1 — the mixed coefficient.**
+$C_F = 0.074\,Re_L^{-1/5} - 1742/Re_L = 3.05e-03$.
+The subtraction *is* the laminar head start — credit for the
+125 mm that never went turbulent.
+
+**Step 2 — the bill.** Wetted area $2 \times 1.2 \times 0.3 = 0.72$ m²:
+$$F = C_F \cdot \tfrac12 \rho U^2 \cdot A_\text{wet}
+= 3.05e-03 \times 7986 \times 0.72 = 17.5\ \text{N}.$$
+Modest — friction drag is the *quiet* kind. The fairing exists to keep it
+that way: an unfaired cylinder of equal frontal area pays an order of
+magnitude more, all of it wake.
+
+## Part 2 — the faded twin: the sinking bearing ball
+
+*A 10 mm steel sphere (ρ = 7850 kg/m³) is dropped into deep 20 °C water.
+Find its terminal velocity — the drag equation, run in reverse.*
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Step 1 — net weight (weight minus buoyancy) driving the fall, in millinewtons?"
+     data-answer="35.2" data-tol="0.03" data-units="mN"
+     data-hint="(ρ_steel − ρ_water) g (π/6)D³ — buoyancy is a standing 13% discount on steel underwater."
+     data-solution="W_net = 6852 × 9.81 × 5.24×10⁻⁷ = 35.2 mN."
+     data-target="u7w-s2"></div>
+```
+
+::: {#u7w-s2 .fl-hidden}
+✓ At terminal velocity, drag equals exactly this. Assume the plateau value
+$C_d = 0.44$ — an assumption we will audit in Step 3:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Step 2 — terminal velocity V = √(2 W_net /(C_d ρ A))?"
+     data-answer="1.43" data-tol="0.03" data-units="m/s"
+     data-hint="A is the frontal circle πD²/4 = 7.85×10⁻⁵ m². Small numbers everywhere; the square root forgives nothing."
+     data-solution="V = √(2×0.0352/(0.44×998×7.85×10⁻⁵)) = 1.43 m/s."
+     data-target="u7w-s3"></div>
+```
+:::
+
+::: {#u7w-s3 .fl-hidden}
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Step 3 — the audit: Reynolds number at that speed?"
+     data-answer="1.43e+04" data-tol="0.04" data-units="(dimensionless)"
+     data-hint="ρVD/μ with your V. The verdict you need: does it land on the Cd ≈ 0.44 plateau (10³ to 2×10⁵)?"
+     data-solution="Re = 998 × 1.43 × 0.01/10⁻³ = 1.43e+04 — squarely on the plateau. The assumption survives its own consequences: converged in one pass."
+     data-target="u7w-s4"></div>
+```
+:::
+
+::: {#u7w-s4 .fl-hidden}
+**What transferred.** Regime first, always — the strut asked it of $Re_L$,
+the sphere of $Re_D$, and the sphere's version was *circular* (C_d needs V
+needs C_d), broken by guess-then-audit. That loop is the same iteration
+Unit 8 runs on the friction factor; you have now done it twice before it
+gets a name.
+:::
+
+## Let the toolbox referee
+
+```{pyodide}
+#| autorun: false
+from fluidtools.extflow import plate_drag, terminal_velocity_sphere, cd_sphere
+print(f"strut drag (both sides) = {plate_drag(4.0, 1.2, 0.3, 998.2, 1e-3, sides=2):.1f} N")
+vt = terminal_velocity_sphere(0.010, 7850, 998.2, 1e-3)
+print(f"sphere terminal velocity = {vt:.2f} m/s   (Cd at that Re: {cd_sphere(998.2*vt*0.01/1e-3):.2f})")
+```

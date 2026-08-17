@@ -1,0 +1,280 @@
+---
+title: "10.2 Performance & specific speed"
+---
+
+{{< include _checkpoint-widget.qmd >}}
+
+```{pyodide}
+#| include: false
+#| autorun: true
+def _load_fluidtools():
+    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
+    try:
+        return open("fluidtools_bundle.py").read()
+    except Exception:
+        pass
+    # 2) fetch from the site, trying both relative roots
+    from pyodide.http import open_url
+    last = None
+    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+        try:
+            _t = open_url(_p).read()
+            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
+                raise RuntimeError("HTTP fetch returned HTML for " + _p)
+            return _t
+        except Exception as _e:
+            last = _e
+    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
+try:
+    exec(_load_fluidtools(), globals())
+except Exception as _e:
+    try:
+        import js
+        js.console.error("fluidtools setup FAILED: " + repr(_e))
+    except Exception:
+        pass
+    raise
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+## The big idea
+
+Nobody derives a real pump curve — too much geometry, too much turbulence.
+The manufacturer **measures one machine once**, and then dimensional analysis
+does what it always does in this course: it stretches a single measurement
+across an entire family. The affinity laws ($Q \propto \omega$,
+$H \propto \omega^2$, $P \propto \omega^3$) are pump scaling; and collapsing
+the family's whole résumé into one number gives the **specific speed** — the
+dimensionless name for the machine's *shape*. Unit 2 promised that the
+dimensionless number tells you which physics is in charge. Here it goes one
+better: it tells you which machine to buy.
+
+::: {.callout-note}
+### The number in charge: specific speed
+$$N_s = \frac{\omega\,\sqrt{Q}}{(gH)^{3/4}}$$
+evaluated at the best-efficiency point. Low $N_s$ (≲ 1.5): radial impeller —
+modest flow squeezed to high head. High $N_s$ (≳ 3.5): axial propeller — a
+river moved gently. Between: mixed-flow. The duty picks the number; the
+number picks the machine; the engineer signs the purchase order.
+:::
+
+## Think first
+
+**Recall**
+
+1. Unit 2: to characterize drag on all spheres in all fluids, how many curves did you need after Buckingham? (One. Hold that thought.)
+2. Module 10.1: how does shutoff head scale with rpm?
+3. Module 8.4: what two curves fix the operating point, and which one does the *pump manufacturer* control?
+
+**Look ahead**
+
+1. Your plant needs 20% less flow. A throttle valve and a variable-speed drive can both deliver it. Whose electricity bill is smaller, and by how much?
+2. What single number distinguishes a fire pump from an irrigation propeller?
+3. Why does an oversized pump — bought "to be safe" — often run worse than a right-sized one?
+
+::: {.callout-tip}
+### Video
+Placeholder — Canvas video link here (a manufacturer's composite chart: trims, efficiency islands, NPSH_r; where the BEP hides).
+:::
+
+## One measurement, a whole family
+
+Run Buckingham on a pump. What matters: flow $Q$, head (as energy per mass,
+$gH$), power $P$, speed $\omega$, size $D$, density $\rho$ (viscosity sits
+this one out at industrial Reynolds numbers — the regime argument of Unit 2,
+deployed). Six variables, three dimensions, three groups:
+
+$$C_Q = \frac{Q}{\omega D^3}, \qquad
+C_H = \frac{gH}{\omega^2 D^2}, \qquad
+C_P = \frac{P}{\rho\, \omega^3 D^5}.$$
+
+::: {.callout-note collapse="true"}
+## Click for where the affinity laws come from
+Geometrically similar pumps running at the same $C_Q$ are *dynamically
+similar* — same velocity triangles, just rescaled (module 10.1's triangles,
+literally stretched). So they share their values of $C_H$ and $C_P$: a
+pump family is **one curve** in $(C_Q, C_H)$ space, exactly as all spheres
+were one curve in $(Re, C_D)$ space. Now hold $D$ fixed (same machine, new
+speed) and keep $C_Q$ constant: $Q \propto \omega$. Constant $C_H$:
+$H \propto \omega^2$. Constant $C_P$: $P \propto \omega^3$. That's the
+whole derivation — the affinity laws are Buckingham wearing a hard hat.
+:::
+
+Same machine, new speed $\omega' = k\,\omega$: every point of the measured
+curve moves by
+
+$$Q' = kQ, \qquad H' = k^2 H, \qquad P' = k^3 P.$$
+
+That last exponent is where the money is. Slowing a pump (or fan) to 80%
+speed costs you 20% of the flow and **half the power** ($0.8^3 = 0.51$).
+The alternative — throttling — keeps the motor near full song and burns the
+difference across a valve. This is why variable-frequency drives pay for
+themselves with almost indecent speed on any pump that spends its life at
+part load, and why "we'll just pinch the discharge valve" is a sentence that
+should cost the speaker a coffee.[^trim]
+
+[^trim]: The poor-man's speed change is *trimming* — machining the impeller
+down a few percent. Over small changes it obeys nearly the same laws
+(`Pump.trimmed()` in the toolbox). It's cheap, permanent, and you can't
+untrim; measure twice.
+
+## The number that names the machine
+
+The three coefficients describe a family; to *choose* a family, eliminate
+the size. Combine $C_Q$ and $C_H$ so that $D$ cancels:
+
+$$N_s = \frac{C_Q^{1/2}}{C_H^{3/4}} = \frac{\omega \sqrt{Q}}{(gH)^{3/4}},$$
+
+evaluated at the BEP. It is a pure number (radians being nobody's unit), and
+it sorts the entire catalog:[^us] a duty of huge head and polite flow gives a
+small $N_s$ — a radial impeller, all centrifugal squeeze; huge flow over a
+levee's worth of head gives a large $N_s$ — an axial propeller, all
+throughput. Between them, mixed-flow machines fill the gap. Fighting the
+habitat — asking a radial machine to gulp a river, or a propeller to feed a
+boiler — buys you an efficiency in the basement and a vibration signature
+your maintenance crew will learn to dread. The shape is not negotiable; the
+duty already chose it.
+
+[^us]: US catalogs quote $N_s = \text{rpm}\sqrt{\text{gpm}}/H_\text{ft}^{3/4}$
+— same idea wearing dimensional clothes (Unit 2's suspicious constant,
+spotted in the wild again). The toolbox speaks both: `specific_speed()` and
+`specific_speed_US()`.
+
+::: {.column-margin}
+Efficiency also cares how *big* the machine is — a 5 MW pump laughs at
+leakage and surface-finish losses that gnaw a 5 kW one. Similarity gets you
+to the neighborhood; the catalog's measured efficiency islands take you to
+the door.
+:::
+
+## Play with it
+
+A pump measured at 1750 rpm ($H = 40 - 9\times10^4\,Q^2$) feeds the module
+8.4 tank system. You now own a VFD. Slide the speed; the whole measured
+curve obeys the affinity laws, and the operating point — with its power
+bill — follows.
+
+```{ojs}
+//| echo: false
+viewof k_102 = Inputs.range([0.5, 1.2], {value: 1.0, step: 0.05, label: "speed ratio ω′/ω"})
+viewof z2_102 = Inputs.range([0, 30], {value: 12, step: 2, label: "tank elevation z₂ (m)"})
+```
+
+```{pyodide}
+#| autorun: true
+#| edit: false
+#| echo: false
+#| input:
+#|   - k_102
+#|   - z2_102
+w = water(20)
+base = Pump.from_coeffs(h0=40, a=9e4, efficiency=0.70)
+pump = base.at_speed(k_102)
+
+sys = PipeSystem(fluid=w, z1=0, z2=z2_102)
+sys.add(Pipe(L=60, D=0.080, roughness='commercial_steel'))
+sys.add(pump)
+
+Qs = np.linspace(1e-6, 0.026, 140)
+fig, ax = plt.subplots(figsize=(8, 4.6))
+ax.plot(Qs*1000, [base.head(q) for q in Qs], lw=1.5, color='gray', ls=':',
+        label='measured curve (1750 rpm)')
+ax.plot(Qs*1000, [pump.head(q) for q in Qs], lw=2.5, color='crimson',
+        label=f'affinity-scaled ({k_102:.2f}× speed)')
+ax.plot(Qs*1000, [sys.static_head() + sys.head_loss(q) for q in Qs],
+        lw=2.5, color='steelblue', label='flow curve')
+try:
+    Qop = sys.solve_flow()
+    Hop = pump.head(Qop)
+    P = w.rho * 9.81 * Qop * Hop / 0.70
+    ax.plot(Qop*1000, Hop, 'o', ms=12, mfc='gold', mec='k', zorder=5)
+    ax.annotate(f"  {Qop*1000:.1f} L/s at {Hop:.1f} m\n  shaft ≈ {P/1000:.2f} kW"
+                f"  (∝ speed³: {k_102**3:.2f}× of full-speed scale)",
+                (Qop*1000, Hop), fontsize=9)
+    ax.set_title("the curve moves as a family: Q by k, H by k², P by k³")
+except Exception:
+    ax.set_title("no crossing: the slowed pump can no longer clear the static head")
+ax.set_xlabel('Q (L/s)'); ax.set_ylabel('head (m)')
+ax.legend(); ax.grid(alpha=0.3); ax.set_ylim(0, 62)
+plt.tight_layout(); plt.show()
+```
+
+Two experiments. **Ease the speed down** with the tank at 12 m and watch the
+power annotation fall like $k^3$ — then keep going and find the speed where
+the curves stop crossing entirely: static head doesn't scale down with your
+motor, and it will happily strand a too-slow pump (shutoff head $\propto
+k^2$ eventually ducks under $z_2$). **Raise the tank** and repeat: the more
+static-dominated the system, the *less* turndown room a VFD has. Speed
+control is glorious against friction and merely mortal against gravity.
+
+::: {.callout-important}
+## The misconception to leave behind
+"Buy the bigger pump to be safe." Safety, here, is a place on the curve, not
+a size. An oversized machine runs far left of its BEP: efficiency down,
+radial loads and vibration up, recirculation gnawing at the impeller eye,
+and — the sting — a *higher* NPSH appetite right where the suction line is
+weakest. Right-sizing isn't frugality; it's mechanical kindness.
+:::
+
+## Earn it — 2 quick gates
+
+A pump measured at 1750 rpm (shutoff 40 m) gets re-sheaved to 1150 rpm. Affinity does the rest. Ungraded; hints after a miss; **Show me** after two. Arguing about a gate with a classmate is the assignment, not a violation.
+
+```{=html}
+<div class="fl-reveal-all"></div>
+```
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="New shutoff head?"
+     data-answer="17.3" data-tol="0.03" data-units="m"
+     data-hint="H ∝ ω²: the ratio is (1150/1750)² ≈ 0.43, not 0.66."
+     data-solution="H = 40 × (1150/1750)² = 17.3 m. The square is the same ω² you earned in module 10.1's intercept."
+     data-target="ppf-s2"></div>
+```
+
+::: {#ppf-s2 .fl-hidden}
+And the electric bill's exponent:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Shaft power at the slower speed, as a percent of the 1750 rpm power (similar operating points)?"
+     data-answer="28" data-tol="0.05" data-units="%"
+     data-hint="P ∝ ω³: cube 0.657. The answer is the entire financial case for variable-speed drives."
+     data-solution="(1150/1750)³ = 28% — a third of the speed range surrendered, ~70% of the power bill returned."></div>
+```
+
+Q by k, H by k², P by k³ — Buckingham in a hard hat, and the cheapest kilowatts a plant will ever un-spend.
+
+:::
+
+## Check yourself
+
+<details><summary>**Q1.** A cooling loop runs 24/7 and needs full flow only 10% of the time; 70% flow covers the rest. Estimate the energy saving of a VFD versus throttling for the 90% of hours at reduced load.</summary>
+At 70% speed the pump draws $0.7^3 \approx 34\%$ of full power. Throttling
+to the same flow keeps the machine near full head and typically 80–90% of
+full power. Saving ≈ 50 percentage points of the pump's rating for 90% of
+the year — this is why VFD retrofits are often the plant engineer's easiest
+budget win. (Homework prices a real one.)
+</details>
+
+<details><summary>**Q2.** Duty: 0.03 m³/s against 25 m at 1750 rpm. Compute $N_s$ and name the machine.</summary>
+$\omega = 183$ rad/s, so $N_s = 183\sqrt{0.03}/(9.81\cdot25)^{3/4} \approx
+0.51$ — deep in radial-centrifugal country (`classify_pump(0.51)` agrees).
+A propeller pump at this duty would be a very expensive noise generator.
+</details>
+
+<details><summary>**Q3.** Why is a pump's *measured* curve at one speed enough to design with at any nearby speed — and what quietly guaranteed it?</summary>
+Affinity: the machine stays geometrically identical, so equal $C_Q$ means
+similar velocity triangles and equal $C_H$, $C_P$. One curve in coefficient
+space *is* every speed's curve. The guarantee is dynamic similarity — the
+same logic that let one sphere test stand for all spheres in Unit 2. The
+course thesis, now with a purchase order attached.
+</details>
+
+## Bring to class
+
+We'll read a real composite chart and pick an impeller trim for a duty I'll
+hand out. Come knowing what the efficiency islands mean and which corner of
+the chart the salesman hopes you won't ask about.
