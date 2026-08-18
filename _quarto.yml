@@ -2,12 +2,21 @@ project:
   type: website
   render:
     - "*.qmd"
-    - "modules/unit-1/*.qmd"
-    - "modules/unit-2/*.qmd"
-    # Units 3-10 are gitignored while still in draft (see .gitignore) and
-    # excluded here to match -- add "modules/unit-N/*.qmd" back, and
-    # restore its sidebar section below, as each unit is ready to publish.
+    - "modules/*.qmd"
+    - "modules/**/*.qmd"
     - "!homework/"
+    # Units 3-10 are gitignored while still in draft (see .gitignore).
+    # Excluded here too so `quarto render`/`preview` skip them even when
+    # the drafts are present on a local disk. Remove a unit's line here,
+    # and restore its sidebar section above, as it's ready to publish.
+    - "!modules/unit-3/"
+    - "!modules/unit-4/"
+    - "!modules/unit-5/"
+    - "!modules/unit-6/"
+    - "!modules/unit-7/"
+    - "!modules/unit-8/"
+    - "!modules/unit-9/"
+    - "!modules/unit-10/"
   pre-render: python scripts/make_bundle.py
   resources:
     - fluidtools_bundle.py

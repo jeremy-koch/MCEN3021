@@ -24,17 +24,18 @@ which only works if the reading happened first. That's the deal.
 
 | Component | Weight | Notes |
 |---|---|---|
-| Reading quizzes | 10% | lowest four dropped — life happens |
-| Class participation (clickers) | 10% | graded on voting, not on being right |
-| Homework (6 notebooks) | 25% | pair-programming allowed; write-ups solo |
-| Term project — *The Pump Station* | 20% | pairs; see [Project](project.qmd) |
-| Midterm (Units 1–5) | 15% | one page of notes, any tool-free calculator |
-| Final (cumulative, Units 6–10 weighted) | 20% | same rules |
+| Reading quizzes | 5% | lowest four dropped — life happens |
+| Class participation (clickers) | 5% | graded on voting, not on being right |
+| Homework (6 notebooks) | 10% | X |
+| Term project — *The Pump Station* | 10% | X |
+| Midterm 1 | 10% | X |
+| Midterm 2 | 10% | X |
+| Final (cumulative, Units 6–10 weighted) | 30% | X |
 
-**Exam philosophy:** exams test the hand-side of verify-then-apply — reading
+<!-- **Exam philosophy:** exams test the hand-side of verify-then-apply — reading
 a flow curve, auditing a Bernoulli permit, one iteration of a friction
 factor by hand, an NPSH ledger. Nothing on an exam requires software; the
-software exists so that class problems can be real.
+software exists so that class problems can be real. -->
 
 ## Schedule (TR, 14 weeks — 28 meetings, 28 modules)
 
@@ -57,21 +58,21 @@ software exists so that class problems can be real.
 | 15 | 10.3 Turbines *(HW6 due)* | Review & pump-chart lab |
 | — | **Finals week** | project memo (M3) + final exam |
 
-*(One module per meeting is the spine; a MWF section spreads the same 28
+<!-- *(One module per meeting is the spine; a MWF section spreads the same 28
 across 42 meetings with the extra days going to worked examples and the
-project.)*
+project.)* -->
 
-## Tools policy
+<!-- ## Tools policy
 
 The toolbox (`fluidtools`) is open-source and yours to keep. Use it on
 homework and the project freely — that's what it's for. Every function's
 source is one click away, and "the tool said so" is never a justification;
 "the tool agrees with my hand calculation, and here's the hand calculation"
-always is. AI assistants: same rule. Anything you submit, you defend.
+always is. AI assistants: same rule. Anything you submit, you defend. -->
 
-## The fine print
+<!-- ## The fine print
 
 Standard university policies apply (accommodations, honor code, religious
 observances) — see Canvas for the full statements. If the course isn't
 working for you, tell me at week 4, not week 14; the peer-instruction format
-has knobs I can turn.
+has knobs I can turn. -->
