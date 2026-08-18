@@ -2,7 +2,7 @@
 title: "Unit 1 · Worked: the bearing pad, twice"
 ---
 
-{{< include _checkpoint-widget.qmd >}}
+{{< include ../_checkpoint-widget.qmd >}}
 
 ```{pyodide}
 #| include: false
@@ -14,7 +14,7 @@ def _load_fluidtools():
         pass
     from pyodide.http import open_url
     last = None
-    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+    for _p in ("../../fluidtools_bundle.py", "../fluidtools_bundle.py", "fluidtools_bundle.py"):
         try:
             _t = open_url(_p).read()
             if _t.lstrip().startswith("<"):

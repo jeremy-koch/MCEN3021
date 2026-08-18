@@ -2,7 +2,11 @@ project:
   type: website
   render:
     - "*.qmd"
-    - "modules/*.qmd"
+    - "modules/unit-1/*.qmd"
+    - "modules/unit-2/*.qmd"
+    # Units 3-10 are gitignored while still in draft (see .gitignore) and
+    # excluded here to match -- add "modules/unit-N/*.qmd" back, and
+    # restore its sidebar section below, as each unit is ready to publish.
     - "!homework/"
   pre-render: python scripts/make_bundle.py
   resources:
@@ -34,62 +38,65 @@ website:
       - project.qmd
       - section: "Unit 1 · Fluids & Properties"
         contents:
-          - modules/what-is-a-fluid.qmd
-          - modules/fluid-properties.qmd
-          - modules/properties-worked.qmd
+          - modules/unit-1/what-is-a-fluid.qmd
+          - modules/unit-1/fluid-properties.qmd
+          - modules/unit-1/properties-worked.qmd
       - section: "Unit 2 · Dimensional Analysis"
         contents:
-          - modules/dimensional-analysis.qmd
-          - modules/similitude-model-testing.qmd
-          - modules/dimensional-worked.qmd
-      - section: "Unit 3 · Hydrostatics"
-        contents:
-          - modules/pressure-and-manometry.qmd
-          - modules/statics-plane-surfaces.qmd
-          - modules/curved-surfaces-buoyancy.qmd
-          - modules/statics-stability.qmd
-          - modules/statics-worked.qmd
-      - section: "Unit 4 · Bernoulli"
-        contents:
-          - modules/bernoulli.qmd
-          - modules/flow-measurement.qmd
-          - modules/bernoulli-worked.qmd
-      - section: "Unit 5 · Integral Conservation Laws"
-        contents:
-          - modules/control-volumes-mass.qmd
-          - modules/energy-equation.qmd
-          - modules/momentum.qmd
-          - modules/cv-worked.qmd
-      - section: "Unit 6 · Differential Analysis"
-        contents:
-          - modules/differential-analysis.qmd
-          - modules/reading-flow-profiles.qmd
-          - modules/profiles-worked.qmd
-      - section: "Unit 7 · Boundary Layers & External Flow"
-        contents:
-          - modules/boundary-layers.qmd
-          - modules/drag.qmd
-          - modules/lift.qmd
-          - modules/external-worked.qmd
-      - section: "Unit 8 · Pipe Flow"
-        contents:
-          - modules/pipe-flow-regimes.qmd
-          - modules/major-losses.qmd
-          - modules/minor-losses-networks.qmd
-          - modules/pumped-systems.qmd
-          - modules/pipe-worked.qmd
-      - section: "Unit 9 · Open-Channel Flow"
-        contents:
-          - modules/channel-critical-flow.qmd
-          - modules/channel-uniform-flow.qmd
-          - modules/hydraulic-jumps.qmd
-          - modules/channel-worked.qmd
-      - section: "Unit 10 · Turbomachinery"
-        contents:
-          - modules/pump-theory.qmd
-          - modules/pump-performance.qmd
-          - modules/turbines.qmd
-          - modules/turbo-worked.qmd
+          - modules/unit-2/dimensional-analysis.qmd
+          - modules/unit-2/similitude-model-testing.qmd
+          - modules/unit-2/dimensional-worked.qmd
+      # Units 3-10 are drafted but gitignored (not yet ready to publish --
+      # see .gitignore). Restore each section here, and its "modules/unit-N/*"
+      # line in render: above, when that unit is ready to go live.
+      # - section: "Unit 3 · Hydrostatics"
+      #   contents:
+      #     - modules/unit-3/pressure-and-manometry.qmd
+      #     - modules/unit-3/statics-plane-surfaces.qmd
+      #     - modules/unit-3/curved-surfaces-buoyancy.qmd
+      #     - modules/unit-3/statics-stability.qmd
+      #     - modules/unit-3/statics-worked.qmd
+      # - section: "Unit 4 · Bernoulli"
+      #   contents:
+      #     - modules/unit-4/bernoulli.qmd
+      #     - modules/unit-4/flow-measurement.qmd
+      #     - modules/unit-4/bernoulli-worked.qmd
+      # - section: "Unit 5 · Integral Conservation Laws"
+      #   contents:
+      #     - modules/unit-5/control-volumes-mass.qmd
+      #     - modules/unit-5/energy-equation.qmd
+      #     - modules/unit-5/momentum.qmd
+      #     - modules/unit-5/cv-worked.qmd
+      # - section: "Unit 6 · Differential Analysis"
+      #   contents:
+      #     - modules/unit-6/differential-analysis.qmd
+      #     - modules/unit-6/reading-flow-profiles.qmd
+      #     - modules/unit-6/profiles-worked.qmd
+      # - section: "Unit 7 · Boundary Layers & External Flow"
+      #   contents:
+      #     - modules/unit-7/boundary-layers.qmd
+      #     - modules/unit-7/drag.qmd
+      #     - modules/unit-7/lift.qmd
+      #     - modules/unit-7/external-worked.qmd
+      # - section: "Unit 8 · Pipe Flow"
+      #   contents:
+      #     - modules/unit-8/pipe-flow-regimes.qmd
+      #     - modules/unit-8/major-losses.qmd
+      #     - modules/unit-8/minor-losses-networks.qmd
+      #     - modules/unit-8/pumped-systems.qmd
+      #     - modules/unit-8/pipe-worked.qmd
+      # - section: "Unit 9 · Open-Channel Flow"
+      #   contents:
+      #     - modules/unit-9/channel-critical-flow.qmd
+      #     - modules/unit-9/channel-uniform-flow.qmd
+      #     - modules/unit-9/hydraulic-jumps.qmd
+      #     - modules/unit-9/channel-worked.qmd
+      # - section: "Unit 10 · Turbomachinery"
+      #   contents:
+      #     - modules/unit-10/pump-theory.qmd
+      #     - modules/unit-10/pump-performance.qmd
+      #     - modules/unit-10/turbines.qmd
+      #     - modules/unit-10/turbo-worked.qmd
       - homework.qmd
       - tools.qmd
       - reference.qmd

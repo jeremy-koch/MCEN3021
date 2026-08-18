@@ -2,7 +2,7 @@
 title: "2.1 Dimensional analysis"
 ---
 
-{{< include _checkpoint-widget.qmd >}}
+{{< include ../_checkpoint-widget.qmd >}}
 
 ```{pyodide}
 #| include: false
@@ -16,7 +16,7 @@ def _load_fluidtools():
     # 2) fetch from the site, trying both relative roots
     from pyodide.http import open_url
     last = None
-    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
+    for _p in ("../../fluidtools_bundle.py", "../fluidtools_bundle.py", "fluidtools_bundle.py"):
         try:
             _t = open_url(_p).read()
             if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python

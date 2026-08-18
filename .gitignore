@@ -4,6 +4,19 @@
 homework/
 homework/solutions/
 
+# ── Unfinished units ─────────────────────────────────────────────────
+# Units 3-10 modules are drafted locally but not ready to publish yet.
+# Un-gitignore each unit-N folder (and restore its _quarto.yml sidebar
+# section + render: entry) as it's finished.
+modules/unit-3/
+modules/unit-4/
+modules/unit-5/
+modules/unit-6/
+modules/unit-7/
+modules/unit-8/
+modules/unit-9/
+modules/unit-10/
+
 # ── Python build & cache artifacts ──────────────────────────────────
 __pycache__/
 *.py[cod]

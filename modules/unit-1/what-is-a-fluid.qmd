@@ -2,40 +2,7 @@
 title: "1.1 What is a fluid?"
 ---
 
-{{< include _checkpoint-widget.qmd >}}
-```{pyodide}
-#| include: false
-#| autorun: true
-def _load_fluidtools():
-    # 1) WASM virtual filesystem (quarto-live copies pyodide resources here)
-    try:
-        return open("fluidtools_bundle.py").read()
-    except Exception:
-        pass
-    # 2) fetch from the site, trying both relative roots
-    from pyodide.http import open_url
-    last = None
-    for _p in ("../fluidtools_bundle.py", "fluidtools_bundle.py"):
-        try:
-            _t = open_url(_p).read()
-            if _t.lstrip().startswith("<"):      # got an HTML 404 page, not python
-                raise RuntimeError("HTTP fetch returned HTML for " + _p)
-            return _t
-        except Exception as _e:
-            last = _e
-    raise RuntimeError("fluidtools bundle unreachable: %r" % (last,))
-try:
-    exec(_load_fluidtools(), globals())
-except Exception as _e:
-    try:
-        import js
-        js.console.error("fluidtools setup FAILED: " + repr(_e))
-    except Exception:
-        pass
-    raise
-import matplotlib.pyplot as plt
-import numpy as np
-```
+{{< include ../_checkpoint-widget.qmd >}}
 
 ## The big idea
 
@@ -103,40 +70,50 @@ course and an excellent party fact.
 
 ## Play with it
 
-The plate experiment, live. The profile is a straight line (you'll prove
-*why* in Unit 6 — for now it's an experimental fact); the slider changes
-$\mu$, and the force gauge responds.
+The plate experiment. The profile is a straight line (you'll prove *why*
+in Unit 6 — for now it's an experimental fact) — and it's the **same**
+line no matter what fluid fills the gap. What changes from fluid to fluid
+is the force it takes to keep the plate moving:
 
 ```{ojs}
 //| echo: false
-viewof logmu_11 = Inputs.range([-3.2, 0.9], {value: -3, step: 0.1, label: "log₁₀ μ  (−3 = water, 0.7 ≈ honey)"})
+fl_h_11 = 0.005   // 5 mm gap
+fl_U_11 = 0.5     // 0.5 m/s plate speed
+fl_A_11 = 0.1     // 0.1 m^2 plate area
+fl_profile_11 = d3.range(51).map(i => ({
+  y: fl_h_11 * i / 50 * 1000,      // mm
+  u: fl_U_11 * i / 50 * 100        // cm/s
+}))
 ```
 
-```{pyodide}
-#| autorun: true
-#| edit: false
-#| echo: false
-#| input:
-#|   - logmu_11
-mu, U, h, A = 10**logmu_11, 0.5, 0.005, 0.1   # plate: 0.5 m/s, 5 mm gap, 0.1 m^2
-y = np.linspace(0, h, 50)
-u = couette_poiseuille(y, h, U=U, dpdx=0, mu=mu)
-F = mu * U/h * A
-fig, ax = plt.subplots(figsize=(7, 3.6))
-ax.plot(u*100, y*1000, lw=3)
-ax.axhline(0, color='k', lw=3); ax.axhline(h*1000, color='k', lw=3)
-ax.annotate('moving plate →', (2, h*1000+0.15), fontsize=10)
-ax.annotate('fixed plate', (2, -0.45), fontsize=10)
-ax.set_xlabel('u (cm/s)'); ax.set_ylabel('y (mm)')
-ax.set_title(f"μ = {mu:.4g} Pa·s   →   force to keep the plate moving: {F:.4g} N")
-plt.tight_layout(); plt.show()
+```{ojs}
+//| echo: false
+Plot.plot({
+  width: 560, height: 260,
+  x: {label: "u (cm/s)"},
+  y: {label: "y (mm)"},
+  marks: [
+    Plot.line(fl_profile_11, {x: "u", y: "y", strokeWidth: 3}),
+    Plot.ruleY([0], {stroke: "black", strokeWidth: 3}),
+    Plot.ruleY([fl_h_11 * 1000], {stroke: "black", strokeWidth: 3}),
+    Plot.text(["moving plate →"], {x: [20], y: [fl_h_11 * 1000 + 1.5]}),
+    Plot.text(["fixed plate"], {x: [20], y: [-1.5]})
+  ]
+})
 ```
 
-Notice what the slider changes and what it doesn't: the *profile* is the
-same straight line at every viscosity (geometry and no-slip decide it);
-only the *force* — the stress — scales with $\mu$. Keep that distinction;
-it will matter every time you look at a velocity field and are tempted to
-think you can see forces in it.
+```{ojs}
+//| echo: false
+Inputs.table([
+  {fluid: "Water", "μ (Pa·s)": 1e-3},
+  {fluid: "SAE-30 oil", "μ (Pa·s)": 0.29},
+  {fluid: "Honey", "μ (Pa·s)": 5}
+].map(f => ({...f, "force to keep plate moving (N)": +(f["μ (Pa·s)"] * fl_U_11 / fl_h_11 * fl_A_11).toFixed(3)})))
+```
+
+Same profile, three very different forces. Keep that distinction; it will
+matter every time you look at a velocity field and are tempted to think
+you can see forces in it.
 
 ::: {.callout-important}
 ## The misconception to leave behind
