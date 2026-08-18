@@ -19,6 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Python deps
+        # quarto-live's {pyodide} cells run client-side in the browser, but
+        # Quarto's jupyter engine still needs nbformat/jupyter to parse the
+        # .qmd into its notebook representation at render time.
+        run: pip install jupyter
       - uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: "1.5.57"   # pin it -- match whatever you're previewing with locally

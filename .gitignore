@@ -63,3 +63,5 @@ desktop.ini
 *.log
 .env
 **/*.quarto_ipynb
+
+CLAUDE.md
