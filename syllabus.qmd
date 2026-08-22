@@ -2,42 +2,26 @@
 title: "Syllabus & Schedule"
 ---
 
-## What this course is
 
-MCEN 3021 teaches fluid mechanics the way working engineers use it: identify
-**the number in charge** (a dimensionless group that says which physics
-rules), pick the law that survives your control volume, and check your hand
-work against a computational tool you understand well enough to distrust.
-Class time is peer instruction — you vote, you argue, you vote again —
-which only works if the reading happened first. That's the deal.
-
-## How a week works
-
-1. **Before class:** the module reading on this site (with its live demo),
-   then the short reading quiz on Canvas. Both close at class time.
-2. **In class:** ConcepTests — vote, convince your neighbor, revote — plus
-   the derivations and demos that earn their whiteboard time.
-3. **After class:** homework notebooks, *verify-then-apply*: hand
-   calculation first, toolbox confirmation second, design question third.
 
 ## Grading
 
 | Component | Weight | Notes |
 |---|---|---|
-| Reading quizzes | 5% | lowest four dropped — life happens |
-| Class participation (clickers) | 5% | graded on voting, not on being right |
-| Homework (6 notebooks) | 10% | X |
-| Term project — *The Pump Station* | 10% | X |
-| Midterm 1 | 10% | X |
-| Midterm 2 | 10% | X |
-| Final (cumulative, Units 6–10 weighted) | 30% | X |
+| Reading quizzes | 5% | drop 4 |
+| Class participation (clickers) | 5% | attending 80+% of class gets you full credit |
+| Homework | 10% | drop 1 |
+| Projects | 25% |  |
+| Midterm 1 | 15% |  |
+| Midterm 2 | 15% | Likely an oral exam |
+| Final | 25% |  |
 
-<!-- **Exam philosophy:** exams test the hand-side of verify-then-apply — reading
-a flow curve, auditing a Bernoulli permit, one iteration of a friction
-factor by hand, an NPSH ledger. Nothing on an exam requires software; the
-software exists so that class problems can be real. -->
+## Late policy
 
-## Schedule (TR, 14 weeks — 28 meetings, 28 modules)
+You begin the semester with 3 tokens that can be used for a 48-hour extension on any homework assignment or individual project. That is, you have the opportunity to submit three assignments late with no penalty. Once you have used those, late work receives a zero.
+
+
+<!-- ## Schedule (TR, 14 weeks — 28 meetings, 28 modules)
 
 | Wk | Tues | Thurs |
 |---|---|---|
@@ -56,7 +40,7 @@ software exists so that class problems can be real. -->
 | 13 | 9.2 Uniform flow (Manning) | 9.3 Hydraulic jumps *(project M2)* |
 | 14 | 10.1 Pump theory (Euler) | 10.2 Performance & specific speed |
 | 15 | 10.3 Turbines *(HW6 due)* | Review & pump-chart lab |
-| — | **Finals week** | project memo (M3) + final exam |
+| — | **Finals week** | project memo (M3) + final exam | -->
 
 <!-- *(One module per meeting is the spine; a MWF section spreads the same 28
 across 42 meetings with the extra days going to worked examples and the

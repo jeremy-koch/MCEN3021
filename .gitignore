@@ -3,11 +3,18 @@
 # wrong-number diagnoses. Never publish these to the student-facing repo.
 homework/
 homework/solutions/
+pdfs/
 
-# ── Unfinished units ─────────────────────────────────────────────────
-# Units 3-10 modules are drafted locally but not ready to publish yet.
-# Un-gitignore each unit-N folder (and restore its _quarto.yml sidebar
-# section + render: entry) as it's finished.
+# ── Unfinished / stripped-down readings ─────────────────────────────
+# The site is pared down to course bureaucracy (index/syllabus/project)
+# plus a single reading, modules/unit-1/pressure.qmd. Everything else
+# below is drafted locally but not published. Un-gitignore a file (and
+# restore its _quarto.yml sidebar section + render: entry) as it's
+# ready to go live again.
+modules/unit-1/what-is-a-fluid.qmd
+modules/unit-1/fluid-properties.qmd
+modules/unit-1/properties-worked.qmd
+modules/unit-2/
 modules/unit-3/
 modules/unit-4/
 modules/unit-5/
@@ -16,6 +23,9 @@ modules/unit-7/
 modules/unit-8/
 modules/unit-9/
 modules/unit-10/
+homework.qmd
+tools.qmd
+reference.qmd
 
 # ── Python build & cache artifacts ──────────────────────────────────
 __pycache__/

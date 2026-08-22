@@ -2,13 +2,17 @@ project:
   type: website
   render:
     - "*.qmd"
-    - "modules/*.qmd"
-    - "modules/**/*.qmd"
+    # The site is stripped down to course bureaucracy (index/syllabus/
+    # project) plus one reading. Homework, Tools, and Reference pages
+    # are gitignored and excluded here; restore each as it's ready.
+    - "!homework.qmd"
+    - "!tools.qmd"
+    - "!reference.qmd"
     - "!homework/"
-    # Units 3-10 are gitignored while still in draft (see .gitignore).
-    # Excluded here too so `quarto render`/`preview` skip them even when
-    # the drafts are present on a local disk. Remove a unit's line here,
-    # and restore its sidebar section above, as it's ready to publish.
+    - "!modules/unit-1/what-is-a-fluid.qmd"
+    - "!modules/unit-1/fluid-properties.qmd"
+    - "!modules/unit-1/properties-worked.qmd"
+    - "!modules/unit-2/"
     - "!modules/unit-3/"
     - "!modules/unit-4/"
     - "!modules/unit-5/"
@@ -31,10 +35,12 @@ website:
         text: Syllabus
       - href: project.qmd
         text: Project
-      - href: tools.qmd
-        text: Tools
-      - href: reference.qmd
-        text: Reference
+      # Tools and Reference pages are gitignored while the site is
+      # stripped down. Restore these two entries when they come back.
+      # - href: tools.qmd
+      #   text: Tools
+      # - href: reference.qmd
+      #   text: Reference
     right:
       - icon: github
         href: https://github.com/YOURUSERNAME/fluidtools
@@ -45,19 +51,21 @@ website:
       - index.qmd
       - syllabus.qmd
       - project.qmd
-      - section: "Unit 1 · Fluids & Properties"
-        contents:
-          - modules/unit-1/what-is-a-fluid.qmd
-          - modules/unit-1/fluid-properties.qmd
-          - modules/unit-1/properties-worked.qmd
-      - section: "Unit 2 · Dimensional Analysis"
-        contents:
-          - modules/unit-2/dimensional-analysis.qmd
-          - modules/unit-2/similitude-model-testing.qmd
-          - modules/unit-2/dimensional-worked.qmd
-      # Units 3-10 are drafted but gitignored (not yet ready to publish --
-      # see .gitignore). Restore each section here, and its "modules/unit-N/*"
-      # line in render: above, when that unit is ready to go live.
+      - modules/unit-1/pressure.qmd
+      # The rest of Unit 1, and Units 2-10, are drafted but gitignored
+      # while the site is stripped down (see .gitignore). Restore each
+      # section here, and its "modules/unit-N/*" line in render: above,
+      # as it's ready to go live.
+      # - section: "Unit 1 · Fluids & Properties"
+      #   contents:
+      #     - modules/unit-1/what-is-a-fluid.qmd
+      #     - modules/unit-1/fluid-properties.qmd
+      #     - modules/unit-1/properties-worked.qmd
+      # - section: "Unit 2 · Dimensional Analysis"
+      #   contents:
+      #     - modules/unit-2/dimensional-analysis.qmd
+      #     - modules/unit-2/similitude-model-testing.qmd
+      #     - modules/unit-2/dimensional-worked.qmd
       # - section: "Unit 3 · Hydrostatics"
       #   contents:
       #     - modules/unit-3/pressure-and-manometry.qmd
@@ -106,9 +114,9 @@ website:
       #     - modules/unit-10/pump-performance.qmd
       #     - modules/unit-10/turbines.qmd
       #     - modules/unit-10/turbo-worked.qmd
-      - homework.qmd
-      - tools.qmd
-      - reference.qmd
+      # - homework.qmd
+      # - tools.qmd
+      # - reference.qmd
   page-footer: "MCEN 3021 · live Python in your browser via Quarto Live + Pyodide"
 
 format:
