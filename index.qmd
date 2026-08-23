@@ -3,29 +3,36 @@ title: "Welcome"
 subtitle: "MCEN 3021: Fluid Mechanics"
 ---
 
-Welcome to MCEN 3021: Fluid Mechanics, taught by Professor Jeremy Koch in the Fall 2026 semester.
+Welcome to MCEN 3021: Fluid Mechanics, taught by Professor Jeremy Koch in the Fall 2026 semester. This is probably the course that I am most passionate about — my PhD was about (non-Newtonian) fluid mechanics, so hopefully have a lot of good stuff to say!
 
-This is probably the course that I am most passionate about — my PhD was about (non-Newtonian) fluid mechanics, so I must like the topic, and hopefully have a lot of good stuff to say! I think this will be the eighth time I have taught this course, and I've decided to take a different approach:
+I think this will be the eighth time I have taught this course, and I've decided to take a different approach:
 
-**The idea:** introduce the topics as a reading before class, and then we spend class time reviewing the "muddiest points" and having peer discussions. 
+**The idea:** introduce the concepts in a reading before class. Then spend class time reviewing the "muddiest points" and having peer discussions. So by the time we see each other, we'll be seeing the information for the second time.
 
-::: {.column-margin}
-This teaching strategy is sometimes called "peer instruction". Actively discussing the content with your peers has been shown to be a better way to learn than passively listening to me talk about it.
-:::
 
-**Why?** It is a more effective use of our time. With traditional lectures, we spend a majority of class time transmitting notes from my paper to your paper. Not very much time to think — we're too busy making sure that the $\rho$ is there in the equation to actually consider why $\rho$ is in the equation.
+**Why?** It is a more effective use of our time, and there is strong evidence that actively discussing content with your peers is a better way to learn than passively listening to me talk about it.
+
+
+With traditional lectures, we spend a majority of class time transmitting notes from my paper to your paper. Not very much time to think — we're too busy making sure that the $\rho$ is in the right spot in the equation to actually consider *why* $\rho$ is in the equation.
 
 We'll do this instead:
 
-- You'll be introduced to the content via a reading on this website. Expect one before every class period.
+- You'll be introduced to the content via a reading on this website. Expect one before every class period, maybe 15-20 minutes. There might be some quick checks along the way where you type in answers — these are just for your benefit. Take notes!
 - There will be a short reading "quiz" on Canvas, just to make sure you are thinking about the content. The last question will always be about your **muddiest point**: the thing you are most confused about.
-- I'll look through those before class, and we'll spend the first few minutes of class talking about the most prevalent ones. *If yours doesn't get answered, we can chat after class or in office hours.*
+- I'll look through those muddiest points, and we'll spend the first few minutes of class talking about the most prevalent ones. *If yours doesn't get answered, we can chat after class or in office hours.*
 - Then I'll present a series of clicker questions about the fluids concepts. 
-    - We'll actually click-in twice for each question: for the first one, we'll stay quiet and give our best guess. Fluid mechanics is a tricky subject, I am *hoping* that only 50% of the class gets the question right (at first) because it means we'll have a good discussion!
+    - We'll actually click-in twice for each question: for the first one, you'll stay quiet and give our best guess. Fluid mechanics is a tricky subject, I am *hoping* that only 50% of the class gets the question right (at first) because it means we'll have a good discussion!
     - Then you'll discuss with your colleagues: find someone who gave a different answer and then try to figure out who is right. Explain your logic, describe what you are uncertain about, ask questions.
-    - We'll vote again on the same question, hopefully with ~100% of the class getting the right answer now.
+    - We'll vote again on the same question, hopefully with ~100% of the class getting the right answer now that we've had time to discuss and think more.
     - We'll debrief, making sure we are all on the same page, and then move on to another question.
-- Our homework will involved detailed mathematical analyses. There is evidence that confidence with concepts leads to success in analyses. (But the converse is not true: success in analyses does not imply confidence with the concepts — see the work of Eric Mazur.) **The website will include worked examples that look like the homework, including checkpoints such that you can work through them yourselves.**
+- Our homework will involved detailed mathematical analyses. **The website will include worked examples that look like the homework, including checkpoints such that you can work alongside them.** 
+
+
+::: {.column-margin}
+Confidence with the concepts leads to better understanding of the analyses, but the converse is not true! It is possible to follow the algorithm/worked example and get a good answer, but still not understand the concepts. This is one part of the motivation for our approach: the concepts are important, but tricky. See the work of Eric Mazur, e.g. the one cited below.
+:::
+
+
 
 In summary: we are going to create an **active** classroom, where you will be engaging your brain: thinking, asking questions, rationalizing your answers, trying to understand your colleagues. Contrast this with a **passive** classroom, where you sit and listen to me talk. When explained this way, it seems logical that active learning is going to exercise your brain more!
 
@@ -35,6 +42,8 @@ Interestingly, students feel like they learn less in active classrooms, even tho
 
 ::: {.column-margin}
 Crouch, Catherine H., and Eric Mazur. "Peer instruction: Ten years of experience and results." American journal of physics 69.9 (2001): 970-977.
+
+ 
 
 Deslauriers, Louis, et al. "Measuring actual learning versus feeling of learning in response to being actively engaged in the classroom." Proceedings of the National Academy of Sciences 116.39 (2019): 19251-19257.
 :::

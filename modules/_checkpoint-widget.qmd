@@ -40,6 +40,7 @@
     var hint = el.dataset.hint || '';
     var sol = el.dataset.solution || '';
     var units = el.dataset.units || '';
+    var okText = el.dataset.okText || '✓ correct — next step unlocked below.';
     var attempts = 0;
     el.classList.add('fl-cp');
     el.innerHTML =
@@ -63,7 +64,7 @@
       fb.className = 'fl-cp-fb ok';
       fb.textContent = shown
         ? '\u2014 shown, no penalty. Read the step below, then try the next prediction yourself.'
-        : '\u2713 correct \u2014 next step unlocked below.';
+        : okText;
       input.disabled = true; btn.disabled = true;
       var sm = el.querySelector('.fl-showme');
       if (sm) sm.remove();

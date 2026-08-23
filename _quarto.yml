@@ -2,9 +2,10 @@ project:
   type: website
   render:
     - "*.qmd"
-    # The site is stripped down to course bureaucracy (index/syllabus/
-    # project) plus one reading. Homework, Tools, and Reference pages
+    # The site is stripped down to course bureaucracy (index/syllabus)
+    # plus one reading. Project, Homework, Tools, and Reference pages
     # are gitignored and excluded here; restore each as it's ready.
+    - "!project.qmd"
     - "!homework.qmd"
     - "!tools.qmd"
     - "!reference.qmd"
@@ -33,10 +34,10 @@ website:
         text: How This Course Works
       - href: syllabus.qmd
         text: Syllabus
-      - href: project.qmd
-        text: Project
-      # Tools and Reference pages are gitignored while the site is
-      # stripped down. Restore these two entries when they come back.
+      # Project, Tools, and Reference pages are gitignored while the
+      # site is stripped down. Restore these entries when they come back.
+      # - href: project.qmd
+      #   text: Project
       # - href: tools.qmd
       #   text: Tools
       # - href: reference.qmd
@@ -50,12 +51,13 @@ website:
     contents:
       - index.qmd
       - syllabus.qmd
-      - project.qmd
       - modules/unit-1/pressure.qmd
-      # The rest of Unit 1, and Units 2-10, are drafted but gitignored
-      # while the site is stripped down (see .gitignore). Restore each
-      # section here, and its "modules/unit-N/*" line in render: above,
-      # as it's ready to go live.
+      - modules/unit-1/viscosity.qmd
+      # Project, the rest of Unit 1, and Units 2-10 are drafted but
+      # gitignored while the site is stripped down (see .gitignore).
+      # Restore each section here, and its render: line above, as
+      # it's ready to go live.
+      # - project.qmd
       # - section: "Unit 1 · Fluids & Properties"
       #   contents:
       #     - modules/unit-1/what-is-a-fluid.qmd
@@ -117,7 +119,7 @@ website:
       # - homework.qmd
       # - tools.qmd
       # - reference.qmd
-  page-footer: "MCEN 3021 · live Python in your browser via Quarto Live + Pyodide"
+  page-footer: "MCEN 3021 · Jeremy Koch, University of Colorado Boulder · Fall 2026"
 
 format:
   live-html:

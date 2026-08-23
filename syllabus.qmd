@@ -16,31 +16,21 @@ title: "Syllabus & Schedule"
 | Midterm 2 | 15% | Likely an oral exam |
 | Final | 25% |  |
 
+
+## Missing class
+
+No need to notify me — the grading structure above allows for you to miss some class with no penalty.
+
 ## Late policy
 
-You begin the semester with 3 tokens that can be used for a 48-hour extension on any homework assignment or individual project. That is, you have the opportunity to submit three assignments late with no penalty. Once you have used those, late work receives a zero.
+You begin the semester with 3 tokens that can be used for a 48-hour extension on any homework assignment or individual project. That is, you have the opportunity to submit three assignments late with no penalty. Once you have used those three tokens, late work receives a zero.
 
 
-<!-- ## Schedule (TR, 14 weeks — 28 meetings, 28 modules)
 
-| Wk | Tues | Thurs |
-|---|---|---|
-| 1 | 1.1 What is a fluid | 1.2 Fluid properties |
-| 2 | 2.1 Dimensional analysis | 2.2 Similitude & model testing |
-| 3 | 3.1 Pressure & manometry | 3.2 Plane surfaces |
-| 4 | 3.3 Curved surfaces & buoyancy | 3.4 Stability *(HW1 due)* |
-| 5 | 4.1 Bernoulli | 4.2 Flow measurement |
-| 6 | 5.1 Control volumes & mass *(HW2 due)* | 5.2 The energy equation |
-| 7 | 5.3 Momentum | **Midterm** *(HW3 due)* |
-| 8 | 6.1 Conservation at a point | 6.2 Reading flow profiles |
-| 9 | 7.1 Boundary layers | 7.2 Drag |
-| 10 | 7.3 Lift *(HW4 due)* | 8.1 Pipe-flow regimes |
-| 11 | 8.2 Major losses | 8.3 Minor losses & networks *(project M1)* |
-| 12 | 8.4 Pumped systems *(HW5 due)* | 9.1 Energy & critical flow |
-| 13 | 9.2 Uniform flow (Manning) | 9.3 Hydraulic jumps *(project M2)* |
-| 14 | 10.1 Pump theory (Euler) | 10.2 Performance & specific speed |
-| 15 | 10.3 Turbines *(HW6 due)* | Review & pump-chart lab |
-| — | **Finals week** | project memo (M3) + final exam | -->
+
+## Schedule
+
+Added soon.
 
 <!-- *(One module per meeting is the spine; a MWF section spreads the same 28
 across 42 meetings with the extra days going to worked examples and the

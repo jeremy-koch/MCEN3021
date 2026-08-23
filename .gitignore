@@ -6,11 +6,12 @@ homework/solutions/
 pdfs/
 
 # ── Unfinished / stripped-down readings ─────────────────────────────
-# The site is pared down to course bureaucracy (index/syllabus/project)
-# plus a single reading, modules/unit-1/pressure.qmd. Everything else
-# below is drafted locally but not published. Un-gitignore a file (and
-# restore its _quarto.yml sidebar section + render: entry) as it's
-# ready to go live again.
+# The site is pared down to course bureaucracy (index/syllabus) plus a
+# single reading, modules/unit-1/pressure.qmd. Everything else below is
+# drafted locally but not published. Un-gitignore a file (and restore
+# its _quarto.yml sidebar section + render: entry) as it's ready to go
+# live again.
+project.qmd
 modules/unit-1/what-is-a-fluid.qmd
 modules/unit-1/fluid-properties.qmd
 modules/unit-1/properties-worked.qmd

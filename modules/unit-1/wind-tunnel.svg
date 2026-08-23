@@ -1,33 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="520" height="260" viewBox="0 0 520 260" font-family="Georgia, 'Times New Roman', serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="260" viewBox="0 0 560 260" font-family="Georgia, 'Times New Roman', serif">
   <defs>
     <marker id="warrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#1c64d1"/>
     </marker>
   </defs>
 
-  <!-- tunnel floor -->
-  <line x1="20" y1="210" x2="500" y2="210" stroke="#1a1a1a" stroke-width="1.5"/>
+  <text x="280" y="26" font-size="17" fill="#1a1a1a" text-anchor="middle">wind tunnel: air (blue) passing over the car</text>
 
-  <!-- test object: a blunt rounded body sitting on the floor -->
-  <path d="M 220 210
-           L 220 175
-           Q 220 140 260 132
-           L 330 132
-           Q 370 132 380 165
-           Q 385 185 370 210
-           Z"
-        fill="#e4e4e4" stroke="#1a1a1a" stroke-width="1.8"/>
-
-  <!-- streamlines: blue arrows left-to-right, some bending over the body -->
+  <!-- streamlines: stay above the roof (y=113) at every x, so they never cross the body -->
   <g stroke="#1c64d1" stroke-width="2.2" fill="none">
-    <path d="M 40 80  L 470 80"  marker-end="url(#warrow)"/>
-    <path d="M 40 105 L 470 105" marker-end="url(#warrow)"/>
-    <path d="M 40 130 Q 250 100 300 128 Q 340 145 470 130" marker-end="url(#warrow)"/>
-    <path d="M 40 155 Q 230 150 260 160 Q 320 185 470 160" marker-end="url(#warrow)"/>
-    <path d="M 40 185 L 190 185" marker-end="url(#warrow)"/>
-    <path d="M 400 190 L 470 190" marker-end="url(#warrow)"/>
-    <path d="M 40 205 L 470 205" marker-end="url(#warrow)" stroke-dasharray="1 6"/>
+    <path d="M 20 150 C 100 150, 160 95, 190 95 L 360 95 C 390 95, 450 150, 540 150" marker-end="url(#warrow)"/>
+    <path d="M 20 112 C 100 112, 160 68, 190 68 L 360 68 C 390 68, 450 112, 540 112" marker-end="url(#warrow)"/>
+    <path d="M 20 74  C 100 74,  160 44, 190 44 L 360 44 C 390 44,  450 74,  540 74"  marker-end="url(#warrow)"/>
+    <!-- wake vortex behind the car: 270-degree loop, well clear of the trunk (x=405) and the ground (y=216) -->
+    <path d="M 486 180 A 28 28 0 1 1 458 152" marker-end="url(#warrow)"/>
   </g>
 
-  <text x="255" y="45" font-size="18" fill="#1a1a1a" text-anchor="middle">wind tunnel: air passing over an object</text>
+  <!-- ground -->
+  <line x1="20" y1="216" x2="540" y2="216" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- car body: a rounded cartoon hatchback silhouette -->
+  <path d="M 130 190
+           C 130 165, 150 148, 175 140
+           C 190 125, 205 115, 225 113
+           L 320 113
+           C 342 115, 358 125, 372 140
+           C 392 150, 405 165, 405 190
+           Z"
+        fill="#d9534f" stroke="#1a1a1a" stroke-width="2"/>
+
+  <!-- windshields -->
+  <path d="M 178 138 C 192 126, 208 117, 225 114" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+  <path d="M 322 114 C 339 117, 356 127, 369 139" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- wheels -->
+  <circle cx="195" cy="190" r="26" fill="#2b2b2b" stroke="#1a1a1a" stroke-width="1.5"/>
+  <circle cx="195" cy="190" r="9"  fill="#cfcfcf" stroke="#1a1a1a" stroke-width="1"/>
+  <circle cx="345" cy="190" r="26" fill="#2b2b2b" stroke="#1a1a1a" stroke-width="1.5"/>
+  <circle cx="345" cy="190" r="9"  fill="#cfcfcf" stroke="#1a1a1a" stroke-width="1"/>
 </svg>
