@@ -1,41 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="560" height="260" viewBox="0 0 560 260" font-family="Georgia, 'Times New Roman', serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="230" viewBox="0 0 560 230" font-family="Georgia, 'Times New Roman', serif">
   <defs>
     <marker id="warrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#1c64d1"/>
     </marker>
   </defs>
 
-  <text x="280" y="26" font-size="17" fill="#1a1a1a" text-anchor="middle">wind tunnel: air (blue) passing over the car</text>
-
-  <!-- streamlines: stay above the roof (y=113) at every x, so they never cross the body -->
+  <!-- streamlines: stay above the roof (y=83) at every x, so they never cross the body -->
   <g stroke="#1c64d1" stroke-width="2.2" fill="none">
-    <path d="M 20 150 C 100 150, 160 95, 190 95 L 360 95 C 390 95, 450 150, 540 150" marker-end="url(#warrow)"/>
-    <path d="M 20 112 C 100 112, 160 68, 190 68 L 360 68 C 390 68, 450 112, 540 112" marker-end="url(#warrow)"/>
-    <path d="M 20 74  C 100 74,  160 44, 190 44 L 360 44 C 390 44,  450 74,  540 74"  marker-end="url(#warrow)"/>
-    <!-- wake vortex behind the car: 270-degree loop, well clear of the trunk (x=405) and the ground (y=216) -->
-    <path d="M 486 180 A 28 28 0 1 1 458 152" marker-end="url(#warrow)"/>
+    <path d="M 20 120 C 100 120, 160 65, 190 65 L 360 65 C 390 65, 450 120, 540 120" marker-end="url(#warrow)"/>
+    <path d="M 20 82  C 100 82,  160 38, 190 38 L 360 38 C 390 38, 450 82,  540 82"  marker-end="url(#warrow)"/>
+    <path d="M 20 44  C 100 44,  160 14, 190 14 L 360 14 C 390 14, 450 44,  540 44"  marker-end="url(#warrow)"/>
+    <!-- wake vortex behind the car: 270-degree loop, well clear of the trunk (x=405) and the ground (y=186) -->
+    <path d="M 486 150 A 28 28 0 1 1 458 122" marker-end="url(#warrow)"/>
   </g>
 
   <!-- ground -->
-  <line x1="20" y1="216" x2="540" y2="216" stroke="#1a1a1a" stroke-width="1.5"/>
+  <line x1="20" y1="186" x2="540" y2="186" stroke="#1a1a1a" stroke-width="1.5"/>
 
   <!-- car body: a rounded cartoon hatchback silhouette -->
-  <path d="M 130 190
-           C 130 165, 150 148, 175 140
-           C 190 125, 205 115, 225 113
-           L 320 113
-           C 342 115, 358 125, 372 140
-           C 392 150, 405 165, 405 190
+  <path d="M 130 160
+           C 130 135, 150 118, 175 110
+           C 190 95, 205 85, 225 83
+           L 320 83
+           C 342 85, 358 95, 372 110
+           C 392 120, 405 135, 405 160
            Z"
         fill="#d9534f" stroke="#1a1a1a" stroke-width="2"/>
 
   <!-- windshields -->
-  <path d="M 178 138 C 192 126, 208 117, 225 114" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
-  <path d="M 322 114 C 339 117, 356 127, 369 139" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+  <path d="M 178 108 C 192 96, 208 87, 225 84" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+  <path d="M 322 84  C 339 87, 356 97, 369 109" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
 
   <!-- wheels -->
-  <circle cx="195" cy="190" r="26" fill="#2b2b2b" stroke="#1a1a1a" stroke-width="1.5"/>
-  <circle cx="195" cy="190" r="9"  fill="#cfcfcf" stroke="#1a1a1a" stroke-width="1"/>
-  <circle cx="345" cy="190" r="26" fill="#2b2b2b" stroke="#1a1a1a" stroke-width="1.5"/>
-  <circle cx="345" cy="190" r="9"  fill="#cfcfcf" stroke="#1a1a1a" stroke-width="1"/>
+  <circle cx="195" cy="160" r="26" fill="#2b2b2b" stroke="#1a1a1a" stroke-width="1.5"/>
+  <circle cx="195" cy="160" r="9"  fill="#cfcfcf" stroke="#1a1a1a" stroke-width="1"/>
+  <circle cx="345" cy="160" r="26" fill="#2b2b2b" stroke="#1a1a1a" stroke-width="1.5"/>
+  <circle cx="345" cy="160" r="9"  fill="#cfcfcf" stroke="#1a1a1a" stroke-width="1"/>
 </svg>
