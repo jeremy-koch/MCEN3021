@@ -1,4 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="230" height="290" viewBox="0 0 230 290">
+  <!-- opaque light background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="230" height="290" fill="#ffffff"/>
+
   <!-- wall, normal pointing in the -x direction -->
   <rect x="190" y="0" width="22" height="290" fill="#4b4b4b" stroke="#1a1a1a" stroke-width="1.5"/>
 

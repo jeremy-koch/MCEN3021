@@ -6,13 +6,13 @@ title: "1.2 Viscosity"
 
 ## The big idea
 
-We are all probably comfortable saying "honey is more viscous than water", but what does that mean, exactly? Viscosity is a material property related to the intermolecular forces. It somehow relates forces and speeds — harder to move quickly through honey. We'll see that, for many fluids (water, air, oil, honey), it is reasonable to call it a constant.
+We are all probably comfortable saying "honey is more viscous than water", but what does that mean, exactly? Viscosity is a material property related to the intermolecular forces. It somehow relates forces and speeds — it's harder to move quickly through honey. We'll see that, for many fluids (water, air, oil, honey), it is reasonable to say the viscosity is constant. We still need to figure out what that means!
 
 ## Think first
 
 **Recall**
 
-1. From solid mechanics: what does shear stress do to a block of steel, and what happens when you remove it?
+1. From solid mechanics: what does shear stress do to a block of steel?
 2. Units check: what are the SI units of stress? Of a velocity gradient $du/dy$?
 
 **Look ahead**
@@ -26,7 +26,7 @@ We are all probably comfortable saying "honey is more viscous than water", but w
 
 A geometry that is simple enough to study analytically is the "simple shear geometry":
 
-![Simple shear geometry: top plate of area $A$ pulled with force $F$ to the right, separated from a fixed bottom plate (also area $A$) by a gap $h$. Contained between the plates is a material: a solid with density $\rho$ and shear modulus $G$, or a fluid with density $\rho$ and viscosity $\mu$](simple-shear-geometry.svg)
+![Simple shear geometry: top plate of very large area $A$ pulled with force $F$ to the right, separated from a fixed bottom plate (also area $A$) by a gap $h$. Contained between the plates is a material: a solid with density $\rho$ and shear modulus $G$, or a fluid with density $\rho$ and viscosity $\mu$](simple-shear-geometry.svg)
 
 
 What happens when a constant force $F$ is applied to the top surface, holding the bottom surface in place? It's going to depend on whether the material is a solid or fluid.
@@ -34,20 +34,24 @@ What happens when a constant force $F$ is applied to the top surface, holding th
 
 **If it's a solid:**
 
-The applied shear force to the right will be matched by an elastic force within the material that resists that motion. This occurs at a fixed amount of deformation, so the top surface will move in the initial moment the force is applied, then reach a certain displacement and just stay there.
+The applied shear force to the right will be matched by an elastic force within the material that resists that motion. This occurs at a **fixed amount of deformation**, so the top surface will move in the initial moment the force is applied, then reach a certain displacement and just stay there.
 
 
 **If it's a fluid:**
 
 ::: {.callout-important}
-An important concept in mechanics: **the no-slip condition**. We assume that the fluid that is in contact with a wall matches the velocity of the wall. So: if the wall at $y=0$ is stationary, $\mathbf{u}=\mathbf{0}$ in the fluid at $y=0$; if the wall at $y=h$ is moving with velocity $\left\langle U,0,0\right\rangle$, the fluid at $y=h$ is moving with velocity $\left\langle U,0,0\right\rangle$.
+An important concept in mechanics: **the no-slip condition**. We assume that the fluid that is in contact with a wall matches the velocity of the wall. So: if the wall at $y=0$ is stationary, $\mathbf{u}=\mathbf{0}$ in the fluid at $y=0$. If the wall at $y=h$ is moving with velocity $\left\langle U,0,0\right\rangle$, the fluid at $y=h$ is moving with velocity $\left\langle U,0,0\right\rangle$.
 
 Why? At a molecular level, we can think about the intermolecular forces between the wall molecules and the fluid molecules. The wall molecules will not rearrange — they are stuck in their solid — and they try to "hold on" to the fluid molecules. At a slightly larger lengthscale (still not visible to the naked eye), we can blame surface roughness for trapping the fluid.
 
-This is an **assumption** — actually there is evidence of a slight slip along surfaces. But it is a good enough and very standard assumption.
+This is an **assumption** — actually there is evidence of a slight slip along surfaces. But it is a good enough and very standard approximation.
 :::
 
-The applied shear force to the right will, after an initial transient, settle into a situation with a constant deformation *rate*. I.e., we will reach a point where the applied force is balanced by some sort of friction force.
+The applied shear force to the right will, after an initial transient, settle into a situation with a **constant deformation rate**. I.e., we will reach a point where the applied force is balanced by some sort of friction force related to the moving fluid, and we'll have a constant velocity for the upper plate.
+
+::: {.callout-note}
+When we talk about fluids in "steady state", we usually mean that things are moving, but the speeds are not changing with time.
+:::
 
 ### Newtonian viscosity
 
@@ -55,15 +59,15 @@ In this class we will focus on the Newtonian viscosity **model**. This applies t
 
 
 ::: {.column-margin}
-I emphasize the word "model" here because it, along with everything scientists/engineers do, is an approximation of reality. There are an enormous number of molecules bouncing around in 3D space, with different speeds and different distances from their neighbors. It seems to be accurate enough to assume that there is constant of proportionality, $\mu$, that mathematically describes the relationship between shear force and speed for a given material in many cases.
+I emphasize the word "model" here because it, along with everything scientists/engineers do, is an approximation of reality. There are an enormous number of molecules bouncing around in 3D space, with different speeds and different distances from their neighbors. Taming that math is impossible at scales relevant to engineering, but we're in luck: we can think about the average velocity of the molecules at a point, and the average shear force at that point, and they are proportional to each other. Relevant to that proportionality is a constant material property $mu$.
 :::
 
 ::: {.callout-note}
-**Non-Newtonian fluids** have viscosity that varies with force/speed or time. We will talk about them a bit this semester, especially because that is what my PhD was about, but most of our analysis will be on Newtonian fluids.
+**Non-Newtonian fluids** have viscosity that varies with force/speed or time. We will talk about them a bit this semester, especially because that is what my PhD research was about, but most of our analysis will be on Newtonian fluids.
 :::
 
 ::: {.callout-caution}
-Fluid viscosity is usually sensitive to temperature: engine oil is about 15 times more viscous when your car starts on a cold day vs. when it has had time to heat up. So the viscosity changes, but that does not mean that engine oil is "non-Newtonian".
+Fluid viscosity is usually sensitive to temperature: engine oil is about 15 times more viscous when your car starts on a cold day vs. when it has had time to heat up. So the viscosity changes, but that does not mean that engine oil is "non-Newtonian" — it is a Newtonian fluid.
 :::
 
 Let's try to imagine what an equation involving $\mu$ would look like. Thinking back to the shear geometry from above, what force $F$ would it take to achieve a top plate speed $U$ at steady state? We might expect that it involves all the variables in the schematic, so for starters we will think about $F(U,A,\rho,\mu,h)$.
@@ -76,7 +80,7 @@ For each checkpoint below: enter **+1** if $F$ increases, **−1** if $F$ decrea
 <div class="fl-checkpoint"
      data-prompt="Increasing the speed <i>U</i> (everything else fixed) — effect on <i>F</i>?"
      data-answer="1" data-tol="0.01" data-units=""
-     data-hint="Think of the tire-tread-on-pavement feel: sliding faster over the same film means more resistance, not less."
+     data-hint="Think of sliding your hand through water — there is more resistance when faster."
      data-target="viscosity-scaling-A"></div>
 ```
 
@@ -85,7 +89,7 @@ For each checkpoint below: enter **+1** if $F$ increases, **−1** if $F$ decrea
 <div class="fl-checkpoint"
      data-prompt="Increasing the area <i>A</i> (everything else fixed) — effect on <i>F</i>?"
      data-answer="1" data-tol="0.01" data-units=""
-     data-hint="More plate touching the film means more friction to overcome, the same way a wider ski touches more snow."
+     data-hint="More plate touching the film means more friction to overcome."
      data-target="viscosity-scaling-h"></div>
 ```
 :::
@@ -95,7 +99,7 @@ For each checkpoint below: enter **+1** if $F$ increases, **−1** if $F$ decrea
 <div class="fl-checkpoint"
      data-prompt="Increasing the gap <i>h</i> (everything else fixed) — effect on <i>F</i>?"
      data-answer="-1" data-tol="0.01" data-units=""
-     data-hint="A thicker film means the velocity changes more gently from plate to plate — a gentler gradient, a gentler force."
+     data-hint="A thicker film means the velocity changes more gently from plate to plate."
      data-target="viscosity-scaling-mu"></div>
 ```
 :::
@@ -105,7 +109,7 @@ For each checkpoint below: enter **+1** if $F$ increases, **−1** if $F$ decrea
 <div class="fl-checkpoint"
      data-prompt="Increasing the viscosity <i>&#956;</i> (everything else fixed) — effect on <i>F</i>?"
      data-answer="1" data-tol="0.01" data-units=""
-     data-hint="This is the definition of viscosity in action: a thicker fluid resists the same motion with more force."
+     data-hint="Think honey vs. water."
      data-target="viscosity-scaling-rho"></div>
 ```
 :::
@@ -115,7 +119,7 @@ For each checkpoint below: enter **+1** if $F$ increases, **−1** if $F$ decrea
 <div class="fl-checkpoint"
      data-prompt="Increasing the density <i>&#961;</i>, holding <i>&#956;</i> fixed — effect on <i>F</i>?"
      data-answer="0" data-tol="0.01" data-units=""
-     data-hint="There's a real correlation between how dense a fluid is and how viscous it is, but in this model the 'thickness' that resists shear is entirely captured by &#956;. Once &#956; is fixed, &#961; has nothing left to do here."
+     data-hint="There is a correlation between how dense a fluid is and how viscous it is, but in this model the 'thickness' that resists shear is entirely captured by &#956;."
      data-ok-text="&#10003; correct — that's everything we need."
      data-target="viscosity-scaling-combine"></div>
 ```
@@ -134,12 +138,10 @@ $$
 :::
 
 
-Note that $U/h$ is like a change in velocity (from $0$ to $U$) over a distance $h$. More generally, we are going to think about a derivative $\partial u/\partial y$ instead of $U/h$.
-
-Further, we are going to think about a "local" value of $F/A$. Forces per area are stresses, and when considering shear forces we think about shear stresses $\tau$. With these two considerations, we land on
+Note that $U/h$ is like a change in velocity (from $0$ to $U$) over a distance $h$. More generally, we are going to think about a derivative $\partial u/\partial y$ instead of $U/h$. Further, we are going to think about a "local" value of $F/A$. Forces per area are stresses, and when considering shear forces we think about shear stresses $\tau$. With these two considerations, we land on
 
 ::: {.column-margin}
-When we talk about "local values", we are talking about values that have a value at a particular point. Ostensibly: $\tau(x,y,z,t)$, though actually $\tau$ is a **tensor**, which is like a vector of vectors. The complete picture involves the $\hat{x}$-direction force on a hypothetical surface with normal in the $\hat{y}$-direction, etc. This is grad-level stuff, we aren't going to dwell on it.
+When we talk about "local values", we are talking about values that have a value at a particular point. Ostensibly: $\tau(x,y,z,t)$, though actually $\tau$ is a **tensor**, which is like a vector of vectors. That is grad-level stuff, we aren't going to dwell on it.
 :::
 
 $$

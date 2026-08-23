@@ -3,11 +3,9 @@ title: "Welcome"
 subtitle: "MCEN 3021: Fluid Mechanics"
 ---
 
-Welcome to MCEN 3021: Fluid Mechanics, taught by Professor Jeremy Koch in the Fall 2026 semester. This is probably the course that I am most passionate about — my PhD was about (non-Newtonian) fluid mechanics, so hopefully I have a lot of good stuff to say!
+Welcome to MCEN 3021: Fluid Mechanics, taught by Professor Jeremy Koch in the Fall 2026 semester. This is probably the course that I am most passionate about — my PhD was about (non-Newtonian) fluid mechanics, so hopefully I have a lot of good stuff to say! I think this will be the eighth time I have taught this course, and I've decided to take a different approach:
 
-I think this will be the eighth time I have taught this course, and I've decided to take a different approach:
-
-**The idea:** introduce the concepts in a reading before class. Then spend class time reviewing the "muddiest points" and having peer discussions. So by the time we see each other, we'll be seeing the information for the second time.
+**The idea:** Introduce the material in a reading before class, then spend class time discussing the tricky concepts with your peers (with some guidance from me).
 
 
 **Why?** It is a more effective use of our time, and there is strong evidence that actively discussing content with your peers is a better way to learn than passively listening to me talk about it.
@@ -17,20 +15,16 @@ With traditional lectures, we spend a majority of class time transmitting notes 
 
 We'll do this instead:
 
-- You'll be introduced to the content via a reading on this website. Expect one before every class period, maybe 15-20 minutes. There might be some quick checks along the way where you type in answers — these are just for your benefit. Take notes!
+- You'll be introduced to the content via a reading on this website. Expect one before every class period, maybe 15-20 minutes. Take notes! There might be some quick checks along the way where you type in answers — these are just for your benefit.
 - There will be a short reading "quiz" on Canvas, just to make sure you are thinking about the content. The last question will always be about your **muddiest point**: the thing you are most confused about.
 - I'll look through those muddiest points, and we'll spend the first few minutes of class talking about the most prevalent ones. *If yours doesn't get answered, we can chat after class or in office hours.*
 - Then I'll present a series of clicker questions about fluid mechanics concepts. 
-    - We'll actually click-in twice for each question: for the first one, you'll stay quiet and give our best guess. Fluid mechanics is a tricky subject — I am *hoping* that only 50% of the class gets the question right (at first), because it means we'll have a good discussion!
+    - We'll actually click-in twice for each question: for the first one, you'll stay quiet and give your best answer. Fluid mechanics is a tricky subject — I am *hoping* that only 50% of the class gets the question right (at first), because it means we'll have a good discussion!
     - Then you'll discuss with your colleagues: find someone who gave a different answer and then try to figure out who is right. Explain your logic, describe what you are uncertain about, ask questions.
     - We'll vote again on the same question, hopefully with ~100% of the class getting the right answer now that we've had time to discuss and think more.
     - We'll debrief, making sure we are all on the same page, and then move on to another question.
-- Our homework will involve detailed mathematical analyses. **The website will include worked examples that look like the homework, including checkpoints such that you can work alongside them.** 
+- Our homework will involve detailed mathematical analyses. **The website will include worked examples that look like the homework, including checkpoints such that you can work alongside them.** Confidence with the concepts leads to better understanding of the analyses, but the converse is not true! You can follow the steps to solve a problem and still not understand it! I want you to be thinking about fluid mechanics, not just memorizing the algorithm that gets you the answer.
 
-
-::: {.column-margin}
-Confidence with the concepts leads to better understanding of the analyses, but the converse is not true! It is possible to follow the algorithm/worked example and get a good answer, but still not understand the concepts. This is one part of the motivation for our approach: the concepts are important, but tricky. See the work of Eric Mazur, e.g. the one cited below.
-:::
 
 
 
@@ -41,15 +35,17 @@ Interestingly, students feel like they learn less in active classrooms, even tho
 :::
 
 ::: {.column-margin}
-Crouch, Catherine H., and Eric Mazur. "Peer instruction: Ten years of experience and results." American journal of physics 69.9 (2001): 970-977.
+Crouch, Catherine H., and Eric Mazur. "Peer instruction: Ten years of experience and results." American journal of physics (2001).
 
  
 
-Deslauriers, Louis, et al. "Measuring actual learning versus feeling of learning in response to being actively engaged in the classroom." Proceedings of the National Academy of Sciences 116.39 (2019): 19251-19257.
+Deslauriers, Louis, et al. "Measuring actual learning versus feeling of learning in response to being actively engaged in the classroom." Proceedings of the National Academy of Sciences (2019).
 :::
 
 **How this page works:**
 
-Readings will appear in the left column organized by week, e.g. [1.1 Pressure](modules/unit-1/pressure.qmd) and [1.2 Viscosity](modules/unit-1/viscosity.qmd) are the two readings for week 1.
+Readings will appear in the left column organized by week, e.g. [1.1 Pressure](modules/unit-1/pressure.qmd) and [1.2 Viscosity](modules/unit-1/viscosity.qmd) are the two readings for week 1 — complete 1.1 by Tuesday noon and 1.2 by Thursday noon. If there is ever an x.3, x.4, etc., those are extra readings, e.g. maybe a worked example or an extra something for anyone who is curious.
 
-Readings may contain "checkpoints" — these are voluntary and won't be submitted, but you can use them to make sure you are understanding the concepts. If you input two wrong answers, a "Show me" option will appear that reveals the correct answer. I won't know, but if you want to talk about it... sounds like a "muddiest point" candidate!
+Readings may contain "checkpoints" — these are voluntary and won't be submitted, but they'll help you understand the concepts. If you input two wrong answers, a "Show me" option will appear that can reveal the correct answer. I won't know if you click that, nothing is reported to me, but if you want to talk about it... sounds like a "muddiest point" candidate! Or let's talk in an office hour.
+
+[Canvas](https://canvas.colorado.edu/courses/143730) hosts the reading quizzes. Don't stress about these.

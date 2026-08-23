@@ -5,6 +5,9 @@
     </marker>
   </defs>
 
+  <!-- opaque light background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="560" height="230" fill="#ffffff"/>
+
   <!-- streamlines: stay above the roof (y=83) at every x, so they never cross the body -->
   <g stroke="#1c64d1" stroke-width="2.2" fill="none">
     <path d="M 20 120 C 100 120, 160 65, 190 65 L 360 65 C 390 65, 450 120, 540 120" marker-end="url(#warrow)"/>

@@ -5,6 +5,9 @@
     </marker>
   </defs>
 
+  <!-- opaque light background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="520" height="300" fill="#ffffff"/>
+
   <!-- ground hatching directly under the material (no separate bottom plate: this is a fixed support) -->
   <g stroke="#1a1a1a" stroke-width="1.2">
     <line x1="75" y1="210" x2="90" y2="225"/>

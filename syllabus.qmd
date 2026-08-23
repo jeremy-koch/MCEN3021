@@ -9,7 +9,7 @@ title: "Syllabus & Schedule"
 | Component | Weight | Notes |
 |---|---|---|
 | Reading quizzes | 5% | drop 4 |
-| Class participation (clickers) | 5% | attending 80+% of class gets you full credit |
+| Class participation (clickers) | 5% | attending 85+% of class gets you full credit |
 | Homework | 10% | drop 1 |
 | Projects | 25% |  |
 | Midterm 1 | 15% |  |

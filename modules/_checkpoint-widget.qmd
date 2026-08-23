@@ -38,7 +38,7 @@
     var tol = parseFloat(el.dataset.tol || '0.02');
     var target = el.dataset.target || '';
     var hint = el.dataset.hint || '';
-    var sol = el.dataset.solution || '';
+    var sol = el.dataset.solution || ('Answer: ' + el.dataset.answer + (units ? ' ' + units : ''));
     var units = el.dataset.units || '';
     var okText = el.dataset.okText || '✓ correct — next step unlocked below.';
     var attempts = 0;
@@ -63,7 +63,7 @@
       el.classList.add(shown ? 'shown' : 'pass');
       fb.className = 'fl-cp-fb ok';
       fb.textContent = shown
-        ? '\u2014 shown, no penalty. Read the step below, then try the next prediction yourself.'
+        ? '\u2014 shown.'
         : okText;
       input.disabled = true; btn.disabled = true;
       var sm = el.querySelector('.fl-showme');
@@ -84,7 +84,7 @@
       fb.className = 'fl-cp-fb no';
       fb.textContent = (attempts === 1)
         ? 'Not quite \u2014 see hint below.'
-        : 'Still off \u2014 check units and signs, or take the reveal. No penalty either way.';
+        : 'Still off \u2014 check units and signs?';
       if (hint) hintEl.classList.remove('fl-hidden');
       if (attempts >= 2 && !el.querySelector('.fl-showme')) {
         var sm = document.createElement('button');

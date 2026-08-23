@@ -6,7 +6,7 @@ title: "1.1 Pressure"
 
 ## The big idea
 
-We have some intuition, and maybe some experience, with the variables of fluid mechanics: pressure pushes on things, something that is highly viscous is harder to move, denser objects weigh more. But, as I said in class on Day 0, this is arguably your first "applied math" course... if we are going to be putting those ideas into equations, we need to be precise about what they mean.
+We have some intuition, and maybe some experience, with the variables of fluid mechanics: pressure pushes on things, something that is highly viscous is harder to move through, denser objects weigh more. But, as I said in class on Day 0, this is arguably your first "applied math" course... if we are going to be putting those ideas into equations, we need to be precise about what they mean.
 
 This week we will talk about some important variables in fluid mechanics. First: pressure.
 
@@ -76,13 +76,13 @@ etc. Assuming we have enough molecules in our system, this is a good approach â€
 
 A couple truths:
 
-1. The net force due to pressure always acts normal to the surface. (The velocity component that is changed by the collision is the one that is normal to the surface.)
-2. Pressure is not a force, it is a scalar field. We can describe the value of pressure at every location within a fluid, but it manifests as a force at surfaces. The orientation of the surface sets the force direction (locally).
+1. The net force due to pressure always acts normal to the surface. The velocity component that is changed by the collision is the one that is normal to the surface.
+2. Pressure is not a force, it is a scalar field. Think about the ideal gas law: $pV=NRT$... there is no direction to that pressure, only a magnitude. We can describe the value of pressure at every location within a fluid.
 
 
 ## Gauge vs. absolute pressure
 
-When we think about inflating a car tire, the pressure is measured in psi (pounds per square inch, a force per area... a pressure). In my hatchback the pressure is usually reported as 34 psi, but there is a subtlety: that is **the gauge pressure**.
+When we think about inflating a car tire, the pressure is measured in psi (pounds per square inch, a force per area... a pressure). In my car the pressure is usually reported as 34 psi, but there is a subtlety: that is **the gauge pressure**.
 
 The gauge pressure is defined as the absolute pressure (the one that we would use in an ideal gas equation... related to the number of molecules present), minus some convenient reference pressure:
 
@@ -96,7 +96,7 @@ Usually the reference pressure is the local atmospheric pressure (14.7 psi = 101
 Gauge pressure can be less than zero. What would it mean to use that in the ideal gas law... negative volume, or temperature, or number of molecules?! If we are doing a thermodynamics calculation, we must use the absolute pressure.
 :::
 
-When it comes to forces, the gauge pressure is more convenient. Compare these calculations:
+When it comes to mechanical forces, the gauge pressure is more convenient. Compare these calculations:
 
 **Use the absolute pressure** inside the tire (pushing out) and the absolute pressure outside the tire (pushing in). For a segment of tire with area $A$ the net force would be
 
