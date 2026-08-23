@@ -19,7 +19,7 @@
     <path d="M 190 175 L 118 247" stroke="#16a34a"/>
     <circle cx="124" cy="109" r="11" fill="#4ade80" stroke="#166534" stroke-width="2"/>
 
-    <!-- orange: not every molecule is headed for the wall -- this one travels up and to the left (11 o'clock), clear of it -->
+    <!-- orange: not every molecule is headed for the wall, this one travels up and to the left (11 o'clock), clear of it -->
     <path d="M 150 290 L 70 150" stroke="#ea580c"/>
     <circle cx="90" cy="185" r="11" fill="#fb923c" stroke="#9a3412" stroke-width="2"/>
 

@@ -83,7 +83,7 @@
       attempts += 1;
       fb.className = 'fl-cp-fb no';
       fb.textContent = (attempts === 1)
-        ? 'Not yet \u2014 hint below. (Talking it over with classmates is encouraged, not cheating.)'
+        ? 'Not quite \u2014 see hint below.'
         : 'Still off \u2014 check units and signs, or take the reveal. No penalty either way.';
       if (hint) hintEl.classList.remove('fl-hidden');
       if (attempts >= 2 && !el.querySelector('.fl-showme')) {

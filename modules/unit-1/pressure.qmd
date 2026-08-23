@@ -36,7 +36,7 @@ The drag force, in general, comes from two sources:
 
 **Pressure**: pressure leads to *normal* forces on the surfaces, and a difference in pressure between the nose and tail pushes the object backwards. (That is, if the object were moving, the pressure difference would be trying to slow it down.)
 
-**Viscous**: shear forces due to the fluid friction "grabbing" the surface. Relevant here is the fluid *viscosity*, denoted $\mu$... more on that later.
+**Viscous**: shear forces due to the fluid friction "grabbing" the surface. Relevant here is the fluid *viscosity*, given the symbol $\mu$... [more on that later](viscosity.qmd).
 
 ::: {.column-margin}
 Recall: shear forces act along a surface, and normal forces act into/out of the surface.
@@ -46,7 +46,7 @@ Recall: shear forces act along a surface, and normal forces act into/out of the 
 
 ![Molecules bouncing off a surface.](molecule-bounce.svg)
 
-In the picture above: molecules (say of nitrogen) are bouncing off a surface with normal in the $-\hat{x}$-direction. What happens with the $\hat{x}$-component of velocity during one bounce? It is positive, then negative, and so our $\Delta u$ (new minus old) is negative. Presumably that process takes some finite amount of time, $\Delta t$, and so we have
+In the picture above: molecules (of, say, nitrogen) are bouncing off a surface with normal in the $-\hat{x}$-direction. What happens with the $\hat{x}$-component of velocity during one bounce? The velocity is positive, then negative, and so our $\Delta u$ (new minus old) is negative. Presumably that process takes some finite amount of time, $\Delta t$, and so we have
 
 ::: {.column-margin}
 The story with liquids is very similar, but there are intermolecular forces and many more particle collisions, so it's harder to draw.
@@ -60,6 +60,15 @@ Change in velocity over time... that is an acceleration, and if we have an accel
 
 Not every molecule is traveling at the same speed, and they have a spectrum of angles that they collide with, but if we average over many many collisions, we can describe an average force per area. This is our *pressure*.
 
+::: {.column-margin}
+**Continuum mechanics** is an approach where we treat fluids and solids as continuous masses. Rather than keeping track of the speeds and positions, and then the collisions, of countless individual molecules, we assume that their behavior can be averaged out and described by variables defined at points in space:
+- the velocity at a certain point, $u(x,y,z,t)$
+- the temperature, $T(x,y,z,t)$
+- the pressure, $p(x,y,z,t)$
+- the density, $\rho(x,y,z,t)$
+etc. Assuming we have enough molecules in our system, this is a good approach — accurate enough, and comparatively easy to analyze.
+:::
+
 A couple truths:
 1. The net force due to pressure always acts normal to the surface. (The velocity component that is changed by the collision is the one that is normal to the surface.)
 2. Pressure is not a force, it is a scalar field. We can describe the value of pressure at every location within a fluid, but it manifests as a force at surfaces. The orientation of the surface sets the force direction (locally).
@@ -69,27 +78,27 @@ A couple truths:
 
 When we think about inflating a car tire, the pressure is measured in psi (pounds per square inch, a force per area). In my hatchback the pressure is reported as about 34 psi, but there is a subtlety: that is **the gauge pressure**.
 
-The gauge pressure is defined relative to some reference pressure:
+The gauge pressure is defined as the absolute pressure (the one that we would use in an ideal gas equation... related to the number of molecules present), minus some convenient reference pressure:
 
 $$
-p_\text{gauge} \equiv p_\text{absolute} - p_\text{reference}
+p_\text{gauge} \equiv p_\text{absolute} - p_\text{reference}.
 $$
 
-where usually the reference pressure is the local atmospheric pressure.
+Usually the reference pressure is the local atmospheric pressure (101300 Pa at sea level, but about 83000 Pa here in Boulder).
 
 ::: {.callout-caution}
-The absolute pressure is the one that is related to the number of molecules, and indeed it must be greater than or equal to zero. If we are doing a thermodynamics calculation, we must use the absolute pressure.
+Gauge pressure can be less than zero. What would it mean to use that in the ideal gas law... negative volume, or temperature, or number of molecules?! If we are doing a thermodynamics calculation, we must use the absolute pressure.
 :::
 
 When it comes to forces, the gauge pressure is more convenient. Compare these calculations:
 
-- Use the absolute pressure inside the tire (pushing out) and the absolute pressure outside the tire (pushing in). For a segment of tire with area $A$ the net force would be
+**Use the absolute pressure** inside the tire (pushing out) and the absolute pressure outside the tire (pushing in). For a segment of tire with area $A$ the net force would be
 
 $$
 F_\text{net}=A p_\text{tire,absolute}-A p_\text{ambient,absolute}.
 $$
 
-- Use the gauge pressure inside the tire (pushing out). The gauge pressure outside the tire is zero by definition. The net force ends up being
+**Use the gauge pressure** inside the tire (pushing out). The gauge pressure outside the tire is zero by definition. The net force ends up being
 
 $$
 F_\text{net}=A p_\text{tire,gauge}
