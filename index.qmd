@@ -48,3 +48,8 @@ Crouch, Catherine H., and Eric Mazur. "Peer instruction: Ten years of experience
 Deslauriers, Louis, et al. "Measuring actual learning versus feeling of learning in response to being actively engaged in the classroom." Proceedings of the National Academy of Sciences 116.39 (2019): 19251-19257.
 :::
 
+**How this page works:**
+
+Readings will appear in the left column organized by week, e.g. [1.1 Pressure](modules/unit-1/pressure.qmd) and [1.2 Viscosity](modules/unit-1/viscosity.qmd) are the two readings for week 1.
+
+Readings may contain "checkpoints" — these are voluntary and won't be submitted, but you can use them to make sure you are understanding the concepts. If you input two wrong answers, a "Show me" option will appear that reveals the correct answer. I won't know, but if you want to talk about it... sounds like a "muddiest point" candidate!

@@ -42,9 +42,6 @@ website:
       #   text: Tools
       # - href: reference.qmd
       #   text: Reference
-    right:
-      - icon: github
-        href: https://github.com/YOURUSERNAME/fluidtools
   sidebar:
     style: docked
     search: true

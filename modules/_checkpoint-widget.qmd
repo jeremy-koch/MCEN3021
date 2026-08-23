@@ -1,11 +1,11 @@
 ```{=html}
 <style>
 .fl-hidden { display: none; }
-.fl-cp { border-left: 4px solid #4c6ef5; background: #f5f7ff; border-radius: 6px;
+.fl-cp { border-left: 4px solid #4c6ef5; background: #f5f7ff; color: #1a1a1a; border-radius: 6px;
          padding: 0.8em 1em; margin: 1.1em 0; }
 .fl-cp.pass  { border-left-color: #2f9e44; background: #f2fbf4; }
 .fl-cp.shown { border-left-color: #868e96; background: #f8f9fa; }
-.fl-cp-prompt { font-weight: 600; margin-bottom: 0.55em; }
+.fl-cp-prompt { font-weight: 600; margin-bottom: 0.55em; color: #1a1a1a; }
 .fl-cp-row { display: flex; gap: 0.55em; align-items: center; flex-wrap: wrap; }
 .fl-cp input[type=text] { width: 9em; padding: 0.32em 0.55em; border: 1px solid #adb5bd;
          border-radius: 4px; font-family: var(--bs-font-monospace, monospace); }

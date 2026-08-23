@@ -1,5 +1,5 @@
 ---
-title: "1.1 Pressure in fluids"
+title: "1.1 Pressure"
 ---
 
 {{< include ../_checkpoint-widget.qmd >}}
