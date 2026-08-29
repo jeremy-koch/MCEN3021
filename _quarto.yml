@@ -51,6 +51,7 @@ website:
       - syllabus.qmd
       - modules/unit-1/pressure.qmd
       - modules/unit-1/viscosity.qmd
+      - modules/unit-1/units-and-dims.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd

@@ -1,0 +1,32 @@
+---
+title: "2.2 The Buckingham-$\Pi$ Theorem and Simultude"
+---
+
+{{< include ../_checkpoint-widget.qmd >}}
+
+## The big idea
+
+
+## Think first
+
+**Recall**
+
+1. 
+
+**Look ahead**
+
+1. 
+
+
+## The Buckingham-Pi Theorem
+
+The theorem states
+
+> Given a problem with $n$ variables expressible in terms of $r$ fundamental dimensions, there are at most $n-r$ independent dimensionless variables governing the phenomenon.
+
+You can read more details about it on 
+
+
+### Tossing a ball, revisited.
+
+Going back to the example from the last reading, we have variables $h_\text{max}$, $V_0$, and $g$, with dimensions of L, L/T, and L/T². That is, $n=3$, and $r=2$. We therefore expect there to be 

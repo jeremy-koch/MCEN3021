@@ -1,0 +1,241 @@
+---
+title: "2.1 Units and Dimensions"
+---
+
+{{< include ../_checkpoint-widget.qmd >}}
+
+## The big idea
+
+"Dimensional thinking" is a powerful tool in fluid mechanics. Something you already have experience with: If we are expecting an answer in Pascals, and we get one in Newtons, we know something went wrong. But, further, we can use the idea of dimensional consistency within equations to predict the form of solutions without actually having to solve any differential equations. This is particularly powerful in cases where we *can't* solve the differential equations... we can still say something about the *scaling* of a solution, and that is often enough to help us with our engineering design.
+
+## Think first
+
+**Recall**
+
+1. Units check: what are the SI units of energy?
+2. From algebra: if an equation must hold for *any* value of $x$, and one side involves $x^a$ while the other involves $x^b$, what must be true about $a$ and $b$?
+
+**Look ahead**
+
+1. A pendulum's period doesn't depend on its mass — could you have guessed that without writing down (or solving) any differential equation?
+2. If you double a ball's launch speed, what happens to the height it reaches?
+3. Water striders walk on water but you can't. What comparison of forces explains the difference?
+
+
+## A dimensional universe
+
+For *some* reason, we seem to live in a universe that has **dimensions**: objects have **mass**, there are **lengths** that separate things, and events occur at certain points in **time**. These are fundamental dimensions, and we just take it as an axiom that they exist.
+
+We also have derived dimensions: if we assume that mass, length, and time are fundamental dimensions, then energy can be described as
+
+[Energy] = [Mass][Length]²/[Time]².
+
+That is, it is not its own independent dimension, it is derived from the fundamental dimensions. 
+
+From this observation about the universe, we recognize that we must have **dimensional consistency** in the equations we use to describe physics. We can't have a calculation that involves
+
+5 m + 141 s.
+
+... we can't add a time to a distance. The other side of that coin is that we know the terms in
+
+$$
+\frac{dE}{dt} = \dot{Q} +\dot{W}
+$$
+
+all have dimensions of Watts (energy per time). 
+
+
+<!-- ::: {.column-margin}
+You may have heard of a "light-year", which is the *distance* traveled by light in one year. 
+::: -->
+
+
+
+### Mass or force is fundamental?
+
+We could get into a philosophical discussion about what the fundamental dimensions of our universe are — maybe energy is actually more fundamental than mass? $E=mc^2$ after all. We are going to decide what is "fundamental" based on what is intuitive:
+
+- Length is a fundamental dimension. When talking about dimensions of length, we use L as a shorthand symbol.
+- Time is a fundamental dimension, symbol T.
+
+The symbols L and T can be treated according to the rules of math: the dimensions of gravity are L/T², and if we multiply that by the square of time (dimensions T²), we end up with something with dimensions of (L/T²)(T²) = L.
+
+We will sometimes treat mass, M, as fundamental, and other times force, F, as fundamental. They are not independent:
+
+[Force] = [Mass][Length]/[Time]²
+
+or
+
+[Mass] = [Force][Time]²/[Length].
+
+In the MLT system, which assumes Mass, Length, and Time are the fundamental dimensions; and other times we will use the FLT system... Force, Length, and Time. It is often just a question of convenience: if we are working on a problem involving density, its dimensions are M/L³ or FT²/L⁴. The former is easy to remember whenever we think of the units of density, the latter is obnoxious.
+
+However, if we are dealing with a problem involving energy, its dimensions are ML²/T² or FL. I'd rather just use FL.
+
+### Dimensions vs. units
+
+There is a subtle distinction, but in most discussions these can be used interchangeably. I remember the dimensions of density are M/L³ because I know the units are kg/m³.
+
+
+## Dimensionless numbers (brief intro to surface tension)
+
+We will spend a lot of time talking about dimensionless numbers. We won't talk too much about surface tension this semester, given the symbol $\gamma$ with units of N/m, so let's do an example with it here.
+
+[Water striders](https://en.wikipedia.org/wiki/Gerridae) can walk on water because their weight is so small in comparison to surface tension. To judge how small it is, comparatively, we'd like to write a ratio
+
+::: {.column-margin}
+Surface tension is related to the intermolecular forces within a fluid. At a curved surface, that tension produces a pressure jump across the interface — just vocabulary for now, but this is the Young-Laplace equation if you want to read ahead.
+:::
+
+$$
+\frac{\text{weight}}{\text{surface tension}}
+$$
+
+but the value of that ratio will depend on the units used... it doesn't really make sense to say "surface tension is $90\times$ larger than its weight in SI units and $11\times$ larger in imperial units".
+
+Instead, we will make such comparisons using dimensionless numbers. After looking through the dimensions summary in the next section, you will see that the quantity
+
+$$
+\frac{\Delta \rho g L^2}{\gamma}
+$$
+
+is **dimensionless** and **unitless**, meaning its value is independent of the units system being used. And it is still a comparison of weight $\sim \Delta \rho g L^3$ and something related to surface tension $\gamma L$... we'll get into the nuances of why extra parameters are needed when we talk about the Buckingham-$\Pi$ Theorem. 
+
+## Summary of units and dimensions
+
+A summary of the units and dimensions of many engineering quantities.
+
+| quantity | SI units | MLT | FLT |
+|---:|:---|:---:|:---:|
+| mass | kg | M | FT²/L |
+| length | m | L | L |
+| time | s | T | T |
+| force | N (Newton) | ML/T² | F |
+| area | m² | L² | L² |
+| volume | m³ | L³ | L³ |
+| velocity | m/s | L/T | L/T |
+| acceleration | m/s² | L/T² | L/T² |
+| gravity | m/s² | L/T² | L/T² |
+| energy (work) | J (Joule) | ML²/T² | FL |
+| power | W (Watt) | ML²/T³ | FL/T |
+| momentum | kg m/s | ML/T | FT |
+| density | kg/m³ | M/L³ | FT²/L⁴ |
+| pressure | Pa (Pascal) | M/LT² | F/L² |
+| stress | Pa | M/LT² | F/L² |
+| (dynamic) viscosity | Pa$\cdot$s | M/LT | FT/L² |
+| kinematic viscosity | m²/s | L²/T | L²/T |
+| surface tension | N/m | M/T² | F/L |
+| angle | rad | none | none |
+| time derivative $\partial/\partial t$ | 1/s | 1/T | 1/T |
+| spatial derivative $\partial/\partial x$ | 1/m | 1/L | 1/L |
+| del operator $\nabla$ | 1/m | 1/L | 1/L |
+| differential length $dx$ | m | L | L |
+| temperature | K | $\Theta$ | $\Theta$ |
+| electric charge | C (Coulomb) | Q | Q |
+| dimensionless numbers | none | none | none |
+
+
+## Dimensional analysis
+
+Dimensional analysis is a very valuable tool: we can often describe the relationship between variables in a problem simply by their dimensions.
+
+### Example: tossing a ball
+
+Suppose we will throw a ball straight upwards and want to know the maximum height it will achieve. We'd love to write an equation
+
+$$
+h_\text{max} = \text{(something)}
+$$
+
+but what variables will go into that something? There are a few ways to think about it, but let's take this kinematics perspective: the ball is set in motion with a certain initial speed, $V_0$, and gravity, $g$, slows it down and then brings it back to the surface. So we expect
+
+$$
+h_\text{max} = (\text{a function of }V_0\text{ and } g).
+$$
+
+::: {.callout-note}
+There are other factors as well that make this more complicated: air resistance, spin, a weakening gravitation field as we get further from the surface, ... . We "neglect" those effects here, assuming that they have a smaller effect. 
+:::
+
+Then let's think of the dimensions of these three quantities: $h_\text{max}$ is a length, dimensions L; $V_0$ is a speed, dimensions L/T; and $g$ is an acceleration, L/T². We must write an equation that is **dimensionally consistent** — that is, the left- and right-hand sides of the equations must have the same dimensions. Notice that
+
+$$
+\frac{(\text{L/T})^2}{(\text{L/T}^2)} = \text{L}
+$$
+
+and so
+
+$$
+h_\text{max}\sim \frac{V_0^2}{g}
+$$
+
+is dimensionally consistent. Indeed, this is the correct *scaling* of the equation, and we did not have to do any calculus!
+
+::: {.column-margin}
+We'll use the symbol $\sim$ to mean "scales with". Determining the scaling often leads to engineering insight, for example: at high speeds, drag scales with the square of the speed, $F\sim U^2$.
+:::
+
+::: {.callout-important}
+We can't say anything about numerical prefactors like $\pi$, $1/2$, etc., because numbers by themselves are "dimensionless". In this case, the numerical prefactor is $1/2$, which we could determine after doing a bunch of calculus.
+
+However, using just dimensional analysis we can say: if you double $V_0$, you quadruple $h_\text{max}$.
+:::
+
+### Example: pendulum period
+
+The period of a pendulum is the time to complete one oscillation. So it is a time, and let's give it the symbol $t_\text{osc}$. It seems reasonable to claim that the period will depend on:
+
+- the length, $L$, of the pendulum (dimensions of length).
+- the mass, $m$, of the pendulum (dimensions of mass).
+- gravity, $g$, since that is what slows the pendulum down and sends it the other way (dimensions of length per time per time).
+- the angle, $\theta$, that the pendulum extends to (dimensionless).
+
+So: we could say that we are trying to find a dimensionally consistent equation of the form $t_\text{osc}(L,m,g,\theta)$.
+
+It is reasonable to guess, but let's take a more rigorous approach (that is guaranteed to get us a solution): assume an equation of the form $t_\text{osc}\sim L^am^bg^c$ (and we get rid of $\theta$ because it is dimensionless... whatever we land on in this analysis, there is going to be some $\theta$ dependence we can't capture with this method).
+
+Then, using the MLT system, we write the dimensions of this equation:
+
+$$
+\text{T} = \text{L}^a\text{M}^b\left(\frac{\text{L}}{\text{T}^2}\right)^c. 
+$$
+
+Grouping the dimensions together, we have
+
+$$
+\text{T}^1 = \text{M}^b\text{L}^{a+c}\text{T}^{-2c}.
+$$
+
+For this to be dimensionally consistent, this is secretly three equations and three unknowns: for the mass dimension, we must have $0=b$; for the length dimension we must have $0=a+c$; and for the time dimension we must have $1=-2c$. Framed in a matrix form:
+
+$$
+\begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 1 \\
+0 & 0 & -2
+\end{bmatrix}
+\begin{bmatrix}
+a\\b\\c
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\0\\1
+\end{bmatrix}.
+$$
+
+(It is actually easier to not deal with the matrix, at least in this case, but I wanted to show that to you.) The solution is: $a=1/2$, $b=0$, $c=-1/2$. Returning to the equation where $a$, $b$, and $c$ initially appeared, we have 
+
+$$
+t_\text{osc} \sim L^{1/2} m^0 g^{-1/2}
+$$
+
+or
+
+$$
+t_\text{osc} \sim \sqrt{L/g}.
+$$
+
+A few interesting things:
+
+1. Again, we skipped doing calculus.
+2. Though it seemed reasonable to claim that the mass of the pendulum should be involved, dimensional analysis showed that **it is not**.

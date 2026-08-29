@@ -1,0 +1,345 @@
+---
+title: "Some more comments on dimensional analysis"
+subtitle: "including a rationalization of Buckingham-Π"
+---
+
+Dimensional analysis is one of my favorite topics in mechanics because we can be insightful about problems without needing to do much math. Engineering problems are so complicated, and maybe the associated equations are unsolvable. But sometimes we can answer a question like "if this doubles, what is the effect on that?" just using dimensional reasoning — no need to bang our heads against the wall trying to solve a nonlinear equation, or re-do a bunch of CFD simulations, or run a new set of experiments.
+
+An important tool in dimensional analysis is the Buckingham-$\Pi$ Theorem. Simply stated: "Given a problem with $n$ variables expressible in terms of $r$ fundamental dimensions, there are at most $n-r$ independent dimensionless variables governing the phenomenon." We just trust that this is true and immediately apply it to a problem to get a target number of dimensionless groups, and then we get to work using dimensional analysis to determine those groups. This document is not meant to be a proof of this theorem, but it helps to explain where the theorem comes from and gives some additional comments on dimensional analysis.
+
+## Why do we care about dimensional analysis?
+
+Most mechanical phenomena can be boiled down to: something is pushing for the phenomenon, and something else is resisting the phenomenon. If we double the strength of the push, but double the strength of the resistance, we should get the exact same behaviour. So, it turns out that the phenomenon does not depend on the size of the push **and** the size of the resistance, it depends on the ratio of those things — i.e., it depends on one thing, not two.
+
+One extra wrinkle: we can't really compare, say, a speed of 3 m/s (which is maybe the "push") to a viscosity 1 Pa$\cdot$s (the "resistance") — they are different units/dimensions. The only fair way to compare them is to combine them into a dimensionless number, generally by using other parameters that are relevant to the phenomenon. The additional parameters usually deliver context about when the push vs. resistance is big or small.
+
+One of the most practical consequences of this observation is that a phenomenon does not only occur at a particular length- or time-scale, or for a particular size of object, its emergence depends on a collection of relevant physical parameters grouped into one or more dimensionless groups. We therefore have the opportunity to use "modeling" to try to understand the phenomenon before implementing it in a full-scale engineering design. Large scale flows can be modeled in a table-top experiment, provided the relevant dimensionless group(s) maintain the same values. Similarly, events that take microseconds or years in a real flow can be observed in seconds in a well-designed model flow. Related: it is rare that you will read a paper that is describing the exact circumstances that your engineering design is experiencing, but a good author will have translated their results into a dimensionless representation such that you can extract and apply the data to your unique engineering design.
+
+Buckingham-$\Pi$ enters the picture when we are wondering about the spectrum or richness of behaviors we might see in a flow situation. Finding $n-r=2$ often means the problem can be boiled down to "$\Pi_1$ is a function of $\Pi_2$". This is the case for the Von Kármán Vortex Street: the Strouhal Number, which describes the vortex shedding frequency, is a function of the Reynolds Number. The vortex generation does not occur for low Re, and the flow becomes fully turbulent for high Re, but this description is encapsulated by the two dimensionless groups Re and St. Finding $n-r=3$ often means we can write $\Pi_3=f(\Pi_1,\Pi_2)$, i.e., some output can be encapsulated in $\Pi_3$ and is a function of two inputs $\Pi_1$ and $\Pi_2$. A famous example of this is described by the Moody Diagram for friction in pipe flow — there, the "friction factor" (a dimensionless number that describes the pressure drop through a pipe) is a function of Reynolds Number and the relative roughness (pipe roughness divided by diameter). For low Re, the roughness is irrelevant to the friction factor, for moderate Re, both Re and the roughness are relevant, and for high Re, the friction factor is mostly dependent on the roughness.
+
+The origins of the $n-r$ are usually left as a mystery to students of fluid mechanics. One might notice that the system of equations developed in the search for dimensionless numbers is under-determined by $n-r$, hinting at an explanation based in linear algebra. In the following I will try to describe the origins of this $n-r$ in more detail without getting too lost in the math. And where I do introduce abstract math ideas, I try to immediately ground them in practical examples. This is by no means a proof, but if you are curious, this document will hopefully be a satisfying-enough explanation of where Buckingham-$\Pi$ comes from.
+
+## Throw a ball: $n-r=1$
+
+Let's start with a small problem: a ball is tossed vertically, and we are interested in its max height, $h$, as a function of initial speed, $U$, and gravity $g$. Three variables, and they will involve two fundamental dimensions: length and time. According to Buckingham-$\Pi$, we should have $n-r=1$ dimensionless group governing this problem. We could write
+
+$$
+\Pi_1\equiv h^a U^b g^c
+$$
+
+and then write the dimensions
+
+$$
+\text{L}^0\text{T}^0 = \text{L}^a \left(\frac{\text{L}}{\text{T}}\right)^b
+\left(\frac{\text{L}}{\text{T}^2}\right)^c
+$$
+
+i.e., our goal is to identify a (or is there more than one possibility?) set of values for $(a,b,c)$ such that $\Pi_1$ is dimensionless. Representing this as a matrix system, with the first row representing the length dimension and the second the time dimension, we form
+
+$$
+\begin{bmatrix}
+1 & 1 & 1\\
+0 & -1 &  -2
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+a\\b\\c
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\0
+\end{bmatrix}
+$$
+
+which is under-determined: two equations, three unknowns. No immediate solution — in fact, there are infinitely many solutions!
+
+### The possibilities for the dimensionless group are in "the null space"
+
+Through some algebra,[^ball-algebra] it can be shown that the solution to this system is always of the form
+
+$$
+\begin{bmatrix}
+a\\b\\c
+\end{bmatrix}
+=
+k\begin{bmatrix}
+\phantom{-}1\\-2\\\phantom{-}1
+\end{bmatrix}
+$$
+
+for some constant $k$. This is worth emphasizing: There is no solution to the system, and therefore no dimensionless number, that does not satisfy the above condition. The constant $k$ can assume any value, but all solutions are, in a sense, "aligned" with that vector $[1,-2,1]^T$. If you want to use some serious linear algebra vocabulary/concepts, this vector makes up the null space for the matrix.
+
+[^ball-algebra]: Add the second equation to the first to get $a-c=0$ or $a=c$. The original second equation can be rewritten as $b=-2c$. Thus we could write the solution as $[a,b,c]^T=k[1,-2,1]^T$ for any constant $k$.
+
+So the possible dimensionless groups in this problem will be given by
+
+$$
+\left(\frac{hg}{U^2}\right)^k
+$$
+
+and we say actually this is just a single independent dimensionless group: after defining our dimensionless group by choosing a value for $k$, all other possible groups are just that first group raised to some power.
+
+It is in my opinion logical to choose $k=1$ such that our "output" variable $h$ is upstairs with power 1. However, it doesn't have to be this way: $h^{2.6}g^{2.6}/U^{5.2}$ is an option ($k=2.6$), as is $U/\sqrt{hg}$ ($k=-1/2$), and $h^{0.1}g^{0.1}/U^{0.2}$ ($k=0.1$), etc. Note that all of these choices are just the original group (with $k=1$) raised to some power — they are not independent of the group formed by choosing $k=1$.
+
+### The significance of $n-r=1$
+
+Secretly, the biggest challenge in dimensional analysis is identifying the relevant parameters. For this problem, we considered only the major effects: the initial velocity put the ball in motion, and gravity is the thing that stops it. With this simple model of the situation, there is only one dimensionless group, described above, and the phenomenon does not depend on any other dimensionless groups. This therefore means that $\Pi_1=\text{constant}$. Indeed, in this no-drag model, the detailed ODE analysis would reveal $\Pi_1\equiv hg/U^2=1/2$. (See the appendix.)
+
+A more detailed model of the situation would involve drag (which might involve $\mu$ and/or $\rho$ of the air) and the mass or weight of the ball (a heavier ball fights through the drag more easily). Then B-$\Pi$ would tell us there are maybe $n-r=3$ (or more) dimensionless groups describing the problem according to this more detailed problem description. We may still choose to write $\Pi_1\equiv hg/U^2$, but it would depend on two or three other dimensionless groups. (Maybe one is related to the density, for example, and in the limit that $\rho\rightarrow 0$ we would get $\Pi_1=1/2$, as before. But if the air is really dense, we would expect $\Pi_1\ll 1/2$. The point is that $\Pi_1$ is now a function of $\Pi_2$, $\Pi_3$, ..., whatever they are!)
+
+## Pipe flow pressure loss: $n-r=2$
+
+A cylindrical pipe of diameter $D$ carries a fluid with density $\rho$ and viscosity $\mu$. If we hope to achieve a volumetric flow rate of $Q$, the pressure drop across per unit length is $\Delta p/\ell$. Relate $\Delta p/\ell$ to the parameters in the problem.
+
+This is a basic mechanics problem, so $r=3$, and there are $n=5$ parameters/variables announced in the problem statement, so we anticipate the existence of $2$ dimensionless groups. Being very deliberate about finding the dimensionless groups, we might write
+
+$$
+\begin{align*}
+\Pi_1&=(D)^{a_1} (\rho)^{b_1} (\mu)^{c_1} (\Delta p/\ell)^{d_1} (Q)^{e_1}\\
+\Pi_2&=(D)^{a_2} (\rho)^{b_2} (\mu)^{c_2} (\Delta p/\ell)^{d_2} (Q)^{e_2}
+\end{align*}
+$$
+
+### Using MLT
+
+For $\Pi_i$, where $i=1,2$, we need to achieve the following for the groups to be dimensionless (in the MLT system):
+
+$$
+\text{M}^0\text{L}^0 \text{T}^0=\left(\text{L}\right)^{a_i}
+\left(\frac{\text{M}}{\text{L}^3}\right)^{b_i}
+\left(\frac{\text{M}}{\text{LT}}\right)^{c_i}
+\left(\frac{\text{M}}{\text{L}^2\text{T}^2}\right)^{d_i}
+\left(\frac{\text{L}^3}{\text{T}}\right)^{e_i}.
+$$
+
+Cast in matrix form
+
+$$
+\begin{bmatrix}
+0 & 1 &  1 &  1 & 0\\
+1 & -3 & -1 & -2 & 3\\
+0 & 0 & -1 & -2 & -1
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+a_i\\b_i\\c_i\\d_i\\e_i
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\0\\0
+\end{bmatrix}
+$$
+
+where the first row of the matrix is the equation related to the powers of M, the second for powers of L, and the third for powers of T. It is the same matrix system for both $\Pi_i$'s.
+
+### Using FLT
+
+Again for $i=1,2$,
+
+$$
+\text{F}^0\text{L}^0 \text{T}^0=\left(\text{L}\right)^{a_i}
+\left(\frac{\text{FT}^2}{\text{L}^4}\right)^{b_i}
+\left(\frac{\text{FT}}{\text{L}^2}\right)^{c_i}
+\left(\frac{\text{F}}{\text{L}^3}\right)^{d_i}
+\left(\frac{\text{L}^3}{\text{T}}\right)^{e_i}
+$$
+
+cast in matrix form
+
+$$
+\begin{bmatrix}
+0 & 1 &  1 &  1 & 0\\
+1 & -4 & -2 & -3 & 3\\
+0 &  2 & 1 & 0 & -1
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+a_i\\b_i\\c_i\\d_i\\e_i
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\0\\0
+\end{bmatrix}
+$$
+
+where the rows refer to F, L, and T respectively.
+
+### MLT and FLT are not independent
+
+Really quickly let's point out the following: if, in the FLT matrix, we replace the second row with the first row plus the second row and replace the third row with the third row minus two times the first row (legal in matrix math, right?), we are left with
+
+$$
+\begin{bmatrix}
+0 & 1 &  1 &  1 & 0\\
+1 & -3 & -1 & -2 & 3\\
+0 &  0 & -1 & -2 & -1
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+a_i\\b_i\\c_i\\d_i\\e_i
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\0\\0
+\end{bmatrix}
+$$
+
+... which is exactly the MLT matrix system. We can interpret this a lot of ways: the approaches are equivalent, the MLT and FLT systems are not independent, the matrices contain the same information, etc.
+
+### The possibilities for the dimensionless group are in "the null space"
+
+As with the simpler system in the first part, this is an under-determined system. This time, $n-r=2$.
+
+Focusing on the MLT matrix, and again through some algebra,[^matlab] we can find that the system is always solved by a vector of the form
+
+$$
+\begin{bmatrix}
+a_i\\b_i\\c_i\\d_i\\e_i
+\end{bmatrix}
+=
+p_i
+\begin{bmatrix}
+\phantom{-}1\\
+\phantom{-}0.271\\
+-0.589\\
+\phantom{-}0.318\\
+-0.047
+\end{bmatrix}
++
+q_i
+\begin{bmatrix}
+\phantom{-}1\\
+-1.177\\
+\phantom{-}1.221\\
+-0.044\\
+-1.133
+\end{bmatrix}
+\qquad (\ast)
+$$
+
+for some constants $p_i$ and $q_i$. (One or both would need to be different to get two independent dimensionless groups.) To emphasize: All possible solutions to the problem, and therefore all possible dimensionless numbers, are described by the above vector combination.
+
+[^matlab]: I let MATLAB do the algebra: `null(A)`.
+
+It is clear that we can arrive at two independent dimensionless groups from the above: $(p_1,q_1)=(1,0)$ and $(p_2,q_2)=(0,1)$ are obvious, though not particularly useful, choices. We could not write the associated $\Pi_1$ as a power of $\Pi_2$. More useful choices, and ones that you are probably encountering on your homework:
+
+$$
+\begin{align*}
+(p_1,q_1)=(-0.122,-0.878) &\implies \Pi_1\equiv  \frac{\rho Q}{D\mu}\\
+(p_2,q_2)=(-3.251,-0.749) &\implies \Pi_2\equiv \frac{\mu Q}{D^4 (\Delta p/\ell)}
+\end{align*}
+$$
+
+... and it is still true that you can't write $\Pi_1$ as a power of $\Pi_2$. (This is obvious in this case because $\Pi_2$ involves $\Delta p$ and $\Pi_1$ does not.)
+
+The task that remains is to explain why there is no possibility for a third independent dimensionless number. Let's suppose there are three dimensionless groups, and let's make Eq. $(\ast)$ more compact by writing as vectors:
+
+$$
+\mathbf{a}_i = p_i \mathbf{v}_p +q_i\mathbf{v}_q.
+$$
+
+Then, if we had three independent dimensionless groups, they would be described via $\mathbf{a}_1 = p_1 \mathbf{v}_p +q_1\mathbf{v}_q$, $\mathbf{a}_2 = p_2 \mathbf{v}_p +q_2\mathbf{v}_q$, and $\mathbf{a}_3 = p_3 \mathbf{v}_p +q_3\mathbf{v}_q$. For the three groups to be independent, we must not be able to find constants $\alpha$ and $\beta$ such that
+
+$$
+\Pi_3 \overset{?}{=}(\Pi_1)^\alpha (\Pi_2)^\beta
+$$
+
+or, equivalently, there can be no values of $\alpha$ and $\beta$ such that
+
+$$
+p_3 \mathbf{v}_p +q_3\mathbf{v}_q \overset{?}{=} \alpha(p_1 \mathbf{v}_p +q_1\mathbf{v}_q)+\beta(p_2 \mathbf{v}_p +q_2\mathbf{v}_q).
+$$
+
+Writing out the math:
+
+$$
+\begin{align*}
+\alpha p_1 + \beta p_2 &= p_3\\
+\alpha q_1 + \beta q_2 &= q_3
+\end{align*}
+$$
+
+... this is just a linear system, it has a solution for $(\alpha,\beta)$. Thus, any third dimensionless group will not be independent of the first two. (In the case where $n-r=2$.)
+
+## Problems with $n-r=3$
+
+Briefly, for problems with three independent dimensionless groups, we would find that all solutions must satisfy an equation like
+
+$$
+\mathbf{a}_i = p_i \mathbf{v}_p +q_i\mathbf{v}_q + s_i \mathbf{v}_s.
+$$
+
+That is, the null space includes three vectors.
+
+## Appendix
+
+### Fundamental dimensions
+
+In mechanics, we very often are dealing with problems that involve fundamental dimensions of mass, length, and time, and we use pseudo-algebraic symbols M, L, and T to denote those dimensions. Then density, for example, can be described in terms of M, L, and T as
+
+$$
+\left[\rho \right] =\frac{\text{M}}{\text{L}^3}
+$$
+
+where the $\left[~\right]$ are sometimes used to denote "the dimensions of".
+
+Force is not an independent fundamental dimension, because $\left[F\right]=\text{ML}/\text{T}^2$, but it is sometimes convenient to use force as a fundamental dimension,[^force-fundamental] described as F, instead of M. For example, pressure is a force per area, and so its dimensions can be described as F/L$^2$. Expressed in terms of M instead of F, they are M/LT$^2$. That is not dreadful, but it is much more intuitive to think of "force per area" than "mass per length per time squared", and it would be particularly useful in a problem where we are thinking about a force anyway.
+
+[^force-fundamental]: We don't know what the universe thinks the fundamental dimensions are... mass, force, maybe energy? Presuming length and time are fundamental dimensions, mass/force/energy are not independent.
+
+There are additional fundamental dimensions, we just don't use them as much in mechanical engineering. Temperature, with dimension denoted as $\Theta$ (theta), is a fundamental dimension.[^temperature] Electrical charge is another fundamental one, with dimensions denoted as Q.
+
+[^temperature]: You might point out that temperature is related to the speed of the molecules, and so it shouldn't be considered "fundamental". But actually there is a mysterious scaling factor, the Boltzmann Constant $k_B=1.38 \times 10^{-23}$ Joules per Kelvin, that relates them, and we need the dimension of temperature to describe that.
+
+### ODE solution to the ball throw problem
+
+From conservation of momentum:
+
+$$
+m\ddot{x}=-mg
+$$
+
+with initial conditions $x(0)=0$ (defining the release point as $x=0$) and $\dot{x}(0)=U$. Dividing through by $m$ and integrating twice:
+
+$$
+\begin{align*}
+\dot{x}&=-gt + c_1\\
+x&=-\frac{1}{2}gt^2 + c_1t + c_2.
+\end{align*}
+$$
+
+To meet the initial position condition, we need $c_2=0$. To meet the initial velocity condition, we need $c_1=U$. Thus, the solutions for speed and position are
+
+$$
+\begin{align*}
+\dot{x}&=-gt + U\\
+x&=-\frac{1}{2}gt^2 + Ut.
+\end{align*}
+$$
+
+The time at which $\dot{x}=0$ (i.e., the maximum of position) is $t^*=U/g$, and so the maximum height is
+
+$$
+h=-\frac{1}{2}g\left(\frac{U}{g}\right)^2 + U\left(\frac{U}{g}\right) = \frac{1}{2}\frac{U^2}{g}.
+$$
+
+Relating this back to the dimensional analysis discussion: If we assume the simple model where the only relevant parameters in the problem are $h$, $U$, and $g$, there is only one dimensionless group. Probably the best choice:
+
+$$
+\Pi_1 \equiv \frac{hg}{U^2}.
+$$
+
+Since $n-r=1$ for this problem statement, this one dimensionless group cannot depend on any other dimensionless group — it must be a constant. Indeed, we have done the calculus to determine $\Pi_1 = \text{constant}=1/2$.
+
+### Some recommendations on how to decide on groups
+
+The above linear algebra perspective (with the determination of the null space and picking out $p$'s and $q$'s) is not typically how we determine dimensionless groups in practical problems. Here are some tips on how to actually do that.
+
+- Look to history/precedence. Odds are very good that one of the dimensionless groups in a fluids problem is "The Reynolds Number". If you are unfamiliar with it, don't worry — we are going to talk about it a lot this semester. Its typical definition is
+  $$
+  \text{Re}\equiv\frac{\rho U D}{\mu}
+  $$
+  though for the second problem statement above we would need to use $Q$ instead of $U$, and $Q\sim U D^2$.
+- If there is a clear "output" to the problem, try to include that variable in only one of the $\Pi$ groups, and it will be easier to retrieve its value if it is upstairs with power 1. The spirit of B-$\Pi$ is that we turn a problem like $\Delta p/\ell=f(D,\rho,\mu,Q)$ into a problem like $\Pi_2=f(\Pi_1)$, where $\Delta p/\ell$ is part of $\Pi_2$. Yes, it is mathematically legal to include $\Delta p/\ell$ in more than one $\Pi$ group, but we then have an implicit equation when we go to retrieve the value of $\Delta p/\ell$ from the chart that we build based on CFD/experimental data.
+- Ratios of properties. "The aspect ratio" is just width over height. If a problem has two fluids, ratios of the fluid properties are dimensionless numbers. Physically there is usually meaning to these ratios too — for two fluids in contact, the ratio of the velocity gradients at the surface is equal to the ratio of the viscosities.
+- We can always arrive at a unique set of numbers if we choose a different set of $r+1$ variables for each $\Pi$ group and choose one of the variables in each to have power "1". So, for example, $\Pi_1$ could involve $\rho$, $Q$, $D$, and $\mu$ (we didn't use $\Delta p/\ell$) and $\Pi_2$ could involve $\Delta p/\ell$, $Q$, $D$, and $\mu$ (didn't use $\rho$).
