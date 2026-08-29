@@ -1,9 +1,16 @@
 # ── Instructor-only material ────────────────────────────────────────
 # Answer keys, executed solutions, and the checkpoint answer bank with
 # wrong-number diagnoses. Never publish these to the student-facing repo.
-homework/
+homework/*
+!homework/hw1.qmd
+!homework/figures/
 homework/solutions/
 pdfs/
+
+# In-class ConcepTest slide decks (answers live in speaker notes / on the
+# slide itself) -- instructor-only, kept local for now rather than in the
+# separate private ConcepTest-bank repo mentioned in CLAUDE.md.
+conceptests/
 
 # ── Unfinished / stripped-down readings ─────────────────────────────
 # The site is pared down to course bureaucracy (index/syllabus) plus a

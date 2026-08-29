@@ -9,7 +9,8 @@ project:
     - "!homework.qmd"
     - "!tools.qmd"
     - "!reference.qmd"
-    - "!homework/"
+    - "!homework/solutions/"
+    - "!conceptests/"
     - "!modules/unit-1/what-is-a-fluid.qmd"
     - "!modules/unit-1/fluid-properties.qmd"
     - "!modules/unit-1/properties-worked.qmd"
@@ -50,6 +51,9 @@ website:
       - syllabus.qmd
       - modules/unit-1/pressure.qmd
       - modules/unit-1/viscosity.qmd
+      - section: "Homework"
+        contents:
+          - homework/hw1.qmd
       # Project, the rest of Unit 1, and Units 2-10 are drafted but
       # gitignored while the site is stripped down (see .gitignore).
       # Restore each section here, and its render: line above, as
