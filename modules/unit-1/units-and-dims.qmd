@@ -6,7 +6,9 @@ title: "2.1 Units and Dimensions"
 
 ## The big idea
 
-"Dimensional thinking" is a powerful tool in fluid mechanics. Something you already have experience with: If we are expecting an answer in Pascals, and we get one in Newtons, we know something went wrong. But, further, we can use the idea of dimensional consistency within equations to predict the form of solutions without actually having to solve any differential equations. This is particularly powerful in cases where we *can't* solve the differential equations... we can still say something about the *scaling* of a solution, and that is often enough to help us with our engineering design.
+"Dimensional thinking" is a powerful tool in fluid mechanics. Something you already have experience with: If we are expecting an answer in Pascals, and we get one in Newtons, we know something went wrong. But, further, we can use the idea of **dimensional consistency** within equations to predict the form of solutions without having to solve the associated differential equations. This is particularly powerful in cases where we *can't* solve the differential equations... we can still say something about the *scaling* of a solution, and that is often enough to help us with our engineering design.
+
+We will see in the next lesson that dimensional considerations allow us to communicate engineering results in a much more effective way.
 
 ## Think first
 
@@ -26,17 +28,9 @@ title: "2.1 Units and Dimensions"
 
 For *some* reason, we seem to live in a universe that has **dimensions**: objects have **mass**, there are **lengths** that separate things, and events occur at certain points in **time**. These are fundamental dimensions, and we just take it as an axiom that they exist.
 
-We also have derived dimensions: if we assume that mass, length, and time are fundamental dimensions, then energy can be described as
+We also have derived dimensions: if we assume that mass, length, and time are fundamental dimensions, then energy can be described as [Energy] = [Mass][Length]²/[Time]². That is, it is not its own independent dimension, it is derived from the fundamental dimensions. 
 
-[Energy] = [Mass][Length]²/[Time]².
-
-That is, it is not its own independent dimension, it is derived from the fundamental dimensions. 
-
-From this observation about the universe, we recognize that we must have **dimensional consistency** in the equations we use to describe physics. We can't have a calculation that involves
-
-5 m + 141 s.
-
-... we can't add a time to a distance. The other side of that coin is that we know the terms in
+From these observations about the universe, we recognize that we must have **dimensional consistency** in the equations we use to describe physics. We can't have a calculation that involves 5 m + 141 s... we can't add a time to a distance. All the terms in every equation must have the same dimensions. The other side of that coin is that we know the terms in
 
 $$
 \frac{dE}{dt} = \dot{Q} +\dot{W}
@@ -58,48 +52,48 @@ We could get into a philosophical discussion about what the fundamental dimensio
 - Length is a fundamental dimension. When talking about dimensions of length, we use L as a shorthand symbol.
 - Time is a fundamental dimension, symbol T.
 
-The symbols L and T can be treated according to the rules of math: the dimensions of gravity are L/T², and if we multiply that by the square of time (dimensions T²), we end up with something with dimensions of (L/T²)(T²) = L.
+The symbols L and T can be treated according to the rules of math: the dimensions of gravity are L/T², and if we multiply that by the square of time (dimensions T²), we end up with something with dimensions of (L/T²)(T²) = L. 
 
-We will sometimes treat mass, M, as fundamental, and other times force, F, as fundamental. They are not independent:
+::: {.column-margin}
+Indeed, if you revisit your kinematics equations, the vertical distance a projectile travels is given by $h = \frac{1}{2}g t^2$.
+:::
 
-[Force] = [Mass][Length]/[Time]²
+We will sometimes treat mass, M, as a fundamental dimension, and other times force, F, as a fundamental dimension. They are not independent: [Force] = [Mass][Length]/[Time]², and [Mass] = [Force][Time]²/[Length]. The decision is practical: if we are working on a problem involving density, its dimensions are M/L³ or FT²/L⁴. The former is easy to remember whenever we think of the units of density, the latter is obnoxious. However, if we are dealing with a problem involving energy, its dimensions are ML²/T² or FL. I'd rather just use FL.
 
-or
+We call these two approaches the **MLT system** and the **FLT system**, and generally you are free to use whichever you prefer/whichever makes sense on the given problem.
 
-[Mass] = [Force][Time]²/[Length].
 
-In the MLT system, which assumes Mass, Length, and Time are the fundamental dimensions; and other times we will use the FLT system... Force, Length, and Time. It is often just a question of convenience: if we are working on a problem involving density, its dimensions are M/L³ or FT²/L⁴. The former is easy to remember whenever we think of the units of density, the latter is obnoxious.
 
-However, if we are dealing with a problem involving energy, its dimensions are ML²/T² or FL. I'd rather just use FL.
-
+::: {.callout-note}
 ### Dimensions vs. units
-
 There is a subtle distinction, but in most discussions these can be used interchangeably. I remember the dimensions of density are M/L³ because I know the units are kg/m³.
+:::
+
 
 
 ## Dimensionless numbers (brief intro to surface tension)
 
-We will spend a lot of time talking about dimensionless numbers. We won't talk too much about surface tension this semester, given the symbol $\gamma$ with units of N/m, so let's do an example with it here.
+We won't talk too much about surface tension this semester, so let's do an example with it here.
+
+::: {.column-margin}
+Surface tension is an interface property, given the symbol $\gamma$ and measured in N/m. It is related to the intermolecular forces within a fluid: at an interface, fluid molecules are more attracted to each other than the surroundings, and so they are pulled towards each other. It takes force to undo that bias, and we characterize that with surface tension.
+:::
 
 [Water striders](https://en.wikipedia.org/wiki/Gerridae) can walk on water because their weight is so small in comparison to surface tension. To judge how small it is, comparatively, we'd like to write a ratio
 
-::: {.column-margin}
-Surface tension is related to the intermolecular forces within a fluid. At a curved surface, that tension produces a pressure jump across the interface — just vocabulary for now, but this is the Young-Laplace equation if you want to read ahead.
-:::
+
 
 $$
 \frac{\text{weight}}{\text{surface tension}}
 $$
 
-but the value of that ratio will depend on the units used... it doesn't really make sense to say "surface tension is $90\times$ larger than its weight in SI units and $11\times$ larger in imperial units".
-
-Instead, we will make such comparisons using dimensionless numbers. After looking through the dimensions summary in the next section, you will see that the quantity
+but the value of that ratio will depend on the units used... it doesn't really make sense to say "surface tension is $90\times$ larger than its weight in SI units and $11\times$ larger in imperial units". Instead, we will make such comparisons using dimensionless numbers. After looking through the dimensions summary in the next section, you will see that the quantity
 
 $$
 \frac{\Delta \rho g L^2}{\gamma}
 $$
 
-is **dimensionless** and **unitless**, meaning its value is independent of the units system being used. And it is still a comparison of weight $\sim \Delta \rho g L^3$ and something related to surface tension $\gamma L$... we'll get into the nuances of why extra parameters are needed when we talk about the Buckingham-$\Pi$ Theorem. 
+is **dimensionless** and **unitless**, meaning its value is independent of the units system being used. And it is still a comparison of weight $\sim \Delta \rho g L^3$ and something related to surface tension $\sim \gamma L$... we'll get into the nuances of why extra parameters are needed when we talk about the Buckingham-$\Pi$ Theorem. 
 
 ## Summary of units and dimensions
 
@@ -137,7 +131,7 @@ A summary of the units and dimensions of many engineering quantities.
 
 ## Dimensional analysis
 
-Dimensional analysis is a very valuable tool: we can often describe the relationship between variables in a problem simply by their dimensions.
+Dimensional analysis is a very valuable tool: we can often describe the relationship between variables in a problem simply by examining their dimensions.
 
 ### Example: tossing a ball
 
@@ -154,10 +148,10 @@ h_\text{max} = (\text{a function of }V_0\text{ and } g).
 $$
 
 ::: {.callout-note}
-There are other factors as well that make this more complicated: air resistance, spin, a weakening gravitation field as we get further from the surface, ... . We "neglect" those effects here, assuming that they have a smaller effect. 
+There are other factors as well that could make this more complicated: air resistance, spin, a weakening gravitation field as we get further from the surface, ... . We "neglect" those effects here, assuming that they have a small contribution to the final result.
 :::
 
-Then let's think of the dimensions of these three quantities: $h_\text{max}$ is a length, dimensions L; $V_0$ is a speed, dimensions L/T; and $g$ is an acceleration, L/T². We must write an equation that is **dimensionally consistent** — that is, the left- and right-hand sides of the equations must have the same dimensions. Notice that
+Then let's think of the dimensions of these three quantities: $h_\text{max}$ is a length, dimensions of L; $V_0$ is a speed, dimensions of L/T; and $g$ is an acceleration, L/T². We must write an equation that is **dimensionally consistent** — the left- and right-hand sides of the equations must have the same dimensions. Notice that
 
 $$
 \frac{(\text{L/T})^2}{(\text{L/T}^2)} = \text{L}
@@ -172,27 +166,32 @@ $$
 is dimensionally consistent. Indeed, this is the correct *scaling* of the equation, and we did not have to do any calculus!
 
 ::: {.column-margin}
-We'll use the symbol $\sim$ to mean "scales with". Determining the scaling often leads to engineering insight, for example: at high speeds, drag scales with the square of the speed, $F\sim U^2$.
+We'll use the symbol $\sim$ to mean "scales with". Discussing the scaling is often productive, for example: at high speeds, drag scales with the square of the speed, $F\sim U^2$. 
 :::
 
 ::: {.callout-important}
-We can't say anything about numerical prefactors like $\pi$, $1/2$, etc., because numbers by themselves are "dimensionless". In this case, the numerical prefactor is $1/2$, which we could determine after doing a bunch of calculus.
-
-However, using just dimensional analysis we can say: if you double $V_0$, you quadruple $h_\text{max}$.
+We can't say anything about numerical prefactors like $\pi$ and $1/2$ because numbers by themselves are "dimensionless". In this case, the numerical prefactor is $1/2$, which we could determine after doing a bunch of calculus. However, the scaling result is still interesting: using just dimensional analysis we can say that doubling $V_0$ leads to a quadrupling of $h_\text{max}$.
 :::
 
 ### Example: pendulum period
 
-The period of a pendulum is the time to complete one oscillation. So it is a time, and let's give it the symbol $t_\text{osc}$. It seems reasonable to claim that the period will depend on:
+The period of a pendulum is the time to complete one oscillation, let's give it the symbol $t_\text{osc}$. It seems reasonable to claim that the period will depend on:
 
-- the length, $L$, of the pendulum (dimensions of length).
-- the mass, $m$, of the pendulum (dimensions of mass).
-- gravity, $g$, since that is what slows the pendulum down and sends it the other way (dimensions of length per time per time).
-- the angle, $\theta$, that the pendulum extends to (dimensionless).
+- the length, $L$, of the pendulum.
+- the mass, $m$, of the pendulum.
+- gravity, $g$, since that is what slows the pendulum down and sends it the other way.
 
-So: we could say that we are trying to find a dimensionally consistent equation of the form $t_\text{osc}(L,m,g,\theta)$.
+::: {.column-margin}
+We also should probably include the initial angle of the pendulum, $\theta_0$, but it is a dimensionless number (measured in radians), so I can't help with the dimensional analysis here.
+:::
 
-It is reasonable to guess, but let's take a more rigorous approach (that is guaranteed to get us a solution): assume an equation of the form $t_\text{osc}\sim L^am^bg^c$ (and we get rid of $\theta$ because it is dimensionless... whatever we land on in this analysis, there is going to be some $\theta$ dependence we can't capture with this method).
+So: we could say that we are trying to find a dimensionally consistent equation of the form $t_\text{osc}(L,m,g)$.
+
+As we did in the previous example, we might be able to guess the answer. Let's take a more rigorous approach this time: assume an equation of the form 
+
+$$
+t_\text{osc}\sim L^am^bg^c.
+$$
 
 Then, using the MLT system, we write the dimensions of this equation:
 
@@ -206,7 +205,12 @@ $$
 \text{T}^1 = \text{M}^b\text{L}^{a+c}\text{T}^{-2c}.
 $$
 
-For this to be dimensionally consistent, this is secretly three equations and three unknowns: for the mass dimension, we must have $0=b$; for the length dimension we must have $0=a+c$; and for the time dimension we must have $1=-2c$. Framed in a matrix form:
+For this to be dimensionally consistent, we must satisfy three equations. 
+
+- There are no dimensions of mass on the left-hand side, and $\text{M}^b$ on the right-hand side. Writing that as an equation: $0=b$. - With a similar logic, based on the length dimension, we must have $0=a+c$.
+- And for the time dimension we have $1=-2c$. 
+
+Framed in a matrix form:
 
 $$
 \begin{bmatrix}
@@ -223,7 +227,7 @@ a\\b\\c
 \end{bmatrix}.
 $$
 
-(It is actually easier to not deal with the matrix, at least in this case, but I wanted to show that to you.) The solution is: $a=1/2$, $b=0$, $c=-1/2$. Returning to the equation where $a$, $b$, and $c$ initially appeared, we have 
+(It is actually easier to not deal with the matrix, at least in this case, but I wanted to show that to you.) The solution is: $a=1/2$, $b=0$, and $c=-1/2$. Returning to the equation where $a$, $b$, and $c$ initially appeared, we have 
 
 $$
 t_\text{osc} \sim L^{1/2} m^0 g^{-1/2}
@@ -239,3 +243,17 @@ A few interesting things:
 
 1. Again, we skipped doing calculus.
 2. Though it seemed reasonable to claim that the mass of the pendulum should be involved, dimensional analysis showed that **it is not**.
+3. This result might be useful in an engineering design, e.g.: if we moved a pendulum clock to the moon, would it still work?
+
+::: {.callout-note collapse="true"}
+### Click to reveal the answer
+
+Lunar gravity is about $g_\text{moon}\approx 1.62$ m/s², roughly a sixth of $g_\text{earth}\approx 9.81$ m/s². Since $t_\text{osc}\sim 1/\sqrt{g}$, the period gets longer by a factor of
+
+$$
+\sqrt{\frac{g_\text{earth}}{g_\text{moon}}} \approx \sqrt{6.05} \approx 2.46,
+$$
+
+so the clock would run about $2.46\times$ slower.
+:::
+
