@@ -1,5 +1,5 @@
 ---
-title: "Some more comments on dimensional analysis"
+title: "2.3 Some more comments on dimensional analysis"
 subtitle: "including a rationalization of Buckingham-Π"
 ---
 

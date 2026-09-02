@@ -52,6 +52,8 @@ website:
       - modules/unit-1/pressure.qmd
       - modules/unit-1/viscosity.qmd
       - modules/unit-1/units-and-dims.qmd
+      - modules/unit-1/b-pi.qmd
+      - modules/unit-1/b-pi-extra.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd

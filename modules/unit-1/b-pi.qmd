@@ -1,21 +1,30 @@
 ---
-title: "2.2 The Buckingham-$\Pi$ Theorem and Simultude"
+title: "2.2 The Buckingham-$\Pi$ Theorem and Similitude"
 ---
 
 {{< include ../_checkpoint-widget.qmd >}}
 
 ## The big idea
 
+For the tossed-ball problem from the last reading, both sides of $h_\text{max}\sim V_0^2/g$ had dimensions of length. This means that 
+
+$$
+\frac{h_\text{max}}{V_0^2/g}
+$$
+
+must be dimensionless. In this reading we'll learn about the Buckingham-$\Pi$ Theorem, which will explain why, neglecting air resistance, this quantity has to be a constant. More generally, the Buckingham-$\Pi$ Theorem helps us to understand the scope of problems — how many variables are actually involved, how can we organize them to present the data effectively, how can we use the results of other engineers in our novel application.
 
 ## Think first
 
 **Recall**
 
-1. 
+1. From the tossed-ball example: how many variables were involved, and how many fundamental dimensions? 
+2. What are the units of $\rho$, $U$, $D$, and $\mu$? What are the units of $\rho U D/ \mu$?
 
 **Look ahead**
 
-1. 
+1. If you are the first person on the planet to study the hydrodynamics of a shape through a new fluid, do you have to do a complete set of experiments, at different sizes and speeds, to understand the lift and drag behavior?
+2. A model airplane in a wind tunnel is 1/50th the size of the real thing. Can we match the behavior of a real airplane? The turbulence, the wingtip vortices, ... .
 
 
 ## The Buckingham-Pi Theorem
@@ -24,9 +33,167 @@ The theorem states
 
 > Given a problem with $n$ variables expressible in terms of $r$ fundamental dimensions, there are at most $n-r$ independent dimensionless variables governing the phenomenon.
 
-You can read more details about it on 
+This statement seems abstract, and how is it useful for engineering? We will see that it allows for us to organize information in a very effective way.
 
 
-### Tossing a ball, revisited.
+### What is an "independent dimensionless group"?
 
-Going back to the example from the last reading, we have variables $h_\text{max}$, $V_0$, and $g$, with dimensions of L, L/T, and L/T². That is, $n=3$, and $r=2$. We therefore expect there to be 
+Going back to the tossed ball example from the last reading, we used dimensional analysis to understand how the maximum height of the toss is related to the initial velocity and gravity, arriving at $h_\text{max} \sim V_0^2/g$. I'll emphasize: the dimension of the left-hand side (LHS) of that expression is length, the dimension of the RHS is also length. It is easy, then, to form a dimensionless group: just divide the LHS by the RHS
+
+$$
+\Pi_1 \equiv \frac{h_\text{max}}{V_0^2/g}.
+$$
+
+::: {.column-margin}
+We sometimes label these generically as "pi groups" and label them $\Pi_1$, $\Pi_2$, etc. All the useful ones end up getting a unique name... more on that later.
+:::
+
+Note that we could also form a dimensionless group from $h_\text{max}^2 \sim V_0^4/g^2$... both sides of this expression have dimensions of length². We then can create
+
+$$
+\Pi'_1 \equiv \frac{h_\text{max}^2}{V_0^4/g^2}.
+$$
+
+Similarly we could have 
+$$
+\Pi''_1 \equiv \frac{V_0^2/g}{h_\text{max}}
+$$
+
+or 
+
+$$
+\Pi'''_1 \equiv \frac{V_0^7/g^{3.5}}{h_\text{max}^{3.5}}.
+$$
+
+These are **not** independent: in each case we can write the group as the original group raised to a different power.
+
+Here is a case with two independent dimensionless groups: a prism with length $L$, width $W$, and height $H$. We could write
+
+$$
+\Pi_1 \equiv \frac{L}{W}
+$$
+
+and 
+
+$$
+\Pi_2 \equiv \frac{H}{W}.
+$$
+
+These are independent: there is no way to manipulate $\Pi_1$ into $\Pi_2$... one includes $L$ and not $H$, the other includes $H$ and not $L$. But is
+
+$$
+\Pi_3 \equiv \frac{L}{H}
+$$
+
+independent? It is indeed different than the first two, but notice that
+
+$$
+\Pi_3 = \Pi_1/\Pi_2.
+$$
+
+So it is **not independent**: if a group can be formed by combining other groups raised to any power, it is not independent of those other groups. Indeed for this example, there are $n=3$ parameters ($L,W,H$), each a length, so $r=1$. Thus we expect $n-r=2$ independent dimensionless groups. It could be that we use $\Pi_1$ and $\Pi_3$, or $\Pi_2$ and $\Pi_3$, or $\Pi_1$ and $\Pi_2$ as the two independent groups, but there are not three independent groups.
+
+
+## Practical example: drag force
+
+Suppose we wish to describe the drag force, $F_\text{D}$ for flow passing over a sphere with diameter $D$. Relevant will be the fluid density, $\rho$, and viscosity, $\mu$, as well as the flow speed $U$. So, we have $n=5$ parameters in this problem, and, as will be the case in most mechanics problems, there are $r=3$ fundamental dimensions (either MLT or FLT). Thus, there are $n-r=2$ independent dimensionless groups. What are they? Again, there are options, but I'll first describe what we typically use and why we use them.
+
+One dimensionless group is
+
+$$
+\text{Re}_D \equiv \frac{\rho U D}{\mu}
+$$
+
+... important enough to be given a name: "The Reynolds Number" and the symbol $\text{Re}_D$.
+
+
+::: {.column-margin}
+The subscript on $\text{Re}_D$ is often included as a reminder of the geometry, here the diameter $D$. Recognize that if the geometry was a cube of side length $L$, the quantity $\rho U L/\mu$ would be dimensionless. We might label that $\text{Re}_L$. 
+:::
+
+
+::: {.callout-important}
+**The Reynolds Number** is the most important number in fluid mechanics. As we get deeper into the course we'll understand its origins, but I'll give a brief explanation here. We can rewrite it as
+
+$$
+\text{Re}_D \equiv \frac{\rho U^2}{\mu U/D}.
+$$
+
+- Upstairs is a fluid momentum... for a solid object, momentum is $mV$, for a fluid we would think about the mass flow rate instead, which can be written as $\dot{m}=\rho U A$ for some cross-sectional area $A$. (More on this later.)
+- Downstairs looks like Newton's Law of Viscosity... $\mu \partial u/\partial y$, but with $U/D$ instead of $\partial u/\partial y$. 
+
+Thus, the Reynolds Number is a ratio between the fluid momentum and the viscous dissipation. We would see a high value of $\text{Re}$ for large objects, or fast flows, or low-viscosity fluids... the Reynolds Number for an airplane is probably about $10^6$ (no units!). We would see a low value of $\text{Re}$ for small objects, or slow flows, or high-viscosity fluids. The Reynolds Number for a bacteria swimming in your stomach might be about $10^{-5}$.
+:::
+
+A second dimensionless group is
+
+$$
+C_\text{D} \equiv \frac{F_\text{D}}{\rho U^2 D^2}
+$$
+
+... given the name "The Coefficient of Drag".
+
+::: {.column-margin}
+There are a couple version of the denominator of $C_\text{D}$. Some use the "frontal area" $\pi D^2/4$ instead of just $D^2$... the frontal area is the area seen from far upstream. Some include a factor of $1/2$ in the denominator, which makes it look more like an equation we'll see in week 5 or so. When you look up information, just pay attention to the definition being used.
+:::
+
+
+Again... there are other options. $F_\text{D}/(\mu U D)$ is a dimensionless group, though not independent: it is $C_\text{D}\cdot \text{Re}$. We sometimes use this instead of the $C_\text{D}$ described above.
+
+
+
+::: {.callout-tip}
+Why do we settle on these definitions?
+
+1. It's the author's choice. If you discover a new phenomenon and collect a bunch of experimental data on it, you can decide what to label your variables. Assuming they aren't ridiculous, other engineers will use the same terminology.
+2. We sometimes refer to these dimensionless groups as "non-dimensional variables". In the case of $\text{Re}$, if we were running an experiment on a particular object with a particular fluid, $D$, $\rho$, and $\mu$ would be unchanging — only $U$ would change. It is reasonable to then refer to the Reynolds Number as "the dimensionless velocity": it is, in a case like this, $\text{Re} = (\text{constant})U$.
+3. Related: We will see in the next section that the real utility of this framework is retrieving information from published works. If we are engineers trying to figure out how much drag force an object will experience, we would find a paper with that data for our geometry, it would probably be presented as "coefficient of drag as a function of the Reynolds Number", and then, mathematically, it is quick to unpack $F/(\rho U^2 D^2)$.
+:::
+
+## What do we do with the groups?
+
+We hint at it with point (3) above... the best way to present engineering data is with dimensionless groups. Here is the drag on a sphere
+
+![Coefficient of drag $C_\text{D}$ as a function of Reynolds number for a sphere. Retrieved from [Kevin Dusling's GitHub course on Applied Fluid Mechanics](https://kdusling.github.io/teaching/Applied-Fluids/ImageDisplay.html?src=DragSphere). Note: the different icons represent data from different works.](DragSphere.png)
+
+If we determine from Buckingham-$\Pi$ that $n-r=2$, as we did for this problem, we can probably write $\Pi_2$ as a function of $\Pi_1$ (no matter how we define them)... as was done in the plot above. There is **a single curve that captures all of the relevant physics**.
+
+Imagine plotting this as force as a function of speed. For a small sphere through air, there would be one curve; bigger sphere through air, another curve; even bigger sphere, another curve; spheres through honey, more curves; spheres through water; spheres through oil. The plot would be a mess of spaghetti — we couldn't make sense of it.
+
+With a plot like the above...
+
+1. Calculate the value of $\Pi_1$ (here, $\text{Re}_D$) based on given information.
+2. Find that value on the horizontal axis of the chart and trace it up to the curve.
+3. Determine the corresponding value of $\Pi_2$ (here, $C_\text{D}$).
+4. Unpack $\Pi_2$ to get whatever engineering value you need, e.g.
+
+$$
+F_\text{D} = C_\text{D,1}\rho U^2 D^2.
+$$
+
+Now we have our drag value!
+
+
+### What about if $n-r=3$?
+
+We'll encounter some of these examples later, but it is similar, just a bit more complicated. We'll be able to write $\Pi_3$ as a function of $\Pi_1$ and $\Pi_2$ (however they are defined), and then will end up with multiple curves on a plot. [The Moody Chart](https://en.wikipedia.org/wiki/Moody_chart) is an example of this, and while it looks intimidating, the algorithm is the same: calculate $\Pi_1$ and $\Pi_2$, identify where they intersect on the chart, trace that value over to the $\Pi_3$ value, then unpack it to get whatever engineering value you need. We'll get some experience with this later in the semester.
+
+
+### What about if $n-r=1$?
+
+Go back to the intro of this reading and see if you can understand why
+
+$$
+\frac{h_\text{max}}{V_0^2/g}
+$$
+
+is a constant. (It happens to be $1/2$, if you recall from mechanics.) Hint: there is one $\Pi$ group, and so it can't be a function of anything else.
+
+
+## Simultude
+
+One final word: it may be that you have a new geometry or phenomenon that doesn't have any information published. Dimensional analysis is still useful!
+
+Imagine we have some sort of dangerous chemical and we want to determine how much it splashes. Rather than endanger the engineer who is doing the experiment, we wonder if we can replicate the behavior using water (certainly not dangerous, perhaps even fun).
+
+We go through Buckingham-$\Pi$ and determine that $n-r=2$, and then create two dimensionless groups that can be interpreted as "$\Pi_2$ is a function of $\Pi_1$". Then, if we can achieve the same value of $\Pi_1$ with water as we'd expect with the dangerous chemical, we should get the same value of $\Pi_2$ with the water as we would get with the dangerous chemical. We'll talk more about this in class.
