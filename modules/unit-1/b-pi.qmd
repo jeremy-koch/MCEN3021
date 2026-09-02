@@ -37,9 +37,9 @@ This statement seems abstract, and how is it useful for engineering? We will see
 
 ### What are "variables", what are "fundamental dimensions"?
 
-This is probably actually the biggest challenge of the Buckingham-$\Pi$ Theorem: identifying the collection of variables/parameters that are relevant to the problem or phenomenon.
+This is actually the biggest challenge of the Buckingham-$\Pi$ Theorem: identifying the collection of variables/parameters that are relevant to the problem or phenomenon.
 
-Thinking back to the pendulum problem, we speculated that the oscillation time $t_\text{osc}$ was a function of the pendulum mass $m$ and length $L$, and gravity, $g$. In such a case, we postulated that there were $n=4$ variables/parameters involved in the problem: $t_\text{osc}$, $m$, $L$, and $g$. The fundamental dimensions of these are, respectively: T, M, L, and L/T². This means that it takes $r=3$ fundamental dimensions to describe the $n$ variables/parameters.
+Thinking back to [the pendulum from the last reading](units-and-dims.qmd#example-pendulum-period), we speculated that the oscillation time $t_\text{osc}$ was a function of the pendulum mass $m$ and length $L$, and gravity, $g$. We therefore could claim that there are $n=4$ variables/parameters involved in the problem: $t_\text{osc}$, $m$, $L$, and $g$. The fundamental dimensions of these are, respectively: T, M, L, and L/T². This means that it takes $r=3$ fundamental dimensions to describe the $n$ variables/parameters.
 
 ::: {.column-margin}
 What is the difference between a *variable* and a *parameter*? A variable could conceivably change within a problem, e.g. position $x$ or speed $U$. But parameters tend to stay constant in a problem, e.g. we might be able to plug-in different values for $D$, $\rho$, and $\mu$, but probably they are going to be constants in a given situation. This is how I use the terms, at least. 
@@ -47,12 +47,16 @@ What is the difference between a *variable* and a *parameter*? A variable could 
 
 But actually... it turned out that the mass was irrelevant! (Maybe you didn't fall for that trap!) So we came up with an incorrect list of variables! See, it is tough!
 
-For this simple version of the problem:
+After dropping $m$, we arrive at:
 
 - Variables/parameters: $t_\text{osc}$, $L$, and $g$ → $n=3$
 - Dimensions: T, L, and L/T² → two fundamental dimensions are involved → $r=2$
 
 and Buckingham-$\Pi$ predicts $n-r=1$ independent dimensionless group.
+
+::: {.column-margin}
+We could consider a more complicated version of the problem: here, we assumed no friction, but perhaps in a certain application, friction could not be neglected. We'd have more parameters: something that describes friction, and mass would likely be relevant after all because it is involved in overcoming friction. Then $n=5$ and $r=3$, and the problem is a bit more complicated.
+:::
 
 ### What is an "independent dimensionless group"?
 
@@ -63,7 +67,7 @@ $$
 $$
 
 ::: {.column-margin}
-We sometimes label these generically as "pi groups" and label them $\Pi_1$, $\Pi_2$, etc. All the useful ones end up getting a unique name... more on that later.
+We sometimes label these dimensionless groups generically as "pi groups" and label them $\Pi_1$, $\Pi_2$, etc. All the useful ones end up getting a unique name... more on that later.
 :::
 
 Note that we could also form a dimensionless group from $t_\text{osc}^2 \sim L/g$... both sides of this expression have dimensions of time². We then could create
@@ -111,7 +115,7 @@ $$
 
 So it is **not independent**: *if a group can be formed by combining other groups raised to any power, it is not independent of those other groups*.
 
-Indeed for this example, there are $n=3$ parameters ($L,W,H$), each a length, so $r=1$. Thus we expect $n-r=2$ independent dimensionless groups. It could be that we use $\Pi_1$ and $\Pi_3$, or $\Pi_2$ and $\Pi_3$, or $\Pi_1$ and $\Pi_2$ as the two independent groups, but there are not three independent groups.
+For this example, there are $n=3$ parameters ($L,W,H$), each a length, so $r=1$. Thus we expect $n-r=2$ independent dimensionless groups. It could be that we use $\Pi_1$ and $\Pi_3$, or $\Pi_2$ and $\Pi_3$, or $\Pi_1$ and $\Pi_2$ as the two independent groups, but there are not three independent groups.
 
 
 ## Practical example: drag force
@@ -128,7 +132,7 @@ $$
 
 
 ::: {.column-margin}
-The subscript on $\text{Re}_D$ is often included as a reminder of the geometry, here the diameter $D$. Recognize that if the geometry was a cube of side length $L$, the quantity $\rho U L/\mu$ would be dimensionless. We might label that $\text{Re}_L$. 
+The subscript on $\text{Re}_D$ is often included as a reminder of the geometry, here the diameter $D$. Recognize that if the geometry was a cube of side length $L$, the quantity $\rho U L/\mu$ would also be dimensionless. We might label that $\text{Re}_L$. 
 :::
 
 
@@ -139,7 +143,7 @@ $$
 \text{Re}_D \equiv \frac{\rho U^2}{\mu U/D}.
 $$
 
-- Upstairs is a fluid momentum... for a solid object, momentum is $mV$, for a fluid we would think about the mass flow rate instead, which can be written as $\dot{m}=\rho U A$ for some cross-sectional area $A$. (More on this later.)
+- Upstairs is a fluid momentum... for a solid object, momentum is $mV$, for a fluid we would think about the mass flow rate instead, which can be written as $\dot{m}=\rho U A$ for a cross-sectional area $A$. Thus $\dot{m}U=A \rho U^2$... not exactly what we have upstairs, but the same idea.
 - Downstairs looks like Newton's Law of Viscosity... $\mu \partial u/\partial y$, but with $U/D$ instead of $\partial u/\partial y$. 
 
 Thus, the Reynolds Number is a ratio between the fluid momentum and the viscous dissipation. We would see a high value of $\text{Re}$ for large objects, or fast flows, or low-viscosity fluids... the Reynolds Number for an airplane is probably about $10^6$ (no units!). We would see a low value of $\text{Re}$ for small objects, or slow flows, or high-viscosity fluids. The Reynolds Number for a bacteria swimming in your stomach might be about $10^{-5}$.
@@ -153,21 +157,19 @@ $$
 
 ... given the name "The Coefficient of Drag".
 
+
+Again, there are other options. $F_\text{D}/(\mu U D)$ is a dimensionless group, though not independent: it is $C_\text{D}\times \text{Re}$. We sometimes use this instead of the $C_\text{D}$ described above, but we'd never use both.
+
 ::: {.column-margin}
 There are a couple version of the denominator of $C_\text{D}$. Some use the "frontal area" $\pi D^2/4$ instead of just $D^2$... the frontal area is the area seen from far upstream. Some include a factor of $1/2$ in the denominator, which makes it look more like an equation we'll see in week 5 or so. When you look up information, just pay attention to the definition being used.
 :::
-
-
-Again... there are other options. $F_\text{D}/(\mu U D)$ is a dimensionless group, though not independent: it is $C_\text{D}\cdot \text{Re}$. We sometimes use this instead of the $C_\text{D}$ described above.
-
-
 
 ::: {.callout-tip}
 Why do we settle on these definitions?
 
 1. It's the author's choice. If you discover a new phenomenon and collect a bunch of experimental data on it, you can decide what to label your variables. Assuming they aren't ridiculous, other engineers will use the same terminology.
-2. We sometimes refer to these dimensionless groups as "non-dimensional variables". In the case of $\text{Re}$, if we were running an experiment on a particular object with a particular fluid, $D$, $\rho$, and $\mu$ would be unchanging — only $U$ would change. It is reasonable to then refer to the Reynolds Number as "the dimensionless velocity": it is, in a case like this, $\text{Re} = (\text{constant})U$.
-3. Related: We will see in the next section that the real utility of this framework is retrieving information from published works. If we are engineers trying to figure out how much drag force an object will experience, we would find a paper with that data for our geometry, it would probably be presented as "coefficient of drag as a function of the Reynolds Number", and then, mathematically, it is quick to unpack $F/(\rho U^2 D^2)$.
+2. We sometimes refer to these dimensionless groups as "non-dimensional variables". In the case of $\text{Re}$, if we were running an experiment on a particular object with a particular fluid, we would have constant values for $D$, $\rho$, and $\mu$ — only $U$ would change. It is reasonable to then refer to the Reynolds Number as "the dimensionless velocity": it is, in a case like this, $\text{Re} = (\text{constant})U$.
+3. Related: We will see in the next section that the real utility of this framework is retrieving information from published works. It is quick to unpack $F/(\rho U^2 D^2)$ to get $F$.
 :::
 
 ## What do we do with the groups?
@@ -176,19 +178,23 @@ We hint at it with point (3) above... the best way to present engineering data i
 
 ![Coefficient of drag $C_\text{D}$ as a function of Reynolds number for a sphere. Retrieved from [Kevin Dusling's GitHub course on Applied Fluid Mechanics](https://kdusling.github.io/teaching/Applied-Fluids/ImageDisplay.html?src=DragSphere). Note: the different icons represent data from different works.](DragSphere.png)
 
-If we determine from Buckingham-$\Pi$ that $n-r=2$, as we did for this problem, we can probably write $\Pi_2$ as a function of $\Pi_1$ (no matter how we define them)... as was done in the plot above. There is **a single curve that captures all of the relevant physics**.
+If we determine from Buckingham-$\Pi$ that $n-r=2$... as we did for this problem... we can probably write $\Pi_2$ as a function of $\Pi_1$ (no matter how we define them)... as was done in the plot above. There is **a single curve that captures all of the relevant physics**. Note that this is a collection of many different experiments, all collected onto a single curve! Amazing!
 
-Imagine plotting this as force as a function of speed. For a small sphere through air, there would be one curve; bigger sphere through air, another curve; even bigger sphere, another curve; spheres through honey, more curves; spheres through water; spheres through oil. The plot would be a mess of spaghetti — we couldn't make sense of it.
+::: {.column-margin}
+The fact that the data falls on a single curve like this is an indication that we correctly identified the $n=5$ relevant variables/parameters to the problem.
+:::
 
-With a plot like the above...
+Imagine plotting this as force, $F_\text{D}$, as a function of speed $U$. So, in Newtons and in meters-per-second. For a small sphere through air, there would be one curve; bigger sphere through air, another curve; even bigger sphere, another curve; spheres through honey, more curves; spheres through water; spheres through oil. The plot would be a mess of spaghetti — we couldn't make sense of it.
+
+With a plot like the above, we can go through this algorithm:
 
 1. Calculate the value of $\Pi_1$ (here, $\text{Re}_D$) based on given information.
 2. Find that value on the horizontal axis of the chart and trace it up to the curve.
 3. Determine the corresponding value of $\Pi_2$ (here, $C_\text{D}$).
-4. Unpack $\Pi_2$ to get whatever engineering value you need, e.g.
+4. Unpack $\Pi_2$ to get whatever engineering value you need, e.g., if you determine $\Pi_2=0.86$
 
 $$
-F_\text{D} = C_\text{D,1}\rho U^2 D^2.
+F_\text{D} = 0.86\rho U^2 D^2.
 $$
 
 Now we have our drag value!
@@ -207,7 +213,7 @@ $$
 \frac{h_\text{max}}{V_0^2/g}
 $$
 
-is a constant. (It happens to be $1/2$, if you recall from mechanics.) Hint: there is one $\Pi$ group, and so it can't be a function of anything else.
+is a constant. (From mechanics, the constant is $1/2$.) Hint: there is one $\Pi$ group, and so it can't be a function of anything else.
 
 
 ## Similitude
@@ -216,4 +222,4 @@ One final word: it may be that you have a new geometry or phenomenon that doesn'
 
 Imagine we have some sort of dangerous chemical and we want to determine how much it splashes. Rather than endanger the engineer who is doing the experiment, we wonder if we can replicate the behavior using water (certainly not dangerous, perhaps even fun).
 
-We go through Buckingham-$\Pi$ and determine that $n-r=2$, and then create two dimensionless groups that can be interpreted as "$\Pi_2$ is a function of $\Pi_1$". Then, if we can achieve the same value of $\Pi_1$ with water as we'd expect with the dangerous chemical, we should get the same value of $\Pi_2$ with the water as we would get with the dangerous chemical. We'll talk more about this in class.
+We go through Buckingham-$\Pi$ and determine that $n-r=2$, and then create two dimensionless groups that can be interpreted as "$\Pi_2$ is a function of $\Pi_1$". Then, if we can achieve the same value of $\Pi_1$ with water as we'd expect with the dangerous chemical, we should get the same value of $\Pi_2$ with water as we would get with the dangerous chemical. We'll talk more about this in class.
