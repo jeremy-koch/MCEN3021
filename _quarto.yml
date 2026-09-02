@@ -14,6 +14,7 @@ project:
     - "!modules/unit-1/what-is-a-fluid.qmd"
     - "!modules/unit-1/fluid-properties.qmd"
     - "!modules/unit-1/properties-worked.qmd"
+    - "!modules/unit-1/b-pi-extra.qmd"
     - "!modules/unit-2/"
     - "!modules/unit-3/"
     - "!modules/unit-4/"
@@ -53,7 +54,6 @@ website:
       - modules/unit-1/viscosity.qmd
       - modules/unit-1/units-and-dims.qmd
       - modules/unit-1/b-pi.qmd
-      - modules/unit-1/b-pi-extra.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd

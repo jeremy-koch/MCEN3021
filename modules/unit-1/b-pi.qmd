@@ -1,5 +1,5 @@
 ---
-title: "2.2 The Buckingham-$\Pi$ Theorem and Similitude"
+title: "2.2 The Buckingham-Pi Theorem and Similitude"
 ---
 
 {{< include ../_checkpoint-widget.qmd >}}
@@ -12,7 +12,7 @@ $$
 \frac{h_\text{max}}{V_0^2/g}
 $$
 
-must be dimensionless. In this reading we'll learn about the Buckingham-$\Pi$ Theorem, which will explain why, neglecting air resistance, this quantity has to be a constant. More generally, the Buckingham-$\Pi$ Theorem helps us to understand the scope of problems — how many variables are actually involved, how can we organize them to present the data effectively, how can we use the results of other engineers in our novel application.
+must be dimensionless. In this reading we'll learn about the Buckingham-$\Pi$ Theorem, which will explain why, neglecting air resistance, this quantity has to be a constant. More generally, the Buckingham-$\Pi$ Theorem helps us to understand the scope of problems — how many variables are actually involved, how we can organize them to present the data effectively, how we can use published results from other engineers in our novel application.
 
 ## Think first
 
@@ -23,8 +23,8 @@ must be dimensionless. In this reading we'll learn about the Buckingham-$\Pi$ Th
 
 **Look ahead**
 
-1. If you are the first person on the planet to study the hydrodynamics of a shape through a new fluid, do you have to do a complete set of experiments, at different sizes and speeds, to understand the lift and drag behavior?
-2. A model airplane in a wind tunnel is 1/50th the size of the real thing. Can we match the behavior of a real airplane? The turbulence, the wingtip vortices, ... .
+1. If you are the first person on the planet to study the hydrodynamics of a shape moving through a new fluid, do you have to do a complete set of experiments, at different sizes and speeds, to understand the lift and drag behavior?
+2. A model airplane in a wind tunnel is 1/50th the size of the real thing. Can we match the behavior of a real airplane? The turbulence, the wingtip vortices, ... ?
 
 
 ## The Buckingham-Pi Theorem
@@ -35,34 +35,52 @@ The theorem states
 
 This statement seems abstract, and how is it useful for engineering? We will see that it allows for us to organize information in a very effective way.
 
+### What are "variables", what are "fundamental dimensions"?
+
+This is probably actually the biggest challenge of the Buckingham-$\Pi$ Theorem: identifying the collection of variables/parameters that are relevant to the problem or phenomenon.
+
+Thinking back to the pendulum problem, we speculated that the oscillation time $t_\text{osc}$ was a function of the pendulum mass $m$ and length $L$, and gravity, $g$. In such a case, we postulated that there were $n=4$ variables/parameters involved in the problem: $t_\text{osc}$, $m$, $L$, and $g$. The fundamental dimensions of these are, respectively: T, M, L, and L/T². This means that it takes $r=3$ fundamental dimensions to describe the $n$ variables/parameters.
+
+::: {.column-margin}
+What is the difference between a *variable* and a *parameter*? A variable could conceivably change within a problem, e.g. position $x$ or speed $U$. But parameters tend to stay constant in a problem, e.g. we might be able to plug-in different values for $D$, $\rho$, and $\mu$, but probably they are going to be constants in a given situation. This is how I use the terms, at least. 
+:::
+
+But actually... it turned out that the mass was irrelevant! (Maybe you didn't fall for that trap!) So we came up with an incorrect list of variables! See, it is tough!
+
+For this simple version of the problem:
+
+- Variables/parameters: $t_\text{osc}$, $L$, and $g$ → $n=3$
+- Dimensions: T, L, and L/T² → two fundamental dimensions are involved → $r=2$
+
+and Buckingham-$\Pi$ predicts $n-r=1$ independent dimensionless group.
 
 ### What is an "independent dimensionless group"?
 
-Going back to the tossed ball example from the last reading, we used dimensional analysis to understand how the maximum height of the toss is related to the initial velocity and gravity, arriving at $h_\text{max} \sim V_0^2/g$. I'll emphasize: the dimension of the left-hand side (LHS) of that expression is length, the dimension of the RHS is also length. It is easy, then, to form a dimensionless group: just divide the LHS by the RHS
+We used dimensional analysis to arrive at $t_\text{osc} \sim \sqrt{L/g}$. I'll emphasize: the dimension of the left-hand side (LHS) of that expression is time, the dimension of the RHS is also time. It is easy, then, to form a dimensionless group: just divide the LHS by the RHS
 
 $$
-\Pi_1 \equiv \frac{h_\text{max}}{V_0^2/g}.
+\Pi_1 \equiv \frac{t_\text{osc}}{\sqrt{L/g}}.
 $$
 
 ::: {.column-margin}
 We sometimes label these generically as "pi groups" and label them $\Pi_1$, $\Pi_2$, etc. All the useful ones end up getting a unique name... more on that later.
 :::
 
-Note that we could also form a dimensionless group from $h_\text{max}^2 \sim V_0^4/g^2$... both sides of this expression have dimensions of length². We then can create
+Note that we could also form a dimensionless group from $t_\text{osc}^2 \sim L/g$... both sides of this expression have dimensions of time². We then could create
 
 $$
-\Pi'_1 \equiv \frac{h_\text{max}^2}{V_0^4/g^2}.
+\Pi'_1 \equiv \frac{t_\text{osc}^2}{L/g}.
 $$
 
 Similarly we could have 
 $$
-\Pi''_1 \equiv \frac{V_0^2/g}{h_\text{max}}
+\Pi''_1 \equiv \frac{L/g}{t_\text{osc}^2}
 $$
 
 or 
 
 $$
-\Pi'''_1 \equiv \frac{V_0^7/g^{3.5}}{h_\text{max}^{3.5}}.
+\Pi'''_1 \equiv \frac{L^7/g^7}{t_\text{osc}^{14}}.
 $$
 
 These are **not** independent: in each case we can write the group as the original group raised to a different power.
@@ -91,7 +109,9 @@ $$
 \Pi_3 = \Pi_1/\Pi_2.
 $$
 
-So it is **not independent**: if a group can be formed by combining other groups raised to any power, it is not independent of those other groups. Indeed for this example, there are $n=3$ parameters ($L,W,H$), each a length, so $r=1$. Thus we expect $n-r=2$ independent dimensionless groups. It could be that we use $\Pi_1$ and $\Pi_3$, or $\Pi_2$ and $\Pi_3$, or $\Pi_1$ and $\Pi_2$ as the two independent groups, but there are not three independent groups.
+So it is **not independent**: *if a group can be formed by combining other groups raised to any power, it is not independent of those other groups*.
+
+Indeed for this example, there are $n=3$ parameters ($L,W,H$), each a length, so $r=1$. Thus we expect $n-r=2$ independent dimensionless groups. It could be that we use $\Pi_1$ and $\Pi_3$, or $\Pi_2$ and $\Pi_3$, or $\Pi_1$ and $\Pi_2$ as the two independent groups, but there are not three independent groups.
 
 
 ## Practical example: drag force
@@ -190,7 +210,7 @@ $$
 is a constant. (It happens to be $1/2$, if you recall from mechanics.) Hint: there is one $\Pi$ group, and so it can't be a function of anything else.
 
 
-## Simultude
+## Similitude
 
 One final word: it may be that you have a new geometry or phenomenon that doesn't have any information published. Dimensional analysis is still useful!
 
