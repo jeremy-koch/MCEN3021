@@ -52,7 +52,7 @@ A chemical company is interested in the way drops of its new chemical will splas
 ## 4. The performance of an impeller ...
 ... is often characterized by two dimensionless numbers: a modified Reynolds Number (on the $x$-axis in the diagram below) and something called "The Power Number" (on the $y$-axis). This chart contains 6 different impeller designs.
 
-![](figures/impeller.png){width=50%}
+![](figures/impeller.png){width=90%}
 
 ::: {.column-margin}
 Chart from: Bates, Robert L., Philip L. Fondy, and Robert R. Corpstein. ``Examination of some geometric parameters of impeller power.'' Industrial \& Engineering Chemistry Process Design and Development 2, no. 4 (1963): 310-314.

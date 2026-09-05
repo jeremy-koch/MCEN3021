@@ -34,7 +34,7 @@ This is another important dimensionless number called "The Strouhal Number".
 
 Experimental data on the vortex phenomenon is shown below, with the $x$-axis being the Reynolds Number and the $y$-axis is the Strouhal Number $\text{St}$.
 
-![](St_vs_Re.png){width=50%}
+![](St_vs_Re.png){width=90%}
 
 ::: {.column-margin}
 Figure from: Norberg "Fluctuating lift on a circular cylinder: review and new measurements," Journal of Fluids and Structures 17.1 (2003): 57-96.
