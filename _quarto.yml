@@ -54,9 +54,11 @@ website:
       - modules/unit-1/viscosity.qmd
       - modules/unit-1/units-and-dims.qmd
       - modules/unit-1/b-pi.qmd
+      - modules/unit-1/strouhal_number.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd
+          - homework/hw2.qmd
       # Project, the rest of Unit 1, and Units 2-10 are drafted but
       # gitignored while the site is stripped down (see .gitignore).
       # Restore each section here, and its render: line above, as

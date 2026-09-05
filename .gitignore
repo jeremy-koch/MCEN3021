@@ -3,6 +3,7 @@
 # wrong-number diagnoses. Never publish these to the student-facing repo.
 homework/*
 !homework/hw1.qmd
+!homework/hw2.qmd
 !homework/figures/
 homework/solutions/
 pdfs/
