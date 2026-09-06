@@ -143,7 +143,7 @@ We'll have pressure acting on all faces, and the force on each face will be $pA$
 $$
 \begin{align*}
 \rho (\Delta x \Delta y \Delta z) a_x &= p(x_0-\Delta x/2,y_0,z_0)\Delta y \Delta z - p(x_0+\Delta x/2,y_0,z_0)\Delta y \Delta z \\
-\rho (\Delta x \Delta y \Delta z) a_y &= p(x_0,y_0-\Delta y/2,z_0)\Delta x \Delta z - p(x_0,y_0+\Delta y/2,z_0)\Delta x \Delta z - \rho \Delta x \Delta y \Delta z g\\
+\rho (\Delta x \Delta y \Delta z) a_y &= p(x_0,y_0-\Delta y/2,z_0)\Delta x \Delta z - p(x_0,y_0+\Delta y/2,z_0)\Delta x \Delta z - \rho (\Delta x \Delta y \Delta z) g\\
 \rho (\Delta x \Delta y \Delta z) a_z &= p(x_0,y_0,z_0-\Delta z/2)\Delta x \Delta y - p(x_0,y_0,z_0+\Delta z/2)\Delta x \Delta y.
 \end{align*}
 $$
@@ -157,7 +157,7 @@ Rewriting
 $$
 \begin{align*}
 \rho (\Delta x \Delta y \Delta z) a_x &= \Delta y \Delta z(p(x_0-\Delta x/2,y_0,z_0)-p(x_0+\Delta x/2,y_0,z_0)) \\
-\rho (\Delta x \Delta y \Delta z) a_y &= \Delta x \Delta z(p(x_0,y_0-\Delta y/2,z_0)- p(x_0,y_0+\Delta y/2,z_0)) - \rho \Delta x \Delta y \Delta z g\\
+\rho (\Delta x \Delta y \Delta z) a_y &= \Delta x \Delta z(p(x_0,y_0-\Delta y/2,z_0)- p(x_0,y_0+\Delta y/2,z_0)) - \rho (\Delta x \Delta y \Delta z) g\\
 \rho (\Delta x \Delta y \Delta z) a_z &= \Delta x \Delta y(p(x_0,y_0,z_0-\Delta z/2)) - p(x_0,y_0,z_0+\Delta z/2)).
 \end{align*}
 $$
@@ -166,9 +166,9 @@ and then including the Taylor Series
 
 $$
 \begin{align*}
-\rho (\Delta x \Delta y \Delta z) a_x &= \Delta y \Delta z(\frac{\partial p}{\partial x}\bigg\rvert_0 (-\Delta x/2)-\frac{\partial p}{\partial x}\bigg\rvert_0 (\Delta x/2)) = -\Delta y \Delta z \Delta x \frac{\partial p}{\partial x}\bigg\rvert_0\\
-\rho (\Delta x \Delta y \Delta z) a_y &= \Delta x \Delta z(\frac{\partial p}{\partial y}\bigg\rvert_0 (-\Delta y/2)-\frac{\partial p}{\partial y}\bigg\rvert_0 (\Delta y/2)) - \rho \Delta x \Delta y \Delta z g = -\Delta x \Delta z \Delta y \frac{\partial p}{\partial y}\bigg\rvert_0 - \rho \Delta x \Delta y \Delta z g\\
-\rho (\Delta x \Delta y \Delta z) a_z &= \Delta x \Delta y(\frac{\partial p}{\partial z}\bigg\rvert_0 (-\Delta z/2)-\frac{\partial p}{\partial z}\bigg\rvert_0 (\Delta z/2)) = -\Delta x \Delta y \Delta z \frac{\partial p}{\partial z}\bigg\rvert_0.
+\rho (\Delta x \Delta y \Delta z) a_x &= \Delta y \Delta z(\frac{\partial p}{\partial x}\bigg\rvert_0 (-\Delta x/2)-\frac{\partial p}{\partial x}\bigg\rvert_0 (\Delta x/2)) = -(\Delta y \Delta z \Delta x) \frac{\partial p}{\partial x}\bigg\rvert_0\\
+\rho (\Delta x \Delta y \Delta z) a_y &= \Delta x \Delta z(\frac{\partial p}{\partial y}\bigg\rvert_0 (-\Delta y/2)-\frac{\partial p}{\partial y}\bigg\rvert_0 (\Delta y/2)) - \rho \Delta x \Delta y \Delta z g = -(\Delta x \Delta z \Delta y) \frac{\partial p}{\partial y}\bigg\rvert_0 - \rho (\Delta x \Delta y \Delta z) g\\
+\rho (\Delta x \Delta y \Delta z) a_z &= \Delta x \Delta y(\frac{\partial p}{\partial z}\bigg\rvert_0 (-\Delta z/2)-\frac{\partial p}{\partial z}\bigg\rvert_0 (\Delta z/2)) = -(\Delta x \Delta y \Delta z) \frac{\partial p}{\partial z}\bigg\rvert_0.
 \end{align*}
 $$
 
@@ -223,18 +223,18 @@ In this coordinate system, we increase depth by decreasing $y$ (and the more neg
 Further, since $p$ is not a function of $x$ or $z$, we can simply integrate this $\frac{\partial p}{\partial y}$ equation:
 
 $$
-p(y) = -\rho g y (+ \text{constant}).
+p(y) = -\rho g y ~~~(+ \text{constant}).
 $$ {#eq-hydrostatic-p}
 
 
 ::: {.callout-note}
-This is exactly what we got with dimensional analysis at the top of this lesson... and it turns out that the numerical prefactor is $\pm 1$. See below for a note about the $\pm$.
+This is exactly what we got with dimensional analysis at the top of this lesson... and it turns out that the numerical prefactor is $\pm 1$. (See below for a note about the $\pm$.)
 :::
 
 
 ## Use of gauge pressure
 
-The atmosphere imposes a baseline amount of pressure at the surface of a fluid, and we can indeed keep track of it if we choose. Practically, we often use gauge pressure such that the fluid surface is at $p=0$. Any forces we compute using $p$ come out the same as in the detailed absolute pressure calculation because the atmosphere's contribution pushes equally on every side of a submerged body. 
+The atmosphere imposes a baseline amount of pressure at the surface of a fluid, and we can keep track of it if we choose. Practically, we often use gauge pressure such that the fluid surface is at $p=0$. Any forces we compute using $p$ come out the same as in the detailed absolute pressure calculation because the atmosphere's contribution pushes equally on every side of a submerged body. 
 
 In such a case, it is common to **choose to define** $y=0$ at the surface of the fluid body. Then, the constant in @eq-hydrostatic-p is just zero (if we are talking gauge pressure).
 
@@ -248,7 +248,7 @@ As I mentioned in class, this is arguably your first real *applied math* class. 
 
 One bit of wisdom I hope to impart over the course of this semester: math is a **tool** that we have invented to understand the world. Nature does not mandate that we use $y$ to define our vertical position in space, we chose that convention in this reading. We will soon calculate the total force on a cylindrical body, and the translation of $(x,y)$ to $(r,\theta)$ is aligned with what you saw in in your calculus courses. However, later in the course, $z$ is the standard variable for altitude.
 
-Moreover, we can think about increasing $y$ increasing depth, or $y$ decreasing as we move away from the surface, or $z$ increasing with depth, or $z$ decreasing as we move away from the surface. With these four options, we will have $p \sim \pm \rho g y$ or $p \sim \pm \rho g z$. **All are acceptable, and it is possible we will use all four this semester.**
+Moreover, we can think about increasing $y$ increasing depth, or $y$ decreasing as we move away from the surface deeper into the fluid, or $z$ increasing with depth, or $z$ decreasing as we move away from the surface deeper into the fluid. With these four options, we will have $p \sim \pm \rho g y$ or $p \sim \pm \rho g z$. **All are acceptable, and we may use all four this semester.**
 
 ::: {.callout-important}
 
