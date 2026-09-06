@@ -100,16 +100,23 @@ We'll write a force balance on this parcel, $m\mathbf{a}=\mathbf{F}$. The fluid 
 ::: {.callout-note}
 ### Taylor Series review
 
-We are going to deal with a function for pressure, but don't know what that function is yet. One approach we could take is to write the unknown pressure at every face: $p(x_0+\Delta x/2,y_0,z_0)$, $p(x_0-\Delta x/2,y_0,z_0)$, $p(x_0,y_0+\Delta y/2,z_0)$, $p(x_0,y_0-\Delta y/2,z_0)$,  $p(x_0,y_0,z_0+\Delta z/2)$, $p(x_0,y_0,z_0-\Delta z/2)$. But then we basically are adding six unknowns to our equation, and won't make progress.
+We are going to deal with a function for pressure, but don't know what that function is yet. One approach we could take is to write the unknown pressure at every face: 
 
-Instead, we might use a Taylor Series description of the function. Sticking to just one dimension for now, the Taylor Series for a function $p(x)$ is
+- $p(x_0+\Delta x/2,y_0,z_0)$
+- $p(x_0-\Delta x/2,y_0,z_0)$
+- $p(x_0,y_0+\Delta y/2,z_0)$
+- $p(x_0,y_0-\Delta y/2,z_0)$
+- $p(x_0,y_0,z_0+\Delta z/2)$
+- $p(x_0,y_0,z_0-\Delta z/2)$.
+
+But then we basically are adding six unknowns to our equation, and we won't make progress. Instead, we might use a Taylor Series description of the function. Sticking to just one dimension for now, the Taylor Series for a function $p(x)$ is
 
 
 $$
 p(x) = p(x_0) + \frac{dp}{dx}\bigg\rvert_0 (x-x_0)+ \frac{1}{2}\frac{d^2p}{dx^2}\bigg\rvert_0 (x-x_0)^2+  \dots + \frac{1}{n!}\frac{d^np}{dx^n}\bigg\rvert_0 (x-x_0)^n + \dots
 $$
 
-with the sides being **exactly equal** when infinity terms are included. That's quite a burden, calculating infinity terms, but in practice: as long as $x-x_0$ is not too large, we can get away with using a *truncated* version of the series, including a **linearized** version:
+with the sides being **exactly equal** when infinity terms are included. That's quite a burden, calculating infinity terms, but in practice: as long as $x-x_0$ is not too large, we can get away with using a *truncated* version of the series, including a **linearized** version when $x-x_0$ is small enough:
 
 $$
 p(x) \approx p(x_0) + \frac{dp}{dx}\bigg\rvert_0 (x-x_0).
@@ -122,7 +129,7 @@ Notice that we are evaluating $dp/dx$ at a particular location, $x_0$. Then this
 Further, if we are interested in the value of the function a distance $\Delta x/2$ from the reference point:
 
 $$
-p(x_0+\Delta x) \approx p(x_0) + \frac{dp}{dx}\bigg\rvert_0 (x_0+\Delta x/2-x_0) = p(x_0) + \frac{dp}{dx}\bigg\rvert_0 (\Delta x/2).
+p(x_0+\Delta x/2) \approx p(x_0) + \frac{dp}{dx}\bigg\rvert_0 (x_0+\Delta x/2-x_0) = p(x_0) + \frac{dp}{dx}\bigg\rvert_0 (\Delta x/2).
 $$
 
 
@@ -135,9 +142,9 @@ We'll have pressure acting on all faces, and the force on each face will be $pA$
 
 $$
 \begin{align*}
-\rho \Delta x \Delta y \Delta z a_x &= p(x_0-\Delta x/2,y_0,z_0)\Delta y \Delta z - p(x_0+\Delta x/2,y_0,z_0)\Delta y \Delta z \\
-\rho \Delta x \Delta y \Delta z a_y &= p(x_0,y_0-\Delta y/2,z_0)\Delta x \Delta z - p(x_0,y_0+\Delta y/2,z_0)\Delta x \Delta z - \rho \Delta x \Delta y \Delta z g\\
-\rho \Delta x \Delta y \Delta z a_z &= p(x_0,y_0,z_0-\Delta z/2)\Delta x \Delta y - p(x_0,y_0,z_0+\Delta z/2)\Delta x \Delta y.
+\rho (\Delta x \Delta y \Delta z) a_x &= p(x_0-\Delta x/2,y_0,z_0)\Delta y \Delta z - p(x_0+\Delta x/2,y_0,z_0)\Delta y \Delta z \\
+\rho (\Delta x \Delta y \Delta z) a_y &= p(x_0,y_0-\Delta y/2,z_0)\Delta x \Delta z - p(x_0,y_0+\Delta y/2,z_0)\Delta x \Delta z - \rho \Delta x \Delta y \Delta z g\\
+\rho (\Delta x \Delta y \Delta z) a_z &= p(x_0,y_0,z_0-\Delta z/2)\Delta x \Delta y - p(x_0,y_0,z_0+\Delta z/2)\Delta x \Delta y.
 \end{align*}
 $$
 
@@ -145,17 +152,28 @@ $$
 The volume of this rectangular prism is $V=\Delta x \Delta y \Delta z$, and its mass is $\rho V$. The area of the face with normal in the $\pm\hat{x}$-direction is $\Delta y\Delta z$, in the $\pm\hat{y}$-direction is $\Delta x\Delta z$, and in the $\pm\hat{z}$-direction is $\Delta x\Delta y$.
 :::
 
-Then we divide these equations through by the volume $\Delta x \Delta y \Delta z$ to get 
+Rewriting
 
 $$
 \begin{align*}
-\rho a_x &= \frac{p(x_0-\Delta x/2,y_0,z_0) - p(x_0+\Delta x/2,y_0,z_0)}{\Delta x} \\
-\rho a_y &= \frac{p(x_0,y_0-\Delta y/2,z_0) - p(x_0,y_0+\Delta y/2,z_0)}{\Delta y} - \rho g\\
-\rho a_z &= \frac{p(x_0,y_0,z_0-\Delta z/2) - p(x_0,y_0,z_0+\Delta z/2)}{\Delta z}.
+\rho (\Delta x \Delta y \Delta z) a_x &= \Delta y \Delta z(p(x_0-\Delta x/2,y_0,z_0)-p(x_0+\Delta x/2,y_0,z_0)) \\
+\rho (\Delta x \Delta y \Delta z) a_y &= \Delta x \Delta z(p(x_0,y_0-\Delta y/2,z_0)- p(x_0,y_0+\Delta y/2,z_0)) - \rho \Delta x \Delta y \Delta z g\\
+\rho (\Delta x \Delta y \Delta z) a_z &= \Delta x \Delta y(p(x_0,y_0,z_0-\Delta z/2)) - p(x_0,y_0,z_0+\Delta z/2)).
 \end{align*}
 $$
 
-and, in the limit that $\Delta x$, etc., are small, these equations are simply
+and then including the Taylor Series
+
+$$
+\begin{align*}
+\rho (\Delta x \Delta y \Delta z) a_x &= \Delta y \Delta z(\frac{\partial p}{\partial x}\bigg\rvert_0 (-\Delta x/2)-\frac{\partial p}{\partial x}\bigg\rvert_0 (\Delta x/2)) = -\Delta y \Delta z \Delta x \frac{\partial p}{\partial x}\bigg\rvert_0\\
+\rho (\Delta x \Delta y \Delta z) a_y &= \Delta x \Delta z(\frac{\partial p}{\partial y}\bigg\rvert_0 (-\Delta y/2)-\frac{\partial p}{\partial y}\bigg\rvert_0 (\Delta y/2)) - \rho \Delta x \Delta y \Delta z g = -\Delta x \Delta z \Delta y \frac{\partial p}{\partial y}\bigg\rvert_0 - \rho \Delta x \Delta y \Delta z g\\
+\rho (\Delta x \Delta y \Delta z) a_z &= \Delta x \Delta y(\frac{\partial p}{\partial z}\bigg\rvert_0 (-\Delta z/2)-\frac{\partial p}{\partial z}\bigg\rvert_0 (\Delta z/2)) = -\Delta x \Delta y \Delta z \frac{\partial p}{\partial z}\bigg\rvert_0.
+\end{align*}
+$$
+
+
+Then we divide these equations through by the volume $\Delta x \Delta y \Delta z$ to get 
 
 $$
 \begin{align*}
