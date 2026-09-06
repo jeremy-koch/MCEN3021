@@ -14,18 +14,18 @@ pdfs/
 conceptests/
 
 # ── Unfinished / stripped-down readings ─────────────────────────────
-# The site is pared down to course bureaucracy (index/syllabus) plus a
-# single reading, modules/unit-1/pressure.qmd. Everything else below is
-# drafted locally but not published. Un-gitignore a file (and restore
-# its _quarto.yml sidebar section + render: entry) as it's ready to go
-# live again.
+# The site is pared down to course bureaucracy (index/syllabus) plus the
+# readings published so far (see _quarto.yml's sidebar). Everything else
+# below is drafted locally but not published. Un-gitignore a file (and
+# restore its _quarto.yml sidebar section + render: entry) as it's ready
+# to go live again.
 project.qmd
 modules/unit-1/what-is-a-fluid.qmd
 modules/unit-1/fluid-properties.qmd
-modules/unit-1/b-pi-extra.qmd
 modules/unit-1/properties-worked.qmd
-modules/unit-2/
-modules/unit-3/
+modules/unit-2/b-pi-extra.qmd
+modules/unit-2/old/
+modules/unit-3/old/
 modules/unit-4/
 modules/unit-5/
 modules/unit-6/

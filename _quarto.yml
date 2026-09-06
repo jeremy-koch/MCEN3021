@@ -3,8 +3,9 @@ project:
   render:
     - "*.qmd"
     # The site is stripped down to course bureaucracy (index/syllabus)
-    # plus one reading. Project, Homework, Tools, and Reference pages
-    # are gitignored and excluded here; restore each as it's ready.
+    # plus the readings published so far. Project, Homework, Tools, and
+    # Reference pages are gitignored and excluded here; restore each as
+    # it's ready.
     - "!project.qmd"
     - "!homework.qmd"
     - "!tools.qmd"
@@ -14,9 +15,9 @@ project:
     - "!modules/unit-1/what-is-a-fluid.qmd"
     - "!modules/unit-1/fluid-properties.qmd"
     - "!modules/unit-1/properties-worked.qmd"
-    - "!modules/unit-1/b-pi-extra.qmd"
-    - "!modules/unit-2/"
-    - "!modules/unit-3/"
+    - "!modules/unit-2/b-pi-extra.qmd"
+    - "!modules/unit-2/old/"
+    - "!modules/unit-3/old/"
     - "!modules/unit-4/"
     - "!modules/unit-5/"
     - "!modules/unit-6/"
@@ -52,9 +53,10 @@ website:
       - syllabus.qmd
       - modules/unit-1/pressure.qmd
       - modules/unit-1/viscosity.qmd
-      - modules/unit-1/units-and-dims.qmd
-      - modules/unit-1/b-pi.qmd
-      - modules/unit-1/strouhal_number.qmd
+      - modules/unit-2/units-and-dims.qmd
+      - modules/unit-2/b-pi.qmd
+      - modules/unit-2/strouhal_number.qmd
+      - modules/unit-3/hydrostatics.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd
@@ -69,18 +71,16 @@ website:
       #     - modules/unit-1/what-is-a-fluid.qmd
       #     - modules/unit-1/fluid-properties.qmd
       #     - modules/unit-1/properties-worked.qmd
-      # - section: "Unit 2 · Dimensional Analysis"
-      #   contents:
-      #     - modules/unit-2/dimensional-analysis.qmd
-      #     - modules/unit-2/similitude-model-testing.qmd
-      #     - modules/unit-2/dimensional-worked.qmd
-      # - section: "Unit 3 · Hydrostatics"
-      #   contents:
-      #     - modules/unit-3/pressure-and-manometry.qmd
-      #     - modules/unit-3/statics-plane-surfaces.qmd
-      #     - modules/unit-3/curved-surfaces-buoyancy.qmd
-      #     - modules/unit-3/statics-stability.qmd
-      #     - modules/unit-3/statics-worked.qmd
+      # Unit 2's live 2.1/2.2/2.3 readings (units-and-dims, b-pi,
+      # strouhal_number) are already published above, outside a section
+      # header, to match the site's current flat/stripped-down style.
+      # b-pi-extra.qmd (2.3 extra) is drafted but not yet published.
+      # The old unit-2/old/ and unit-3/old/ drafts (dimensional-analysis,
+      # similitude-model-testing, dimensional-worked, pressure-and-manometry,
+      # statics-plane-surfaces, curved-surfaces-buoyancy, statics-stability,
+      # statics-worked) predate the units-and-dims/b-pi/hydrostatics rewrite
+      # and are superseded — revisit before reviving rather than restoring
+      # as-is.
       # - section: "Unit 4 · Bernoulli"
       #   contents:
       #     - modules/unit-4/bernoulli.qmd

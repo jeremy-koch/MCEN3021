@@ -1,0 +1,246 @@
+---
+title: "3.1 Hydrostatic Pressure"
+---
+
+{{< include ../_checkpoint-widget.qmd >}}
+
+## The big idea
+
+We'll start talking about fluids in earnest this week, and the first step is **hydrostatics** — stationary (static) fluids. Take an elevator to the top of the Engineering Center tower or dive into a pool and you will sense this phenomenon in your ears: it is the source of the pressure change. We'll talk about buoyancy and forces on submerged objects soon. This topic is also a building-block for fluids in motion.
+
+## Think first
+
+**Recall**
+
+1. What's the difference between pressure and density, dimensionally?
+2. You've done a dimensional-analysis guess before — what's the move when you don't know the governing equation yet?
+3. Have you ever needed to "pop" your ears while in an elevator or a pool? What do you think is actually changing around you?
+
+**Look ahead**
+
+1. Why does pressure depend on depth but not on how wide or long the pool is?
+2. A scuba diver and a hiker both go up 10 m — why does one's ears hurt way more than the other's?
+3. We're about to shrink a fluid parcel down to (almost) nothing and demand $\mathbf{F} = m\mathbf{a}$ on it. What do you think falls out?
+
+
+## Dimensional analysis throwback
+
+Can we guess what our equations will look like? Hydrostatic pressure is the phenomenon that explains why we have greater pressure (as measured by our ears) when we dive deeper in the water. We experience the same phenomenon when we go up in an elevator, but it's less extreme — maybe because air is less dense than water? So, some observations/hypotheses:
+
+- We expect the hydrostatic pressure to be a function of depth, let's call it $h$.
+- We expect it to be a function of density, $\rho$.
+- And moving horizontally doesn't seem to change the pressure, only moving vertically. So, maybe gravity $g$ is involved?
+
+
+We can write $p \sim \rho^a g^b h^c$. It turns out that this system can be solved with $a=b=c=1$, so we anticipate a result: $p \sim \rho g h$. We don't know the prefactor yet, but that should be the scaling.
+
+## Force balance
+
+Let's start with a fluid of density $\rho$, and we are going to focus on a small prism within this fluid, made up of this fluid, with sides $\Delta x$, $\Delta y$, and $\Delta z$. Gravity, $g$, points in the $-\hat{y}$-direction. We'll say that the parcel's center is located at $(x_0,y_0,z_0)$.
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="420" height="340" viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- axes -->
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#333"/>
+    </marker>
+    <marker id="arrow-g" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#c0392b"/>
+    </marker>
+  </defs>
+
+  <!-- coordinate frame, bottom-left corner -->
+  <g stroke="#333" stroke-width="1.5">
+    <line x1="40" y1="300" x2="90" y2="300" marker-end="url(#arrow)"/>
+    <line x1="40" y1="300" x2="40" y2="250" marker-end="url(#arrow)"/>
+    <line x1="40" y1="300" x2="8" y2="320" marker-end="url(#arrow)"/>
+  </g>
+  <text x="94" y="304" font-size="14">x</text>
+  <text x="36" y="242" font-size="14">y</text>
+  <text x="-2" y="332" font-size="14">z</text>
+
+  <!-- prism: back face (dashed, hidden edges) -->
+  <g fill="none" stroke="#2c7fb8" stroke-width="1.5">
+    <polygon points="150,230 150,140 220,140 220,230" stroke-dasharray="4,3"/>
+  </g>
+
+  <!-- prism: front face (offset by isometric skew) -->
+  <g fill="#2c7fb8" fill-opacity="0.12" stroke="#2c7fb8" stroke-width="2">
+    <polygon points="190,250 190,160 260,160 260,250"/>
+  </g>
+
+  <!-- connecting edges (depth = z direction) -->
+  <g stroke="#2c7fb8" stroke-width="1.5" stroke-dasharray="4,3">
+    <line x1="150" y1="230" x2="190" y2="250"/>
+    <line x1="150" y1="140" x2="190" y2="160"/>
+    <line x1="220" y1="140" x2="260" y2="160"/>
+  </g>
+  <g stroke="#2c7fb8" stroke-width="2">
+    <line x1="220" y1="230" x2="260" y2="250"/>
+  </g>
+
+  <!-- dimension labels -->
+  <text x="215" y="270" font-size="14" fill="#2c7fb8">&#916;x</text>
+  <text x="270" y="210" font-size="14" fill="#2c7fb8">&#916;y</text>
+  <text x="165" y="205" font-size="14" fill="#2c7fb8">&#916;z</text>
+
+  <!-- gravity arrow -->
+  <line x1="330" y1="150" x2="330" y2="230" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrow-g)"/>
+  <text x="340" y="195" font-size="15" fill="#c0392b">g</text>
+  <text x="290" y="245" font-size="13" fill="#555">(&#8722;&#375; direction)</text>
+
+  <!-- density label inside prism -->
+  <text x="205" y="210" font-size="14" fill="#333">&#961;</text>
+</svg>
+</div>
+```
+
+We'll write a force balance on this parcel, $m\mathbf{a}=\mathbf{F}$. The fluid parcel will experience forces due to pressure on all of its faces, involving, e.g., $p(x_0,y_0+\Delta y/2,z_0)$. That will lead to six terms, and then the parcel weight is one additional term. Before we get into that, let's do a little Taylor Series review.
+
+
+::: {.callout-note}
+### Taylor Series review
+
+We are going to deal with a function for pressure, but don't know what that function is yet. One approach we could take is to write the unknown pressure at every face: $p(x_0+\Delta x/2,y_0,z_0)$, $p(x_0-\Delta x/2,y_0,z_0)$, $p(x_0,y_0+\Delta y/2,z_0)$, $p(x_0,y_0-\Delta y/2,z_0)$,  $p(x_0,y_0,z_0+\Delta z/2)$, $p(x_0,y_0,z_0-\Delta z/2)$. But then we basically are adding six unknowns to our equation, and won't make progress.
+
+Instead, we might use a Taylor Series description of the function. Sticking to just one dimension for now, the Taylor Series for a function $p(x)$ is
+
+
+$$
+p(x) = p(x_0) + \frac{dp}{dx}\bigg\rvert_0 (x-x_0)+ \frac{1}{2}\frac{d^2p}{dx^2}\bigg\rvert_0 (x-x_0)^2+  \dots + \frac{1}{n!}\frac{d^np}{dx^n}\bigg\rvert_0 (x-x_0)^n + \dots
+$$
+
+with the sides being **exactly equal** when infinity terms are included. That's quite a burden, calculating infinity terms, but in practice: as long as $x-x_0$ is not too large, we can get away with using a *truncated* version of the series, including a **linearized** version:
+
+$$
+p(x) \approx p(x_0) + \frac{dp}{dx}\bigg\rvert_0 (x-x_0).
+$$
+
+::: {.column-margin}
+Notice that we are evaluating $dp/dx$ at a particular location, $x_0$. Then this equation is basically $p(x) = mx+b$... a line.
+:::
+
+Further, if we are interested in the value of the function a distance $\Delta x/2$ from the reference point:
+
+$$
+p(x_0+\Delta x) \approx p(x_0) + \frac{dp}{dx}\bigg\rvert_0 (x_0+\Delta x/2-x_0) = p(x_0) + \frac{dp}{dx}\bigg\rvert_0 (\Delta x/2).
+$$
+
+
+:::
+
+
+### Writing the force balance
+
+We'll have pressure acting on all faces, and the force on each face will be $pA$, with different pressures and areas. Since $\mathbf{F}$ and $\mathbf{a}$ are vectors, so we need to write three components to $m\mathbf{a}=\mathbf{F}$:
+
+$$
+\begin{align*}
+\rho \Delta x \Delta y \Delta z a_x &= p(x_0-\Delta x/2,y_0,z_0)\Delta y \Delta z - p(x_0+\Delta x/2,y_0,z_0)\Delta y \Delta z \\
+\rho \Delta x \Delta y \Delta z a_y &= p(x_0,y_0-\Delta y/2,z_0)\Delta x \Delta z - p(x_0,y_0+\Delta y/2,z_0)\Delta x \Delta z - \rho \Delta x \Delta y \Delta z g\\
+\rho \Delta x \Delta y \Delta z a_z &= p(x_0,y_0,z_0-\Delta z/2)\Delta x \Delta y - p(x_0,y_0,z_0+\Delta z/2)\Delta x \Delta y.
+\end{align*}
+$$
+
+::: {.column-margin}
+The volume of this rectangular prism is $V=\Delta x \Delta y \Delta z$, and its mass is $\rho V$. The area of the face with normal in the $\pm\hat{x}$-direction is $\Delta y\Delta z$, in the $\pm\hat{y}$-direction is $\Delta x\Delta z$, and in the $\pm\hat{z}$-direction is $\Delta x\Delta y$.
+:::
+
+Then we divide these equations through by the volume $\Delta x \Delta y \Delta z$ to get 
+
+$$
+\begin{align*}
+\rho a_x &= \frac{p(x_0-\Delta x/2,y_0,z_0) - p(x_0+\Delta x/2,y_0,z_0)}{\Delta x} \\
+\rho a_y &= \frac{p(x_0,y_0-\Delta y/2,z_0) - p(x_0,y_0+\Delta y/2,z_0)}{\Delta y} - \rho g\\
+\rho a_z &= \frac{p(x_0,y_0,z_0-\Delta z/2) - p(x_0,y_0,z_0+\Delta z/2)}{\Delta z}.
+\end{align*}
+$$
+
+and, in the limit that $\Delta x$, etc., are small, these equations are simply
+
+$$
+\begin{align*}
+\rho a_x &= -\frac{\partial p}{\partial x}\bigg\rvert_0 \\
+\rho a_y &= -\frac{\partial p}{\partial y}\bigg\rvert_0 - \rho g\\
+\rho a_z &= -\frac{\partial p}{\partial z}\bigg\rvert_0.
+\end{align*}
+$$
+
+Finally, we are going to focus, for now, on **hydrostatics**... fluids that are not in motion. Then $a_x = a_y = a_z = 0$. The above then reduces to
+
+
+$$
+\begin{align*}
+0 &= -\frac{\partial p}{\partial x} \\
+0 &= -\frac{\partial p}{\partial y} - \rho g\\
+0 &= -\frac{\partial p}{\partial z}.
+\end{align*}
+$$
+
+which is true generally, so we drop the "evaluate at 0" subscript. Another way to write that is
+
+$$
+\boxed{\boldsymbol\nabla p = \rho \mathbf{g}.}
+$$
+
+This is the hydrostatic equation, with $\mathbf{g} = - g \hat{y}$.
+
+## Meaning of the hydrostatic equation
+
+We have $\partial p/\partial x = \partial p/\partial z = 0$... what does this mean?
+
+::: {.callout-note collapse="true"}
+### Click here for the meaning
+
+Pressure is not a function of $x$ or $z$ (in this definition of the coordinate system). The hydrostatic pressure does not depend on our horizontal location within a body of water.
+:::
+
+Then what about $\frac{\partial p}{\partial y} = - \rho g$?
+
+::: {.callout-note collapse="true"}
+### Click here for the meaning
+
+In this coordinate system, we increase depth by decreasing $y$ (and the more negative the value of $y$, the greater depth). Another way to put that: as we increase $y$, we should be decreasing $p$, and indeed our slope of $p(y)$ is negative.
+:::
+
+Further, since $p$ is not a function of $x$ or $z$, we can simply integrate this $\frac{\partial p}{\partial y}$ equation:
+
+$$
+p(y) = -\rho g y (+ \text{constant}).
+$$ {#eq-hydrostatic-p}
+
+
+::: {.callout-note}
+This is exactly what we got with dimensional analysis at the top of this lesson... and it turns out that the numerical prefactor is $\pm 1$. See below for a note about the $\pm$.
+:::
+
+
+## Use of gauge pressure
+
+The atmosphere imposes a baseline amount of pressure at the surface of a fluid, and we can indeed keep track of it if we choose. Practically, we often use gauge pressure such that the fluid surface is at $p=0$. Any forces we compute using $p$ come out the same as in the detailed absolute pressure calculation because the atmosphere's contribution pushes equally on every side of a submerged body. 
+
+In such a case, it is common to **choose to define** $y=0$ at the surface of the fluid body. Then, the constant in @eq-hydrostatic-p is just zero (if we are talking gauge pressure).
+
+
+::: {.callout-important}
+As I mentioned in class, this is arguably your first real *applied math* class. By that I mean that **you** are responsible for determining how to apply math to a physical situation, unlike in your "aPpLiEd mAtH" classes where they give you a completely set-up problem and tell you to go through the algorithm to solve it. Part of your job in this class is **defining the coordinate system**.
+:::
+
+
+### A word on $\pm y$ and $\pm z$
+
+One bit of wisdom I hope to impart over the course of this semester: math is a **tool** that we have invented to understand the world. Nature does not mandate that we use $y$ to define our vertical position in space, we chose that convention in this reading. We will soon calculate the total force on a cylindrical body, and the translation of $(x,y)$ to $(r,\theta)$ is aligned with what you saw in in your calculus courses. However, later in the course, $z$ is the standard variable for altitude.
+
+Moreover, we can think about increasing $y$ increasing depth, or $y$ decreasing as we move away from the surface, or $z$ increasing with depth, or $z$ decreasing as we move away from the surface. With these four options, we will have $p \sim \pm \rho g y$ or $p \sim \pm \rho g z$. **All are acceptable, and it is possible we will use all four this semester.**
+
+::: {.callout-important}
+
+The most important thing is to keep track of the physics: as you increase depth, you should be increasing pressure.
+
+:::
+
+
+
+
