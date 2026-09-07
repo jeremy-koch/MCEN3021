@@ -16,7 +16,7 @@ State your answer and add a quick justification, if appropriate.
 I'll emphasize: this is *pressure-driven*... which direction is the pressure gradient? And which direction is the shear force from the walls on the fluid? (Hint: viscous forces are basically friction, which resists motion.)
 
 ::: {.callout-tip title="Solution" collapse="true"}
-Pressure is higher upstream and lower downstream, and so the gradient points downstream. The negative of the gradient, $-\nabla p$, is what drives the flow. Then flow is occurring, but is being resisted by friction at the walls — the shear force at the walls points upstream. At steady-state, these forces balance each other.
+Pressure is higher upstream and lower downstream, and so the **gradient points upstream**. Once flow is occurring it is resisted by friction at the walls — the shear force at the walls points **upstream**. At steady-state, these forces balance each other.
 :::
 
 (b) Look up the values for the viscosity of air and water at 10°C. How much more viscous is water than air? [Wolfram Alpha](https://www.wolframalpha.com) might have the answers...
@@ -85,6 +85,8 @@ $$
     &= \pi \cos \pi x \cos \pi y - \pi \cos \pi x \cos \pi y = 0 
 \end{align*}
 $$
+
+We will see that the conservation of mass equation for constant-density fluids is $\bnabla \cdot \boldsymbol{u} =0$.
 :::
 
 (c) Calculate the **curl** of this flow field.
@@ -99,7 +101,7 @@ $$
 \end{align*}
 $$
 
-Nonzero, so the flow is rotational — consistent with the recirculating cell from part (a).
+The curl of a flow field has a special name in fluid mechanics: **the vorticity**. And it obeys the right-hand rule: can you justify why the curl is in the $+\hat{z}$-direction by looking at the flow field?
 :::
 
 
@@ -123,7 +125,7 @@ $$\pd{u}{y}=U\left[ \frac{3}{10}\sqrt{\frac{\rho U}{\mu x}} - \frac{3y^2}{2}\lef
 Evaluating at the surface, $y=0$:
 $$\pd{u}{y} = \frac{3U}{10}\sqrt{\frac{\rho U}{\mu x}}$$
 So, the shear stress acting on the surface from the fluid is:
-$$\tau(x,z)=\mu\frac{3U}{10}\sqrt{\frac{\rho U}{\mu x}} = \frac{3U}{10}\sqrt{\frac{\rho U \mu}{x}}$$
+$$\tau(x,z)=\mu\frac{3U}{10}\sqrt{\frac{\rho U}{\mu x}} = \frac{3U}{10}\sqrt{\frac{\rho U \mu}{x}}.$$
 :::
 
 (b) The simple shear flow we discussed in class does not vary in $x$ or $z$, and so the conversion between shear stress and force was a simple multiplication by area: $F = \tau \cdot A$. In the present case, the flow varies with position, and so we will need to do an integration. What is the total shear force on the surface, $F_\text{shear}$?
