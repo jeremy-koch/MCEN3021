@@ -16,7 +16,7 @@ State your answer and add a quick justification, if appropriate.
 I'll emphasize: this is *pressure-driven*... which direction is the pressure gradient? And which direction is the shear force from the walls on the fluid? (Hint: viscous forces are basically friction, which resists motion.)
 
 ::: {.callout-tip title="Solution" collapse="true"}
-Pressure is higher upstream and lower downstream, and so the **gradient points upstream**. Once flow is occurring it is resisted by friction at the walls — the shear force at the walls points **upstream**. At steady-state, these forces balance each other.
+Pressure is higher upstream and lower downstream, and so the **gradient points upstream**. However, note that this means the net force due to pressure points downstream. Once flow is occurring it is resisted by friction at the walls — the shear force at the walls points **upstream**. At steady-state, these forces balance each other.
 :::
 
 (b) Look up the values for the viscosity of air and water at 10°C. How much more viscous is water than air? [Wolfram Alpha](https://www.wolframalpha.com) might have the answers...
