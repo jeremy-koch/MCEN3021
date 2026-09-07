@@ -60,6 +60,7 @@ website:
       - section: "Homework"
         contents:
           - homework/hw1.qmd
+          - homework/hw1_sol.qmd
           - homework/hw2.qmd
       # Project, the rest of Unit 1, and Units 2-10 are drafted but
       # gitignored while the site is stripped down (see .gitignore).

@@ -1,8 +1,11 @@
 # ── Instructor-only material ────────────────────────────────────────
 # Answer keys, executed solutions, and the checkpoint answer bank with
 # wrong-number diagnoses. Never publish these to the student-facing repo.
+# Exception: hwN_sol.qmd files are published deliberately, once ready
+# (see _quarto.yml sidebar) -- un-gitignore each as it's released.
 homework/*
 !homework/hw1.qmd
+!homework/hw1_sol.qmd
 !homework/hw2.qmd
 !homework/figures/
 homework/solutions/
