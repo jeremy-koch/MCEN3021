@@ -33,9 +33,9 @@ We can write these in terms of Cartesian components:
 
 $$
 \begin{align*}
-    \rho a_x &= -\pd{p}{x}\\
-    \rho a_y &= -\pd{p}{y}\\
-    \rho a_z &= -\pd{p}{z}-\rho g
+    \rho a_x &= -\frac{\partial p}{\partial x}\\
+    \rho a_y &= -\frac{\partial p}{\partial y}\\
+    \rho a_z &= -\frac{\partial p}{\partial z}-\rho g
 \end{align*}
 $$
 
@@ -43,9 +43,9 @@ and then simplify to the case where we have only $x$-acceleration, $a_x=-a$, wit
 
 $$
 \begin{align*}
-    -\rho a &= -\pd{p}{x}\\
-    0 &= -\pd{p}{y}\\
-    0 &= -\pd{p}{z}-\rho g.
+    -\rho a &= -\frac{\partial p}{\partial x}\\
+    0 &= -\frac{\partial p}{\partial y}\\
+    0 &= -\frac{\partial p}{\partial z}-\rho g.
 \end{align*}
 $$
 
@@ -83,8 +83,8 @@ Going back to our second piece of wisdom, the surface is at constant pressure, $
 
 $$
 \begin{align*}
-    -\rho a &= -\pd{p}{x}\\
-    0 &= -\pd{p}{z}-\rho g
+    -\rho a &= -\frac{\partial p}{\partial x}\\
+    0 &= -\frac{\partial p}{\partial z}-\rho g
 \end{align*}
 $$
 
@@ -110,9 +110,9 @@ Now we can go back to our observation about the pressure gradient at the surface
 
 We can also recognize that the higher pressure toward the back corresponds to a greater depth below the (locally higher) free surface: $p \sim \rho g h$, with $h$ measured down from the tilted surface right above it, exactly like ordinary hydrostatics.
 
-## In cylindrical coordinates
+<!-- ## In cylindrical coordinates -->
 
-Just for practice moving between coordinate systems — and because cylindrical coordinates are the natural language for the *other* rigid-body-acceleration problem, steady rotation — let's see what this looks like set up in cylindrical coordinates centered on the tank, with $\theta=0$ along $\hat x$.
+<!-- Just for practice moving between coordinate system, let's see what this looks like set up in cylindrical coordinates centered on the tank, with $\theta=0$ along $\hat x$.
 
 The components of Newton's second law in cylindrical coordinates are
 
@@ -144,4 +144,4 @@ $$
 z = \frac{a}{g}\, r\cos\theta.
 $$
 
-This is the same tilted plane, just written in cylindrical coordinates — a genuine two-dimensional surface, not a function of $r$ alone. Slicing it at $\theta=0$ recovers $z=(a/g)r$, which is the tempting (but only locally-true) formula you'd get if you assumed $a_r=-a$ everywhere instead of $-a\cos\theta$.
+This is the same tilted plane, just written in cylindrical coordinates — a genuine two-dimensional surface, not a function of $r$ alone. Slicing it at $\theta=0$ recovers $z=(a/g)r$, which is the tempting (but only locally-true) formula you'd get if you assumed $a_r=-a$ everywhere instead of $-a\cos\theta$. -->

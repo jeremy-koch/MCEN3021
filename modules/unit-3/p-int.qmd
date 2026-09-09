@@ -169,11 +169,11 @@ A couple things worth noting:
   <!-- reference vertical (the beta=0 wall) and angle marker, at the top of the gate, inside the new triangle -->
   <line x1="344" y1="92" x2="344" y2="150" stroke="#888" stroke-width="1.2" stroke-dasharray="4,3"/>
   <path d="M 344 122 A 30 30 0 0 0 331 119" fill="none" stroke="#1a1a1a" stroke-width="1.3"/>
-  <text x="322" y="141" font-size="16" font-style="italic" fill="#1a1a1a">&#946;</text>
+  <text x="327" y="141" font-size="16" font-style="italic" fill="#1a1a1a">&#946;</text>
 
-  <!-- y' arrow: starts on the dashed reference line, runs down and left parallel to the wall -->
-  <line x1="344" y1="120" x2="319" y2="174" stroke="#1a1a1a" stroke-width="1" marker-end="url(#yp-arrow)"/>
-  <text x="298" y="190" font-size="15" font-style="italic" fill="#1a1a1a">y&#8242;</text>
+  <!-- y' arrow: starts at the top of the water, on the water side of the wall, runs down and left parallel to the wall -->
+  <line x1="308" y1="100" x2="283" y2="154" stroke="#1a1a1a" stroke-width="1" marker-end="url(#yp-arrow)"/>
+  <text x="262" y="170" font-size="15" font-style="italic" fill="#1a1a1a">y&#8242;</text>
 </svg>
 </div>
 ```
@@ -217,8 +217,8 @@ In the case where $\beta=0$, the force points in the $+\hat{x}$-direction. Indee
   <!-- sky (also fills the corner behind the gate, up to the image edge) -->
   <rect x="10" y="20" width="334" height="80" fill="#fbe3e3" stroke="#1a1a1a" stroke-width="1.5"/>
   <circle cx="165" cy="45" r="11" fill="#f2a33c" stroke="#1a1a1a" stroke-width="1"/>
-  <path d="M70,38 l5,-5 l5,5 l5,-5 l5,5" fill="none" stroke="#333" stroke-width="1.3"/>
-  <path d="M100,50 l5,-5 l5,5 l5,-5 l5,5" fill="none" stroke="#333" stroke-width="1.3"/>
+  <path d="M190,38 l5,-5 l5,5 l5,-5 l5,5" fill="none" stroke="#333" stroke-width="1.3"/>
+  <path d="M220,50 l5,-5 l5,5 l5,-5 l5,5" fill="none" stroke="#333" stroke-width="1.3"/>
 
   <!-- water: bounded on the right by the leaning wall, so it's wider at the surface than at the floor -->
   <polygon points="10,100 323,100 258,240 10,240" fill="#bfe0f2" stroke="#1a1a1a" stroke-width="1.5"/>
@@ -235,13 +235,13 @@ In the case where $\beta=0$, the force points in the $+\hat{x}$-direction. Indee
   <!-- reference vertical (the beta=0 wall) and angle marker, at the top of the gate, inside the new triangle -->
   <line x1="344" y1="92" x2="344" y2="150" stroke="#888" stroke-width="1.2" stroke-dasharray="4,3"/>
   <path d="M 344 122 A 30 30 0 0 0 331 119" fill="none" stroke="#1a1a1a" stroke-width="1.3"/>
-  <text x="322" y="141" font-size="16" font-style="italic" fill="#1a1a1a">&#946;</text>
+  <text x="327" y="141" font-size="16" font-style="italic" fill="#1a1a1a">&#946;</text>
 
   <!-- the gate: a hatch about 1/3 of the way down the wall, 1/3 the wall's length -->
-  <polygon points="303,142 277,199 291,206 317,149" fill="#8b0000" stroke="#1a1a1a" stroke-width="1.5"/>
+  <polygon points="303,142 277,199 291,206 317,149" fill="#c0392b" stroke="#1a1a1a" stroke-width="1.5"/>
 
   <!-- hinge at the bottom of the gate, slightly wider than the wall is thick -->
-  <circle cx="284" cy="203" r="10" fill="#8b0000" stroke="#1a1a1a" stroke-width="1.5"/>
+  <circle cx="284" cy="203" r="10" fill="#c0392b" stroke="#1a1a1a" stroke-width="1.5"/>
 </svg>
 </div>
 ```
