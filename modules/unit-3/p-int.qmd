@@ -6,19 +6,20 @@ title: "3.2 Pressure Integrals"
 
 ## The big idea
 
-Submerged objects will experience forces due to pressure. A notable consequence is the **buoyant force**, which explains why objects can float in water. Beyond that we also can ask questions like: how much force is being experienced by a dam? How much torque does it take to hold a submerged gate closed? 
-
-We will build up to a fairly general equation for evaluating (vector) forces on surfaces due to pressure. You'll need to remember some Calc 3, but I'll walk you through it!
+Submerged objects will experience forces due to pressure. A notable consequence is the **buoyant force**, which explains why objects can float in water. Beyond that we also can ask questions like: how much force is being experienced by a dam? How much torque does it take to hold a submerged gate closed? We will build up to a fairly general equation for evaluating (vector) forces on surfaces due to pressure (completing this discussion in the next reading). You'll need to remember some Calc 3, but I'll walk you through it!
 
 ## Think first
 
 **Recall**
 
-1. 
+1. What's the equation for hydrostatic pressure as a function of depth? Why doesn't it depend on the width or length of the container?
+2. If you plotted pressure vs. depth for a pool, what would that plot look like?
 
 **Look ahead**
 
-1. 
+1. For a vertical wall holding back water of depth $H$, do you expect the total force to scale with $H$ or $H^2$?
+2. Does a gate leaning at an angle take *more*, the *same*, or *less* force to hold shut than a vertical gate of the same height?
+3. If we are going to integrate pressure over area to get force, what information do we need to know to calculate that integral?
 
 
 ## Forces from pressure distributions
@@ -85,29 +86,29 @@ This gives us a hint about how we will calculate forces on submerged bodies: we 
 </div>
 ```
 
-Vertical walls have an added complication: the pressure varies with depth, and so it is not just $(\text{constant pressure})(\text{area})$. Pressure is $p(y)=\rho g y$, and $y$ changes over the surface... we are going to need to **integrate pressure over area**. It will look something like this:
+Vertical walls have an added complication: the pressure varies with depth, and so it is not just $(\text{force})=(\text{constant pressure})(\text{area})$. Pressure is $p(y)=\rho g y$, and $y$ changes over the surface... we are going to need to **integrate pressure over area**. It will look something like this:
 
 $$
 F_x =\int p(y) dA.
 $$
 
 ::: {.column-margin}
-The dimensions of a differential area $dA$ are still L² and the integral symbol $\int$ has no dimensions... it basically means "sum". So $\int p dA$ has dimensions of force. 
+The dimensions of a differential area $dA$ are still L² and the integral symbol $\int$ has no dimensions... it basically means "sum". So $\int p dA$ has dimensions of force.
 :::
 
-(We aren't quite to the most general equation yet, we're building up to it.)
+
 
 ::: {.callout-important}
 This is an applied math class... we need to figure out how to apply math to this situation! Our goal is to evaluate this integral based on engineering parameters in the problem.
 
-- We have our integrand: $p=\rho g y$.
+- We have our integrand: $p(y)=\rho g y$.
 - The area we are integrating over can be described with coordinates $y$ and $z$. Thus, we can write $dA = dy dz$.
 - We need to set the bounds of integration. If the pool depth is $H$ and width is $W$, we can say that one integral goes from $y=0$ to $y=H$ and the other from $z=0$ to $z=W$.
 
 Populating:
 
 $$
-F_x =\int\limits_0^W\int\limits_0^H \rho g y \,dy dz
+F_x =\int\limits_0^W\int\limits_0^H \rho g y \,dy dz.
 $$
 
 ::: {.column-margin}
@@ -128,7 +129,7 @@ There it is: the total force on the wall, acting to the right!
 A couple things worth noting:
 
 - The average pressure is $p_\text{avg}=\rho g H/2$... the pressure halfway down. The total force is the average pressure times the total area.
-- The bottom half of the pool experiences more force than the top. This means the 
+- The bottom half of the pool experiences more force than the top. This means the location where the effective force is acting is going to be more than $H/2$ deep. This is relevant for torque calculations — more on this later!
 
 
 
@@ -178,13 +179,30 @@ A couple things worth noting:
 </div>
 ```
 
-Let's add another complication: suppose the wall is at an angle of $\beta$ with respect to the vertical. (Above we did the $\beta=0$ case.) What is the force now? Let's try to build it up as an integral again, but now our differential area $dA$ is not simply $dy dz$... we aren't just varying $y$ as we move across the surface.
+Let's add another complication: suppose the wall is at an angle of $\beta$ with respect to the vertical. (Above we did the $\beta=0$ case.) What is the force now? 
 
-Define our position along the wall as $y'$. Well then have $\cos\beta = y/y'$, and so $y'=0$ at the top of the wall and $y'=H/\cos\beta$ at the bottom of the wall.
+Let's try to build it up as an integral again, but now our differential area $dA$ is not simply $dy dz$... we aren't just varying $y$ as we move across the surface. Define our position along the wall as $y'$, and we'll then have $\cos\beta = y/y'$. So $y'=0$ at the top of the wall and $y'=H/\cos\beta$ at the bottom of the wall.
 
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="260" height="200" viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <rect x="0" y="0" width="260" height="200" fill="#ffffff"/>
+
+  <!-- right triangle: vertical leg y, hypotenuse y', angle beta between them at the top -->
+  <polygon points="170,30 170,150 114,150" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <path d="M 170 48 A 18 18 0 0 1 162 46" fill="none" stroke="#1a1a1a" stroke-width="1.2"/>
+  <text x="158" y="60" font-size="15" font-style="italic" fill="#1a1a1a">&#946;</text>
+
+  <text x="182" y="94" font-size="16" font-style="italic" fill="#1a1a1a">y</text>
+
+  <text x="118" y="80" font-size="16" font-style="italic" fill="#1a1a1a">y&#8242;</text>
+</svg>
+</div>
+```
 
 ::: {.callout-tip}
-The benefit of this approach: it is now easy to write the integral. There is a way to solve this problem using $dA = dy dz$ (I think), but it is not intuitive to me at all. With the approach we are developing here, the differential area in our integral is just $dA=dy'dz$ and the bounds on $y'$ are $0\rightarrow H/\cos\beta$ (and $z$ is still $0\rightarrow W$). We have to do more setup work, but the integral we create will be easy to comprehend.
+The benefit of this approach: it is intuitive to write the integral. There is a way to solve this problem using $dA = dy dz$ (I think), but it is not obvious to me at all. With the approach we are developing here, the differential area in our integral is just $dA=dy'dz$ and the bounds on $y'$ are $0\rightarrow H/\cos\beta$ (and $z$ is still $0\rightarrow W$). We have to do some setup work, but the integral we create will be easy to comprehend.
 :::
 
 Now we are integrating with respect to $y'$ and $z$, and so our integrand needs to be written in terms of $y'$ (instead of $y$). No problem, we can make the substitution described above: $p=\rho g y = \rho g \cos\beta y'$.
@@ -192,7 +210,7 @@ Now we are integrating with respect to $y'$ and $z$, and so our integrand needs 
 At last:
 
 $$
-F =\int\limits_0^W\int\limits_0^{H/\cos\beta} \rho g \cos\beta y' \,dy' dz
+F =\int\limits_0^W\int\limits_0^{H/\cos\beta} \rho g \cos\beta y' \,dy' dz.
 $$
 
 which we can integrate. One last note: at every location on the surface, the force due to pressure points in the same direction: $\hat{n}= \left\langle \cos\beta, -\sin\beta \right\rangle$. This means the total force points in that direction as well.
@@ -201,7 +219,7 @@ which we can integrate. One last note: at every location on the surface, the for
 ::: {.callout-tip}
 I am never comfortable with the initial definition of $\hat{n}$. Here's a tip on how to check it: explore a couple cases of $\beta$ and make sure they match up with expectations.
 
-In the case where $\beta=0$, the force points in the $+\hat{x}$-direction. Indeed: $\hat{n}= \left\langle \cos\beta, -\sin\beta \right\rangle=\left\langle 1,0\right\rangle$. In the case where $\beta = \pi/4$, it points in the $\left\langle 1, -1 \right\rangle$ direction. Indeed: $\hat{n}= \left\langle \cos\beta, -\sin\beta \right\rangle=\left\langle \sqrt{2}{2},-\sqrt{2}{2}\right\rangle$. (Same direction, just normalized.)
+In the case where $\beta=0$, the force points in the $+\hat{x}$-direction. Indeed: $\hat{n}= \left\langle \cos\beta, -\sin\beta \right\rangle=\left\langle 1,0\right\rangle$. In the case where $\beta = \pi/4$, it points in the $\left\langle 1, -1 \right\rangle$ direction. Indeed: $\hat{n}= \left\langle \cos\beta, -\sin\beta \right\rangle=\left\langle \sqrt{2}/{2},-\sqrt{2}/{2}\right\rangle$. (Same direction, just normalized.)
 :::
 
 
@@ -247,20 +265,28 @@ In the case where $\beta=0$, the force points in the $+\hat{x}$-direction. Indee
 ```
 
 
-Let's add a final complication: suppose the angled wall has a gate with length $L$, and it's hinge is located at a certain depth $H$. **How much torque is necessary to keep it closed?**
+Let's add a final complication: suppose the angled wall has a gate with length $\ell$, and its hinge is located at a certain depth $H_\text{hinge}$. **How much torque is necessary to keep it closed?**
 
-What is a torque? We need to keep track of our displacement from the hinge (the lever arm) and the force, and luckily, in this geometry, those things are perpendicular. 
+First: what is a torque? We need to keep track of our displacement from the hinge (the lever arm) and the force, and luckily, in this geometry, those things are perpendicular. 
 
 ::: {.column-margin}
-More generally we'll have the torque vector $\mathbf{M}= \mathbf{r}\cross \mathbf{F}$.
+More generally we'll have the torque vector $\mathbf{M}= \mathbf{r}\times \mathbf{F}$. We'll see this next reading.
 :::
-
 
 Similar to with the pressure integral, we need to sum together the contributions of torque at each point on the gate. The force will be $p dA$, and so the total torque will be
 
 $$
-M = \int L(y) p(y) dA.
+M = \int r(y) p(y) dA.
 $$
+
+where $r(y)$ is the displacement from the hinge. If we define the same $y'$ as above, how can we describe our position along the gate in terms of $y'$? Start by recognizing that the hinge is located at $y'=H_\text{hinge}/\cos\beta$. Then, on the gate, our distance from the hinge is $r(y') = H_\text{hinge}/\cos\beta - y'$. Thus we can populate our integral
+
+$$
+M =\int\limits_0^W\int\limits_{{H_\text{hinge}/\cos\beta}-\ell}^{H_\text{hinge}/\cos\beta} \left(H_\text{hinge}/\cos\beta - y'\right)\left(\rho g \cos\beta y'\right) \,dy' dz.
+$$
+
+
+
 
 
 ## Curved surfaces
