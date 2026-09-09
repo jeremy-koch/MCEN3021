@@ -57,6 +57,10 @@ website:
       - modules/unit-2/b-pi.qmd
       - modules/unit-2/strouhal_number.qmd
       - modules/unit-3/hydrostatics.qmd
+      - modules/unit-3/p-int.qmd
+      # 3.3 (rigid-body acceleration) is an optional "extra" reading, not
+      # required, published out of order.
+      - modules/unit-3/rigid-accel.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd

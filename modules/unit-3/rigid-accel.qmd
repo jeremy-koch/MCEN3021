@@ -1,0 +1,147 @@
+---
+title: "3.3 Rigid-body acceleration (extra)"
+---
+
+{{< include ../_checkpoint-widget.qmd >}}
+
+Just to wrap up the example I tried to do in class. We'll answer in two ways: mathematically and physically.
+
+
+::: {.callout-tip title="Wisdom"}
+One nice thing about oral examinations is that we can talk more about the physics and not get lost in the math... though this problem is way tougher than I would ask about in an MCEN 3021 exam!
+:::
+
+
+
+## The problem
+
+If you've ever tried to hold a drinking vessel in a car or plane you are aware that the vehicle's movement causes sloshing. This sloshing is certainly not "hydrostatic" but we can think about what would happen during steady acceleration, assuming it has reached steady state.
+
+We'll set this up in plain Cartesian coordinates. Gravity acts in the $-\hat{z}$-direction, and the vehicle undergoes constant acceleration in the $-\hat{x}$-direction at acceleration $a$ — pick $\hat x$ to point along the vehicle's direction of travel, so accelerating "forward" means accelerating in $-\hat x$.
+
+
+
+## Solution
+
+Revisit the equations we derived right before assuming zero acceleration:
+
+$$
+\rho \mathbf{a} = -\boldsymbol{\nabla} p + \rho \mathbf{g}.
+$$
+
+We can write these in terms of Cartesian components:
+
+$$
+\begin{align*}
+    \rho a_x &= -\pd{p}{x}\\
+    \rho a_y &= -\pd{p}{y}\\
+    \rho a_z &= -\pd{p}{z}-\rho g
+\end{align*}
+$$
+
+and then simplify to the case where we have only $x$-acceleration, $a_x=-a$, with $a_y=a_z=0$:
+
+$$
+\begin{align*}
+    -\rho a &= -\pd{p}{x}\\
+    0 &= -\pd{p}{y}\\
+    0 &= -\pd{p}{z}-\rho g.
+\end{align*}
+$$
+
+
+We can integrate the first equation to find $p(x,y,z)=\rho a x + c(y,z)$ where $c(y,z)$ is a "constant of integration"... in principle, this can depend on $y$ and $z$.
+
+::: {.column-margin}
+Notice when we take the derivative of this equation with respect to $x$, we end up back with $\partial p/\partial x = \rho a$.
+:::
+
+The second equation says $\partial p/\partial y = 0$ — no surprise, since nothing about the problem singles out a $y$-direction — so really $c(y,z)=c(z)$. We can do the same with the third equation, arriving at $p=-\rho g z + d(x)$ where $d(x)$ is a "constant of integration" that can depend on $x$. By comparing these, we realize
+
+$$
+p(x,z) = \rho a x - \rho g z ~~+ \text{constant}.
+$$
+
+
+::: {.callout-tip title="Wisdom"}
+Now let's make two wise observations: firstly, the constant does not have anything to do with the surface orientation, it is just an offset, so we can just say it is zero; secondly, the surface will be at zero gauge pressure.
+:::
+
+Thus we solve:
+
+$$
+0 = \rho a x - \rho g z \implies z =  \frac{a}{g} x.
+$$
+
+What does this mean? **This is the vertical location of the surface, assuming $z$ increases with altitude.** So: as we move toward the back of the vehicle (increasing $x$), the surface altitude increases — this is exactly what we expect to occur in our thought experiment: accelerate forward, and the coffee climbs up the back wall.
+
+## Think about it another way
+
+Now that we've solved it out, let's figure out how to talk about it more intuitively.
+
+Going back to our second piece of wisdom, the surface is at constant pressure, $p(x,z)=0$. **This tells us that the pressure gradient is perpendicular to the surface.** So we can go back to
+
+$$
+\begin{align*}
+    -\rho a &= -\pd{p}{x}\\
+    0 &= -\pd{p}{z}-\rho g
+\end{align*}
+$$
+
+and realize
+
+$$
+\left\langle \frac{\partial p}{\partial x}, \frac{\partial p}{\partial z}\right\rangle = \rho \left\langle a , -g \right\rangle.
+$$
+
+This is a surface normal pointed toward the back of the vehicle and downwards with gravity — again, exactly what we expect.
+
+
+## Think about it another way
+
+Can we get away from math entirely? Think about a free body diagram for the coffee (the entirety of the liquid body, which is not changing shape because we are at steady state): gravity acts downwards, and then some force must be applied to cause the fluid's forward ($-\hat x$) acceleration.
+
+
+::: {.callout-tip title="Wisdom"}
+Recall that, when it was just hydrostatics, the pressure gradient acted downwards because gravity acted downwards... the pressure gets higher the deeper you go. Now we have an additional acceleration in the forward ($-\hat x$) direction, and to produce a forward force we need higher pressure pushing from behind — i.e. a larger pressure toward the back of the vehicle... the pressure gradient has a component in the positive $\hat{x}$-direction. Thus, our pressure gradient is "toward the back" and "down".
+:::
+
+Now we can go back to our observation about the pressure gradient at the surface: it must be parallel to the surface normal, thus justifying the orientation of the surface.
+
+We can also recognize that the higher pressure toward the back corresponds to a greater depth below the (locally higher) free surface: $p \sim \rho g h$, with $h$ measured down from the tilted surface right above it, exactly like ordinary hydrostatics.
+
+## In cylindrical coordinates
+
+Just for practice moving between coordinate systems — and because cylindrical coordinates are the natural language for the *other* rigid-body-acceleration problem, steady rotation — let's see what this looks like set up in cylindrical coordinates centered on the tank, with $\theta=0$ along $\hat x$.
+
+The components of Newton's second law in cylindrical coordinates are
+
+$$
+\begin{align*}
+    \rho a_r &= -\pd{p}{r}\\
+    \rho a_\theta &= -\frac{1}{r}\pd{p}{\theta}\\
+    \rho a_z &= -\pd{p}{z}-\rho g
+\end{align*}
+$$
+
+Here's the wrinkle that made us switch to Cartesian above: the vehicle's acceleration $\mathbf a = -a\hat x$ is one fixed vector, but $\hat r$ and $\hat\theta$ *rotate* with $\theta$. Resolving $\mathbf a$ onto the local $\hat r,\hat\theta$ at a given point gives
+
+$$
+a_r = \mathbf a\cdot\hat r = -a\cos\theta, \qquad a_\theta = \mathbf a \cdot \hat\theta = a\sin\theta.
+$$
+
+Neither is a constant, and $a_\theta$ isn't zero — both depend on where you are around the tank. (Contrast this with true rigid-body *rotation*, where $a_r=-\Omega^2 r$ and $a_\theta=0$ hold at *every* $\theta$ — that's the case where "cylindrical, axisymmetric, ignore $\theta$" is exactly right, not just a convenient approximation along one ray.)
+
+Plugging in and integrating the same way as before gives
+
+$$
+p(r,\theta,z) = \rho a\, r\cos\theta - \rho g z + \text{constant} = \rho a x - \rho g z + \text{constant},
+$$
+
+using $x=r\cos\theta$ — the same pressure field as the Cartesian solution, as it must be. Setting $p=0$ for the free surface:
+
+$$
+z = \frac{a}{g}\, r\cos\theta.
+$$
+
+This is the same tilted plane, just written in cylindrical coordinates — a genuine two-dimensional surface, not a function of $r$ alone. Slicing it at $\theta=0$ recovers $z=(a/g)r$, which is the tempting (but only locally-true) formula you'd get if you assumed $a_r=-a$ everywhere instead of $-a\cos\theta$.

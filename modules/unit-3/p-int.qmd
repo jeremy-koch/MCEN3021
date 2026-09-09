@@ -1,0 +1,276 @@
+---
+title: "3.2 Pressure Integrals"
+---
+
+{{< include ../_checkpoint-widget.qmd >}}
+
+## The big idea
+
+Submerged objects will experience forces due to pressure. A notable consequence is the **buoyant force**, which explains why objects can float in water. Beyond that we also can ask questions like: how much force is being experienced by a dam? How much torque does it take to hold a submerged gate closed? 
+
+We will build up to a fairly general equation for evaluating (vector) forces on surfaces due to pressure. You'll need to remember some Calc 3, but I'll walk you through it!
+
+## Think first
+
+**Recall**
+
+1. 
+
+**Look ahead**
+
+1. 
+
+
+## Forces from pressure distributions
+
+### Horizontal surfaces
+
+Let's imagine a rectangular pool, width $W$, length $L$, depth $H$, filled with a fluid of density $\rho$, and gravity $g$ is a thing. **What is the total force on the bottom of the pool?** We need simply to calculate the weight of the fluid: $F= mg = \rho WLH g$.
+
+We can also think about this via the pressure on the bottom of the pool: from hydrostatics, the pressure is $\rho g H$, and then the total area of the bottom of the pool is $WL$, so the total force (i.e., the weight) is $F=\rho g WLH$... same answer!
+
+This gives us a hint about how we will calculate forces on submerged bodies: we will look at the pressure on the object, then multiply by area (in a calculus-sensitive way) to get total force.
+
+### Vertical surfaces
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="560" height="310" viewBox="0 0 560 310" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <defs>
+    <marker id="dim-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="560" height="310" fill="#ffffff"/>
+
+  <!-- sky -->
+  <rect x="80" y="20" width="240" height="80" fill="#fbe3e3"/>
+  <circle cx="285" cy="45" r="11" fill="#f2a33c" stroke="#1a1a1a" stroke-width="1"/>
+  <path d="M140,38 l5,-5 l5,5 l5,-5 l5,5" fill="none" stroke="#333" stroke-width="1.3"/>
+  <path d="M170,50 l5,-5 l5,5 l5,-5 l5,5" fill="none" stroke="#333" stroke-width="1.3"/>
+
+  <!-- water -->
+  <rect x="80" y="100" width="240" height="140" fill="#bfe0f2"/>
+
+  <!-- floor -->
+  <rect x="80" y="240" width="240" height="16" fill="#8b5a2b"/>
+
+  <!-- pool outline -->
+  <rect x="80" y="20" width="240" height="236" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- vertical retaining wall, right side of the pool: pokes just above the water surface -->
+  <rect x="320" y="85" width="16" height="171" fill="#6b6b6b" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- water surface, P = 0 gauge -->
+  <line x1="60" y1="100" x2="320" y2="100" stroke="#1a1a1a" stroke-width="1.3" stroke-dasharray="5,4"/>
+  <text x="200" y="94" font-size="13" fill="#1a1a1a">P = 0 (gauge)</text>
+
+  <!-- H dimension: water depth -->
+  <line x1="45" y1="100" x2="45" y2="240" stroke="#1a1a1a" stroke-width="1.3" marker-start="url(#dim-arrow)" marker-end="url(#dim-arrow)"/>
+  <line x1="41" y1="100" x2="80" y2="100" stroke="#1a1a1a" stroke-width="1"/>
+  <line x1="41" y1="240" x2="80" y2="240" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="30" y="174" font-size="18" font-style="italic" text-anchor="middle" fill="#1a1a1a">H</text>
+
+  <!-- L dimension: pool length -->
+  <line x1="80" y1="272" x2="320" y2="272" stroke="#1a1a1a" stroke-width="1.3" marker-start="url(#dim-arrow)" marker-end="url(#dim-arrow)"/>
+  <line x1="80" y1="256" x2="80" y2="272" stroke="#1a1a1a" stroke-width="1"/>
+  <line x1="320" y1="256" x2="320" y2="272" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="200" y="290" font-size="18" font-style="italic" text-anchor="middle" fill="#1a1a1a">L</text>
+
+  <!-- width into page label, right of the wall -->
+  <text x="345" y="170" font-size="13" fill="#1a1a1a">width into page: <tspan font-style="italic">W</tspan></text>
+</svg>
+</div>
+```
+
+Vertical walls have an added complication: the pressure varies with depth, and so it is not just $(\text{constant pressure})(\text{area})$. Pressure is $p(y)=\rho g y$, and $y$ changes over the surface... we are going to need to **integrate pressure over area**. It will look something like this:
+
+$$
+F_x =\int p(y) dA.
+$$
+
+::: {.column-margin}
+The dimensions of a differential area $dA$ are still L² and the integral symbol $\int$ has no dimensions... it basically means "sum". So $\int p dA$ has dimensions of force. 
+:::
+
+(We aren't quite to the most general equation yet, we're building up to it.)
+
+::: {.callout-important}
+This is an applied math class... we need to figure out how to apply math to this situation! Our goal is to evaluate this integral based on engineering parameters in the problem.
+
+- We have our integrand: $p=\rho g y$.
+- The area we are integrating over can be described with coordinates $y$ and $z$. Thus, we can write $dA = dy dz$.
+- We need to set the bounds of integration. If the pool depth is $H$ and width is $W$, we can say that one integral goes from $y=0$ to $y=H$ and the other from $z=0$ to $z=W$.
+
+Populating:
+
+$$
+F_x =\int\limits_0^W\int\limits_0^H \rho g y \,dy dz
+$$
+
+::: {.column-margin}
+You have to learn how to assemble integrals like this yourself!
+:::
+
+:::
+
+We can evaluate this integral. Since the integrand does not depend on $z$, and since $\rho g$ is constant:
+
+
+$$
+F_x =\rho g \int\limits_0^W dz \int\limits_0^H y \,dy = \rho g W \left(\frac{H^2}{2}\right).
+$$
+
+There it is: the total force on the wall, acting to the right!
+
+A couple things worth noting:
+
+- The average pressure is $p_\text{avg}=\rho g H/2$... the pressure halfway down. The total force is the average pressure times the total area.
+- The bottom half of the pool experiences more force than the top. This means the 
+
+
+
+
+
+### Angled surfaces
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="344" height="320" viewBox="0 0 344 320" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <defs>
+    <marker id="yp-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="344" height="320" fill="#ffffff"/>
+
+  <!-- sky (also fills the corner behind the gate, up to the image edge) -->
+  <rect x="10" y="20" width="334" height="80" fill="#fbe3e3" stroke="#1a1a1a" stroke-width="1.5"/>
+  <circle cx="165" cy="45" r="11" fill="#f2a33c" stroke="#1a1a1a" stroke-width="1"/>
+  <path d="M70,38 l5,-5 l5,5 l5,-5 l5,5" fill="none" stroke="#333" stroke-width="1.3"/>
+  <path d="M100,50 l5,-5 l5,5 l5,-5 l5,5" fill="none" stroke="#333" stroke-width="1.3"/>
+
+  <!-- water: bounded on the right by the leaning wall, so it's wider at the surface than at the floor -->
+  <polygon points="10,100 323,100 258,240 10,240" fill="#bfe0f2" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- floor -->
+  <rect x="10" y="240" width="334" height="30" fill="#8b5a2b" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- triangle under the gate, same color as the sky, filling the space between the wall's outer face and the image edge -->
+  <polygon points="344,92 344,240 275,240" fill="#fbe3e3" stroke="none"/>
+
+  <!-- angled wall (the gate): hinged at its base, leaning to the right by beta, its outer corner touching the image edge -->
+  <polygon points="250,256 330,85 344,92 264,263" fill="#6b6b6b" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- reference vertical (the beta=0 wall) and angle marker, at the top of the gate, inside the new triangle -->
+  <line x1="344" y1="92" x2="344" y2="150" stroke="#888" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <path d="M 344 122 A 30 30 0 0 0 331 119" fill="none" stroke="#1a1a1a" stroke-width="1.3"/>
+  <text x="322" y="141" font-size="16" font-style="italic" fill="#1a1a1a">&#946;</text>
+
+  <!-- y' arrow: starts on the dashed reference line, runs down and left parallel to the wall -->
+  <line x1="344" y1="120" x2="319" y2="174" stroke="#1a1a1a" stroke-width="1" marker-end="url(#yp-arrow)"/>
+  <text x="298" y="190" font-size="15" font-style="italic" fill="#1a1a1a">y&#8242;</text>
+</svg>
+</div>
+```
+
+Let's add another complication: suppose the wall is at an angle of $\beta$ with respect to the vertical. (Above we did the $\beta=0$ case.) What is the force now? Let's try to build it up as an integral again, but now our differential area $dA$ is not simply $dy dz$... we aren't just varying $y$ as we move across the surface.
+
+Define our position along the wall as $y'$. Well then have $\cos\beta = y/y'$, and so $y'=0$ at the top of the wall and $y'=H/\cos\beta$ at the bottom of the wall.
+
+
+::: {.callout-tip}
+The benefit of this approach: it is now easy to write the integral. There is a way to solve this problem using $dA = dy dz$ (I think), but it is not intuitive to me at all. With the approach we are developing here, the differential area in our integral is just $dA=dy'dz$ and the bounds on $y'$ are $0\rightarrow H/\cos\beta$ (and $z$ is still $0\rightarrow W$). We have to do more setup work, but the integral we create will be easy to comprehend.
+:::
+
+Now we are integrating with respect to $y'$ and $z$, and so our integrand needs to be written in terms of $y'$ (instead of $y$). No problem, we can make the substitution described above: $p=\rho g y = \rho g \cos\beta y'$.
+
+At last:
+
+$$
+F =\int\limits_0^W\int\limits_0^{H/\cos\beta} \rho g \cos\beta y' \,dy' dz
+$$
+
+which we can integrate. One last note: at every location on the surface, the force due to pressure points in the same direction: $\hat{n}= \left\langle \cos\beta, -\sin\beta \right\rangle$. This means the total force points in that direction as well.
+
+
+::: {.callout-tip}
+I am never comfortable with the initial definition of $\hat{n}$. Here's a tip on how to check it: explore a couple cases of $\beta$ and make sure they match up with expectations.
+
+In the case where $\beta=0$, the force points in the $+\hat{x}$-direction. Indeed: $\hat{n}= \left\langle \cos\beta, -\sin\beta \right\rangle=\left\langle 1,0\right\rangle$. In the case where $\beta = \pi/4$, it points in the $\left\langle 1, -1 \right\rangle$ direction. Indeed: $\hat{n}= \left\langle \cos\beta, -\sin\beta \right\rangle=\left\langle \sqrt{2}{2},-\sqrt{2}{2}\right\rangle$. (Same direction, just normalized.)
+:::
+
+
+
+## Torques from pressure distributions
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="344" height="320" viewBox="0 0 344 320" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="344" height="320" fill="#ffffff"/>
+
+  <!-- sky (also fills the corner behind the gate, up to the image edge) -->
+  <rect x="10" y="20" width="334" height="80" fill="#fbe3e3" stroke="#1a1a1a" stroke-width="1.5"/>
+  <circle cx="165" cy="45" r="11" fill="#f2a33c" stroke="#1a1a1a" stroke-width="1"/>
+  <path d="M70,38 l5,-5 l5,5 l5,-5 l5,5" fill="none" stroke="#333" stroke-width="1.3"/>
+  <path d="M100,50 l5,-5 l5,5 l5,-5 l5,5" fill="none" stroke="#333" stroke-width="1.3"/>
+
+  <!-- water: bounded on the right by the leaning wall, so it's wider at the surface than at the floor -->
+  <polygon points="10,100 323,100 258,240 10,240" fill="#bfe0f2" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- floor -->
+  <rect x="10" y="240" width="334" height="30" fill="#8b5a2b" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- triangle under the gate, same color as the sky, filling the space between the wall's outer face and the image edge -->
+  <polygon points="344,92 344,240 275,240" fill="#fbe3e3" stroke="none"/>
+
+  <!-- angled wall (the gate): hinged at its base, leaning to the right by beta, its outer corner touching the image edge -->
+  <polygon points="250,256 330,85 344,92 264,263" fill="#6b6b6b" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- reference vertical (the beta=0 wall) and angle marker, at the top of the gate, inside the new triangle -->
+  <line x1="344" y1="92" x2="344" y2="150" stroke="#888" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <path d="M 344 122 A 30 30 0 0 0 331 119" fill="none" stroke="#1a1a1a" stroke-width="1.3"/>
+  <text x="322" y="141" font-size="16" font-style="italic" fill="#1a1a1a">&#946;</text>
+
+  <!-- the gate: a hatch about 1/3 of the way down the wall, 1/3 the wall's length -->
+  <polygon points="303,142 277,199 291,206 317,149" fill="#8b0000" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- hinge at the bottom of the gate, slightly wider than the wall is thick -->
+  <circle cx="284" cy="203" r="10" fill="#8b0000" stroke="#1a1a1a" stroke-width="1.5"/>
+</svg>
+</div>
+```
+
+
+Let's add a final complication: suppose the angled wall has a gate with length $L$, and it's hinge is located at a certain depth $H$. **How much torque is necessary to keep it closed?**
+
+What is a torque? We need to keep track of our displacement from the hinge (the lever arm) and the force, and luckily, in this geometry, those things are perpendicular. 
+
+::: {.column-margin}
+More generally we'll have the torque vector $\mathbf{M}= \mathbf{r}\cross \mathbf{F}$.
+:::
+
+
+Similar to with the pressure integral, we need to sum together the contributions of torque at each point on the gate. The force will be $p dA$, and so the total torque will be
+
+$$
+M = \int L(y) p(y) dA.
+$$
+
+
+## Curved surfaces
+
+::: {.callout-important}
+Don't forget that force is a **vector** while pressure is a **scalar**. In the case of a flat wall, the force from pressure acts normal to the surface, and so the total force will act normal to the surface as well. If a wall is curved, the pressure acts normal to the surface *at every point*, but not every point has the same surface normal! And so the description of the total force is more complicated.
+
+We'll cover this in the next reading.
+:::
+
+
+
+
