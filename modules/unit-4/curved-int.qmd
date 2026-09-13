@@ -51,7 +51,7 @@ We'll use $p(\mathbf{x},t)$ generically, with $\mathbf{x}$ a vector of coordinat
 A general statement of the above is
 
 $$
-    \mathbf{F}=\int\limits_S -p(\mathbf{x})\hat{\mathbf{n}}(\mathbf{x})dA.
+    \mathbf{F}=\int -p(\mathbf{x})\hat{\mathbf{n}}(\mathbf{x})dA.
 $$
 
 Describing it in detail: Within the integrand we have $-p(\mathbf{x})\hat{\mathbf{n}}(\mathbf{x})$. This is a quantity that describes the magnitude of the pressure at a given location, as well as the local surface orientation (which may depend on the coordinate). By multiplying these two variables together, we get the local force-per-area due to pressure. We need to sum the force-per-area, keeping in mind that it is a vector, over the entire surface area to get the total force.
@@ -92,7 +92,8 @@ Going all the way around covers the full angle, so the upper bound is some multi
      data-prompt="Upper bound is nπ — what is n?"
      data-answer="2" data-tol="0.02" data-units=""
      data-hint="A full circle is 360°. How many π-radians is that?"
-     data-solution="θ: 0 → 2π — one full trip around the circle covers 2π radians (360°)."></div>
+     data-solution="θ: 0 → 2π — one full trip around the circle covers 2π radians (360°)."
+     data-ok-text="&#10003; correct — that's the bound."></div>
 ```
 :::
 
