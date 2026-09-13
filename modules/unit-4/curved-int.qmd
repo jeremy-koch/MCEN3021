@@ -1,0 +1,86 @@
+---
+title: "4.1 Forces on curved surfaces"
+---
+
+{{< include ../_checkpoint-widget.qmd >}}
+
+## The big idea
+
+
+## Think first
+
+**Recall**
+
+1. 
+**Look ahead**
+
+1. 
+
+## Forces and surface normals are vectors
+
+Will add more
+
+
+## Coordinates vs. Directions
+
+One concept we need to understand in multivariable calculus is this: a **coordinate** is not the same as a **direction**. In Cartesian, $\hat{x}$, $\hat{y}$, and $\hat{z}$ always point in the same directions and they always have magnitude 1 (they are unit vectors). The coordinates $(x,y,z)$ can vary — they can assume positive or negative values, or be zero. They can go to infinity.
+
+There is a small hiccup in cylindrical coordinates: $\hat{r}$ and $\hat{\boldsymbol{\theta}}$ actually change their orientation in physical space, depending on location. This is why conservation of momentum in the $\hat{r}$- and $\hat{\boldsymbol{\theta}}$-directions is really tough (though we will see how to deal with it when we look at the Navier-Stokes Equations). But, let's recognize that these unit vectors also have magnitude 1 and, at least at a given location, they always point in the same directions. The coordinates $(r,\theta,z)$ can assume any values (with the caveats that $r\geq 0$ and $\theta$ is only useful from $0\rightarrow 2\pi$).
+
+An important thing about the definition of useful coordinate systems: the unit vectors of the coordinate system are always **orthogonal**, meaning that, if you dot any two of them together in a given coordinate system, that dot product is zero. $\hat{x}\cdot\hat{z}=0$. $\hat{r}\cdot\boldsymbol{\hat{\theta}}=0$. $\hat{r}\cdot\hat{z}=0$. $\hat{z}\cdot\boldsymbol{\hat{\theta}}=0$. Dotting $\hat{x}\cdot\boldsymbol{\hat{\theta}}$ is a more complicated result, but we try to avoid blending coordinate system directions.
+
+However, there are occasions when it makes sense to mix Cartesian directions with cylindrical or spherical coordinates. The surface a spherical ball is most easily described in terms of $(r,\theta,\phi)$ coordinates, but if we were interested in the buoyancy of the ball, that would be a force in the $-\hat{y}$-direction (depending on how you define the coordinates). So, calculating the force on a ball, it would make sense to integrate over $(r=R=\text{constant},\theta,\phi)$, but to prepare the equation in such a way that you return the force in the $\hat{y}$-direction. More on this below.
+
+
+## Set-up as an integral
+Pressure is a scalar **field** quantity, meaning we can evaluate its value at any location: $p(\mathbf{x},t)$. When it comes to evaluating forces due to pressure, we would need to consider the values of pressure at the surface location, and we would also need consider the orientation of the surface. Surfaces are 2D objects, meaning, in general, two coordinates will need to vary to completely describe a surface. The geometry of the situation will imply what coordinates are easiest to use.
+
+::: {.column-margin}
+We'll use $p(\mathbf{x},t)$ generically, with $\mathbf{x}$ a vector of coordinates in any coordinate system.
+:::
+
+A general statement of the above is
+
+$$
+    \mathbf{F}=\int\limits_S -p(\mathbf{x})\hat{n}(\mathbf{x})dA.
+$$
+
+Describing it in detail: Within the integrand we have $-p(\mathbf{x})\hat{n}(\mathbf{x})$. This is a quantity that describes the magnitude of the pressure at a given location, as well as the local surface orientation (which may depend on the coordinate). The combination of these two variables, $p$ and $-\hat{n}$, gives the local force-per-area due to pressure. This is a vector quantity. We need to sum the force-per-area over the entire surface area to get the total force. This is what is being described by the integration above.
+
+::: {.column-margin}
+We're using the convention that the surface normal points from the surface, into the fluid, hence $\mathbf{F} \sim - \hat{n}$.
+:::
+
+### Task 1: Determine the coordinates to integrate over, and the bounds
+We must decide what coordinates to integrate over — namely, what coordinates describe the location on the surface. For a flat object, it usually makes sense to use Cartesian coordinates, though we might rotate these coordinates to make our bounds a bit easier to describe. As a quick example, a flat submerged surface makes a $45^\circ$ angle underwater — let's say it is like the line $z=x$, with fluid above that line, and the surface extends into the $\hat{y}$-direction a distance $W$. The simplest way to evaluate the pressure force on this surface is to define a new coordinate $z'$ that tracks along with the surface — essentially a coordinate rotation. If we define $z'=0$ at a point on the surface of interest, and if the length of that surface along $z'$ is $L$, then the area element is simply $dA=dz'dy$. The benefit to this approach is that the bounds of integration are extremely simple: $z':0\rightarrow L$ and $y:0\rightarrow W$.
+
+In cylindrical coordinates, we have a few possibilities: For the circular ends to a cylinder, $r$ and $\theta$ vary over the surface, while $z=\text{constant}$. So we should probably write $dA=rd\theta dr$ (where the $r$ is necessary to give dimensions of area). We might integrate $r:0\rightarrow R$ and $\theta:0\rightarrow 2\pi$. For a different problem in which we need to evaluate the force on the curved part of the cylinder, $\theta$ and $z$ vary over the surface. So we should probably write $dA=Rd\theta dz$ (where the radius still needs to be included, though now it is a constant $r=R$). And maybe we integrate $z:0\rightarrow L$, the length of the cylinder, and $\theta:0\rightarrow 2\pi$. (Again, depends on the specifics of the geometry, but I'm just giving some examples without putting in the effort of including a picture!)
+
+### Task 2: Determine the corresponding normal vector
+Once we have settled on the coordinates used in $dA$, this tells us the coordinates for both $p$ and $\hat{n}$. However, we may consider writing the **direction** of $\hat{n}$ in other systems, e.g. in Cartesian such that we can get the buoyant or lift force in $\hat{y}$ or the drag force in $\hat{x}$. To emphasize: we may write $\hat{n}$ in terms of $\hat{x}$-, $\hat{y}$-, and $\hat{z}$-components, but those components may be written in cylindrical **coordinates**.
+
+We need to lean on trigonometry to figure these things out. A quick example: for a fluid surrounding a circle centered on the origin, the normal direction always acts radially inward: $\hat{n}=-\hat{r}$. We can absolutely represent this in terms of cylindrical components:
+$$
+    \hat{n}=\left<n_r,n_\theta,n_z\right>=
+    \left<-1,0,0\right>
+$$
+but maybe we would like to know the lift and drag forces. Assuming the usual coordinate systems, we can instead write
+$$
+    \hat{n}=\left<n_x,n_y,n_z\right>=
+    \left<-\cos\theta,-\sin\theta,0\right>.
+$$
+
+### Task 3: Determine the pressure distribution in our chosen coordinates
+We must also write $p(\mathbf{x})$ in terms of the coordinates we are integrating over. For hydrostatics, the typical starting point is
+$$
+    p(y)=\rho g y
+$$
+where $y=0$ at the free surface (so we are dealing with gauge pressure) and we have flexibility in choosing whether $y$ increases or decreases with depth. Here we are saying that $y$ becomes more positive with depth.
+
+We are technically only interested in the pressure distribution **on the surface**, and so need to write the pressure as a function of the variables on the surface. This is very situation-dependent, but here is a quick example: For the circle described in the previous section, the center of the circle is located at a depth $H$, and the circle has radius $R<H$. Focusing on the coordinate system defined from the circles' center, we would like to write the pressure as a function of $\theta$ since that varies at the surface. It will also depend on $R$, but will **not** be a function of $r$, because $r$ is not varying on the surface. And I guess this "circle" should be thought of as a cylinder with coordinate $z$ extending into the page. For this configuration, pressure does not depend on $z$, but we would be integrating with respect to $z$.
+
+I am purposely being a bit vague and incomplete so that we can still write a homework problem about this!
+
+
+
+
