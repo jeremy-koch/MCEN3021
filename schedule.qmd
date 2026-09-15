@@ -1,0 +1,50 @@
+---
+title: "Schedule"
+---
+
+One module per meeting is the spine of this course. The reading in a row is
+due **before** that class — the ConcepTests only work if you've already met
+the ideas once, so the date is the date you show up having read it, not the
+date we cover it.
+
+The extra-reading column is optional: nothing on an exam depends on it,
+it's there because the topic was too good to cut. Extras are slotted next
+to the unit they extend.
+
+Rows marked TBD are real meetings; the reading just isn't posted yet. They
+fill in as the semester goes.
+
+| Date | Reading due before class | Extra (optional) | Homework due |
+|---|---|---|---|
+| Tue 25 Aug | [1.1 Pressure](modules/unit-1/pressure.qmd) | | |
+| Thu 27 Aug | [1.2 Viscosity](modules/unit-1/viscosity.qmd) | | |
+| Tue 1 Sep | [2.1 Units and Dimensions](modules/unit-2/units-and-dims.qmd) | | |
+| Thu 3 Sep | [2.2 The Buckingham-Pi Theorem and Similitude](modules/unit-2/b-pi.qmd) | [2.3 Strouhal Number](modules/unit-2/strouhal_number.qmd) | HW1 (Fri 4 Sep) |
+| Tue 8 Sep | [3.1 Hydrostatic Pressure](modules/unit-3/hydrostatics.qmd) | | |
+| Thu 10 Sep | [3.2 Pressure Integrals](modules/unit-3/p-int.qmd) | [3.3 Rigid-body acceleration](modules/unit-3/rigid-accel.qmd) | HW2 (Fri 11 Sep) |
+| Tue 15 Sep | [4.1 Forces on curved surfaces](modules/unit-4/curved-int.qmd) | | |
+| Thu 17 Sep | TBD | | |
+| Tue 22 Sep | TBD | | |
+| Thu 24 Sep | TBD | | |
+| Tue 29 Sep | TBD | | |
+| Thu 1 Oct | TBD | | |
+| Tue 6 Oct | TBD | | |
+| Thu 8 Oct | — | | **no class** |
+| Tue 13 Oct | TBD | | |
+| Thu 15 Oct | TBD | | |
+| Tue 20 Oct | TBD | | |
+| Thu 22 Oct | TBD | | |
+| Tue 27 Oct | TBD | | |
+| Thu 29 Oct | TBD | | |
+| Tue 3 Nov | TBD | | |
+| Thu 5 Nov | TBD | | |
+| Tue 10 Nov | TBD | | |
+| Thu 12 Nov | TBD | | |
+| Tue 17 Nov | TBD | | |
+| Thu 19 Nov | TBD | | |
+| Tue 24 Nov | — | | **no class** — Thanksgiving |
+| Thu 26 Nov | — | | **no class** — Thanksgiving |
+| Tue 1 Dec | TBD | | |
+| Thu 3 Dec | TBD | | |
+| Tue 8 Dec | TBD | | |
+| Thu 10 Dec | TBD | | |

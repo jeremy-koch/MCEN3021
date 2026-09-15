@@ -30,7 +30,7 @@ You begin the semester with 3 tokens that can be used for a 48-hour extension on
 
 ## Schedule
 
-Added soon.
+Lives on its own page: [Schedule](schedule.qmd).
 
 <!-- *(One module per meeting is the spine; a MWF section spreads the same 28
 across 42 meetings with the extra days going to worked examples and the

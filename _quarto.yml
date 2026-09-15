@@ -39,6 +39,8 @@ website:
         text: How This Course Works
       - href: syllabus.qmd
         text: Syllabus
+      - href: schedule.qmd
+        text: Schedule
       # Project, Tools, and Reference pages are gitignored while the
       # site is stripped down. Restore these entries when they come back.
       # - href: project.qmd
@@ -53,6 +55,7 @@ website:
     contents:
       - index.qmd
       - syllabus.qmd
+      - schedule.qmd
       - modules/unit-1/pressure.qmd
       - modules/unit-1/viscosity.qmd
       - modules/unit-2/units-and-dims.qmd
