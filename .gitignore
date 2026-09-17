@@ -96,6 +96,7 @@ desktop.ini
 *.swo
 *~
 .~lock.*#
+.claude/settings.local.json
 
 # ── Misc local scratch ───────────────────────────────────────────────
 *.log

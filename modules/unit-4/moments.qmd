@@ -1,0 +1,49 @@
+---
+title: "4.3 Moments and some more examples"
+---
+
+{{< include ../_checkpoint-widget.qmd >}}
+
+## The big idea
+
+
+
+## Think first
+
+**Recall**
+
+1. a
+
+**Look ahead**
+
+1. a
+
+## A force example
+
+
+
+
+## Moments
+
+We calculated (vector) forces using
+
+$$
+\mathbf{F}=\int -p(\mathbf{x})\hat{\mathbf{n}}(\mathbf{x})dA.
+$$
+
+To get (vector) moments, we need to fit in the "force $\times$ distance" into the integrand. Well have an infinitesimal force, $-p(\mathbf{x})\hat{\mathbf{n}}(\mathbf{x})dA$, and we'll use $\mathbf{r}$ as our displacement vector. Remember that when dealing with vectors, torques and moments are actually "distance $\times$ force", and so our integral is
+
+$$
+\mathbf{M}=\int -\mathbf{r}\wedge p(\mathbf{x})\hat{\mathbf{n}}(\mathbf{x})dA
+$$
+
+where I used $\wedge$ for the cross product symbol, to make it distinct from $\mathbf{x}$ (which looks like $\times$).
+
+
+
+
+### Moment example 1
+
+
+
+### Moment example 2

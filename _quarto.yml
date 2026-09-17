@@ -67,6 +67,8 @@ website:
       # required, published out of order.
       - modules/unit-3/rigid-accel.qmd
       - modules/unit-4/curved-int.qmd
+      # 4.3 is unfinished -- published early to flag it's coming.
+      - modules/unit-4/moments.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd

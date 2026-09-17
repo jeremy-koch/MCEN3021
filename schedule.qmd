@@ -2,15 +2,15 @@
 title: "Schedule"
 ---
 
-| Week | Tuesday | Thursday | Extra (optional) | Homework released |
+| Week | Tuesday | Thursday | Extra (optional) | Notes |
 |---|---|---|---|---|
-| 0 | 25 Aug — [1.1 Pressure](modules/unit-1/pressure.qmd) | 27 Aug — [1.2 Viscosity](modules/unit-1/viscosity.qmd) | | HW1 |
-| 1 | 1 Sep — [2.1 Units and Dimensions](modules/unit-2/units-and-dims.qmd) | 3 Sep — [2.2 The Buckingham-Pi Theorem and Similitude](modules/unit-2/b-pi.qmd) | [2.3 Strouhal Number](modules/unit-2/strouhal_number.qmd) | HW2 |
-| 2 | 8 Sep — [3.1 Hydrostatic Pressure](modules/unit-3/hydrostatics.qmd) | 10 Sep — [3.2 Pressure Integrals](modules/unit-3/p-int.qmd) | [3.3 Rigid-body acceleration](modules/unit-3/rigid-accel.qmd) | |
-| 3 | 15 Sep — [4.1 Forces on curved surfaces](modules/unit-4/curved-int.qmd) | 17 Sep — TBD | | |
+| 0 | 25 Aug — [1.1 Pressure](modules/unit-1/pressure.qmd) | 27 Aug — [1.2 Viscosity](modules/unit-1/viscosity.qmd) | | HW1 -- due 4 Sep |
+| 1 | 1 Sep — [2.1 Units and Dimensions](modules/unit-2/units-and-dims.qmd) | 3 Sep — [2.2 The Buckingham-Pi Theorem and Similitude](modules/unit-2/b-pi.qmd) | [2.3 Strouhal Number](modules/unit-2/strouhal_number.qmd) | HW2 -- due 11 Sep  |
+| 2 | 8 Sep — [3.1 Hydrostatic Pressure](modules/unit-3/hydrostatics.qmd) | 10 Sep — [3.2 Pressure Integrals](modules/unit-3/p-int.qmd) | [3.3 Rigid-body acceleration](modules/unit-3/rigid-accel.qmd) | No HW |
+| 3 | 15 Sep — [4.1 Forces on curved surfaces](modules/unit-4/curved-int.qmd) | 17 Sep — **no class** | [4.3 Moments and some more examples](modules/unit-4/moments.qmd) (draft) | HW3 -- due 25 Sep |
 | 4 | 22 Sep — TBD | 24 Sep — TBD | | |
 | 5 | 29 Sep — TBD | 1 Oct — TBD | | |
-| 6 | 6 Oct — TBD | 8 Oct — **no class** | | |
+| 6 | 6 Oct — Midterm in class | 8 Oct — **no class** | | |
 | 7 | 13 Oct — TBD | 15 Oct — TBD | | |
 | 8 | 20 Oct — TBD | 22 Oct — TBD | | |
 | 9 | 27 Oct — TBD | 29 Oct — TBD | | |
