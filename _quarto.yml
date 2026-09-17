@@ -74,6 +74,7 @@ website:
           - homework/hw1.qmd
           - homework/hw1_sol.qmd
           - homework/hw2.qmd
+          - homework/hw2_sol.qmd
       # Project, the rest of Unit 1, and Units 2-10 are drafted but
       # gitignored while the site is stripped down (see .gitignore).
       # Restore each section here, and its render: line above, as

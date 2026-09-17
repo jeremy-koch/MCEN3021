@@ -1,0 +1,233 @@
+# Homework 2 Solutions
+
+$$
+\newcommand{\pd}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\bnabla}{\boldsymbol{\nabla}}
+$$
+
+
+## 1. A liquid drop ...
+
+... of density $\rho$ and radius $R$ may bounce when it impacts a surface. An interesting question: How long is the drop in contact with the interface? Call this $t_\text{c}$. Experiments show that $t_c$ is independent of the incoming velocity. Strong deformations definitely occur, signaling the surface tension $\gamma$ is important. How does the contact time scale with the drop radius?
+
+::: {.callout-tip title="Solution" collapse="true"}
+We speculate that we can write
+
+$$
+t_\text{c} \sim \rho^a R^b \gamma^c
+$$
+
+based on dimensional analysis. Writing in terms of dimensions
+
+
+$$
+\text{T} =  \left(\frac{\text{FT}^2}{\text{L}^4}\right)^a \left(\text{L}\right)^b \left(\frac{\text{F}}{\text{L}}\right)^c
+$$
+
+we recognize that, since T only appears in the first term on the right, we must have $a=1/2$. Then to balance F, we must have $c=-1/2$. Then we've got, on the right hand side: $\text{L}^{-2+b+1/2}$, and so $b=3/2$. That is
+
+$$
+t_\text{c} \sim R^{3/2}\sqrt{\frac{\rho}{\gamma}}.
+$$
+
+:::
+
+
+## 2. Pressure-drop scaling
+
+A fluid with density $\rho$ and viscosity $\mu$ flows in a tube of constant radius $R$ with volumetric flow rate $Q$ (dimensions of length³/time). In steady flow the pressure drops uniformly with distance along the tube, i.e., $\Delta p/\ell$ is a (single) constant parameter.
+
+![](figures/Fig1.png){width=50%}
+
+(a) What does the B-$\Pi$ Theorem say about the number of independent dimensionless groups in this problem?
+
+::: {.callout-tip title="Solution" collapse="true"}
+There are 5 variables/parameters ($\rho,\mu,R,Q,\Delta p/\ell$) which will be described by 3 fundamental dimensions. Thus, there are two independent dimensionless groups.
+:::
+
+(b) One of the dimensionless groups is the Reynolds Number. If we are being particular, the Reynolds Number is
+
+$$
+\text{Re}_D \equiv \frac{\rho \bar{U} D}{\mu}
+$$
+
+where $\bar{U} \equiv Q/A$ is the average velocity and $A=\pi D^2/4$ is the pipe cross-section. Plug in the definition of $\bar{U}$ to write $\text{Re}_D$ as a function of $Q$.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Plugging-in
+
+$$
+\text{Re}_D = \frac{\rho Q D}{A \mu} = \frac{4 \rho Q D}{\pi D^2 \mu} = \frac{4 \rho Q }{\pi D \mu} 
+$$
+
+... which always trips me up because $D$ is downstairs.
+:::
+
+(c) Find another dimensionless group... I guess I have revealed the answer to (a) is 2. Let's choose to write it in terms of $\Delta p/\ell$ (upstairs with power 1), $Q$, $R$, and $\mu$.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Creating another dimensionless group, which I will arbitrarily call $\Pi_2$:
+
+$$
+        \begin{align*}
+        \Pi_2 &= (\Delta p/\ell) Q^x R^y \mu^z\\
+        \left[-\right]  &= \left[\text{F/L}^3\right]  
+        \left[\text{L}^3\text{/T}\right]^x
+        \left[\text{L}\right]^y
+        \left[\text{FT/L}^2 \right]^z
+    \end{align*}
+$$
+
+    we recognize $z=-1$ (based on the F dimension) and so $x=-1$ (based on the T dimension). Then, after balancing the L dimension:
+
+$$
+        \Pi_2 =\frac{(\Delta p/\ell)R^4}{Q \mu}.
+$$
+
+:::
+
+(d) In our cardiovascular system, cholesterol buildup on artery walls may reduce the radius $R$ of a blood vessel. Let's assume that the parameter we described in part (c) is approximately constant for the relevant range of $\text{Re}_D$. For constant $\mu$ and $Q$ (i.e., your organs demand the same amount of the same blood), a 10\% reduction in $R$ (due to a cholesterol layer on the walls) will change $\Delta p/\ell$ by what factor? 
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Assuming this dimensionless group is held constant, a 10\% reduction in $R$ (to $0.9R$) will need to be compensated by an increase in $\Delta p$ to $1.52\times$ its previous value:
+
+$$
+(\Delta p)_1 R^4 = (\Delta p)_2 (0.9R)^4 \implies (\Delta p)_2 = 1.52 (\Delta p)_1.
+$$
+
+That is, a relatively minor level of plaque build-up will necessitate 52\% more effort from your heart!
+
+:::
+
+
+
+## 3. Similitude example
+
+A chemical company is interested in the way drops of its new chemical will splash. The chemical, called "chemical X", is caustic, and the company is hoping you can explain the splashing behavior without creating too much of a hazard in the lab. You will try to understand the splash behavior using water instead. The relevant properties are listed in the table below.
+
+| material | $U$ | $D$ | $\rho$ | $\gamma$ (Surface Tension) |
+| --- | --- | --- | --- | --- |
+| chemical X | 0.5 m/s | 1 mm | 800 kg/m$^3$ | 0.025 N/m |
+| water | ??? | 1 mm | 1000 kg/m$^3$ | 0.070 N/m |
+
+(a) Describe a dimensionless number that includes the four variables above, with $D$ raised to the power 1 in the numerator of this number.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+We build a dimensionless group
+
+$$
+\Pi_1 \equiv D U^a \rho^b \gamma^c
+$$
+
+and write it out in terms of dimensions:
+
+$$
+1 = \text{L} \left(\frac{\text{L}}{\text{T}}\right)^a \left(\frac{\text{M}}{\text{L}^3}\right)^b \left(\frac{\text{M}}{\text{T}^2}\right)^c.
+$$
+
+We can write a system of equations to determine the values of $a$, $b$, and $c$, based on each dimension: from M, $b+c=0$; from L, $1+a-3b=0$; and from T, $-a-2c=0$. Solving, we find $a=2$, $b=1$, and $c=-1$. That is
+
+$$
+\Pi_1 \equiv \frac{D U^2 \rho }{\gamma}.
+$$
+:::
+
+
+(b) As you are designing your modeling experiment, you are wondering what the appropriate speed of the water droplets should be to correctly model the behavior of chemical X. Based on the given properties in the table, what speed should you select for your experiment with water?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+To determine the speed for the experiment with water, we first determine the $\Pi_1$ value for Chemical X using the known properties:
+
+$$
+[\Pi_1]_\text{Chemical X}=\frac{0.001\times 0.5^2\times 800}{0.025}=8
+$$
+
+and then the values of $\Pi_1$ match. Plugging-in known values for water
+
+$$
+[\Pi_1]_\text{water}=\frac{0.001\times U^2 \times 1000}{0.070}
+$$
+
+and solving, we find $U=0.75$ m/s.
+:::
+
+
+
+## 4. The performance of an impeller ...
+... is often characterized by two dimensionless numbers: a modified Reynolds Number (on the $x$-axis in the diagram below) and something called "The Power Number" (on the $y$-axis). This chart contains 6 different impeller designs.
+
+![](figures/impeller.png){width=90%}
+
+::: {.column-margin}
+Chart from: Bates, Robert L., Philip L. Fondy, and Robert R. Corpstein. ``Examination of some geometric parameters of impeller power.'' Industrial \& Engineering Chemistry Process Design and Development 2, no. 4 (1963): 310-314.
+:::
+
+(a) Let's assume the list of variables/parameters in this problem includes: $\rho$, $\mu$, $D$, rotation speed $\Omega$ (units of rev/s), and power $\dot{W}$ (energy-per-time). Create an equivalent Reynolds Number out of $\rho$, $\mu$, $\Omega$, and $D$, with $\rho$ in the numerator with power 1; and a dimensionless Power Number Po, from $\dot{W}$, $\rho$, $\Omega$, and $D$, with $\dot{W}$ in the numerator with power 1.
+
+::: {.callout-tip title="Solution" collapse="true"}
+The dimensionless group is a function of density $\rho$, dynamic viscosity $\mu$, rotation speed $\Omega$, and diameter $D$. We write 
+
+$$
+\text{Re}_D \equiv \rho \mu^a \omega^b D^c
+$$
+
+or, dimensionally
+
+$$
+1 = \left(\frac{\text{M}}{\text{L}^3}\right)
+\left(\frac{\text{M}}{\text{LT}}\right)^a
+\left(\frac{\text{1}}{\text{T}}\right)^b
+\left(\text{L}\right)^c.
+$$
+
+From this, we can determine the values of $a$, $b$, and $c$ based on equations for the individual dimensions: for M, $1+a=0$; for L, $-3-a+c=0$; for T, $-a-b=0$. Solving reveals $a=-1$, $b=1$, and $c=2$. That is
+
+$$
+\text{Re}_D \equiv \frac{\rho D^2 \Omega}{\mu}.
+$$
+
+With the same process we can determine what Po is:
+
+$$
+\text{Po} \equiv \dot{W} \rho^d \Omega^e D^f.
+$$
+
+Dimensionally
+
+$$
+1 = \left(\frac{\text{ML}^2}{\text{T}^3}\right)
+\left(\frac{\text{M}}{\text{L}^3}\right)^d
+\left(\frac{\text{1}}{\text{T}}\right)^e
+\left(\text{L}\right)^f
+$$
+
+and we solve to find $d=-1$, $e=-3$, and $f=-5$. That is
+
+$$
+\text{Po} \equiv \frac{\dot{W}}{\rho \Omega^3 D^5}.
+$$
+
+Whoa, $D^5$!
+:::
+
+
+
+(b) Suppose we are considering impeller design 1, operating in water with $\rho=1000$ kg/m$^3$ and $\mu=10^{-3}$ Pa$\cdot$s. The impeller has diameter 0.1 m and was originally intended to operate at 1 rev/s. What is the effect on power output if we increase the rotation speed by 30\%? Write your answer as $\dot{W}_\text{new}/\dot{W}_\text{old}$.
+
+::: {.callout-tip title="Solution" collapse="true"}
+The Reynolds Number for the original design can be calculated using the given parameters: $\text{Re}_\text{old}=10000$. The associated $\text{Po}_\text{old}$ can be found using the chart: $\text{Po}_\text{old}\approx 5$. Then we can unpack this to determine $\dot{W}_\text{old}= 0.05$.
+
+With the same process: $\text{Re}_\text{new}=13000$, so $\text{Po}_\text{new}\approx 5$, and $\dot{W}_\text{new}= 0.11$.
+
+
+Dividing:
+
+$$
+\frac{\dot{W}_\text{new}}{\dot{W}_\text{old}} = 2.2.
+$$
+:::
