@@ -20,7 +20,7 @@ To keep an eye on things, a well-type manometer is connected to a tap at the *bo
 
 ## 2. A cylindrical container lies on its side.
 
-It has radius $R$ and length $L$ and is filled up to a height $H$ with a fluid of density $\rho$. (That is, the circular base of the cylinder is more than half covered: $R<H<2R$.)
+It has radius $R$ and length $L$ and is filled up to a height $H$ with a fluid of density $\rho$. The circular base of the cylinder is more than half covered: $R<H<2R$.
 
 (a) Make a drawing of this situation, with all variables included.
 
