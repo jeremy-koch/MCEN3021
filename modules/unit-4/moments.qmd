@@ -77,9 +77,9 @@ $$
 
 at which point Wolfram Alpha or Desmos or whatever can handle the math. For our purposes, it will make sense to define a polar coordinate system around the curved section, with center located at a depth $H-R$.
 
-**Determine the best way to write $dA$**. The quarter-cylinder is easily represented in terms of $(r,\theta)$ coordinates, with the surface being located at a constant radius $R$. We'll use $dA = R \,d\theta \, dz$.
+**Determine the best way to write $dA$**. The quarter-cylinder is easily represented in terms of cylindrical coordinates, with the surface being located at a constant radius $R$. We'll use $dA = R \,d\theta \, dz$.
 
-**Write pressure in these coordinates**. Pressure still depends only on depth. We have options for how to define $\theta$ (and I can't remember what we did in class!) — let's say $\theta =0$ at the deepest part of the pool and increases to $\theta=\pi/2$ at the end of the quarter-cylinder. Then:
+**Write pressure in these coordinates**. Pressure still depends only on depth. We have options for how to define $\theta$ (and I can't remember what we did in class!)... let's say $\theta =0$ at the deepest part of the pool and increases to $\theta=\pi/2$ at the end of the quarter-cylinder. Then:
 
 $$
 p(\theta) = \rho g \left(H-R + R\cos\theta\right).
@@ -129,6 +129,10 @@ $$
 which is something we can indeed calculate: it's technically two integrals, one for each component, but Wolfram Alpha has no trouble with it.
 
 
+::: {.callout-important}
+I'm trying to instill this perspective: comprehending and setting-up a problem is far more valuable than completing the calculation. Too often I have heard students say "I just used Chegg/ChatGPT to get started, I did the math myself"... honestly, once the integral is set up, I don't care if you use a computer to do the calculus. The wisdom that goes into understanding the problem and getting into a calculable form is *vastly* more important than your ability to remember the integrals of trigonometric functions.
+:::
+
 
 
 ## Moments
@@ -139,17 +143,17 @@ $$
 \mathbf{F}=\int -p(\mathbf{x})\hat{\mathbf{n}}(\mathbf{x})dA.
 $$
 
-To get (vector) moments, we need to fit the "force $\times$ distance" into the integrand. We'll have an infinitesimal force, $-p(\mathbf{x})\hat{\mathbf{n}}(\mathbf{x})dA$, and we'll use $\mathbf{r}$ as our displacement vector. Remember that when dealing with vectors, torques and moments are actually "distance $\times$ force", and so our integral is
+To get (vector) moments, we need to fit the "force $\times$ distance" into the integrand. We'll have an infinitesimal force, $-p(\mathbf{x})\hat{\mathbf{n}}(\mathbf{x})dA$, and we'll use $\mathbf{r}$ as our displacement vector. Remember that when dealing with vectors, moments are actually "distance $\times$ force", and so our integral is
 
 $$
 \mathbf{M}=\int -\mathbf{r}\wedge p(\mathbf{x})\hat{\mathbf{n}}(\mathbf{x})dA
 $$
 
-where I used $\wedge$ for the cross product symbol, to make it distinct from $\mathbf{x}$ (which looks like $\times$).
+where I used $\wedge$ for the cross product symbol, to make it distinct from $\mathbf{x}$ (which looks too much like $\times$).
 
 ### Moment example 1
 
-Let's do a basic one but with our vector calculus notation: remember when there was a gate on an angled wall? We computed the torque needed to keep it closed in [Torques from pressure distributions](../unit-3/p-int.qmd#torques-from-pressure-distributions), using a scalar lever arm. Here was the figure:
+Let's do a basic one but with our vector calculus notation: remember the problem with a gate on an angled wall? We computed the torque needed to keep it closed in [Torques from pressure distributions](../unit-3/p-int.qmd#torques-from-pressure-distributions), using a scalar lever arm. Here was the figure:
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -189,7 +193,7 @@ Let's do a basic one but with our vector calculus notation: remember when there 
 </div>
 ```
 
-The scalar was fine because the force and displacement were perpendicular — thus, the moment was simply the product of those two quantities. Let's redo it with the vector formula:
+A scalar perspective was fine because the force and displacement were perpendicular, and so the moment was simply the product of those two quantities. Let's redo it with the vector formula:
 
 $$
 \mathbf{M}=\int -\mathbf{r}\wedge p(\mathbf{x})\hat{\mathbf{n}}(\mathbf{x})dA.
@@ -204,7 +208,7 @@ $$
 is going to be the vector pointing into the fluid, assuming we are thinking about the horizontal and vertical components. Some sanity checks:
 
 - When $\beta=0$, the wall is vertical with the fluid on its left, so we should have $\hat{\mathbf{n}}=-\hat{\mathbf{x}}$. We get $\left\langle -1, 0\right\rangle$, great.
-- When $\beta=\pi/4$, the wall leans away from the fluid, so the normal into the fluid should point left *and* up. We get $\left\langle -\sqrt{2}/2, \sqrt{2}/2\right\rangle$. 
+- When $\beta=\pi/4$, the wall leans away from the fluid, so the normal into the fluid should point left and up. We get $\left\langle -\sqrt{2}/2, \sqrt{2}/2\right\rangle$. Great.
 
 ::: {.column-margin}
 Be careful here: we measured *depth* $y$ as being downwards (so that $p=\rho g y$), but this normal vector is still thinking about the rightward component and the upward component. There is not necessarily a contradiction, just be clear about what you are reporting (e.g., with a note like this one!).
@@ -217,30 +221,22 @@ $$
 \left\langle \sin\beta,\ \cos\beta\right\rangle.
 $$
 
-Check: when $\beta=0$, this is a vector pointing straight up from the hinge, which makes sense because the gate is above the hinge. (See below for a perhaps more intuitive perspective.)
+Check: when $\beta=0$, this is a vector pointing straight up from the hinge, which makes sense because the gate is above the hinge.
 
 **The cross product.** In two dimensions, the cross product of $\left\langle a,b\right\rangle$ and $\left\langle c,d\right\rangle$ has only a $z$-component (out of the page): $ad-bc$. So
 
 $$
 \mathbf{r}\wedge\hat{\mathbf{n}} = \left(\frac{H_\text{hinge}}{\cos\beta}-y'\right)\left[\sin\beta\cdot\sin\beta - \cos\beta\cdot(-\cos\beta)\right]
-= \left(\frac{H_\text{hinge}}{\cos\beta}-y'\right)
+= \left(\frac{H_\text{hinge}}{\cos\beta}-y'\right).
 $$
 
-(the bracket is $\sin^2\beta+\cos^2\beta=1$, which is what we'd expect for two perpendicular unit vectors). Now we plug into the moment integral, with $p=\rho g\cos\beta\,y'$, $dA=dy'\,dz$, and the gate (recall that it has length $\ell$ along the wall and width $W$ into the page) spanning $y'$ from $H_\text{hinge}/\cos\beta-\ell$ to $H_\text{hinge}/\cos\beta$ and $z$ from $0$ to $W$:
+(The bracket is $\sin^2\beta+\cos^2\beta=1$.) Now we plug into the moment integral, with $p=\rho g\cos\beta\,y'$, $dA=dy'\,dz$, and the gate (recall that it has length $\ell$ along the wall and width $W$ into the page) spanning $y'$ from $H_\text{hinge}/\cos\beta-\ell$ to $H_\text{hinge}/\cos\beta$ and $z$ from $0$ to $W$:
 
 $$
 M_z = -\int\limits_0^W\int\limits_{H_\text{hinge}/\cos\beta-\ell}^{H_\text{hinge}/\cos\beta} \left(\frac{H_\text{hinge}}{\cos\beta}-y'\right)\left(\rho g \cos\beta\, y'\right) dy'\,dz.
 $$
 
 This is exactly the scalar integral from before, with a minus sign in front: same magnitude, and now the sign tells us the direction. With $\hat{\mathbf{x}}$ to the right, $\hat{\mathbf{y}}$ up, and $\hat{\mathbf{z}}$ out of the page, a negative $M_z$ is *clockwise*. That makes sense: the water pushes the gate to the right and down, into the wall, and the gate is above and to the right of the hinge, so it wants to rotate clockwise.
-
-Evaluating (substitute $s=H_\text{hinge}/\cos\beta-y'$, which runs from $0$ to $\ell$):
-
-$$
-M_z = -\rho g W \cos\beta \int_0^\ell s\left(\frac{H_\text{hinge}}{\cos\beta}-s\right)ds = -\rho g W\left(\frac{H_\text{hinge}\,\ell^2}{2}-\frac{\cos\beta\,\ell^3}{3}\right).
-$$
-
-A sanity check: when $\beta=0$ and the gate reaches the surface ($H_\text{hinge}=\ell$), we get $|M_z|=\rho g W \ell^3/6$. That's the triangular-pressure result: a force of $\rho g W\ell^2/2$ acting at $\ell/3$ above the hinge.
 
 ::: {.callout-note}
 We could have also written these in terms of our new coordinate $y'$, though we'd need to use a perpendicular coordinate $x'$ to make the description legal. That is: we could write
@@ -267,7 +263,7 @@ Then $\mathbf{r}\wedge\hat{\mathbf{n}} = 0\cdot 0 - \left(y'-H_\text{hinge}/\cos
 
 ### Moment example 2
 
-I don't want to give away too much — the homework problem will be similar! But let's look at the force example from above and think about what would happen if there was a hinge located on the bottom, at $\theta=0$.
+I don't want to give away too much — the homework problem will be similar! But let's look at [the force example from above](#a-force-example) and think about what would happen if there was a hinge located on the bottom, at $\theta=0$.
 
 Differential area, pressure distribution, normal vector, bounds of integration — all the same. The only thing we need to figure out is how to write the moment arm $\mathbf{r}$ from hinge to an arbitrary point on the surface.
 
