@@ -8,9 +8,11 @@ homework/*
 !homework/hw1_sol.qmd
 !homework/hw2.qmd
 !homework/hw2_sol.qmd
+!homework/hw3.qmd
 !homework/figures/
 homework/solutions/
 pdfs/
+scripts/make_hw3_figures.py
 
 # In-class ConcepTest slide decks (answers live in speaker notes / on the
 # slide itself) -- instructor-only, kept local for now rather than in the
