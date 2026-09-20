@@ -18,9 +18,7 @@ project:
     - "!modules/unit-2/b-pi-extra.qmd"
     - "!modules/unit-2/old/"
     - "!modules/unit-3/old/"
-    - "!modules/unit-4/bernoulli.qmd"
-    - "!modules/unit-4/flow-measurement.qmd"
-    - "!modules/unit-4/bernoulli-worked.qmd"
+    - "!modules/unit-4/old/"
     - "!modules/unit-5/"
     - "!modules/unit-6/"
     - "!modules/unit-7/"
@@ -68,6 +66,7 @@ website:
       - modules/unit-3/rigid-accel.qmd
       - modules/unit-4/curved-int.qmd
       - modules/unit-4/moments.qmd
+      - modules/unit-4/bernoulli.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd

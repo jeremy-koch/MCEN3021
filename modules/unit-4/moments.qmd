@@ -130,7 +130,7 @@ which is something we can indeed calculate: it's technically two integrals, one 
 
 
 ::: {.callout-important}
-I'm trying to instill this perspective: comprehending and setting-up a problem is far more valuable than completing the calculation. Too often I have heard students say "I just used Chegg/ChatGPT to get started, I did the math myself"... honestly, once the integral is set up, I don't care if you use a computer to do the calculus. The wisdom that goes into understanding the problem and getting into a calculable form is *vastly* more important than your ability to remember the integrals of trigonometric functions.
+I'm trying to instill this perspective: comprehending and setting-up a problem is far more valuable than completing the calculation. Too often I have heard students say "I just used Chegg/ChatGPT to get started, I did the math myself"... honestly, once the integral is set up, I don't care if you use a computer to do the calculus. The wisdom that goes into understanding the problem and getting it into a calculable form is *vastly* more important than your ability to remember the integrals of trigonometric functions.
 :::
 
 
