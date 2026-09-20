@@ -281,7 +281,9 @@ $$
 \Rightarrow\quad \boxed{\;U_2 = U_1 \frac{A_1}{A_2}\;}
 $$
 
-Squeeze the area down by a factor of three and the speed goes up by a factor of three. Nothing subtle, but it is the workhorse.
+Squeeze the area down by a factor of three and the speed goes up by a factor of three. Nothing subtle, but it is the workhorse. -->
+
+<!--
 
 ## Putting them together: how does the pressure change?
 
@@ -313,7 +315,7 @@ Sanity check the physics before trusting it. For a contraction, $A_1 > A_2$, so 
 
 Notice also that the pressure drop scales with the *square* of the area ratio. Halve the area and you don't pay double, you pay $4-1=3$ times the inlet dynamic pressure. This is precisely the effect we will weaponize in the next reading to *measure* flow rate: squeeze the pipe, read the pressure drop, back out the speed. That's a venturi meter.
 
-## Earn it — 3 quick gates
+<!-- ## Earn it — 3 quick gates
 
 Water ($\rho = 1000$ kg/m³) flows through a horizontal contraction. At station 1, $U_1 = 2.0$ m/s. The area shrinks by a factor of three, so $A_1/A_2 = 3$.
 
