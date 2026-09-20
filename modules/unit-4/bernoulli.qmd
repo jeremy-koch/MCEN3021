@@ -44,7 +44,7 @@ In unsteady flow we also talk about *pathlines* and *streaklines*, which have su
 
 Let's think about this picture:
 
-<!-- Here is the picture we'll work with: a family of streamlines, and one parcel of fluid riding along one of them. The parcel has cross-sectional area $A$ and length $\Delta s$ along the flow. We set up a little coordinate system that travels with the parcel: $s$ points *along* the streamline, $n$ points *normal* to it. Gravity points down, opposite our fixed $\hat{\mathbf{z}}$. -->
+
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -123,18 +123,18 @@ Let's think about this picture:
 </div>
 ```
 
-
+We've sketched a collection of streamlines and highlighted a certain fluid parcel — not a particle traveling with the fluid, a little segment of the fluid itself. This parcel has cross-sectional area $A$ (along the streamline direction). We've got the $\mathbf{\hat{z}}$-direction pointing upwards, against gravity, and have invented two new coordinates: $s$ is our coordinate along a streamline, and $n$ (for normal) is the coordinate perpendicular to that. The length of the fluid parcel we'll call $\Delta s$.
 
 ## Newton's second law along a streamline
 
-In this $(s,n)$-coordinate system we can write $\mathbf{F}=m\mathbf{a}$... and actually, let's focus on just the streamline direction:
+In this $(s,n)$-coordinate system we can write $\mathbf{F}=m\mathbf{a}$... and let's focus on just the streamline direction:
 
 $$
 \sum F_s = m a_s.
 $$
 
 - Regarding the forces: we will consider **gravity** and the **forces associated with pressure**...
-- ... and we will **neglect viscous forces**. Basically assuming $\mu\approx 0$.
+- ... and we will **neglect viscous forces**, basically assuming $\mu\approx 0$.
 - We'll pay attention to just the component of gravity that is acting in the $\hat{s}$-direction. That component is
 
 $$
@@ -143,6 +143,8 @@ $$
 
 ::: {.column-margin}
 Sanity check: if $z$ is not changing with $s$, $\partial z/\partial s=0$ and we have no component of weight in the streamline direction. This also would mean the streamline is horizontal... makes sense!
+
+If $z$ and $s$ are aligned, we'll have $\partial z/\partial s=1$, and then the component of force in the $\mathbf{\hat{z}}$-direction is $-mg$. Great.
 :::
 
 - In the streamline direction, we will say that pressure is acting on the front of the parcel, at position $s+\Delta s$, with area $A$, and on the back of the parcel, at position $s$, with the same area $A$. Invoking a Taylor Series idea, the net force is
@@ -157,7 +159,7 @@ $$
 
 
 
-- The acceleration term takes a little calculus as well: if the parcel's speed in the streamline direction is $V_s$, then $a_s = \partial V_s/\partial t$. But we can also recognize that $V_s$ is a function of $s$: $V_s(s(t))$. And then we can apply the chain rule:
+- The acceleration term takes a little calculus as well: if the parcel's speed in the streamline direction is $V_s$, then $a_s = \partial V_s/\partial t$. But we also recognize that $V_s$ is a function of $s$: $V_s(s(t))$. Then we can apply the chain rule:
 
 $$
 \frac{\partial V_s}{\partial t}=\frac{\partial s}{\partial t}\frac{\partial V_s}{\partial s} = V_s \frac{\partial V_s}{\partial s}.
@@ -224,7 +226,7 @@ $$
 
 This is one equation mechanical engineers actually memorize, or at least the principle behind it. The "Bernoulli Principle" is that an increase in flow speed **decreases** the pressure. This principle is used to explain phenomena like:
 
-- **Airfoil lift.** Faster flow over the top of a wing means less pressure there.
+- **Airfoil lift.** Faster flow over the top of a wing means less pressure on top of the wing. Hence, a lift force.
 - **Entrainment.** Moving air is lower pressure so it "sucks in" extra air.
 
 
@@ -237,7 +239,7 @@ p_1 + \frac{1}{2}\rho V_1^2 + \rho g z_1 =
 p_2 + \frac{1}{2}\rho V^2_2 + \rho g z_2.
 $$
 
-Often, we will know everything about position 1, and some information about position 2: that is, $p_1$, $V_1$, and $z_1$ might be known, along with the altitude and speed at position two, $z_2$ and $V_2$. Then
+Often, we will know everything about position 1, and some information about position 2. That is, $p_1$, $V_1$, and $z_1$ might be known, along with the altitude and speed at position two: $z_2$ and $V_2$. Then
 
 $$
 p_2 = p_1 + \frac{1}{2}\rho (V_1^2-V_2^2) + \rho g (z_1-z_2).
@@ -265,7 +267,9 @@ Importantly, by neglecting viscosity, there are no **energy dissipation terms**:
 
 ## When can we use Bernoulli's Equation?
 
-One of the most important lessons we learn in fluid mechanics is **when can we make assumptions**. Bernoulli's Equation is so nice! It is just algebra! We'll see the [Navier-Stokes Equations](https://en.wikipedia.org/wiki/Navier–Stokes_equations) soon... they are nonlinear partial differential equations in three dimensions and are ostensibly a complete representation of flow physics (for Newtonian fluids). They are also practically unsolvable.
+One of the most important lessons we learn in fluid mechanics is **when can we make simplifying assumptions**. Bernoulli's Equation is so nice! It is just algebra! 
+
+We'll see the [Navier-Stokes Equations](https://en.wikipedia.org/wiki/Navier–Stokes_equations) soon... they are nonlinear partial differential equations in three dimensions and are ostensibly a complete representation of flow physics (for Newtonian fluids). They are also practically unsolvable.
 
 Bernoulli's Equation is easy to "solve", but is only applicable in specific scenarios. Namely: we assumed negligible viscosity. We can frame this in terms of the Reynolds Number:
 
@@ -279,7 +283,7 @@ There are a few caveats which we might not understand for a few more weeks. Thes
 
 - **Boundary layers** form near surfaces during high-Re flows — very thin layers over which the fluid transitions from high speed to zero velocity to meet the no-slip condition. Bernoulli's Equation does not work within the boundary layers, but is still often applied outside the boundary layers.
 - **Vortices** occur in moderate-to-high-Re flows, particularly in the wake of blunt bodies like spheres and cylinders. Viscosity is necessary to describe their formation, and additionally their existence complicates the "along a streamline" description.
-- **Turbulence** occurs at high Reynolds Number. Viscosity is again relevant, and again the streamline description is difficult to apply.
+- **Turbulence** occurs at high Reynolds Numbers. Viscosity is again relevant, and again the streamline description is difficult to apply.
 
 Despite this: if you (an object that is more-or-less 1 m large) are walking on a day with a slight breeze (5 m/s), the Reynolds Number is something like 300000... definitely much much larger than one. This is to say: a lot of everyday life occurs at a Reynolds Number where Bernoulli's Equation is applicable.
 
@@ -288,11 +292,11 @@ Despite this: if you (an object that is more-or-less 1 m large) are walking on a
 
 
 
-## Quick extra: a basic statement of conservation of mass
+## Quick additional thing: a basic statement of conservation of mass
 
 To actually *use* Bernoulli we almost always need a second equation — we might know our second location, $z_2$, but won't necessarily know the pressure, $p_2$, or speed, $V_2$, there. Bernoulli's Equation is then one equation, two unknowns — we need some more information.
 
-Consider a duct that narrows: uniform flow enters at speed $V_1$ and pressure $p_1$ through area $A_1$, and leaves through a smaller area $A_2$. What is the speed at $A_2$?
+Consider a duct that narrows: uniform flow enters at speed $U_1$ and pressure $p_1$ through area $A_1$, and leaves through a smaller area $A_2$. What is the speed at $A_2$?
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -380,7 +384,7 @@ We now have both equations we need, so let's check that we can reason with them 
 ```
 
 ::: {#bern-gate-speed .fl-hidden}
-It speeds up. Same mass per second, smaller hole, so it has to hurry. Now the one people get wrong:
+It speeds up. Same mass per second, smaller cross-section, so it has to increase in speed.
 
 ```{=html}
 <div class="fl-checkpoint"
@@ -394,7 +398,5 @@ It speeds up. Same mass per second, smaller hole, so it has to hurry. Now the on
 :::
 
 ::: {#bern-gate-pressure .fl-hidden}
-The pressure *drops*. This is the one that fights intuition: it feels like squeezing a tube should raise the pressure inside it, the way squeezing a balloon does. But the fluid isn't being squeezed — it's being *accelerated*, and the only thing available to do the accelerating is a push from behind, which means higher pressure upstream than downstream. The budget $p + \tfrac12\rho V^2 + \rho g z$ is fixed, $z$ doesn't change, so paying for speed means selling pressure.
-
-Notice that you got both of these without computing anything. Conservation of mass tells you which way the speed goes, and then Bernoulli's Equation tells you which way the pressure must go to pay for it. The algebra is only there to tell you *how much*.
+The pressure *drops*. This might be non-intuitive: squeezing flow through a tube should raise the pressure inside it, the way squeezing a balloon does. But the fluid isn't being squeezed — it's being *accelerated*, and the thing pushing the flow to make it accelerate is pressure (a higher pressure upstream than downstream).
 :::
