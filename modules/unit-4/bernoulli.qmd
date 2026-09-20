@@ -17,21 +17,21 @@ The price of admission is that we throw away viscosity. No viscous drag, no diss
 
 1. $\sum F = ma$, and that pressure differences across a body produce a net force.
 2. Hydrostatics gave us $p=\rho g h$ when nothing moves. What happens to that when things do move?
-3. The Reynolds number $\mathrm{Re} = \rho U D/\mu$ compares inertia to viscosity.
+3. The Reynolds number $\mathrm{Re}_L = \rho U L/\mu$ compares inertia to viscosity.
 
 **Look ahead**
 
-1. What exactly is a *streamline*, and why does Bernoulli only work along one?
-2. If a flow speeds up, does its pressure go up or down? (Answer this before you read on — it's worth being wrong on paper.)
+1. What is a *streamline*, and why does Bernoulli only work along one?
+2. If a flow speeds up, does its pressure go up or down?
 3. If a duct narrows, where does the extra speed come from?
 
 ## Streamlines
 
-Bernoulli's Equation applies to fluid parcels along **streamlines**, so let's say what those are first.
+Bernoulli's Equation applies to fluid parcels along **streamlines**:
 
 > A **streamline** is a line that is everywhere parallel to the velocity vector field.
 
-If you make a quiver (arrow) plot of the velocity field, a streamline is a curve that is always (locally) aligned with those arrows. In steady flow, a streamline is also the path a fluid parcel actually travels. Importantly, this means we can think about that fluid parcel and apply our physics equations to it: conservation of momentum and energy. 
+If you make a quiver (arrow) plot of the velocity field, a streamline is a curve that is always (locally) aligned with those arrows. In steady flow, a streamline is also the path a fluid parcel actually travels. Importantly, this means we can think about that fluid parcel and apply our physics equations to it: conservation of momentum and energy.
 
 ::: {.column-margin}
 In unsteady flow we also talk about *pathlines* and *streaklines*, which have subtly different meanings (that you can look up, if interested). The one we are focusing on in 3021 is *streamlines*.
@@ -108,106 +108,279 @@ Let's think about this picture:
 </div>
 ```
 
+
+
 ## Newton's second law along a streamline
 
-<!-- Let's write $\sum F_s = m a_s$ in the streamline direction. Two decisions before we start:
-
-- We will consider **gravity** and the **forces due to pressure differentials**. Those are our only forces.
-- We are going to **neglect viscous drag**, $\mu \approx 0$. (This is the assumption that will eventually come back to bite us in pipe flow. For now, enjoy it.)
-
-**The pressure force.** Pressure acts on the front and back faces of the parcel, each of area $A$. If pressure varies along $s$, the two faces don't cancel, and the net force is the *difference*: $-A\frac{\partial p}{\partial s}\Delta s$. The minus sign says the parcel gets pushed from high pressure toward low pressure, which is the only sensible thing for it to do.
-
-**The gravity force.** Only the component of weight along $s$ matters, and that component is $-mg\frac{\partial z}{\partial s}$ — if the streamline climbs ($\partial z/\partial s>0$), gravity pulls backwards along it.
-
-**The acceleration.** Here's the sneaky part. The parcel's speed is $V_s$, and its acceleration is $\partial V_s/\partial t$. But we're following a parcel whose position is $s(t)$, so $V$ is really $V(s(t))$ and the chain rule gives
+In this $(s,n)$-coordinate system we can write $\mathbf{F}=m\mathbf{a}$... and actually, let's focus on just the streamline direction:
 
 $$
-\frac{\partial V_s}{\partial t} = \underbrace{\frac{\partial s}{\partial t}}_{V_s}\frac{\partial V_s}{\partial s} = V_s \frac{\partial V_s}{\partial s}.
+\sum F_s = m a_s.
 $$
 
-::: {.callout-note}
-This chain-rule move is the seed of the **material derivative**, which we'll meet properly later. The idea that "steady flow" does not mean "no acceleration" is one of the genuinely surprising facts in this course: a flow can be perfectly steady in time and still accelerate a parcel, simply because the parcel moves to a place where the speed is different.
+- Regarding the forces: we will consider **gravity** and the **forces associated with pressure**...
+- ... and we will **neglect viscous forces**. Basically assuming $\mu\approx 0$.
+- We'll pay attention to just the component of gravity that is acting in the $\hat{s}$-direction. That component is
+
+$$
+-mg\frac{\partial z}{\partial s}
+$$
+
+::: {.column-margin}
+Sanity check: if $z$ is not changing with $s$, $\partial z/\partial s=0$ and we have no component of weight in the streamline direction. This also would mean the streamline is horizontal... makes sense!
 :::
 
-Putting the three pieces together:
+- In the streamline direction, we will say that pressure is acting on the front of the parcel, at position $s+\Delta s$, with area $A$, and on the back of the parcel, at position $s$, with the same area $A$. Invoking a Taylor Series idea, the net force is
 
 $$
--A\frac{\partial p}{\partial s}\Delta s \;-\; m g \frac{\partial z}{\partial s} \;=\; m \,V_s \frac{\partial V_s}{\partial s}.
+\begin{align*}
+&-A p(s+\Delta s) + Ap(s)\\
+&=-A \left(p(s) + \frac{\partial p}{\partial s}\Delta s\right) + A p(s)\\
+&= -A \frac{\partial p}{\partial s}\Delta s.
+\end{align*}
 $$
 
-Now notice that $A\Delta s$ is just the parcel's volume, and $m = \rho\,(\text{volume})$. Substituting:
+
+
+- The acceleration term takes a little calculus as well: if the parcel's speed in the streamline direction is $V_s$, then $a_s = \partial V_s/\partial t$. But we can also recognize that $V_s$ is a function of $s$: $V_s(s(t))$. And then we can apply the chain rule:
 
 $$
--\,(\text{volume})\frac{\partial p}{\partial s} \;-\; \rho\,(\text{volume})\, g \frac{\partial z}{\partial s} \;=\; \rho\,(\text{volume})\, V_s \frac{\partial V_s}{\partial s}.
+\frac{\partial V_s}{\partial t}=\frac{\partial s}{\partial t}\frac{\partial V_s}{\partial s} = V_s \frac{\partial V_s}{\partial s}.
 $$
 
-Volume divides out of every term. That's a good sign — it means the result is about the fluid, not about how big a blob we happened to draw.
+::: {.column-margin}
+The last step is: $\frac{\partial s}{\partial t}=V_s$, the change in streamline position with time is the same as the streamline velocity.
+:::
 
-## Integrate along the streamline
-
-Divide by the volume and integrate each term with respect to $s$, following the parcel down its streamline:
-
-$$
-\int -\frac{\partial p}{\partial s}\,ds \;-\; \int \rho g \frac{\partial z}{\partial s}\,ds \;=\; \int \rho V \frac{\partial V}{\partial s}\,ds.
-$$
-
-Every one of these is a fundamental-theorem-of-calculus freebie. The first two integrands are exact derivatives of $p$ and $z$; the third is the derivative of $\tfrac12 V^2$. Taking $\rho$ and $g$ as constants:
+Combining these together, the conservation of momentum becomes
 
 $$
--p - \rho g z = \tfrac{1}{2}\rho V^2 - \text{constant}.
+-mg\frac{\partial z}{\partial s}-A \frac{\partial p}{\partial s}\Delta s = m V_s \frac{\partial V_s}{\partial s}.
 $$
 
-Rearrange, and there it is:
+A couple more observations:
+
+- $A\Delta s$ is the volume of the fluid parcel.
+- $m$ is the density times volume.
+
+That means each of these terms includes volume. Let's bring all the terms onto the same side of the equation, and then divide through by volume to get 
+
+$$
+ 0=\frac{\partial p}{\partial s}+ \rho V_s \frac{\partial V_s}{\partial s} +\rho g\frac{\partial z}{\partial s}.
+$$
+
+Now: integrate this whole equation with respect to $s$. The first and last terms are easy, e.g.
+
+$$
+ \int \frac{\partial p}{\partial s} ds = \int dp = p +\text{ constant}.
+$$
+
+The middle term is a little bit trickier, but I'll tell you the result and you can check it easily (easier to differentiate than integrate):
+
+$$
+\int \rho V_s \frac{\partial V_s}{\partial s} ds = \frac12 \rho V_s^2 +\text{ constant}. 
+$$
+
+::: {.column-margin}
+The check:
+
+$$
+\begin{align*}
+&\frac{\partial}{\partial s}\left( \frac12 \rho V_s^2\right)\\
+&= \frac12 \rho \left( 2 V_s \frac{\partial V_s}{\partial s}\right)\\
+&= \rho V_s \frac{\partial V_s}{\partial s}
+\end{align*}
+$$
+
+good.
+:::
+
+After completing the integration...
 
 ::: {.callout-important}
 ## Bernoulli's Equation
 
 $$
-p + \rho g z + \frac{1}{2}\rho V^2 = \text{constant along a streamline}
+p + \frac{1}{2}\rho V^2 + \rho g z = \text{constant along a streamline}.
 $$
+
+(We dropped the subscript $s$, and all of the constants of integration can be combined into a single constant.)
 :::
 
-This is one equation mechanical engineers actually memorize — or at least the principle behind it, the **"Bernoulli Principle"**: a flow that speeds up will *decrease* in pressure. That single sentence explains a startling amount of the world:
+This is one equation mechanical engineers actually memorize, or at least the principle behind it. The "Bernoulli Principle" is that an increase in flow speed **decreases** the pressure. This principle is used to explain phenomena like:
 
-- It is the reason for **airfoil lift** (faster over the top, lower pressure over the top).
-- **Firefighters** are concerned about this — fast flow past a surface pulls on it.
-- **Entrainment**: moving air drags extra air in alongside it, and the low pressure it creates sucks in still more.
+- **Airfoil lift.** Faster flow over the top of a wing means less pressure there.
+- **Entrainment.** Moving air is lower pressure so it "sucks in" extra air.
 
-### When are we allowed to do this?
 
-We threw away viscosity, so we should check whether that was defensible. The number in charge is the Reynolds number,
+## How do we use Bernoulli's Equation?
 
-$$
-\mathrm{Re} = \frac{\rho U D}{\mu},
-$$
-
-and an awful lot of applications sit at $\mathrm{Re}\gg 1$. Wave your arm through the air: $U\sim 2$ m/s, $D\sim 0.1$ m, and for air $\rho\approx 1.2$ kg/m³, $\mu\approx 1.8\times10^{-5}$ Pa·s. That's
+The basic case: suppose two positions, "1" and "2", are connected by a streamline. The quantity $p + \tfrac{1}{2}\rho V^2 + \rho g z$ is constant along a streamline, which means
 
 $$
-\mathrm{Re} = \frac{(1.2)(2)(0.1)}{1.8\times 10^{-5}} \approx 10^4,
+p_1 + \frac{1}{2}\rho V_1^2 + \rho g z_1 =
+p_2 + \frac{1}{2}\rho V^2_2 + \rho g z_2.
 $$
 
-which is to say viscosity is "small" — inertia beats it by four orders of magnitude. Casually waving your arm around is a high-Reynolds-number flow. Bernoulli is not some exotic limit; it's most of daily life.
-
-## Interpretation of the terms
-
-Step back and look at what we actually did. We took $F = ma$ (per unit volume, really) and integrated it over a distance $ds$. Force times distance is *work*, which means:
-
-- Bernoulli's Equation is **conservation of energy along a streamline**.
-- And we assumed **no energy dissipation**, $\mu = 0$, which is exactly why nothing leaks out of the ledger.
-
-So each term is an energy per unit volume:
+Often, we will know everything about position 1, and some information about position 2: that is, $p_1$, $V_1$, and $z_1$ might be known, along with the altitude and speed at position two, $z_2$ and $V_2$. Then
 
 $$
-\underbrace{p}_{\text{flow work}} \;+\; \underbrace{\tfrac{1}{2}\rho V^2}_{\text{kinetic energy}} \;+\; \underbrace{\rho g z}_{\text{potential energy}} \;=\; \text{constant}.
+p_2 = p_1 + \frac{1}{2}\rho (V_1^2-V_2^2) + \rho g (z_1-z_2).
 $$
 
-Check the units if you like: J/m³ is the same thing as Pa. Every term in Bernoulli is a pressure *and* an energy density, simultaneously. That double identity is why the equation is so easy to misuse — the algebra never complains, even when you apply it across two points that aren't on the same streamline, or across a region that dissipates energy.
+::: {.column-margin}
+See below a brief introduction to conservation of mass — this is how we might determine the speed $V_2$.
+:::
 
-::: {.callout-warning}
-## The misconception to kill now
-"Faster flow $\Rightarrow$ lower pressure" is a *consequence* of the constant being constant, not a law of nature. It only holds **along one streamline**, in a **steady**, **inviscid**, **incompressible** flow. Hand a fan and a loose sheet of paper to someone who over-applies it and you will get a confident, wrong prediction. If energy is being added (a pump) or destroyed (friction, a sudden expansion, a shock), Bernoulli is the wrong tool and you want the head equation instead.
-::: -->
+## What does it mean?
 
-## Quick aside: a basic statement of conservation of mass
+Step back: we were looking at conservation of momentum, $F_s = m a_s$, and then we integrated with respect to $s$, a distance coordinate. (We also divided by volume, but that is not important.) What is force times distance? **Work.** And work is related to **energy**: Bernoulli's Equation is basically a statement of conservation of energy.
+
+::: {.column-margin}
+Tempting, especially after last week, to say force times distance is a moment! In this case we aren't talking lever arms though.
+:::
+
+Look at the terms:
+
+- $\tfrac{1}{2}\rho V^2$. That is a kinetic energy per volume.
+- $\rho g z$. That is a gravitational potential energy per volume.
+- $p$. A little bit trickier to interpret... it's actually related to the amount of flow work, if you've taken thermodynamics. I like to interpret it as: we can use work to increase the pressure of a fluid, and then that elevated pressure is a kind of potential energy.
+
+Importantly, by neglecting viscosity, there are no **energy dissipation terms**: the total amount of (mechanical) energy present in the flow at position 1 is the same as the total amount of energy present in the flow at position 2.
+
+## When can we use Bernoulli's Equation?
+
+One of the most important lessons we learn in fluid mechanics is **when can we make assumptions**. Bernoulli's Equation is so nice! It is just algebra! We'll see the [Navier-Stokes Equations](https://en.wikipedia.org/wiki/Navier–Stokes_equations) soon... they are nonlinear partial differential equations in three dimensions and are ostensibly a complete representation of flow physics (for Newtonian fluids). They are also practically unsolvable.
+
+Bernoulli's Equation is easy to "solve", but is only applicable in specific scenarios. Namely: we assumed negligible viscosity. We can frame this in terms of the Reynolds Number:
+
+$$
+\mathrm{Re}_L = \frac{\rho U L}{\mu},
+$$
+
+and then say: Bernoulli's Equation is applicable when $\mathrm{Re} \gg 1$. (In such a case, the fluid inertia is much much larger than the fluid dissipation.)
+
+There are a few caveats which we might not understand for a few more weeks. These are related to certain "high Reynolds Number phenomena" that actually require viscosity to occur.
+
+- **Boundary layers** form near surfaces during high-Re flows — very thin layers over which the fluid transitions from high speed to zero velocity to meet the no-slip condition. Bernoulli's Equation does not work within the boundary layers, but is still often applied outside the boundary layers.
+- **Vortices** occur in moderate-to-high-Re flows, particularly in the wake of blunt bodies like spheres and cylinders. Viscosity is necessary to describe their formation, and additionally their existence complicates the "along a streamline" description.
+- **Turbulence** occurs at high Reynolds Number. Viscosity is again relevant, and again the streamline description is difficult to apply.
+
+Despite this: if you (an object that is more-or-less 1 m large) are walking on a day with a slight breeze (5 m/s), the Reynolds Number is something like 300000... definitely much much larger than one. This is to say: a lot of everyday life occurs at a Reynolds Number where Bernoulli's Equation is applicable.
+
+
+
+
+
+
+## Quick extra: a basic statement of conservation of mass
+
+To actually *use* Bernoulli we almost always need a second equation — we might know our second location, $z_2$, but won't necessarily know the pressure, $p_2$, or speed, $V_2$, there. Bernoulli's Equation is then one equation, two unknowns — we need some more information.
+
+Consider a duct that narrows: uniform flow enters at speed $V_1$ and pressure $p_1$ through area $A_1$, and leaves through a smaller area $A_2$. What is the speed at $A_2$?
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="620" height="290" viewBox="0 0 620 290" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <defs>
+    <marker id="duct-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c0392b"/>
+    </marker>
+    <marker id="duct-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2b6ca3"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="620" height="290" fill="#ffffff"/>
+
+  <!-- the fluid inside the duct -->
+  <path d="M 70 70 L 320 70 C 355 70 355 120 390 120 L 560 120
+           L 560 175 L 390 175 C 355 175 355 205 320 205 L 70 205 Z"
+        fill="#eaf4fa" stroke="none"/>
+
+  <!-- the duct walls -->
+  <path d="M 70 70 L 320 70 C 355 70 355 120 390 120 L 560 120"
+        fill="none" stroke="#1a1a1a" stroke-width="2"/>
+  <path d="M 70 205 L 320 205 C 355 205 355 175 390 175 L 560 175"
+        fill="none" stroke="#1a1a1a" stroke-width="2"/>
+
+  <!-- uniform inlet profile -->
+  <line x1="120" y1="75" x2="120" y2="200" stroke="#2b6ca3" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="120" y1="95"  x2="175" y2="95"  stroke="#2b6ca3" stroke-width="1.8" marker-end="url(#duct-arrow-blue)"/>
+  <line x1="120" y1="122" x2="175" y2="122" stroke="#2b6ca3" stroke-width="1.8" marker-end="url(#duct-arrow-blue)"/>
+  <line x1="120" y1="150" x2="175" y2="150" stroke="#2b6ca3" stroke-width="1.8" marker-end="url(#duct-arrow-blue)"/>
+  <line x1="120" y1="178" x2="175" y2="178" stroke="#2b6ca3" stroke-width="1.8" marker-end="url(#duct-arrow-blue)"/>
+  <text x="18" y="100" font-size="14" fill="#2b6ca3">uniform</text>
+  <text x="30" y="128" font-size="16" fill="#2b6ca3"><tspan font-style="italic">U</tspan><tspan font-size="11" dy="4">1</tspan></text>
+  <text x="30" y="160" font-size="16" fill="#8e44ad"><tspan font-style="italic">p</tspan><tspan font-size="11" dy="4">1</tspan></text>
+
+  <!-- area labels -->
+  <line x1="245" y1="240" x2="245" y2="210" stroke="#c0392b" stroke-width="1.6" marker-end="url(#duct-arrow)"/>
+  <text x="252" y="248" font-size="16" fill="#c0392b"><tspan font-style="italic">A</tspan><tspan font-size="11" dy="4">1</tspan></text>
+  <line x1="245" y1="35" x2="245" y2="64" stroke="#c0392b" stroke-width="1.6" marker-end="url(#duct-arrow)"/>
+
+  <line x1="470" y1="215" x2="470" y2="181" stroke="#c0392b" stroke-width="1.6" marker-end="url(#duct-arrow)"/>
+  <text x="477" y="223" font-size="16" fill="#c0392b"><tspan font-style="italic">A</tspan><tspan font-size="11" dy="4">2</tspan></text>
+  <line x1="470" y1="85" x2="470" y2="114" stroke="#c0392b" stroke-width="1.6" marker-end="url(#duct-arrow)"/>
+</svg>
+</div>
+```
+
+### Earn it — 2 quick gates
+
+Before we do any algebra, commit to an answer. A steady flow passes through the tube above, with $A_1 > A_2$ — the tube narrows.
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="What happens to the speed? Type 1 if it increases, −1 if it decreases."
+     data-answer="1" data-tol="0.05" data-units=""
+     data-hint="The same mass has to get through a smaller opening every second. Does it have to hurry or dawdle?"
+     data-solution="It increases. Conservation of mass gives U₂ = U₁·A₁/A₂, and A₁/A₂ > 1, so U₂ > U₁."
+     data-target="bern-gate-speed"
+     data-ok-text="&#10003; yes — a narrower tube means a faster flow."></div>
+```
+
+::: {#bern-gate-speed .fl-hidden}
+It speeds up. Same mass per second, smaller hole, so it has to hurry. Now the one people get wrong:
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="What happens to its pressure? Type 1 if it increases, −1 if it decreases."
+     data-answer="-1" data-tol="0.05" data-units=""
+     data-hint="Bernoulli's constant is fixed along the streamline. You just decided the ½ρV² term goes up — so something else has to come down."
+     data-solution="It decreases. p + ½ρV² + ρgz is constant along the streamline and z doesn't change, so if ½ρV² goes up, p must go down."
+     data-target="bern-gate-pressure"
+     data-ok-text="&#10003; correct — faster flow, lower pressure."></div>
+```
+:::
+
+::: {#bern-gate-pressure .fl-hidden}
+The pressure *drops*. This is the one that fights intuition: it feels like squeezing a tube should raise the pressure inside it, the way squeezing a balloon does. But the fluid isn't being squeezed — it's being *accelerated*, and the only thing available to do the accelerating is a push from behind, which means higher pressure upstream than downstream. The budget $p + \tfrac12\rho V^2 + \rho g z$ is fixed, $z$ doesn't change, so paying for speed means selling pressure.
+
+You got both of these from pure reasoning, with no algebra at all. The rest of this section just makes the first one quantitative — *how much* faster?
+:::
+
+For a cross-section over which the velocity is constant, the **mass flow rate** is
+
+$$
+\dot{m} = \rho U A, \qquad \left[\frac{\text{kg}}{\text{s}}\right] = \left[\frac{\text{kg}}{\text{m}^3}\right]\left[\frac{\text{m}}{\text{s}}\right]\left[\text{m}^2\right].
+$$
+
+::: {.column-margin}
+We sometimes work with the **volumetric flow rate** instead, particularly when dealing with constant density systems. For some reason we use the symbol $Q$, and $Q=\dot{m}/\rho$, in m³/s.
+:::
+
+Conservation of mass for this duct says whatever goes in must come out:
+
+$$
+\dot{m}_1 = \dot{m}_2 \quad\Rightarrow\quad \rho U_1 A_1 = \rho U_2 A_2 \quad (\rho = \text{const})
+$$
+
+and so we can say 
+$$
+\Rightarrow\quad U_2 = U_1 \frac{A_1}{A_2}.
+$$
+
+This is a brief statement of **conservation of mass**, applicable when the flow at position 1 is a constant speed, and the flow at position 2 is a constant (possibly different) speed. We'll see later how to modify this for more complicated flows, but this will be a nice tool to have when we are first solving problems with Bernoulli's Equation.
 
