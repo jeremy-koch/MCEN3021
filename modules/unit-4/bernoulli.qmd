@@ -369,7 +369,7 @@ $$
 
 This is a brief statement of **conservation of mass**, applicable when the flow at position 1 is a constant speed, and the flow at position 2 is a constant (possibly different) speed. We'll see later how to modify this for more complicated flows, but this will be a nice tool to have when we are first solving problems with Bernoulli's Equation.
 
-## Earn it — 2 quick gates
+## Two quick gates
 
 We now have both equations we need, so let's check that we can reason with them *before* reaching for algebra. A steady flow passes through a tube that narrows, so $A_1 > A_2$.
 
@@ -398,5 +398,5 @@ It speeds up. Same mass per second, smaller cross-section, so it has to increase
 :::
 
 ::: {#bern-gate-pressure .fl-hidden}
-The pressure *drops*. This might be non-intuitive: squeezing flow through a tube should raise the pressure inside it, the way squeezing a balloon does. But the fluid isn't being squeezed — it's being *accelerated*, and the thing pushing the flow to make it accelerate is pressure (a higher pressure upstream than downstream).
+The pressure *drops*. This might be non-intuitive: squeezing flow through a tube should raise the pressure inside it, the way squeezing a balloon does? But the fluid isn't being squeezed — it's being *accelerated*, and the thing pushing the flow to make it accelerate is pressure (a higher pressure upstream than downstream).
 :::
