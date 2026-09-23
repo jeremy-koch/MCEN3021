@@ -10,7 +10,7 @@ Last reading we derived Bernoulli's Equation, but we are more interested in **ap
 
 We'll start with three applications, each involving Bernoulli's Equation — and two of the three will also lean on a statement of conservation of mass. 
 
-- One is about pipe flow: **the Venturi Nozzle** is a section of pipe that is narrowed, which (as Bernoulli tells us) reduces the pressure. The reduced pressure gives design opportunities to draw in chemicals, but in this reading we'll talk about using it to measure flow speed.
+- One is about pipe flow: **the Venturi Nozzle** is a section of pipe that is narrowed, which (as Bernoulli tells us) reduces the pressure. The reduced pressure gives design opportunities to, e.g., draw chemicals into the flow, but in this reading we'll talk about using it to measure flow speed.
 - One is about external flow: **the Pitot Tube** is a device for measuring the speed of an aircraft, again based on the relationship between pressure and velocity. There are some important vocabulary words here too: static and stagnation pressure.
 - One is on a jet: **the tank and jet** problem concerns draining a tank of fluid through an open faucet. The interesting question is: how long does it take to drain? Conservation of mass will serve as a differential equation here!
 
@@ -24,20 +24,15 @@ We'll start with three applications, each involving Bernoulli's Equation — and
 
 **Look ahead**
 
-1. 
+1. Double the pressure difference you measure across a Venturi nozzle. Does the flow rate through it double?
+2. A Pitot tube has two holes: one pointed straight into the wind, one on the side of the probe. Why does it need both — wouldn't the front one alone tell you the speed?
+3. Two tanks are filled to the same depth, one 2 m wide, and the other 2 cm wide. Out of identical faucets at the bottom, which jet comes out faster? Which tank empties first?
+
 
 
 ## The Venturi Nozzle
 
-Some motivation: It is difficult to measure a flow speed directly — e.g., we could put a vane or other obstacle in the way, but that is going to change the flow or will necessitate extra pumping power to achieve the same velocity as without the obstacle. Meanwhile, it is easy to measure pressure: ostensibly, attach a plate with known area to a spring, then measure the displacement of the spring.
-
-$$
-F_\text{spring} = k \Delta x \implies p = \frac{k \Delta x}{A}.
-$$
-
-::: {.column-margin}
-We briefly covered this in class, but we'll have a more detailed description here, including a step-by-step.
-:::
+Here is a Venturi Nozzle:
 
 
 We take the pipe we care about and deliberately squeeze it down for a short stretch — a **Venturi nozzle** — and then we measure the pressure at two places: one upstream in the full-size pipe ("1"), and one right in the narrow throat ("2").
@@ -99,12 +94,9 @@ We take the pipe we care about and deliberately squeeze it down for a short stre
     <tspan font-style="italic">U</tspan><tspan font-size="11" dy="4">2</tspan><tspan font-size="16" dy="-4"> = ?</tspan>
   </text>
 
-  <!-- the same Q passes every cross-section -->
-  <text x="18" y="168" font-size="18" fill="#2e8b3d" font-style="italic">Q</text>
-
   <!-- pressure taps: the two things we can actually measure -->
-  <line x1="185" y1="55" x2="185" y2="155" stroke="#8e44ad" stroke-width="2.2"/>
-  <text x="172" y="46" font-size="16" fill="#8e44ad">
+  <line x1="150" y1="55" x2="150" y2="155" stroke="#8e44ad" stroke-width="2.2"/>
+  <text x="137" y="46" font-size="16" fill="#8e44ad">
     <tspan font-style="italic">p</tspan><tspan font-size="11" dy="4">1</tspan>
   </text>
   <line x1="375" y1="55" x2="375" y2="172" stroke="#8e44ad" stroke-width="2.2"/>
@@ -112,15 +104,15 @@ We take the pipe we care about and deliberately squeeze it down for a short stre
     <tspan font-style="italic">p</tspan><tspan font-size="11" dy="4">2</tspan>
   </text>
 
-  <!-- where each pressure is measured -->
-  <line x1="228" y1="58" x2="228" y2="89" stroke="#c0392b" stroke-width="1.6" marker-end="url(#ven-arrow-red)"/>
-  <line x1="348" y1="100" x2="348" y2="133" stroke="#c0392b" stroke-width="1.6" marker-end="url(#ven-arrow-red)"/>
-
-  <!-- the two areas, known from the geometry -->
+  <!-- the two areas, known from the geometry.  Each is a pair of arrows
+       closing in on the same cross-section from above and below. -->
+  <line x1="185" y1="58" x2="185" y2="89" stroke="#c0392b" stroke-width="1.6" marker-end="url(#ven-arrow-red)"/>
   <line x1="185" y1="275" x2="185" y2="237" stroke="#c0392b" stroke-width="1.6" marker-end="url(#ven-arrow-red)"/>
   <text x="175" y="294" font-size="16" fill="#c0392b">
     <tspan font-style="italic">A</tspan><tspan font-size="11" dy="4">1</tspan>
   </text>
+
+  <line x1="348" y1="100" x2="348" y2="133" stroke="#c0392b" stroke-width="1.6" marker-end="url(#ven-arrow-red)"/>
   <line x1="348" y1="253" x2="348" y2="192" stroke="#c0392b" stroke-width="1.6" marker-end="url(#ven-arrow-red)"/>
   <text x="338" y="272" font-size="16" fill="#c0392b">
     <tspan font-style="italic">A</tspan><tspan font-size="11" dy="4">2</tspan>
@@ -130,10 +122,15 @@ We take the pipe we care about and deliberately squeeze it down for a short stre
 </div>
 ```
 
-The geometry is ours to pick, so $A_1$ and $A_2$ are known. The two pressures are measured. The two speeds are what we're after, and neither one is directly accessible — which is the whole reason we're here.
+We have flow from left to right that passes from a wide cross section (area $A_1$) to a narrower cross section ($A_2$) (and then back to a wide wide cross section again). We assume uniform flow speeds $U_1$ and $U_2$ and pressures at state "1" and "2" are measured. From Bernoulli, we expect $p_1 > p_2$.
 
+Some motivation: It is difficult to measure a flow speed directly — e.g., we could put a vane or other obstacle in the way, but that is going to change the flow or will necessitate extra pumping power to achieve the same velocity as without the obstacle. Meanwhile, it is easy to measure pressure: ostensibly, attach a plate with known area to a spring, then measure the displacement of the spring:
 
+$$
+F_\text{spring} = k \Delta x \implies p = \frac{k \Delta x}{A}.
+$$
 
+So: let's use the pressure measurements, as well as the known geometry, to calculate the flow speed
 
 
 **Step 0:** Confirm that Bernoulli's Equation is applicable. Reminder: it applies in cases where it is **safe to ignore viscosity**, which can be checked with a Reynolds number calculation; and we need to be able to connect two points via a streamline.
