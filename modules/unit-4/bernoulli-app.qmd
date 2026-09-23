@@ -194,7 +194,7 @@ That is: we can determine the mass flow rate from the known geometry and two eas
 We might instead report the volumetric flow rate $Q = \dot{m}/\rho$, or actually calculate the velocity $U_1 = \dot{m}/(\rho A_1)$.
 :::
 
-**Step 5:** is the answer reasonable? This equation tells us that the larger the pressure difference, the bigger the mass flow rate. That makes sense: bigger pressure drop, bigger "push", more flow. We could also [check the units](https://www.wolframalpha.com/input?i=%281+m%5E2%29%281+m%5E2%29+sqrt%28%281+kg%2Fm%5E3%29*%281+Pa%29%2F%281+m%5E2%29%5E2%29).
+**Step 5:** is the answer reasonable? This equation tells us that the larger the pressure difference, the bigger the mass flow rate. That makes sense: bigger pressure drop, bigger "push", more flow. We could also [check the units](https://www.wolframalpha.com/input?i=sqrt%28%281+kg%2Fm%5E3%29*%281+Pa%29*%281+m%5E2%29%5E2%29).
 
 
 
