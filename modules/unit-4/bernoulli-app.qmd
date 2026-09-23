@@ -1,0 +1,530 @@
+---
+title: "5.2 Applications of Bernoulli"
+---
+
+{{< include ../_checkpoint-widget.qmd >}}
+
+## The big idea
+
+Last reading we derived Bernoulli's Equation, but we are more interested in **applying it to engineering problems** — that is what we're doing today.
+
+We'll start with three applications, each involving Bernoulli's Equation — and two of the three will also lean on a statement of conservation of mass. 
+
+- One is about pipe flow: **the Venturi Nozzle** is a section of pipe that is narrowed, which (as Bernoulli tells us) reduces the pressure. The reduced pressure gives design opportunities to draw in chemicals, but in this reading we'll talk about using it to measure flow speed.
+- One is about external flow: **the Pitot Tube** is a device for measuring the speed of an aircraft, again based on the relationship between pressure and velocity. There are some important vocabulary words here too: static and stagnation pressure.
+- One is on a jet: **the tank and jet** problem concerns draining a tank of fluid through an open faucet. The interesting question is: how long does it take to drain? Conservation of mass will serve as a differential equation here!
+
+
+## Think first
+
+**Recall**
+
+1. Bernoulli's Equation! $p+\frac12 \rho U^2 +\rho g z =\text{ constant}$.
+2. Conservation of mass! $\dot{m}\equiv \rho U A = \text{ constant}$.
+
+**Look ahead**
+
+1. 
+
+
+## The Venturi Nozzle
+
+Some motivation: It is difficult to measure a flow speed directly — e.g., we could put a vane or other obstacle in the way, but that is going to change the flow or will necessitate extra pumping power to achieve the same velocity as without the obstacle. Meanwhile, it is easy to measure pressure: ostensibly, attach a plate with known area to a spring, then measure the displacement of the spring.
+
+$$
+F_\text{spring} = k \Delta x \implies p = \frac{k \Delta x}{A}.
+$$
+
+::: {.column-margin}
+We briefly covered this in class, but we'll have a more detailed description here, including a step-by-step.
+:::
+
+
+We take the pipe we care about and deliberately squeeze it down for a short stretch — a **Venturi nozzle** — and then we measure the pressure at two places: one upstream in the full-size pipe ("1"), and one right in the narrow throat ("2").
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="760" height="330" viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <defs>
+    <marker id="ven-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2e8b3d"/>
+    </marker>
+    <marker id="ven-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c0392b"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="760" height="330" fill="#ffffff"/>
+
+  <!-- the fluid: full pipe, contraction, throat, expansion, full pipe again,
+       with a ragged break at the right to say "the pipe keeps going" -->
+  <path d="M 60 95 L 250 95 C 285 95 285 140 320 140 L 425 140
+           C 460 140 460 95 495 95 L 700 95
+           q 9 13.5 0 27 q -9 13.5 0 27 q 9 13.5 0 27 q -9 13.5 0 27 q 9 13.5 0 27
+           L 495 230 C 460 230 460 185 425 185 L 320 185
+           C 285 185 285 230 250 230 L 60 230 Z"
+        fill="#d7ecd5" stroke="none"/>
+
+  <!-- the pipe walls -->
+  <path d="M 60 95 L 250 95 C 285 95 285 140 320 140 L 425 140
+           C 460 140 460 95 495 95 L 700 95"
+        fill="none" stroke="#1a1a1a" stroke-width="2"/>
+  <path d="M 60 230 L 250 230 C 285 230 285 185 320 185 L 425 185
+           C 460 185 460 230 495 230 L 700 230"
+        fill="none" stroke="#1a1a1a" stroke-width="2"/>
+  <path d="M 700 95 q 9 13.5 0 27 q -9 13.5 0 27 q 9 13.5 0 27 q -9 13.5 0 27 q 9 13.5 0 27"
+        fill="none" stroke="#1a1a1a" stroke-width="1.6"/>
+
+  <!-- uniform inlet profile at station 1: slow, so short arrows -->
+  <g stroke="#2e8b3d" stroke-width="1.8" marker-end="url(#ven-arrow-green)">
+    <line x1="72" y1="112" x2="122" y2="112"/>
+    <line x1="72" y1="140" x2="122" y2="140"/>
+    <line x1="72" y1="168" x2="122" y2="168"/>
+    <line x1="72" y1="196" x2="122" y2="196"/>
+    <line x1="72" y1="222" x2="122" y2="222"/>
+  </g>
+
+  <!-- uniform profile at station 2: same mass, less area, so longer arrows -->
+  <g stroke="#2e8b3d" stroke-width="1.8" marker-end="url(#ven-arrow-green)">
+    <line x1="340" y1="150" x2="420" y2="150"/>
+    <line x1="340" y1="163" x2="420" y2="163"/>
+    <line x1="340" y1="176" x2="420" y2="176"/>
+  </g>
+
+  <text x="86" y="250" font-size="16" fill="#2e8b3d" xml:space="preserve">
+    <tspan font-style="italic">U</tspan><tspan font-size="11" dy="4">1</tspan><tspan font-size="16" dy="-4"> = ?</tspan>
+  </text>
+  <text x="398" y="222" font-size="16" fill="#2e8b3d" xml:space="preserve">
+    <tspan font-style="italic">U</tspan><tspan font-size="11" dy="4">2</tspan><tspan font-size="16" dy="-4"> = ?</tspan>
+  </text>
+
+  <!-- the same Q passes every cross-section -->
+  <text x="18" y="168" font-size="18" fill="#2e8b3d" font-style="italic">Q</text>
+
+  <!-- pressure taps: the two things we can actually measure -->
+  <line x1="185" y1="55" x2="185" y2="155" stroke="#8e44ad" stroke-width="2.2"/>
+  <text x="172" y="46" font-size="16" fill="#8e44ad">
+    <tspan font-style="italic">p</tspan><tspan font-size="11" dy="4">1</tspan>
+  </text>
+  <line x1="375" y1="55" x2="375" y2="172" stroke="#8e44ad" stroke-width="2.2"/>
+  <text x="362" y="46" font-size="16" fill="#8e44ad">
+    <tspan font-style="italic">p</tspan><tspan font-size="11" dy="4">2</tspan>
+  </text>
+
+  <!-- where each pressure is measured -->
+  <line x1="228" y1="58" x2="228" y2="89" stroke="#c0392b" stroke-width="1.6" marker-end="url(#ven-arrow-red)"/>
+  <line x1="348" y1="100" x2="348" y2="133" stroke="#c0392b" stroke-width="1.6" marker-end="url(#ven-arrow-red)"/>
+
+  <!-- the two areas, known from the geometry -->
+  <line x1="185" y1="275" x2="185" y2="237" stroke="#c0392b" stroke-width="1.6" marker-end="url(#ven-arrow-red)"/>
+  <text x="175" y="294" font-size="16" fill="#c0392b">
+    <tspan font-style="italic">A</tspan><tspan font-size="11" dy="4">1</tspan>
+  </text>
+  <line x1="348" y1="253" x2="348" y2="192" stroke="#c0392b" stroke-width="1.6" marker-end="url(#ven-arrow-red)"/>
+  <text x="338" y="272" font-size="16" fill="#c0392b">
+    <tspan font-style="italic">A</tspan><tspan font-size="11" dy="4">2</tspan>
+  </text>
+
+</svg>
+</div>
+```
+
+The geometry is ours to pick, so $A_1$ and $A_2$ are known. The two pressures are measured. The two speeds are what we're after, and neither one is directly accessible — which is the whole reason we're here.
+
+
+
+
+
+**Step 0:** Confirm that Bernoulli's Equation is applicable. Reminder: it applies in cases where it is **safe to ignore viscosity**, which can be checked with a Reynolds number calculation; and we need to be able to connect two points via a streamline.
+
+
+
+
+**Step 1:** Identify two states that can be connected by Bernoulli's Equation. In this problem, we'll connect the center of the tube upstream ("1") to the center of the throat ("2"), and these can presumably be joined by a streamline. Write
+
+$$
+p_1 + \frac12 \rho U_1^2 + \rho g z_1 = p_2 + \frac12 \rho U_2^2 + \rho g z_2.
+$$
+
+
+**Step 2:** Simplify the equation with reasonable assumptions. Here, we know there will be different speeds and pressures at "1" and "2", and all that information is relevant. But we also recognize $z_1=z_2$. With this consideration we can write 
+
+$$
+p_1 + \frac12 \rho U_1^2 = p_2+ \frac12 \rho U_2^2.
+$$
+
+**Step 3:** Take stock and look for additional information. This is one equation, two unknowns: we don't know either velocity. So we need to come up with another equation, and we will reference **conservation of mass**: all the mass passing through location "1" must also pass through location "2", and so
+
+$$
+\dot{m}=\text{constant} = \rho U_1 A_1 = \rho U_2 A_2.
+$$
+
+Another way to phrase this is
+
+$$
+U_1 = \frac{\dot{m}}{\rho A_1} \qquad \text{and} \qquad U_2 = \frac{\dot{m}}{\rho A_2}.
+$$
+
+::: {.column-margin}
+I guess at this point we have three equations and three unknowns: we don't know $\dot{m}$ yet.
+:::
+
+**Step 4:** Complete the math and decide if the answer is reasonable. Grouping the pressure terms together, and the velocity terms together, and then substituting in $\dot{m}$, we find
+
+$$
+p_1 - p_2= \frac12 \rho \left(\left(\frac{\dot{m}}{\rho A_2}\right)^2-\left(\frac{\dot{m}}{\rho A_1}\right)^2\right)
+= \frac{\dot{m}^2}{2\rho}\left(\frac{1}{A_2^2}-\frac{1}{A_1^2}\right)
+$$
+
+and can solve for
+
+$$
+\dot{m}= A_1 A_2 \sqrt{\frac{2\rho\left(p_1-p_2\right)}{A_1^2 - A_2^2}}.
+$$
+
+That is: we can determine the mass flow rate from the known geometry and two easily-measured pressures.
+
+::: {.column-margin}
+We might instead report the volumetric flow rate $Q = \dot{m}/\rho$, or actually calculate the velocity $U_1 = \dot{m}/(\rho A_1)$.
+:::
+
+## Pitot Tube
+
+A similar device for external flows: [the Pitot tube](https://en.wikipedia.org/wiki/Pitot_tube). These are common devices on planes for measuring airspeed — again, it is difficult to measure speed in this situation without adding an extra obstacle to flow... there are some pretty dire consequences if you ruin the aerodynamics of an airplane!
+
+::: {.column-margin}
+In fluid mechanics we refer to "internal flows" — flows *through* pipes and ducts — and "external flows" — flows *over* spheres and cars.
+:::
+
+Here is a cross-section:
+
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="700" height="440" viewBox="0 0 700 440" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <defs>
+    <marker id="pit-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2b6ca3"/>
+    </marker>
+    <marker id="pit-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8e44ad"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="700" height="440" fill="#ffffff"/>
+
+  <g transform="translate(0,40)">
+    <!-- the static passage is an annulus, so it shows up twice in cross-section -->
+    <path d="M 175 213 L 250 185 L 386 185 L 386 80 L 430 80 L 430 213 Z" fill="#ededed"/>
+    <path d="M 175 257 L 250 285 L 518 285 L 518 80 L 474 80 L 474 257 Z" fill="#ededed"/>
+
+    <!-- the stagnation passage: a straight shot from the nose hole to the top -->
+    <path d="M 175 213 L 430 213 L 430 80 L 474 80 L 474 257 L 175 257 Z" fill="#dceaf5"/>
+
+    <!-- the probe walls.  The nose face, the side port and the three tops are
+         left open on purpose - those are the holes. -->
+    <g fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linejoin="round">
+      <path d="M 175 213 L 250 185 L 386 185 L 386 80"/>
+      <path d="M 175 213 L 430 213 L 430 80"/>
+      <path d="M 175 257 L 474 257 L 474 80"/>
+      <path d="M 175 257 L 250 285 L 330 285"/>
+      <path d="M 355 285 L 518 285 L 518 80"/>
+    </g>
+
+    <!-- the oncoming flow -->
+    <g stroke="#2b6ca3" stroke-width="2" marker-end="url(#pit-arrow-blue)">
+      <line x1="35" y1="130" x2="112" y2="130"/>
+      <line x1="35" y1="175" x2="112" y2="175"/>
+      <line x1="35" y1="220" x2="112" y2="220"/>
+      <line x1="35" y1="265" x2="112" y2="265"/>
+      <line x1="35" y1="310" x2="112" y2="310"/>
+    </g>
+    <text x="56" y="108" font-size="19" fill="#2b6ca3" font-style="italic">U</text>
+
+    <!-- station 1: the nose, where the flow is brought to rest -->
+    <circle cx="176" cy="235" r="4" fill="#1a8fb5"/>
+    <line x1="152" y1="205" x2="171" y2="229" stroke="#1a8fb5" stroke-width="1.4"/>
+    <circle cx="142" cy="197" r="13" fill="#ffffff" stroke="#1a8fb5" stroke-width="1.8"/>
+    <text x="137" y="203" font-size="15" fill="#1a8fb5">1</text>
+
+    <!-- station 2: the side port, where the flow slides straight past -->
+    <circle cx="342" cy="285" r="4" fill="#1a8fb5"/>
+    <line x1="318" y1="314" x2="337" y2="291" stroke="#1a8fb5" stroke-width="1.4"/>
+    <circle cx="308" cy="322" r="13" fill="#ffffff" stroke="#1a8fb5" stroke-width="1.8"/>
+    <text x="303" y="328" font-size="15" fill="#1a8fb5">2</text>
+
+    <!-- ...still at full speed, which is the whole point -->
+    <line x1="366" y1="322" x2="452" y2="322" stroke="#2b6ca3" stroke-width="2" marker-end="url(#pit-arrow-blue)"/>
+    <text x="400" y="348" font-size="19" fill="#2b6ca3" font-style="italic">U</text>
+  </g>
+
+  <!-- what each passage reads out -->
+  <line x1="452" y1="54" x2="452" y2="114" stroke="#8e44ad" stroke-width="1.6"
+        marker-end="url(#pit-arrow-purple)"/>
+  <text x="452" y="44" font-size="16" fill="#8e44ad" text-anchor="middle">
+    <tspan font-style="italic">p</tspan><tspan font-size="11" dy="4">stagnation</tspan>
+  </text>
+
+  <path d="M 306 88 Q 356 100 402 114" fill="none" stroke="#8e44ad" stroke-width="1.6"
+        marker-end="url(#pit-arrow-purple)"/>
+  <text x="298" y="86" font-size="16" fill="#8e44ad" text-anchor="end">
+    <tspan font-style="italic">p</tspan><tspan font-size="11" dy="4">static</tspan>
+  </text>
+
+  <path d="M 566 88 Q 520 100 500 114" fill="none" stroke="#8e44ad" stroke-width="1.6"
+        marker-end="url(#pit-arrow-purple)"/>
+  <text x="574" y="86" font-size="16" fill="#8e44ad">
+    <tspan font-style="italic">p</tspan><tspan font-size="11" dy="4">static</tspan>
+  </text>
+  <text x="574" y="108" font-size="12" fill="#777777">(same annulus,</text>
+  <text x="574" y="124" font-size="12" fill="#777777">seen twice)</text>
+</svg>
+</div>
+```
+
+The idea: at the "nose" (point "1"), incoming flow must decide whether to go above, or below, or left, or right of that point. As a consequence, we can claim that the velocity there is zero — we call this a **stagnation point**. On the bottom of this device, at point "2", flow passes over a small hole. In both positions "1" and "2" we are able to make a pressure measurement, and the height difference between them is small enough to say that $z_1\approx z_2$.
+
+So: what does Bernoulli tell us? Points "1" and "2" are *not* on the same streamline — but the oncoming flow is uniform, so Bernoulli's constant is the same on every streamline in it, and we are allowed to connect across them. Writing out the full equation
+
+$$
+p_1 + \frac12 \rho U_1^2 + \rho g z_1 = p_2 + \frac12 \rho U_2^2 + \rho g z_2
+$$
+
+we simplify with the assumptions that $z_1=z_2$ and that $U_1 = 0$. After a bit of rearranging, we arrive at
+
+$$
+U = \sqrt{\frac{2}{\rho}\left(p_\text{stagnation} - p_\text{static}\right)}.
+$$
+
+Again: we are able to make a velocity measurement based on two pressure measurements.
+
+
+## Tank and jet
+
+We need to do a quick aside.
+
+### The other component of Bernoulli's Equation
+
+Recall that we examined $\sum F_s = ma_s$ to derive Bernoulli's Equation. We can also look at the normal components, and a similar derivation would reveal
+
+$$
+\rho \frac{U_s^2}{\mathcal{R}} = \frac{-\partial p}{\partial n} - \rho g \frac{\partial z}{\partial n}
+$$
+
+where $\mathcal{R}$ is the radius of curvature of the streamline. There are some important consequences of this, one of which: **if we neglect gravity, and if the streamlines are straight, the pressure in each cross-section of the flow is the same**.
+
+
+
+<!-- 
+This equation explains why the centers of tornados are low pressure: neglect gravity, and then think about circular streamlines going around a central point. We'll have $\partial p/\partial n < 0$, which means that  -->
+
+### Back to the problem
+
+OK, the geometry looks something like this:
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="720" height="420" viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <defs>
+    <marker id="tank-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c0392b"/>
+    </marker>
+    <marker id="tank-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2b6ca3"/>
+    </marker>
+    <style>
+      /* white halo so the dimension labels stay readable over the water */
+      .tank-lbl { paint-order: stroke; stroke: #ffffff; stroke-width: 4px;
+                  stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="720" height="420" fill="#ffffff"/>
+
+  <!-- the water -->
+  <path d="M 126 92 L 374 92 L 374 300 L 126 300 Z" fill="#bfe0f2"/>
+
+  <!-- the free surface, drawn with a little life in it -->
+  <path d="M 126 92 q 16 -4 31 0 t 31 0 t 31 0 t 31 0 t 31 0 t 31 0 t 31 0 t 31 0"
+        fill="none" stroke="#2b6ca3" stroke-width="2"/>
+
+  <!-- the jet: leaves horizontally, then falls.  A quadratic Bezier with a
+       horizontal start tangent is exactly the parabola we'd expect. -->
+  <path d="M 376 283 Q 500 283 624 366" fill="none" stroke="#8ecbe4"
+        stroke-width="10" stroke-linecap="round"/>
+
+  <!-- tank walls: the right wall has a gap where the jet gets out -->
+  <g stroke="#8a6b3f" stroke-width="5" stroke-linecap="square" fill="none">
+    <line x1="124" y1="66" x2="124" y2="302"/>
+    <line x1="376" y1="66" x2="376" y2="272"/>
+    <line x1="376" y1="294" x2="376" y2="302"/>
+    <line x1="122" y1="302" x2="378" y2="302"/>
+  </g>
+
+  <!-- legs, because the tank has to stand on something -->
+  <g stroke="#8a6b3f" stroke-width="5" stroke-linecap="round" fill="none">
+    <line x1="152" y1="302" x2="140" y2="374"/>
+    <line x1="348" y1="302" x2="360" y2="374"/>
+    <line x1="146" y1="338" x2="354" y2="338"/>
+  </g>
+
+  <!-- the ground -->
+  <line x1="95" y1="376" x2="420" y2="376" stroke="#1a1a1a" stroke-width="2"/>
+  <g stroke="#1a1a1a" stroke-width="1.2">
+    <line x1="100" y1="376" x2="91" y2="387"/>
+    <line x1="125" y1="376" x2="116" y2="387"/>
+    <line x1="150" y1="376" x2="141" y2="387"/>
+    <line x1="175" y1="376" x2="166" y2="387"/>
+    <line x1="200" y1="376" x2="191" y2="387"/>
+    <line x1="225" y1="376" x2="216" y2="387"/>
+    <line x1="250" y1="376" x2="241" y2="387"/>
+    <line x1="275" y1="376" x2="266" y2="387"/>
+    <line x1="300" y1="376" x2="291" y2="387"/>
+    <line x1="325" y1="376" x2="316" y2="387"/>
+    <line x1="350" y1="376" x2="341" y2="387"/>
+    <line x1="375" y1="376" x2="366" y2="387"/>
+    <line x1="400" y1="376" x2="391" y2="387"/>
+  </g>
+
+  <!-- the atmosphere pushing down on the free surface -->
+  <text x="150" y="56" font-size="16" fill="#2b6ca3" xml:space="preserve">
+    <tspan font-style="italic">p</tspan><tspan font-size="11" dy="4">atm</tspan><tspan font-size="16" dy="-4"> = 0 (gauge)</tspan>
+  </text>
+
+  <!-- H: surface down to the hole -->
+  <line x1="92" y1="92" x2="92" y2="283" stroke="#c0392b" stroke-width="1.8"
+        marker-start="url(#tank-arrow-red)" marker-end="url(#tank-arrow-red)"/>
+  <text x="66" y="194" font-size="18" fill="#c0392b" font-style="italic">H</text>
+
+  <!-- the tank cross-section -->
+  <line x1="130" y1="178" x2="370" y2="178" stroke="#c0392b" stroke-width="1.8"
+        marker-start="url(#tank-arrow-red)" marker-end="url(#tank-arrow-red)"/>
+  <text x="236" y="168" font-size="16" fill="#c0392b" class="tank-lbl">
+    <tspan font-style="italic">A</tspan><tspan font-size="11" dy="4">tank</tspan>
+  </text>
+
+  <!-- the hole, which is small -->
+  <line x1="400" y1="238" x2="400" y2="270" stroke="#c0392b" stroke-width="1.6" marker-end="url(#tank-arrow-red)"/>
+  <line x1="400" y1="328" x2="400" y2="296" stroke="#c0392b" stroke-width="1.6" marker-end="url(#tank-arrow-red)"/>
+  <text x="408" y="234" font-size="16" fill="#c0392b">
+    <tspan font-style="italic">A</tspan><tspan font-size="11" dy="4">jet</tspan>
+  </text>
+
+  <!-- the two states we are connecting -->
+  <rect x="150" y="106" width="62" height="24" rx="12" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.6"/>
+  <text x="181" y="123" font-size="14" fill="#1a1a1a" text-anchor="middle">tank</text>
+  <text x="222" y="123" font-size="14" fill="#555555" class="tank-lbl">the surface</text>
+
+  <line x1="466" y1="268" x2="466" y2="286" stroke="#1a1a1a" stroke-width="1.2"/>
+  <rect x="440" y="242" width="52" height="24" rx="12" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.6"/>
+  <text x="466" y="259" font-size="14" fill="#1a1a1a" text-anchor="middle">jet</text>
+  <text x="502" y="259" font-size="14" fill="#555555" class="tank-lbl">just outside the tank</text>
+
+  <!-- the thing we actually want -->
+  <text x="470" y="330" font-size="16" fill="#2b6ca3" xml:space="preserve">
+    <tspan font-style="italic">U</tspan><tspan font-size="11" dy="4">jet</tspan><tspan font-size="16" dy="-4"> = ?</tspan>
+  </text>
+</svg>
+</div>
+```
+
+We have a tank with cross-section $A_\text{tank}$ holding a fluid of density $\rho$, open on the top. At the bottom of the tank is a faucet with cross-section $A_\text{jet}$... when the faucet is open, a jet is produced. The classic problem is: how long does it take to drain the tank?
+
+Same story as above: we choose the "tank" state to be the top surface of the fluid, and the "jet" state to be within the jet, just outside the faucet:
+
+
+::: {.callout-tip}
+How do we know to use these two points? For the jet side, we have useful information there: if we know the speed that the fluid leaves the tank, we can figure out the time it takes to drain. On the tank side, we can reasonably claim to know some useful information here: we know the surface elevation relative to the jet, we know the pressure (zero gauge pressure), and we can assume that the speed of the surface is very slow such that the kinetic energy is negligible.
+:::
+
+$$
+p_\text{tank} + \frac12 \rho U_\text{tank}^2 + \rho g z_\text{tank} = p_\text{jet} + \frac12 \rho U_\text{jet}^2 + \rho g z_\text{jet}.
+$$
+
+We have the freedom to define $z=0$ wherever we like — **all that matters is the elevation change**. Let's say $z=0=z_\text{jet}$, and call $z_\text{tank}=H$. 
+
+We also note that **both pressures** are zero (gauge). The pressure on the jet side is harder to rationalize, but note: the air on the outside of the jet is at zero gauge pressure, and from our above aside, we might assume that the jet leaves as a uniform straight flow such that the pressure change normal to the flow direction is zero. Here is what Bernoulli simplifies to:
+
+$$
+\frac12 \rho U_\text{tank}^2 + \rho g H = \frac12 \rho U_\text{jet}^2.
+$$
+
+We'll make one more assumption: that the tank's surface is moving slowly such that its kinetic energy is negligible. In such a case we can write
+
+$$
+\rho g H = \frac12 \rho U_\text{jet}^2
+$$
+
+and rearrange to say
+
+$$
+U_\text{jet} = \sqrt{2g H}.
+$$
+
+This is an important result! The speed of a jet is related to the height of the water above the jet, and we are essentially converting that height into a kinetic energy.
+
+Definitely interesting, but our original question was: How long does it take to drain the tank? This equation doesn't really answer it... when the tank is at zero height, the jet has zero speed, but we need to look for another avenue to figure out how to get the draining time. And... it's going to involve calculus!
+
+What happens when we look at the conservation of mass? We can write
+
+$$
+\rho U_\text{tank} A_\text{tank} = \rho U_\text{jet} A_\text{jet}
+$$
+
+and then cancel-out $\rho$ and bring-in $H$ into $U_\text{jet}$
+
+$$
+U_\text{tank} A_\text{tank} = \sqrt{2gH}A_\text{jet}.
+$$
+
+
+::: {.callout-note}
+In Bernoulli's Equation, we neglected the term that included $U_\text{tank}$ claiming it was small. What happens if we do the same with this equation? We end up with $U_\text{jet}=0$ as well!
+
+In Bernoulli's equation, there were three terms in the equation and we could reasonably claim that one of those three terms was smaller than the other two. In conservation of mass, there are only two terms, and so the two terms must balance each other.
+
+
+:::
+
+
+One equation, two unknowns: $U_\text{tank}$ and $H$. But actually... look at the picture above. Does it make sense that $U_\text{tank} = - dH/dt$? Stare at it til it does!
+
+
+::: {.callout-caution}
+If you forget the negative sign, there will be problems: $dH/dt$ is a negative number!
+:::
+
+Plugging this in, we can arrive at
+
+$$
+-\frac{dH}{dt}A_\text{tank} = \sqrt{2gH} A_\text{jet}
+$$
+
+a little differential equation. It is separable, meaning we can rewrite it as
+
+$$
+\frac{dH}{\sqrt{2gH}} = -\frac{A_\text{jet}}{A_\text{tank}} dt
+$$
+
+and then integrate both sides
+
+$$
+\frac{2}{\sqrt{2g}}\sqrt{H} = - \frac{A_\text{jet}}{A_\text{tank}} t + \text{ constant}.
+$$
+
+To determine the constant we suppose that we know an "initial condition": at $t=0$, the height is $H_0$.
+
+Plugging this information in tells us that the constant is $2\sqrt{H_0}/\sqrt{2g}$, and so we can find
+
+$$
+t = \frac{A_\text{tank}}{A_\text{jet}}\left(\frac{2}{\sqrt{2g}}\sqrt{H_0}-\frac{2}{\sqrt{2g}}\sqrt{H}\right).
+$$
+
+This is **a function for the time it takes to reach a height of $H$**, and so we can immediately determine the time it takes to reach a height of $H=0$:
+
+$$
+t_\text{empty}= $\frac{A_\text{tank}}{A_\text{jet}}\sqrt{2H_0/g}$.
+$$

@@ -67,6 +67,7 @@ website:
       - modules/unit-4/curved-int.qmd
       - modules/unit-4/moments.qmd
       - modules/unit-4/bernoulli.qmd
+      - modules/unit-4/bernoulli-app.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd
