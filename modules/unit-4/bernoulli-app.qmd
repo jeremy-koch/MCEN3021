@@ -317,7 +317,12 @@ where we have renamed $p_1=p_\text{stagnation}$, $p_2=p_\text{static}$, and $U_2
 
 
 ::: {.callout-note}
-Why did we not need conservation of mass here?
+We have now talked about a few types of pressure:
+
+- The $p$ in Bernoulli's Equation is the **static pressure** — it is what we would measure with a pressure-measurement device.
+- We sometimes refer to the quantity $\tfrac{1}{2}\rho U^2$ as the **dynamic pressure**.
+- Recall $\rho g z$ is the **hydrostatic pressure**.
+- And then the pressure we measure if we can bring the flow to zero velocity is the **stagnation pressure**. With the Pitot Tube, we more-or-less can bring the flow to that speed, but also the stagnation pressure is sometimes just a hypothetical reference point.
 :::
 
 
