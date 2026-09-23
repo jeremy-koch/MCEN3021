@@ -35,7 +35,6 @@ We'll start with three applications, each involving Bernoulli's Equation — and
 Here is a Venturi Nozzle:
 
 
-We take the pipe we care about and deliberately squeeze it down for a short stretch — a **Venturi nozzle** — and then we measure the pressure at two places: one upstream in the full-size pipe ("1"), and one right in the narrow throat ("2").
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -122,15 +121,22 @@ We take the pipe we care about and deliberately squeeze it down for a short stre
 </div>
 ```
 
-We have flow from left to right that passes from a wide cross section (area $A_1$) to a narrower cross section ($A_2$) (and then back to a wide wide cross section again). We assume uniform flow speeds $U_1$ and $U_2$ and pressures at state "1" and "2" are measured. From Bernoulli, we expect $p_1 > p_2$.
+We have flow from left to right that passes from a wide cross section (area $A_1$) to a narrower cross section ($A_2$) (and then back to a wide wide cross section again). We assume uniform flow speeds $U_1$ and $U_2$ and pressures $p_1$ and $p_2$ are measured. From Bernoulli, we expect $p_1 > p_2$.
 
-Some motivation: It is difficult to measure a flow speed directly — e.g., we could put a vane or other obstacle in the way, but that is going to change the flow or will necessitate extra pumping power to achieve the same velocity as without the obstacle. Meanwhile, it is easy to measure pressure: ostensibly, attach a plate with known area to a spring, then measure the displacement of the spring:
+Some motivation: It is difficult to measure a flow speed directly — e.g., we could put a vane or other obstacle in the way, but that is going to change the flow or will necessitate extra pumping power to achieve the same velocity as without the obstacle. Meanwhile, it is easy to measure pressure. So: **let's use the pressure measurements, as well as the known geometry, to calculate the flow speed**.
+
+
+::: {.column-margin}
+Measure pressure by: attaching a plate with known area to a spring, then measure the displacement of the spring:
 
 $$
 F_\text{spring} = k \Delta x \implies p = \frac{k \Delta x}{A}.
 $$
+:::
 
-So: let's use the pressure measurements, as well as the known geometry, to calculate the flow speed
+
+
+
 
 
 **Step 0:** Confirm that Bernoulli's Equation is applicable. Reminder: it applies in cases where it is **safe to ignore viscosity**, which can be checked with a Reynolds number calculation; and we need to be able to connect two points via a streamline.
@@ -138,7 +144,7 @@ So: let's use the pressure measurements, as well as the known geometry, to calcu
 
 
 
-**Step 1:** Identify two states that can be connected by Bernoulli's Equation. In this problem, we'll connect the center of the tube upstream ("1") to the center of the throat ("2"), and these can presumably be joined by a streamline. Write
+**Step 1:** Identify two states that can be connected by Bernoulli's Equation. In this problem, we'll connect the center of the tube upstream ("1") to the center of the throat ("2"), and these can definitely be joined by a streamline. Write
 
 $$
 p_1 + \frac12 \rho U_1^2 + \rho g z_1 = p_2 + \frac12 \rho U_2^2 + \rho g z_2.
@@ -151,7 +157,9 @@ $$
 p_1 + \frac12 \rho U_1^2 = p_2+ \frac12 \rho U_2^2.
 $$
 
-**Step 3:** Take stock and look for additional information. This is one equation, two unknowns: we don't know either velocity. So we need to come up with another equation, and we will reference **conservation of mass**: all the mass passing through location "1" must also pass through location "2", and so
+**Step 3:** Take stock and look for additional information. This is one equation, two unknowns... we don't know either velocity. So we need to come up with another equation.
+
+Think about **conservation of mass**: all the mass passing through location "1" must also pass through location "2", and so
 
 $$
 \dot{m}=\text{constant} = \rho U_1 A_1 = \rho U_2 A_2.
@@ -164,10 +172,10 @@ U_1 = \frac{\dot{m}}{\rho A_1} \qquad \text{and} \qquad U_2 = \frac{\dot{m}}{\rh
 $$
 
 ::: {.column-margin}
-I guess at this point we have three equations and three unknowns: we don't know $\dot{m}$ yet.
+At this point we have three equations and three unknowns: we don't know $\dot{m}$ yet.
 :::
 
-**Step 4:** Complete the math and decide if the answer is reasonable. Grouping the pressure terms together, and the velocity terms together, and then substituting in $\dot{m}$, we find
+**Step 4:** Complete the math. Grouping the pressure terms together, and the velocity terms together, and then substituting in $\dot{m}$, we find
 
 $$
 p_1 - p_2= \frac12 \rho \left(\left(\frac{\dot{m}}{\rho A_2}\right)^2-\left(\frac{\dot{m}}{\rho A_1}\right)^2\right)
@@ -177,7 +185,7 @@ $$
 and can solve for
 
 $$
-\dot{m}= A_1 A_2 \sqrt{\frac{2\rho\left(p_1-p_2\right)}{A_1^2 - A_2^2}}.
+\dot{m}= \sqrt{\dfrac{2\rho\left(p_1-p_2\right)}{\dfrac{1}{A_2^2}-\dfrac{1}{A_1^2}}}.
 $$
 
 That is: we can determine the mass flow rate from the known geometry and two easily-measured pressures.
@@ -186,9 +194,13 @@ That is: we can determine the mass flow rate from the known geometry and two eas
 We might instead report the volumetric flow rate $Q = \dot{m}/\rho$, or actually calculate the velocity $U_1 = \dot{m}/(\rho A_1)$.
 :::
 
+**Step 5:** is the answer reasonable? This equation tells us that the larger the pressure difference, the bigger the mass flow rate. That makes sense: bigger pressure drop, bigger "push", more flow. We could also [check the units](https://www.wolframalpha.com/input?i=%281+m%5E2%29%281+m%5E2%29+sqrt%28%281+kg%2Fm%5E3%29*%281+Pa%29%2F%281+m%5E2%29%5E2%29).
+
+
+
 ## Pitot Tube
 
-A similar device for external flows: [the Pitot tube](https://en.wikipedia.org/wiki/Pitot_tube). These are common devices on planes for measuring airspeed — again, it is difficult to measure speed in this situation without adding an extra obstacle to flow... there are some pretty dire consequences if you ruin the aerodynamics of an airplane!
+A similar device for external flows: [the Pitot tube](https://en.wikipedia.org/wiki/Pitot_tube). These are common devices on planes for measuring airspeed — again, it is difficult to measure speed in this situation without adding an extra obstacle to flow... and there are some pretty dire consequences if you ruin the aerodynamics of an airplane!
 
 ::: {.column-margin}
 In fluid mechanics we refer to "internal flows" — flows *through* pipes and ducts — and "external flows" — flows *over* spheres and cars.
@@ -281,21 +293,32 @@ Here is a cross-section:
 </div>
 ```
 
-The idea: at the "nose" (point "1"), incoming flow must decide whether to go above, or below, or left, or right of that point. As a consequence, we can claim that the velocity there is zero — we call this a **stagnation point**. On the bottom of this device, at point "2", flow passes over a small hole. In both positions "1" and "2" we are able to make a pressure measurement, and the height difference between them is small enough to say that $z_1\approx z_2$.
+The idea: at the "nose" (point "1"), incoming flow must decide whether to go above, or below, or left, or right of that point. As a consequence, we can claim that the velocity there is zero — we call this a stagnation point. On the bottom of this device, at point "2", flow passes over a small hole. In both positions "1" and "2" we are able to make a pressure measurement — we call the pressure at "1" the **stagnation pressure** and at "2" the **static pressure**.
 
-So: what does Bernoulli tell us? Points "1" and "2" are *not* on the same streamline — but the oncoming flow is uniform, so Bernoulli's constant is the same on every streamline in it, and we are allowed to connect across them. Writing out the full equation
+
+::: {.callout-tip}
+The **static pressure** is the pressure that would actually be measured by a device... arguably it is "the pressure".
+:::
+
+
+So: what does Bernoulli tell us? Technically points "1" and "2" are *not* on the same streamline — but the oncoming flow is uniform and the height difference between those streamlines is negligible. So the "Bernoulli constant" is the same on both streamlines, and we can connect across them. Writing out the full equation
 
 $$
 p_1 + \frac12 \rho U_1^2 + \rho g z_1 = p_2 + \frac12 \rho U_2^2 + \rho g z_2
 $$
 
-we simplify with the assumptions that $z_1=z_2$ and that $U_1 = 0$. After a bit of rearranging, we arrive at
+we simplify with the assumptions that $z_1\approx z_2$ and that $U_1 = 0$. After a bit of rearranging, we arrive at
 
 $$
-U = \sqrt{\frac{2}{\rho}\left(p_\text{stagnation} - p_\text{static}\right)}.
+U = \sqrt{\frac{2}{\rho}\left(p_\text{stagnation} - p_\text{static}\right)}
 $$
 
-Again: we are able to make a velocity measurement based on two pressure measurements.
+where we have renamed $p_1=p_\text{stagnation}$, $p_2=p_\text{static}$, and $U_2=U$ is the air speed. Again: we are able to make a velocity measurement based on two pressure measurements.
+
+
+::: {.callout-note}
+Why did we not need conservation of mass here?
+:::
 
 
 ## Tank and jet
@@ -307,17 +330,26 @@ We need to do a quick aside.
 Recall that we examined $\sum F_s = ma_s$ to derive Bernoulli's Equation. We can also look at the normal components, and a similar derivation would reveal
 
 $$
-\rho \frac{U_s^2}{\mathcal{R}} = \frac{-\partial p}{\partial n} - \rho g \frac{\partial z}{\partial n}
+\rho \frac{U_s^2}{\mathcal{R}} = -\frac{\partial p}{\partial n} - \rho g \frac{\partial z}{\partial n}
 $$
 
-where $\mathcal{R}$ is the radius of curvature of the streamline. There are some important consequences of this, one of which: **if we neglect gravity, and if the streamlines are straight, the pressure in each cross-section of the flow is the same**.
+where $\mathcal{R}$ is the radius of curvature of the streamline and the normal coordinate $n$ always points towards the center of the curvature.
+
+::: {.column-margin}
+If a streamline was following a circle with radius $R$, its radius of curvature is $\mathcal{R}=R$.
+:::
+
+There are some important consequences of this, one of which: if we neglect gravity, and **if the streamlines are straight, the pressure in each cross-section of the flow is the same**.
 
 
 
-<!-- 
-This equation explains why the centers of tornados are low pressure: neglect gravity, and then think about circular streamlines going around a central point. We'll have $\partial p/\partial n < 0$, which means that  -->
+::: {.callout-tip}
+Another interesting consequence: if we imagine a collection of streamlines circling the origin, we'll have $\partial p/\partial n < 0$. This means that, as we increase our $n$-coordinate (i.e., move towards the center of the curvature/of the rotation), the pressure will decrease. Tornadoes have a low-pressure center!
+:::
 
-### Back to the problem
+
+
+### Back to the tank and jet problem
 
 OK, the geometry looks something like this:
 
@@ -428,22 +460,26 @@ OK, the geometry looks something like this:
 </div>
 ```
 
-We have a tank with cross-section $A_\text{tank}$ holding a fluid of density $\rho$, open on the top. At the bottom of the tank is a faucet with cross-section $A_\text{jet}$... when the faucet is open, a jet is produced. The classic problem is: how long does it take to drain the tank?
+We have a tank with cross-section $A_\text{tank}$ holding a fluid of density $\rho$, open on the top. At the bottom of the tank is a faucet with cross-section $A_\text{jet}$... when the faucet is open, a jet is produced. The classic problem is: How long does it take to drain the tank?
 
-Same story as above: we choose the "tank" state to be the top surface of the fluid, and the "jet" state to be within the jet, just outside the faucet:
-
-
-::: {.callout-tip}
-How do we know to use these two points? For the jet side, we have useful information there: if we know the speed that the fluid leaves the tank, we can figure out the time it takes to drain. On the tank side, we can reasonably claim to know some useful information here: we know the surface elevation relative to the jet, we know the pressure (zero gauge pressure), and we can assume that the speed of the surface is very slow such that the kinetic energy is negligible.
-:::
+We choose the first state (which we'll go ahead and label with "tank") to be the top surface of the fluid, and the "jet" state to be within the jet, just outside the faucet. then write Bernoulli's Equation:
 
 $$
 p_\text{tank} + \frac12 \rho U_\text{tank}^2 + \rho g z_\text{tank} = p_\text{jet} + \frac12 \rho U_\text{jet}^2 + \rho g z_\text{jet}.
 $$
 
-We have the freedom to define $z=0$ wherever we like — **all that matters is the elevation change**. Let's say $z=0=z_\text{jet}$, and call $z_\text{tank}=H$. 
 
-We also note that **both pressures** are zero (gauge). The pressure on the jet side is harder to rationalize, but note: the air on the outside of the jet is at zero gauge pressure, and from our above aside, we might assume that the jet leaves as a uniform straight flow such that the pressure change normal to the flow direction is zero. Here is what Bernoulli simplifies to:
+::: {.callout-tip}
+How do we know to use these two points? For the jet side, we have information that is going to be useful: if we know the speed that the fluid leaves the tank, we can figure out the time it takes to drain. On the tank side, we can reasonably claim to know some relevant information here: we know the surface elevation relative to the jet, we know the pressure (zero gauge pressure), and we can assume that the speed of the surface is very slow such that the kinetic energy is negligible.
+:::
+
+
+
+We have the freedom to define $z=0$ wherever we like... *all that matters is the elevation change*. Let's say $z=0=z_\text{jet}$, and call $z_\text{tank}=H$. 
+
+We also note that **both pressures** are zero (gauge). The pressure on the jet side is harder to rationalize, but note: the air on the outside of the jet is at zero gauge pressure, and from our above aside, we might assume that the jet leaves as a uniform straight flow such that the pressure change normal to the flow direction is zero. Thus, it is reasonable to assume $p_\text{jet}\appro 0$.
+
+Here is what Bernoulli simplifies to:
 
 $$
 \frac12 \rho U_\text{tank}^2 + \rho g H = \frac12 \rho U_\text{jet}^2.
@@ -461,11 +497,11 @@ $$
 U_\text{jet} = \sqrt{2g H}.
 $$
 
-This is an important result! The speed of a jet is related to the height of the water above the jet, and we are essentially converting that height into a kinetic energy.
+This is an important result! The speed of a jet is related to the height of the water above the jet. We are essentially converting potential energy into kinetic energy.
 
-Definitely interesting, but our original question was: How long does it take to drain the tank? This equation doesn't really answer it... when the tank is at zero height, the jet has zero speed, but we need to look for another avenue to figure out how to get the draining time. And... it's going to involve calculus!
+Definitely interesting, but our original question was: How long does it take to drain the tank? This equation doesn't really answer it... when the tank is at zero height, the jet has zero speed, great.
 
-What happens when we look at the conservation of mass? We can write
+We need to look for another avenue to figure out how to get the draining time. And... it's going to involve calculus! What happens when we look at the conservation of mass? We can write
 
 $$
 \rho U_\text{tank} A_\text{tank} = \rho U_\text{jet} A_\text{jet}
@@ -491,7 +527,7 @@ One equation, two unknowns: $U_\text{tank}$ and $H$. But actually... look at the
 
 
 ::: {.callout-caution}
-If you forget the negative sign, there will be problems: $dH/dt$ is a negative number!
+If you forget the negative sign, there will be issues: $dH/dt$ is a negative number!
 :::
 
 Plugging this in, we can arrive at
@@ -523,5 +559,5 @@ $$
 This is **a function for the time it takes to reach a height of $H$**, and so we can immediately determine the time it takes to reach a height of $H=0$:
 
 $$
-t_\text{empty}= $\frac{A_\text{tank}}{A_\text{jet}}\sqrt{2H_0/g}$.
+t_\text{empty}= \frac{A_\text{tank}}{A_\text{jet}}\sqrt{2H_0/g}.
 $$
