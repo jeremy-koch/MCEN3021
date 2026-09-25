@@ -35,8 +35,8 @@ Call the top of the fluids in the bag state 1 and the point where the tube meets
 
 ## 3. A barrel of oil...
 
-... with density $\rho_\text{o}$, is accidentally left open during a rainstorm. Because water, density $\rho_\text{w}$, is denser than oil, it collects at the bottom of the barrel up to a height $H_\text{w}$. There is an oil layer with height $H_\text{o}$ on top of that. The cross-section of the barrel has area $A_\text{o}$. We will use a siphon with cross-section $A_\text{s}$ to extract the water from the barrel. The siphon exit is a distance $H_\text{s}$ below the bottom of the barrel.
+... with density $\rho_\text{o}$ is accidentally left open during a rainstorm. Water, with density $\rho_\text{w}$, collects at the bottom of the barrel, up to a height $H_\text{w}$, because it is denser than oil. The oil layer height, from the water interface to the free surface, is $H_\text{o}$. The cross-section of the barrel has area $A_\text{o}$. We will use a siphon with cross-section $A_\text{s}$ to extract the water from the barrel. The siphon exit is a distance $H_\text{s}$ below the bottom of the barrel.
 
 (a) To what location must we fill the siphon in order to get it to flow freely? 
 
-(b) Determine the time it takes to siphon the water from the barrel.
+(b) Determine the time it takes to siphon the water from the barrel. (Just the water.)
