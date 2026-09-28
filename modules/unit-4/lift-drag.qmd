@@ -21,8 +21,8 @@ We'll use two ingredients: Bernoulli tells us how pressure changes as the flow s
 
 **Look ahead**
 
-1. Wind blows past a round lamppost. Where on the lamppost's surface do you think the air moves fastest? Where is the pressure highest?
-2. Does the pressure on the back of the lamppost end up higher or lower than on the front?
+1. Wind blows past a round lamp post. Where on the post's surface do you think the air moves fastest? Where is the pressure highest?
+2. Does the pressure on the back of the post end up higher or lower than on the front?
 3. Suppose the pressure on the surface turned out to be perfectly symmetric, front-to-back. What would that say about the drag?
 
 
@@ -93,14 +93,12 @@ Let's think about flow around a cylinder — here's the picture:
 </div>
 ```
 
-Uniform flow with speed $U_0$, pressure $p_0$, and density $\rho$ approaches a cylinder of radius $R$ and large width $W$. We choose to define $\theta=0$ at the back of the cylinder.
-
-Our goal is to determine the lift (vertical force) and drag (horizontal force) on this cylinder. We will do so by figuring out the pressure on the surface of the cylinder, and, thinking back to hydrostatics, we can integrate pressure to get force.
+Uniform flow with speed $U_0$, pressure $p_0$, and density $\rho$ approaches a cylinder of radius $R$ and width $W$ (into the page, and much larger than $R$). We choose to define $\theta=0$ at the back of the cylinder. Our goal is to determine the lift (vertical force) and drag (horizontal force) on this cylinder. We will do so by figuring out the pressure on the surface of the cylinder, and, thinking back to hydrostatics, we can integrate pressure to get force.
 
 The diagram above includes one streamline that goes from upstream (state "0") to an arbitrary location on the surface of the cylinder  (state "x"). Write Bernoulli:
 
 $$
-p_0 + \frac12 \rho U_0^2 + \rho g z_0 = p(\mathbf{x}) + \frac12 \rho U(\mathbf{x})^2 + \rho g z(\mathbf{x})
+p_0 + \frac12 \rho U_0^2 + \rho g z_0 = p(\mathbf{x}) + \frac12 \rho \left[U(\mathbf{x})\right]^2 + \rho g z(\mathbf{x})
 $$
 
 where $U(\mathbf{x}) = |\mathbf{u}(\mathbf{x})|$ is the speed at our location $\mathbf{x}$. We'll assume the change in elevation is negligible, then rearrange to get
@@ -109,7 +107,7 @@ $$
 p(\mathbf{x}) = p_0 + \frac12 \rho U_0^2 - \frac12\rho\left[U(\mathbf{x})\right]^2
 $$
 
-So... if we know the speed everywhere on the surface, we know the pressure everywhere on the surface. We need the **velocity field**.
+So... if we know the upstream conditions and the speed everywhere on the surface, we know the pressure everywhere on the surface. We need the **velocity field**.
 
 
 ## The velocity field around a cylinder
@@ -127,16 +125,16 @@ This is a result from **potential flow theory** (something you might see in grad
 
 A couple of sanity checks:
 
-- Far from the cylinder, $r \gg r$, and so $u_r \to U_0\cos\theta$ and $u_\theta \to -U_0 \sin\theta$. Above the cylinder, $\theta=\pi/2$, so these components become $u_r =0$ and $u_\theta=-U_0$ (as expected).
-- Upstream of the cylinder, $\theta=\pi$ and $u_r=U_0$ and $u_\theta=0$ (as expected).
-- On the surface, $r=R$ and $u_r=0$ (as expected... the flow can't go through the surface.
+- Far from the cylinder, $r \gg R$, and so $u_r \to U_0\cos\theta$ and $u_\theta \to -U_0 \sin\theta$. Above the cylinder, $\theta=\pi/2$, so these components become $u_r =0$ and $u_\theta=-U_0$ (as expected).
+- Upstream of the cylinder, $\theta=\pi$, then $u_r=U_0$ and $u_\theta=0$ (as expected).
+- On the surface, $r=R$ and $u_r=0$ (as expected... the flow can't go through the surface).
 - Also on the surface, $u_\theta = -2U_0 \sin \theta$. Hmm...
 
 
 ::: {.callout-important}
-In our derivation of Bernoulli's Equation, we assumed $\mu\approx 0$... that is, we ignored viscosity. Because of this, we cannot use the *no-slip condition* when doing analyses in this regime. We have here that $u_\theta(R,\theta) \neq 0$... there is slip on the surface of this sphere.
+In our derivation of Bernoulli's Equation, we assumed $\mu\approx 0$... that is, we ignored viscosity. Because of this, we cannot use the *no-slip condition* when doing analyses in this regime. We have here that $u_\theta(R,\theta) \neq 0$... there is slip on the surface of this cylinder.
 
-Later, we'll talk about how there is a thin boundary layer that forms very near the surface, and within this boundary layer we have the speed reduced to zero. This layer is thin, so the velocity profile above is decent in most of the fluid.
+Later, we'll talk about how there is a thin **boundary layer** that forms very near the surface, and within this boundary layer we will meet the no-slip condition. This layer is thin, so the velocity equations given above are reasonably accurate for most of the fluid.
 :::
 
 Since we are thinking about the pressure and velocity on the surface, we can focus on
@@ -157,7 +155,7 @@ A **stagnation point** is a place where the flow comes to a complete stop: *both
 ```
 
 ::: {#ld-gate-stag-front .fl-hidden}
-Right, $\theta = 180°$. The oncoming flow has to decide whether to go over or under, and exactly at the nose it does neither (just like the front of the Pitot tube).
+Right, $\theta = 180°$. The oncoming flow has to decide whether to go over or under, and there is a point where it splits and we can claim the speed is zero (just like the front of the Pitot tube).
 
 ```{=html}
 <div class="fl-checkpoint"
@@ -170,7 +168,7 @@ Right, $\theta = 180°$. The oncoming flow has to decide whether to go over or u
 :::
 
 ::: {#ld-gate-stag-back .fl-hidden}
-$\theta = 0$: the **back** of the cylinder. The flow speeds up to $2U_0$ over the shoulders ($\theta = \pm 90°$), then slows all the way back down to zero on the downstream side, so it's symmetric front-to-back. The front stagnation point is what we'd expect. The back one is a little suspicious, so let's keep it in mind...
+$\theta = 0$: the **back** of the cylinder. The flow speeds up to $2U_0$ over the top ($\theta = \pm 90°$), then slows all the way back down to zero on the downstream side, so it's symmetric front-to-back. The front stagnation point is expected, the back one is a little suspicious...
 :::
 
 
@@ -205,24 +203,27 @@ which we can use in a force-from-pressure equation, just as we did with hydrosta
 $$
 \begin{aligned}
 \mathbf{F} &= -\iint p(\mathbf{x})\,\hat{\mathbf{n}}(\mathbf{x})\,dA \\
-&= -\int_0^W\!\!\int_0^{2\pi}\left[p_0 + \frac12\rho U_0^2\left(1-4\sin^2\theta\right)\right]\left<\cos\theta,\sin\theta\right> a\,d\theta\,dz.
+&= -\int_0^W\!\!\int_0^{2\pi}\left[p_0 + \frac12\rho U_0^2\left(1-4\sin^2\theta\right)\right]\left<\cos\theta,\sin\theta\right> R\,d\theta\,dz.
 \end{aligned}
 $$
-
-Here, the surface normal of the cylinder points radially outward, $\hat{\mathbf{n}} = \hat{\mathbf{r}} = \left<\cos\theta, \sin\theta\right>$ in Cartesian components, and on the curved wall, $dA = R\,d\theta\,dz$.
-
 
 ::: {.column-margin}
 Careful: $z$ here is the coordinate *along the cylinder's axis* (into the page), not elevation.
 :::
 
-The $x$-component is the force along the flow direction, the **drag**. The $y$-component is the force perpendicular to the flow, the **lift**.
+Here, the surface normal of the cylinder points radially outward: 
 
-You can evaluate this integral yourself to prove it, but it turns out that **both the $\hat{x}$- and $\hat{y}$-components of the force are zero**!
+$$
+\hat{\mathbf{n}} = \hat{\mathbf{r}} = \left<\cos\theta, \sin\theta\right>
+$$ 
+
+in Cartesian components. And on the curved wall, $dA = R\,d\theta\,dz$. 
+
+The $x$-component is the force along the flow direction, the **drag**. The $y$-component is the force perpendicular to the flow, the **lift**. You can evaluate this integral yourself to prove it, but it turns out that **both the $\mathbf{\hat{x}}$- and $\mathbf{\hat{y}}$-components of the force are zero**!
 
 Why is this? The zero lift we might have expected: there is nothing to break the symmetry, so there is no reason for the cylinder to be pushed up or down.
 
-But zero drag is harder to rationalize. It turns out that the solution I gave you is symmetric in the $x$-direction as well — there is some "push" on the leading edge and, at least according to this potential flow theory, there is a matching push on the trailing edge as well. This result is called **d'Alembert's Paradox** (from 1752). It's a "paradox" because anyone who has stuck their hand out of a car window knows that it's wrong.
+But zero drag is harder to rationalize. It turns out that the solution I gave you is symmetric in the $\mathbf{\hat{x}}$--direction as well: there is some "push" on the front side stagnation point, and, at least according to this potential flow theory, there is a matching push on the rear stagnation point well. This result is called **d'Alembert's Paradox** (from 1752). It's a "paradox" because anyone who has stuck their hand out of a car window knows that it's wrong.
 
 
 ## What went wrong: wakes
@@ -237,10 +238,11 @@ Bernoulli's Equation (and potential flow) does not predict **wakes**. Here's wha
 
   <!-- the flow hugs the front of the cylinder... -->
   <g fill="none" stroke="#2b6ca3" stroke-width="2" stroke-linecap="round">
-    <path d="M 60 70 C 140 70 170 50 220 48 C 250 47 262 58 270 66"/>
-    <path d="M 60 170 C 140 170 170 190 220 192 C 250 193 262 182 270 174"/>
-    <path d="M 60 105 C 120 105 150 80 185 70"/>
-    <path d="M 60 135 C 120 135 150 160 185 170"/>
+    <path d="M 60 64 C 140 64 170 40 220 39 C 252 38 268 46 285 50"/>
+    <path d="M 60 176 C 140 176 170 200 220 201 C 252 202 268 194 285 190"/>
+    <!-- the inner two wrap the surface, then separate a little before the top/bottom -->
+    <path d="M 60 108 C 115 108 153.3 96.8 169.4 77.6 A 66 66 0 0 1 208.5 55 C 235 50 268 57 288 74"/>
+    <path d="M 60 132 C 115 132 153.3 143.2 169.4 162.4 A 66 66 0 0 0 208.5 185 C 235 190 268 183 288 166"/>
   </g>
 
   <!-- the cylinder -->
@@ -248,8 +250,8 @@ Bernoulli's Equation (and potential flow) does not predict **wakes**. Here's wha
 
   <!-- ...and then lets go, leaving a messy wake behind it -->
   <g fill="none" stroke="#2b6ca3" stroke-width="1.8" stroke-linecap="round">
-    <path d="M 270 66 C 300 60 330 70 350 62 C 370 55 390 72 410 64"/>
-    <path d="M 270 174 C 300 180 330 170 350 178 C 370 185 390 168 410 176"/>
+    <path d="M 285 50 C 310 52 330 62 350 56 C 370 50 390 66 410 58"/>
+    <path d="M 285 190 C 310 188 330 178 350 184 C 370 190 390 174 410 182"/>
     <path d="M 290 90 c 18 -14 38 -2 30 14 c -8 16 -30 10 -24 -4"/>
     <path d="M 300 145 c 16 16 38 6 32 -10 c -6 -16 -28 -12 -24 2"/>
     <path d="M 350 105 c 14 -12 32 0 24 14 c -8 14 -26 6 -20 -6"/>
@@ -264,15 +266,9 @@ Bernoulli's Equation (and potential flow) does not predict **wakes**. Here's wha
 ```
 
 
-The flow follows the front of the cylinder more-or-less like Bernoulli says. But at a certain point, the flow can't turn as quickly as the geometry (due to inertia) and the flow **separates** from the surface, creating a swirling low-pressure wake. We have an asymmetric 
+The flow follows the front of the cylinder more-or-less like Bernoulli says. But at a certain point, the flow can't turn as quickly as the geometry (due to inertia) and the flow **separates** from the surface, creating a swirling low-pressure **wake**. We now have an asymmetry, more pressure in the front than in the wake, and so we have a non-zero drag force.
 
-The culprit is viscosity, which we threw out when we used Bernoulli. It turns out that even a tiny bit of viscosity, in a very thin layer right next to the wall, is enough to cause the separation (it is genuinely strange that a *tiny* viscosity can matter this much, and we'll come back to it when we get to boundary layers). So **the above analysis is dubious for blunt objects.**
-
-::: {.callout-warning}
-## Don't take this home
-
-"Bernoulli says drag is zero" is *not* a result to carry into a design. It's a result about what Bernoulli leaves out. For a blunt object like a cylinder, a sphere, a lamppost, or a truck, the drag is mostly due to the wake, and we will need a different set of tools (and experimental data) to predict it.
-:::
+It turns out that even a tiny bit of viscosity, in a very thin layer right next to the wall, is enough to cause the separation. So **the above analysis is dubious for blunt objects.**
 
 
 ## Airfoils
@@ -313,14 +309,14 @@ However — airfoils are **streamlined** (they make very little wake) and **asym
 </div>
 ```
 
-Streamlined means the flow follows the surface all the way to the back — no big separated wake — and so Bernoulli is a much better description of the flow here than it was for the cylinder. We *still* get $F_D = 0$ from this analysis (d'Alembert doesn't go away!), but for a streamlined shape the real drag really is small, so that's not a terrible approximation. And because the shape (and its angle to the flow) is asymmetric, the top-bottom cancellation we saw for the cylinder doesn't happen: the flow moves faster over the top, the pressure is lower there, and we get $F_L > 0$.
+Streamlined means the flow follows the surface all the way to the back — no separation or wake — and so Bernoulli is a much better description of the flow here than it was for the cylinder. We *still* get $F_D = 0$ from this analysis, but for a streamlined shape the real drag is indeed small, so that's not a terrible approximation. And because the shape (and its angle to the flow) is asymmetric, the top-bottom cancellation we saw for the cylinder doesn't happen: the flow moves faster over the top, the pressure is lower there, and we get $F_L > 0$.
 
-::: {.column-margin}
+<!-- ::: {.column-margin}
 I'm skipping a subtle piece here: to get lift out of potential flow, you also need to add some "circulation" to the flow around the wing, and the sharp trailing edge is what picks how much (the *Kutta condition*, if you want to read more). This is a nice example of the math not being able to decide something on its own, and the physics of the real, slightly-viscous flow stepping in to decide it.
-:::
+::: -->
 
 ::: {.callout-caution}
 ## A popular wrong explanation
 
-You may have heard that the air over the top of a wing goes faster because it "has further to travel" and needs to "meet back up" with the air underneath at the trailing edge. The faster-on-top part is right. The meet-back-up part is not — there's no rule that says the two parcels have to arrive together (and in real measurements, the air over the top actually gets to the trailing edge *first*). Bernoulli connects the speed to the pressure; it doesn't explain *why* the speed is higher on top.
+You may have heard that the air over the top of a wing goes faster because it "has further to travel" and needs to "meet back up" with the air underneath at the trailing edge. The faster-on-top part is right. The meet-back-up part is not — there's no rule that says the two parcels have to arrive together (and in real measurements, the air over the top actually gets to the trailing edge *first*).
 :::
