@@ -61,7 +61,7 @@ We're using the convention that the surface normal points from the surface, into
 :::
 
 ### Task 1: Determine the coordinates to integrate over, and the bounds
-We must decide what coordinates to integrate over — namely, what coordinates describe the location on the surface. For a flat object, it usually makes sense to use Cartesian coordinates, though we might rotate these coordinates to make our bounds a bit easier to describe — see [Angled surfaces](../unit-3/p-int.qmd#angled-surfaces) from the last reading.
+We must decide what coordinates to integrate over — namely, what coordinates describe the location on the surface. For a flat object, it usually makes sense to use Cartesian coordinates, though we might rotate these coordinates to make our bounds a bit easier to describe — see [Angled surfaces](p-int.qmd#angled-surfaces) from the last reading.
 
 In cylindrical coordinates, there are two basic surfaces: the circular "cap" and the curved wall. For the circle, $r$ and $\theta$ vary over the surface, and so we will be integrating with respect to $dA = r dr d\theta$.
 

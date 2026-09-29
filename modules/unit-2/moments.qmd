@@ -153,7 +153,7 @@ where I used $\wedge$ for the cross product symbol, to make it distinct from $\m
 
 ### Moment example 1
 
-Let's do a basic one but with our vector calculus notation: remember the problem with a gate on an angled wall? We computed the torque needed to keep it closed in [Torques from pressure distributions](../unit-3/p-int.qmd#torques-from-pressure-distributions), using a scalar lever arm. Here was the figure:
+Let's do a basic one but with our vector calculus notation: remember the problem with a gate on an angled wall? We computed the torque needed to keep it closed in [Torques from pressure distributions](p-int.qmd#torques-from-pressure-distributions), using a scalar lever arm. Here was the figure:
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">

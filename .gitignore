@@ -27,19 +27,7 @@ conceptests/
 # restore its _quarto.yml sidebar section + render: entry) as it's ready
 # to go live again.
 project.qmd
-modules/unit-1/what-is-a-fluid.qmd
-modules/unit-1/fluid-properties.qmd
-modules/unit-1/properties-worked.qmd
-modules/unit-2/b-pi-extra.qmd
-modules/unit-2/old/
-modules/unit-3/old/
-modules/unit-4/old/
-modules/unit-5/
-modules/unit-6/
-modules/unit-7/
-modules/unit-8/
-modules/unit-9/
-modules/unit-10/
+modules/unpublished/
 homework.qmd
 tools.qmd
 reference.qmd

@@ -12,19 +12,7 @@ project:
     - "!reference.qmd"
     - "!homework/solutions/"
     - "!conceptests/"
-    - "!modules/unit-1/what-is-a-fluid.qmd"
-    - "!modules/unit-1/fluid-properties.qmd"
-    - "!modules/unit-1/properties-worked.qmd"
-    - "!modules/unit-2/b-pi-extra.qmd"
-    - "!modules/unit-2/old/"
-    - "!modules/unit-3/old/"
-    - "!modules/unit-4/old/"
-    - "!modules/unit-5/"
-    - "!modules/unit-6/"
-    - "!modules/unit-7/"
-    - "!modules/unit-8/"
-    - "!modules/unit-9/"
-    - "!modules/unit-10/"
+    - "!modules/unpublished/"
   pre-render: python scripts/make_bundle.py
   resources:
     - fluidtools_bundle.py
@@ -54,21 +42,27 @@ website:
       - index.qmd
       - syllabus.qmd
       - schedule.qmd
-      - modules/unit-1/pressure.qmd
-      - modules/unit-1/viscosity.qmd
-      - modules/unit-2/units-and-dims.qmd
-      - modules/unit-2/b-pi.qmd
-      - modules/unit-2/strouhal_number.qmd
-      - modules/unit-3/hydrostatics.qmd
-      - modules/unit-3/p-int.qmd
-      # 3.3 (rigid-body acceleration) is an optional "extra" reading, not
-      # required, published out of order.
-      - modules/unit-3/rigid-accel.qmd
-      - modules/unit-4/curved-int.qmd
-      - modules/unit-4/moments.qmd
-      - modules/unit-4/bernoulli.qmd
-      - modules/unit-4/bernoulli-app.qmd
-      - modules/unit-4/lift-drag.qmd
+      - section: "Unit 1 · Fluid properties, units, and dimensions"
+        contents:
+          - modules/unit-1/pressure.qmd
+          - modules/unit-1/viscosity.qmd
+          - modules/unit-1/units-and-dims.qmd
+          - modules/unit-1/b-pi.qmd
+          - modules/unit-1/strouhal_number.qmd
+      - section: "Unit 2 · Hydrostatics"
+        contents:
+          - modules/unit-2/hydrostatics.qmd
+          - modules/unit-2/p-int.qmd
+          # 2.3 (rigid-body acceleration) is an optional "extra" reading,
+          # not required, published out of order.
+          - modules/unit-2/rigid-accel.qmd
+          - modules/unit-2/curved-int.qmd
+          - modules/unit-2/moments.qmd
+      - section: "Unit 3 · Bernoulli's equation"
+        contents:
+          - modules/unit-3/bernoulli.qmd
+          - modules/unit-3/bernoulli-app.qmd
+          - modules/unit-3/lift-drag.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd
@@ -77,67 +71,24 @@ website:
           - homework/hw2_sol.qmd
           - homework/hw3.qmd
           - homework/hw4.qmd
-      # Project, the rest of Unit 1, and Units 2-10 are drafted but
-      # gitignored while the site is stripped down (see .gitignore).
-      # Restore each section here, and its render: line above, as
-      # it's ready to go live.
+      # Everything not yet published lives in modules/unpublished/ (flat,
+      # with superseded drafts in modules/unpublished/old/). The three
+      # live units above were regrouped from the old week-based folders:
+      # new unit-1 = old 1.x + 2.x, new unit-2 = old 3.x + 4.1/4.3,
+      # new unit-3 = old 5.1/5.2 + 6.1. Drafts keep their old titles and
+      # numbering; renumber when promoting one into a unit folder.
+      # Old unit sketch, for reference (all paths under modules/unpublished/):
       # - project.qmd
-      # - section: "Unit 1 · Fluids & Properties"
-      #   contents:
-      #     - modules/unit-1/what-is-a-fluid.qmd
-      #     - modules/unit-1/fluid-properties.qmd
-      #     - modules/unit-1/properties-worked.qmd
-      # Unit 2's live 2.1/2.2/2.3 readings (units-and-dims, b-pi,
-      # strouhal_number) are already published above, outside a section
-      # header, to match the site's current flat/stripped-down style.
-      # b-pi-extra.qmd (2.3 extra) is drafted but not yet published.
-      # The old unit-2/old/ and unit-3/old/ drafts (dimensional-analysis,
-      # similitude-model-testing, dimensional-worked, pressure-and-manometry,
-      # statics-plane-surfaces, curved-surfaces-buoyancy, statics-stability,
-      # statics-worked) predate the units-and-dims/b-pi/hydrostatics rewrite
-      # and are superseded — revisit before reviving rather than restoring
-      # as-is.
-      # - section: "Unit 4 · Bernoulli"
-      #   contents:
-      #     - modules/unit-4/bernoulli.qmd
-      #     - modules/unit-4/flow-measurement.qmd
-      #     - modules/unit-4/bernoulli-worked.qmd
-      # - section: "Unit 5 · Integral Conservation Laws"
-      #   contents:
-      #     - modules/unit-5/control-volumes-mass.qmd
-      #     - modules/unit-5/energy-equation.qmd
-      #     - modules/unit-5/momentum.qmd
-      #     - modules/unit-5/cv-worked.qmd
-      # - section: "Unit 6 · Differential Analysis"
-      #   contents:
-      #     - modules/unit-6/differential-analysis.qmd
-      #     - modules/unit-6/reading-flow-profiles.qmd
-      #     - modules/unit-6/profiles-worked.qmd
-      # - section: "Unit 7 · Boundary Layers & External Flow"
-      #   contents:
-      #     - modules/unit-7/boundary-layers.qmd
-      #     - modules/unit-7/drag.qmd
-      #     - modules/unit-7/lift.qmd
-      #     - modules/unit-7/external-worked.qmd
-      # - section: "Unit 8 · Pipe Flow"
-      #   contents:
-      #     - modules/unit-8/pipe-flow-regimes.qmd
-      #     - modules/unit-8/major-losses.qmd
-      #     - modules/unit-8/minor-losses-networks.qmd
-      #     - modules/unit-8/pumped-systems.qmd
-      #     - modules/unit-8/pipe-worked.qmd
-      # - section: "Unit 9 · Open-Channel Flow"
-      #   contents:
-      #     - modules/unit-9/channel-critical-flow.qmd
-      #     - modules/unit-9/channel-uniform-flow.qmd
-      #     - modules/unit-9/hydraulic-jumps.qmd
-      #     - modules/unit-9/channel-worked.qmd
-      # - section: "Unit 10 · Turbomachinery"
-      #   contents:
-      #     - modules/unit-10/pump-theory.qmd
-      #     - modules/unit-10/pump-performance.qmd
-      #     - modules/unit-10/turbines.qmd
-      #     - modules/unit-10/turbo-worked.qmd
+      #   what-is-a-fluid, fluid-properties, properties-worked, b-pi-extra
+      #   flow-measurement, bernoulli-worked (in old/)
+      #   control-volumes-mass, energy-equation, momentum, cv-worked
+      #   differential-analysis, reading-flow-profiles, profiles-worked
+      #   boundary-layers, drag, lift, external-worked
+      #   pipe-flow-regimes, major-losses, minor-losses-networks,
+      #     pumped-systems, pipe-worked
+      #   channel-critical-flow, channel-uniform-flow, hydraulic-jumps,
+      #     channel-worked
+      #   pump-theory, pump-performance, turbines, turbo-worked
       # - homework.qmd
       # - tools.qmd
       # - reference.qmd
