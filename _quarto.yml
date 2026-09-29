@@ -49,6 +49,7 @@ website:
           - modules/unit-1/units-and-dims.qmd
           - modules/unit-1/b-pi.qmd
           - modules/unit-1/strouhal_number.qmd
+          - modules/unit-1/unit-1-clickers.qmd
       - section: "Unit 2 · Hydrostatics"
         contents:
           - modules/unit-2/hydrostatics.qmd
@@ -58,11 +59,13 @@ website:
           - modules/unit-2/rigid-accel.qmd
           - modules/unit-2/curved-int.qmd
           - modules/unit-2/moments.qmd
+          - modules/unit-2/unit-2-clickers.qmd
       - section: "Unit 3 · Bernoulli's equation"
         contents:
           - modules/unit-3/bernoulli.qmd
           - modules/unit-3/bernoulli-app.qmd
           - modules/unit-3/lift-drag.qmd
+          - modules/unit-3/unit-3-clickers.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd

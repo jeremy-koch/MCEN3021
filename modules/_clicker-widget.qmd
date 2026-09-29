@@ -1,0 +1,119 @@
+```{=html}
+<style>
+/* Clicker (ConceptTest) review questions. Unlike the checkpoint widget, the
+   question itself is ordinary Quarto markdown (so math and figures render
+   normally); this JS only decorates the option list that's already there.
+   Colors use rgba/inherit so it works in both the cosmo and darkly themes. */
+.clicker { border: 1px solid rgba(128,128,128,0.35); border-left: 4px solid #4c6ef5;
+           border-radius: 6px; padding: 0.8em 1em 0.6em; margin: 1.4em 0; }
+.clicker.revealed { border-left-color: #2f9e44; }
+.clicker-title { font-weight: 700; margin-bottom: 0.6em; }
+.clicker .stem { margin-bottom: 0.6em; }
+.clicker .opts ul { list-style: none; padding-left: 0; margin: 0.4em 0 0.6em; }
+.clicker .opts li { padding: 0.4em 0.7em; margin: 0.3em 0; border: 1px solid rgba(128,128,128,0.4);
+           border-radius: 5px; cursor: pointer; }
+.clicker .opts li:hover, .clicker .opts li:focus { background: rgba(76,110,245,0.12); outline: none; }
+.clicker .opts li.wrong { background: rgba(224,49,49,0.14); border-color: #e03131; }
+.clicker .opts li.correct { background: rgba(47,158,68,0.18); border-color: #2f9e44; font-weight: 600; }
+.clicker .opts li.tempting { border-color: #e03131; border-style: dashed; }
+.clicker .opts.letters ul { display: flex; gap: 0.6em; flex-wrap: wrap; }
+.clicker .opts.letters li { min-width: 3.2em; text-align: center; margin: 0.3em 0; }
+.clicker.revealed .opts li { cursor: default; }
+.clicker.revealed .opts li:hover { background: inherit; }
+.clicker .opts li.correct:hover { background: rgba(47,158,68,0.18); }
+.clicker-ctl { display: flex; gap: 0.6em; align-items: center; flex-wrap: wrap; margin-bottom: 0.4em; }
+.clicker-ctl button, .clicker-reveal-all button { padding: 0.25em 0.85em; border-radius: 4px;
+           border: 1px solid rgba(128,128,128,0.6); background: transparent; color: inherit;
+           cursor: pointer; font-size: 0.85em; }
+.clicker-fb { font-size: 0.95em; }
+.clicker-fb.no { color: #e67700; }
+.clicker-fb.ok { color: #2f9e44; font-weight: 600; }
+.clicker-answer { display: none; border-top: 1px dashed rgba(128,128,128,0.5); margin-top: 0.6em; padding-top: 0.6em; }
+.clicker.revealed .clicker-answer { display: block; }
+.clicker-answer-label { font-weight: 700; color: #2f9e44; margin-bottom: 0.3em; }
+.clicker .aside-note { font-size: 0.9em; font-style: italic; opacity: 0.8; }
+.clicker img { max-width: 100%; height: auto; }
+.clicker-context { border-left: 4px solid rgba(128,128,128,0.4); padding-left: 1em; margin: 1.4em 0; }
+</style>
+<script>
+(function () {
+  var LETTERS = 'abcdefghij';
+  function initClicker(el) {
+    var answer = (el.dataset.answer || '').trim();
+    var tempting = (el.dataset.tempting || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    var opts = el.querySelector('.opts');
+    if (!opts || !answer) return;
+    var lis = opts.querySelectorAll('li');
+    var ans = el.querySelector('.clicker-answer');
+    var label = null;
+    if (ans) {
+      label = document.createElement('div');
+      label.className = 'clicker-answer-label';
+      label.textContent = 'Answer: (' + answer + ')';
+      ans.insertBefore(label, ans.firstChild);
+    }
+    var ctl = document.createElement('div');
+    ctl.className = 'clicker-ctl';
+    var fb = document.createElement('span');
+    fb.className = 'clicker-fb';
+    fb.setAttribute('aria-live', 'polite');
+    var show = document.createElement('button');
+    show.type = 'button'; show.textContent = 'Show answer';
+    var reset = document.createElement('button');
+    reset.type = 'button'; reset.textContent = 'Reset'; reset.style.display = 'none';
+    ctl.appendChild(show); ctl.appendChild(reset); ctl.appendChild(fb);
+    opts.parentNode.insertBefore(ctl, opts.nextSibling);
+
+    function reveal(picked) {
+      el.classList.add('revealed');
+      lis.forEach(function (li, i) {
+        var L = LETTERS[i];
+        if (L === answer) li.classList.add('correct');
+        else if (tempting.indexOf(L) >= 0 && L !== picked) li.classList.add('tempting');
+      });
+      show.style.display = 'none'; reset.style.display = '';
+    }
+    function pick(i) {
+      if (el.classList.contains('revealed')) return;
+      var L = LETTERS[i];
+      if (L === answer) {
+        fb.className = 'clicker-fb ok'; fb.textContent = '✓ Yes.';
+        reveal(L);
+      } else {
+        lis[i].classList.add('wrong');
+        fb.className = 'clicker-fb no';
+        fb.textContent = 'Not (' + L + ') — talk it over, then try again (or show the answer).';
+      }
+    }
+    lis.forEach(function (li, i) {
+      li.setAttribute('role', 'button'); li.tabIndex = 0;
+      li.addEventListener('click', function () { pick(i); });
+      li.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(i); }
+      });
+    });
+    show.addEventListener('click', function () { fb.textContent = ''; reveal(null); });
+    reset.addEventListener('click', function () {
+      el.classList.remove('revealed');
+      lis.forEach(function (li) { li.classList.remove('wrong', 'correct', 'tempting'); });
+      fb.textContent = ''; fb.className = 'clicker-fb';
+      show.style.display = ''; reset.style.display = 'none';
+    });
+    el._reveal = function () { if (!el.classList.contains('revealed')) reveal(null); };
+  }
+  function revealAll() {
+    document.querySelectorAll('.clicker').forEach(function (el) { if (el._reveal) el._reveal(); });
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.clicker').forEach(initClicker);
+    document.querySelectorAll('.clicker-reveal-all').forEach(function (d) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = 'Reveal all answers on this page';
+      b.addEventListener('click', revealAll);
+      d.appendChild(b);
+    });
+    window.addEventListener('beforeprint', revealAll);
+  });
+})();
+</script>
+```
