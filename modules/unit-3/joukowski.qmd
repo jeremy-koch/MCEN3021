@@ -4,9 +4,7 @@ title: "6.3 Airfoils from circles (extra)"
 
 {{< include ../_checkpoint-widget.qmd >}}
 <!-- 
-::: {.callout-tip}
-This one is an **extra**. The math underneath it (complex variables, conformal maps) is graduate fluid mechanics, and you won't be asked to do any of it on an exam. But the *ideas* it makes visible are ones we care about, and the demo is fun to play with. So: read for the pictures, skim the equations.
-:::
+
 
 ## The big idea
 
@@ -75,26 +73,13 @@ And the reason any of this helps us with fluid mechanics is that the Joukowski m
 
 [^conformal]: "Conformal" means it preserves angles locally: two little curves crossing at 30° in the $\zeta$-plane still cross at 30° in the $z$-plane. That's true everywhere except where $dz/d\zeta = 0$, which is $\zeta = \pm 1$. One of those is exactly where the trailing edge lives, and that's not a coincidence!
 
-Let's check that we can run the map by hand before we let the computer do it.
 
-```{=html}
-<div class="fl-checkpoint"
-     data-prompt="A circle centered at μ = −0.1 passes through ζ = 1, so its radius is R = 1.1 and its leftmost point is ζ = −1.2. Where does that point land in the airfoil plane? Give z (it's a real number)."
-     data-answer="-2.0333" data-tol="0.02" data-units=""
-     data-hint="Plug in: z = ζ + 1/ζ with ζ = −1.2. Both pieces are negative."
-     data-solution="z = −1.2 + 1/(−1.2) = −1.2 − 0.8333 = −2.033. That's the leading edge. The trailing edge is at z = 2, so the chord is about 4.03."
-     data-target="jk-gate-le"></div>
-```
-
-::: {#jk-gate-le .fl-hidden}
-Right: $z \approx -2.03$. That's the leading edge, and with the trailing edge at $z = 2$ the chord is $c \approx 4.03$. The chord is a bit more than the flat plate's 4, because the thickness pushes the nose forward.
-:::
-
+-->
 ## The demo
 
-The left panel is the circle plane, and the right panel is the airfoil plane you get by pushing everything on the left through $z = \zeta + 1/\zeta$. **Drag in the left panel** to move the circle's center $\mu$. Its radius adjusts itself so the circle always passes through $\zeta = 1$ (the × on the right), which keeps the trailing edge sharp.
+The left panel is the circle plane, the right panel is the airfoil plane after transformation. Drag the circle around in the left panel to move the circle's center $\mu$. Its radius adjusts itself so the circle always passes through $\zeta = 1$ (the × on the right), which keeps the trailing edge sharp. 
 
-Streamlines are the gray curves, and the orange one is the **dividing streamline**: the one that splits into "over" and "under" at the front stagnation point. The background color is the pressure coefficient $C_p = 1 - U^2/U_0^2$ from Bernoulli, red for above freestream pressure and blue for below. The "timelines" option releases rows of particles together upstream, so you can watch them race around. -->
+Streamlines are depicted. The "timelines" option adds particles so you can more intuitively monitor the speed of the flow. **The dividing streamline** — the one that splits into "over" and "under" at the front stagnation point — is in orange. The background color is the pressure coefficient $C_p = 1 - U^2/U_0^2$ from Bernoulli, red for above freestream pressure and blue for below. You can adjust the **angle of attack** with the slider. By default, the circulation is set based on **the Kutta Condition**, but you can also set this manually. (In real life, physics enforces the Kutta Condition.)
 
 ::: {.column-page}
 
@@ -585,25 +570,21 @@ Streamlines are the gray curves, and the orange one is the **dividing streamline
 
 :::
 
-<!-- A few things worth trying, in roughly this order:
+A few things worth trying:
 
-1. Hit **flat plate** and set α = 0. Everything is symmetric and boring, as it should be. Then drag the center **left**. The plate puffs up into a symmetric airfoil.
-2. Drag the center **up** a bit. Now the airfoil is cambered, and notice that $C_L$ is positive *even at α = 0*. Cambered wings lift at zero angle of attack.
-3. Now switch Γ to **"I'll pick"** (it starts at Γ = 0) and look at the trailing edge. This is the interesting part, so it gets its own section.
+1. Hit **flat plate** and set α = 0. Everything is symmetric and boring. Then drag the center of the circle **left** — the plate puffs up into a **symmetric airfoil** shape.
+2. Drag the center **up** a bit. Now the airfoil is **cambered**, and notice that $C_L$ is positive *even at α = 0*. Cambered wings lift at zero angle of attack.
+3. Hit flat plate again, and then increase the **angle of attack** slider. This, too, will create some lift.
+3. Then switch Γ to **"I'll pick"** (it starts at Γ = 0) and look at the trailing edge.
 
+You should see: increasing the **angle of attack** increases the lift, and **camber** can generate lift, even at zero angle of attack.
+
+<!-- 
 ## Step 3: the Kutta condition
 
 With Γ = 0, there's no lift at all. Look closely at the rear stagnation point (the orange circle): it's sitting on the *top* surface, a little upstream of the trailing edge, not at the edge itself. It's easiest to see on the "symmetric" preset with α cranked up to 15° or so. That means the flow along the bottom surface has to whip around the sharp trailing edge and travel *backward* along the top to get there. And the speed at the trailing edge is infinite. The math says so: the velocity in the airfoil plane is
 
-$$
-\frac{dW}{dz} = \frac{dW/d\zeta}{dz/d\zeta} = \frac{dW/d\zeta}{1 - 1/\zeta^2},
-$$
-
-and the denominator is zero at the trailing edge, $\zeta = 1$.[^complexvel] Dividing by zero is how the math tells us a fluid parcel is being asked to turn a corner of zero radius.
-
-[^complexvel]: $W$ is the "complex potential," which packs the velocity potential and the stream function into one function. Its derivative gives the velocity components, $dW/dz = u - iv$. This is where the graduate-level machinery really lives, and we won't need more of it than this.
-
-Real fluid won't do this. Viscosity (even a tiny bit of it) makes that hairpin turn impossible, and the flow separates off the trailing edge instead. Now slide Γ up and watch the rear stagnation point creep backward. There's exactly one value where it lands right *on* the trailing edge. Then the top and bottom flows meet there and leave together, smoothly, and the numerator of that fraction goes to zero at the same point the denominator does. The ✗ turns into a ✓.
+Real fluid won't do this: the flow separates off the trailing edge instead. Now slide Γ up and watch the rear stagnation point creep backward. There's exactly one value where it lands right *on* the trailing edge. Then the top and bottom flows meet there and leave together, smoothly, and the numerator of that fraction goes to zero at the same point the denominator does. The ✗ turns into a ✓.
 
 That value is the **Kutta condition**:
 
@@ -613,22 +594,19 @@ $$
 
 where $\mu_y$ is how far the circle's center is shifted up. The camber shows up as an extra angle $\beta$ added to the angle of attack, which is why the cambered airfoil lifts at α = 0.
 
-So this is the piece I skipped last reading. Inviscid theory offers every Γ, and viscosity (the thing we threw out to get Bernoulli!) picks one. It's a bit dubious that we need a sliver of viscosity to pick the circulation and then ignore it everywhere else... but it works remarkably well, and it's a nice example of the math not being able to decide something on its own.[^startingvortex]
 
-[^startingvortex]: How does the wing "know" to pick this Γ? When a wing starts moving, the flow briefly does whip around the trailing edge, and the resulting shear rolls up into a **starting vortex** that gets shed downstream. It carries away circulation of $-\Gamma$, leaving $+\Gamma$ bound to the wing (circulation is conserved overall). You can see this in a bathtub by dragging a plate quickly through the water.
+[^startingvortex]: 
 
-```{=html}
-<div class="fl-checkpoint"
-     data-prompt="Take the symmetric airfoil from the first checkpoint (μ = −0.1, so R = 1.1 and β = 0), with U₀ = 1 and α = 5°. What circulation Γ does the Kutta condition pick?"
-     data-answer="1.2048" data-tol="0.02" data-units=""
-     data-hint="Γ = 4πU₀R sin(α + β). No camber means β = 0. Make sure your calculator is in the right angle mode."
-     data-solution="Γ = 4π(1)(1.1) sin(5°) = 13.82 × 0.0872 = 1.205. You can check it in the demo: 'symmetric' preset, α = 5°."
-     data-target="jk-gate-gamma"></div>
-```
 
-::: {#jk-gate-gamma .fl-hidden}
-$\Gamma \approx 1.205$. Hit the "symmetric" preset, set α = 5°, and the demo should agree.
+
+::: {.callout-note}
+How does the wing "know" to pick this Γ? When a wing starts moving, the flow briefly does whip around the trailing edge, and the resulting shear rolls up into a **starting vortex** that gets shed downstream. It carries away circulation of $-\Gamma$, leaving $+\Gamma$ bound to the wing (circulation is conserved overall).
+
 :::
+
+
+
+
 
 ## From circulation to lift
 
@@ -681,26 +659,4 @@ Now switch to Γ = 0 with the same airfoil. The timelines come out much more nea
 Crank α up to 20° with Kutta on. The demo happily gives you $C_L$ somewhere between 2 and 3, with the streamlines hugging the upper surface all the way to the trailing edge. A real wing would have stalled around 12–16°: the boundary layer on the upper surface can't handle the steep adverse pressure gradient behind the suction peak (look at how blue the nose gets!), it separates, and the lift collapses while the drag shoots up.
 
 Potential flow has no boundary layer, so it can't know about any of this. It also still predicts zero drag (d'Alembert's paradox didn't go away just because we changed shapes). So trust this picture at small angles of attack. There it's surprisingly good, and it's the basis for real airfoil design codes. Past the stall, it's fiction.
-:::
-
-## Check yourself
-
-<details><summary>Why can't potential flow, on its own, predict the lift on a wing?</summary>
-Because adding a vortex of any strength Γ to a valid potential flow around the airfoil gives another valid potential flow, with the same shape and the same freestream but a different lift ($L' = \rho U_0\Gamma$). The inviscid math has no way to choose among them. We need an extra physical condition, the Kutta condition, to pick one.
-</details>
-
-<details><summary>What does the Kutta condition actually say, in words?</summary>
-The flow leaves the sharp trailing edge smoothly: the rear stagnation point sits exactly at the trailing edge, so no fluid has to whip around the edge (which would take infinite speed). There's exactly one Γ that does this, and it's what real (slightly viscous) flow selects.
-</details>
-
-<details><summary>In the Joukowski picture, what does moving the circle's center left do? Up?</summary>
-Left adds thickness and a round nose, since the circle bulges out past ζ = −1. Up adds camber, which bends the airfoil. The circle always passes through ζ = 1, and that point becomes the sharp trailing edge.
-</details>
-
-<details><summary>A cambered airfoil at α = 0 has positive C<sub>L</sub>. Where does that show up in the Kutta formula?</summary>
-In the angle β. The Kutta condition gives $\Gamma = 4\pi U_0 R\sin(\alpha + \beta)$, and camber makes β > 0. So Γ (and so the lift) is positive even at α = 0. The zero-lift angle is α = −β, slightly nose-down.
-</details>
-
-<details><summary>Why can't we trust the demo's C<sub>L</sub> at α = 20°?</summary>
-Potential flow has no viscosity and so no boundary layer. Real wings stall around 12–16° when the upper-surface boundary layer separates under the adverse pressure gradient, and the lift collapses. The model can't see that happening.
-</details> -->
+::: -->
