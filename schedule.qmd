@@ -6,20 +6,20 @@ title: "Schedule"
 
 | Week | Tuesday | Thursday | Extra (optional) | Notes |
 |---|---|---|---|---|
-| 0 | 25 Aug — [1.1 Pressure](modules/unit-1/pressure.qmd) | 27 Aug — [1.2 Viscosity](modules/unit-1/viscosity.qmd) | | [HW1](homework/hw1.qmd) -- due 4 Sep<br>[HW1 solutions](homework/hw1_sol.qmd) |
-| 1 | 1 Sep — [2.1 Units and Dimensions](modules/unit-1/units-and-dims.qmd) | 3 Sep — [2.2 The Buckingham-Pi Theorem and Similitude](modules/unit-1/b-pi.qmd) | [2.3 Strouhal Number](modules/unit-1/strouhal_number.qmd) | [HW2](homework/hw2.qmd) -- due 11 Sep<br>[HW2 solutions](homework/hw2_sol.qmd) |
-| 2 | 8 Sep — [3.1 Hydrostatic Pressure](modules/unit-2/hydrostatics.qmd) | 10 Sep — [3.2 Pressure Integrals](modules/unit-2/p-int.qmd) | [3.3 Rigid-body acceleration](modules/unit-2/rigid-accel.qmd) | No HW |
-| 3 | 15 Sep — [4.1 Forces on curved surfaces](modules/unit-2/curved-int.qmd) | 17 Sep — **no class** | [4.3 Moments and some more examples](modules/unit-2/moments.qmd) | [HW3](homework/hw3.qmd) -- due 25 Sep |
-| 4 | 22 Sep — [5.1 Bernoulli's Equation](modules/unit-3/bernoulli.qmd) | 24 Sep — [5.2 Applications of Bernoulli](modules/unit-3/bernoulli-app.qmd) | | |
-| 5 | 29 Sep — [6.1 Lift and drag from Bernoulli?](modules/unit-3/lift-drag.qmd) | 1 Oct — Exam review -- no reading | | [HW4](homework/hw4.qmd) -- due 2 Oct |
-| 6 | 6 Oct — Midterm in class | 8 Oct — **no class** | | |
-| 7 | 13 Oct — TBD | 15 Oct — TBD | | |
-| 8 | 20 Oct — TBD | 22 Oct — TBD | | |
-| 9 | 27 Oct — TBD | 29 Oct — TBD | | |
-| 10 | 3 Nov — TBD | 5 Nov — TBD | | |
-| 11 | 10 Nov — TBD | 12 Nov — TBD | | |
-| 12 | 17 Nov — TBD | 19 Nov — TBD | | |
-| 13 | 24 Nov — **no class** — Thanksgiving | 26 Nov — **no class** — Thanksgiving | | |
-| 14 | 1 Dec — TBD | 3 Dec — TBD | | |
+| 1 | 25 Aug — [1.1 Pressure](modules/unit-1/pressure.qmd) | 27 Aug — [1.2 Viscosity](modules/unit-1/viscosity.qmd) | | [HW1](homework/hw1.qmd) -- due 4 Sep<br>[HW1 solutions](homework/hw1_sol.qmd) |
+| 2 | 1 Sep — [2.1 Units and Dimensions](modules/unit-1/units-and-dims.qmd) | 3 Sep — [2.2 The Buckingham-Pi Theorem and Similitude](modules/unit-1/b-pi.qmd) | [2.3 Strouhal Number](modules/unit-1/strouhal_number.qmd) | [HW2](homework/hw2.qmd) -- due 11 Sep<br>[HW2 solutions](homework/hw2_sol.qmd) |
+| 3 | 8 Sep — [3.1 Hydrostatic Pressure](modules/unit-2/hydrostatics.qmd) | 10 Sep — [3.2 Pressure Integrals](modules/unit-2/p-int.qmd) | [3.3 Rigid-body acceleration](modules/unit-2/rigid-accel.qmd) | No HW |
+| 4 | 15 Sep — [4.1 Forces on curved surfaces](modules/unit-2/curved-int.qmd) | 17 Sep — **no class** | [4.3 Moments and some more examples](modules/unit-2/moments.qmd) | [HW3](homework/hw3.qmd) -- due 25 Sep |
+| 5 | 22 Sep — [5.1 Bernoulli's Equation](modules/unit-3/bernoulli.qmd) | 24 Sep — [5.2 Applications of Bernoulli](modules/unit-3/bernoulli-app.qmd) | | |
+| 6 | 29 Sep — [6.1 Lift and drag from Bernoulli?](modules/unit-3/lift-drag.qmd) | 1 Oct — Exam review -- no reading | [6.3 Airfoils from circles](modules/unit-3/joukowski.qmd) | [HW4](homework/hw4.qmd) -- due 2 Oct |
+| 7 | 6 Oct — Midterm in class | 8 Oct — **no class** | | |
+| 8 | 13 Oct — TBD | 15 Oct — TBD | | |
+| 9 | 20 Oct — TBD | 22 Oct — TBD | | |
+| 10 | 27 Oct — TBD | 29 Oct — TBD | | |
+| 11 | 3 Nov — TBD | 5 Nov — TBD | | |
+| 12 | 10 Nov — TBD | 12 Nov — TBD | | |
+| 13 | 17 Nov — TBD | 19 Nov — TBD | | |
+| 14 | 24 Nov — **no class** — Thanksgiving | 26 Nov — **no class** — Thanksgiving | | |
+| 15 | 1 Dec — TBD | 3 Dec — TBD | | |
 
 :::
