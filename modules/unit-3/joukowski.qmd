@@ -81,7 +81,7 @@ The left panel is the circle plane, the right panel is the airfoil plane after t
 
 Streamlines are depicted. The "timelines" option adds particles so you can more intuitively monitor the speed of the flow. **The dividing streamline** — the one that splits into "over" and "under" at the front stagnation point — is in orange. The background color is the pressure coefficient $C_p = 1 - U^2/U_0^2$ from Bernoulli, red for above freestream pressure and blue for below. You can adjust the **angle of attack** with the slider. By default, the circulation is set based on **the Kutta Condition**, but you can also set this manually. (In real life, physics enforces the Kutta Condition.)
 
-::: {.column-body-outset}
+::: {.column-body-outset-right}
 
 ```{ojs}
 //| echo: false
