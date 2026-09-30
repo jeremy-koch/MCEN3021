@@ -65,6 +65,7 @@ website:
           - modules/unit-3/bernoulli.qmd
           - modules/unit-3/bernoulli-app.qmd
           - modules/unit-3/lift-drag.qmd
+          - modules/unit-3/joukowski.qmd
           - modules/unit-3/unit-3-clickers.qmd
       - section: "Homework"
         contents:

@@ -1,0 +1,706 @@
+---
+title: "6.3 Airfoils from circles (extra)"
+---
+
+{{< include ../_checkpoint-widget.qmd >}}
+
+::: {.callout-tip}
+This one is an **extra**. The math underneath it (complex variables, conformal maps) is graduate fluid mechanics, and you won't be asked to do any of it on an exam. But the *ideas* it makes visible are ones we care about, and the demo is fun to play with. So: read for the pictures, skim the equations.
+:::
+
+## The big idea
+
+Last reading, we got lift out of Bernoulli by waving our hands at a streamlined shape, and I admitted to skipping a subtle piece. Here's the piece. Potential flow, on its own, *cannot decide how much lift a wing makes*. It gives a whole family of perfectly good flows past the same airfoil, each with a different lift, and the math has no preference among them.
+
+What picks the answer is the sharp trailing edge (and, sneakily, viscosity). That selection rule is called the **Kutta condition**, and it's the reason wings have sharp back ends and blunt front ends rather than the other way around.
+
+We'll get there by cheating in the most elegant way available. We already know the flow around a cylinder. We'll find a function that bends a circle into an airfoil, and it turns out the streamlines come along for the ride: bend the circle, and the flow around it bends into the flow around the airfoil. That function is the **Joukowski transform**, and the demo below lets us drag the circle around and watch the airfoil (and its flow) respond.
+
+## Think first
+
+**Recall**
+
+1. Around a (non-spinning) cylinder, potential flow is symmetric top-to-bottom *and* front-to-back, so the net force is zero: no lift, no drag.
+2. The speed on the cylinder's surface peaks at $2U_0$ over the top and bottom, and drops to zero at the front and back stagnation points.
+
+**Look ahead**
+
+1. Suppose we spin the cylinder clockwise, so its top surface drags fluid along *with* the oncoming flow. Which side gets faster? Which way is the net force?
+2. Imagine air flowing along the bottom of a wing and then whipping *around* a razor-sharp trailing edge to get to the top. How fast would it have to go to make that hairpin turn?
+3. If nature had to choose between a flow with an infinite speed somewhere and one without, which would you bet on?
+
+## Step 1: a cylinder with some swirl
+
+The cylinder flow from last reading had a stream function (a function that's constant along each streamline, which is just what we need to *draw* them) of
+
+$$
+\psi = U_0\left(r - \frac{R^2}{r}\right)\sin\theta.
+$$
+
+Now we make an observation: we're allowed to add another flow on top of it. Potential flow is *linear* (it comes from Laplace's equation[^laplace]), so adding solutions gives another solution. The flow we add is a **vortex**, fluid swirling around the cylinder with speed falling off like $1/r$:
+
+$$
+\psi = U_0\left(r - \frac{R^2}{r}\right)\sin\theta + \frac{\Gamma}{2\pi}\ln r.
+$$
+
+[^laplace]: For the curious: in 2D incompressible, irrotational flow the stream function satisfies $\nabla^2\psi = 0$. Laplace's equation is linear, so superposition works. It's the same reason we can add up electric fields from point charges.
+
+The strength of the swirl, $\Gamma$, is the **circulation** (just giving you some vocabulary if you want to read more). The vortex adds speed on one side of the cylinder and subtracts it on the other. With clockwise swirl and flow from the left, the top gets faster, so by Bernoulli the top gets lower pressure... and now we have lift. This is the **Magnus effect**, and it's why a backspinning golf ball floats.
+
+The surface still is a streamline (on $r = R$ the first term vanishes, and $\ln R$ is a constant). What *moves* are the stagnation points: as $\Gamma$ grows they slide down around the back and the front of the cylinder toward the bottom.
+
+So we have lift, but notice that $\Gamma$ is a free knob. Every value gives a legitimate potential flow. For a spinning ball, the spin sets it. For a wing, which doesn't spin, something else has to. Hold that thought.
+
+## Step 2: bending the circle into a wing
+
+Here's the trick. Treat each point in the plane as a complex number, $\zeta = \xi + i\eta$ (the "circle plane"), and send it to a new point $z = x + iy$ (the "airfoil plane") by
+
+$$
+z = \zeta + \frac{1}{\zeta}.
+$$
+
+That's it. That's the **Joukowski transform**. A few quick things it does:
+
+- Far from the origin, $1/\zeta$ is tiny, so $z \approx \zeta$. The far-away uniform flow is left alone. Good, since that's the freestream we want.
+- The point $\zeta = 1$ lands at $z = 1 + 1 = 2$.
+- The unit circle centered at the origin, $\zeta = e^{i\theta}$, lands at $z = e^{i\theta} + e^{-i\theta} = 2\cos\theta$, which is a flat line segment from $-2$ to $2$. The circle gets squashed into a flat plate!
+
+So a circle centered right at the origin makes a flat plate. Now we nudge the circle's center (call it $\mu$) around, always keeping the circle passing through $\zeta = 1$:
+
+- Shift the center **left** and the circle bulges out past $\zeta = -1$. The plate gets *thickness*, with a round nose at the front.
+- Shift the center **up** and the plate *bends*. It gets **camber**.
+- The point $\zeta = 1$ stays on the circle, and it becomes a **sharp trailing edge** at $z = 2$. (The map folds the circle over on itself right there, since $dz/d\zeta = 1 - 1/\zeta^2$ is zero at $\zeta = 1$.)
+
+And the reason any of this helps us with fluid mechanics is that the Joukowski map is **conformal**.[^conformal] Conformal maps take solutions of Laplace's equation to solutions of Laplace's equation. So if we take a streamline around the circle and push every point on it through $z = \zeta + 1/\zeta$, we get a streamline around the airfoil. We solved the easy problem, and the map hands us the hard one for free.
+
+[^conformal]: "Conformal" means it preserves angles locally: two little curves crossing at 30° in the $\zeta$-plane still cross at 30° in the $z$-plane. That's true everywhere except where $dz/d\zeta = 0$, which is $\zeta = \pm 1$. One of those is exactly where the trailing edge lives, and that's not a coincidence!
+
+Let's check that we can run the map by hand before we let the computer do it.
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="A circle centered at μ = −0.1 passes through ζ = 1, so its radius is R = 1.1 and its leftmost point is ζ = −1.2. Where does that point land in the airfoil plane? Give z (it's a real number)."
+     data-answer="-2.0333" data-tol="0.02" data-units=""
+     data-hint="Plug in: z = ζ + 1/ζ with ζ = −1.2. Both pieces are negative."
+     data-solution="z = −1.2 + 1/(−1.2) = −1.2 − 0.8333 = −2.033. That's the leading edge. The trailing edge is at z = 2, so the chord is about 4.03."
+     data-target="jk-gate-le"></div>
+```
+
+::: {#jk-gate-le .fl-hidden}
+Right: $z \approx -2.03$. That's the leading edge, and with the trailing edge at $z = 2$ the chord is $c \approx 4.03$. The chord is a bit more than the flat plate's 4, because the thickness pushes the nose forward.
+:::
+
+## The demo
+
+The left panel is the circle plane, and the right panel is the airfoil plane you get by pushing everything on the left through $z = \zeta + 1/\zeta$. **Drag in the left panel** to move the circle's center $\mu$. Its radius adjusts itself so the circle always passes through $\zeta = 1$ (the × on the right), which keeps the trailing edge sharp.
+
+Streamlines are the gray curves, and the orange one is the **dividing streamline**: the one that splits into "over" and "under" at the front stagnation point. The background color is the pressure coefficient $C_p = 1 - U^2/U_0^2$ from Bernoulli, red for above freestream pressure and blue for below. The "timelines" option releases rows of particles together upstream, so you can watch them race around.
+
+::: {.column-page}
+
+```{ojs}
+//| echo: false
+{
+  // ---------- layout ----------
+  // Panels size themselves to the container (a ResizeObserver below), so a
+  // window resize re-lays-out without resetting the state.
+  const gap = 12;
+  let panelW = Math.min(width, 1100) - 26, panelH = Math.round(panelW * 2 / 3);
+  const view = {x0: -3.3, x1: 3.3, y0: -2.2, y1: 2.2};
+  const dpr = window.devicePixelRatio || 1;
+
+  // ---------- state ----------
+  const S = {mx: -0.1, my: 0.1, alphaDeg: 5, kutta: true, gammaManual: 0,
+             color: true, timelines: true, phase: 0};
+  const U = 1, dpsi = 0.2, K = 20, XREL = -3.2, TPERIOD = 0.9;
+  const NR = 110, NT = 400, RMAX = 5.5;
+
+  // ---------- DOM ----------
+  const root = document.createElement("div");
+  root.style.cssText = "background:#fff;color:#1a1a1a;border:1px solid #dee2e6;border-radius:8px;padding:12px;margin:1em 0;font-family:var(--bs-body-font-family,sans-serif);font-size:0.92em;max-width:1100px";
+  const panels = document.createElement("div");
+  panels.style.cssText = "display:flex;gap:" + gap + "px;flex-wrap:wrap";
+  root.appendChild(panels);
+
+  function makeCanvas() {
+    const c = document.createElement("canvas");
+    c.style.cssText = "border-radius:6px;display:block";
+    panels.appendChild(c);
+    const layer = document.createElement("canvas");   // static layer, redrawn on parameter change
+    return {c, ctx: c.getContext("2d"), layer, lctx: layer.getContext("2d")};
+  }
+  const P = makeCanvas();   // circle plane (ζ)
+  const Q = makeCanvas();   // airfoil plane (z)
+  P.c.style.touchAction = "none";
+  P.c.style.cursor = "grab";
+
+  const controls = document.createElement("div");
+  controls.style.cssText = "display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;margin-top:10px";
+  controls.innerHTML = `
+    <label style="display:flex;align-items:center;gap:6px">angle of attack α
+      <input data-k="alpha" type="range" min="-10" max="20" step="0.5" value="5" style="width:150px">
+      <span data-o="alpha" style="font-variant-numeric:tabular-nums;min-width:3.2em"></span></label>
+    <span style="display:flex;align-items:center;gap:10px">circulation Γ:
+      <label><input data-k="mode" type="radio" name="jk-mode" value="kutta" checked> set by Kutta</label>
+      <label><input data-k="mode" type="radio" name="jk-mode" value="manual"> I'll pick</label></span>
+    <label data-o="gwrap" style="display:flex;align-items:center;gap:6px;opacity:0.4">Γ
+      <input data-k="gamma" type="range" min="-3" max="8" step="0.05" value="0" style="width:150px" disabled>
+      <span data-o="gamma" style="font-variant-numeric:tabular-nums;min-width:3.2em"></span></label>
+    <label><input data-k="color" type="checkbox" checked> pressure color</label>
+    <label><input data-k="timelines" type="checkbox" checked> timelines</label>
+    <span style="display:flex;gap:6px;align-items:center">presets:
+      <button data-p="plate">flat plate</button>
+      <button data-p="sym">symmetric</button>
+      <button data-p="camb">cambered</button></span>`;
+  controls.querySelectorAll("button").forEach(b => b.style.cssText =
+    "padding:2px 9px;border-radius:4px;border:1px solid #adb5bd;background:#fff;color:#495057;cursor:pointer;font-size:0.9em");
+  root.appendChild(controls);
+  const readout = document.createElement("div");
+  readout.style.cssText = "margin-top:8px;font-variant-numeric:tabular-nums;line-height:1.5";
+  root.appendChild(readout);
+  const q = s => controls.querySelector(s);
+
+  // ---------- flow math ----------
+  // Circle of radius R about μ, through ζ = 1. Complex potential (clockwise Γ > 0):
+  //   W(ζ) = U[(ζ-μ)e^{-iα} + R² e^{iα}/(ζ-μ)] + (iΓ/2π) log(ζ-μ)
+  //   ψ = U (r - R²/r) sin(θ-α) + (Γ/2π) ln r,   with ζ - μ = r e^{iθ}
+  //   dW/dζ = U[e^{-iα} - R² e^{iα}/(ζ-μ)²] + iΓ/(2π(ζ-μ))     (= u - iv)
+  //   z = ζ + 1/ζ,   dW/dz = (dW/dζ) / (1 - 1/ζ²)
+  //   Kutta:  Γ = 4πUR sin(α+β),  β = asin(μ_y / R)
+  function derived() {
+    const R = Math.hypot(1 - S.mx, S.my);
+    const beta = Math.asin(S.my / R);
+    const a = S.alphaDeg * Math.PI / 180;
+    const GK = 4 * Math.PI * U * R * Math.sin(a + beta);
+    const G = S.kutta ? GK : S.gammaManual;
+    return {R, beta, a, GK, G, ca: Math.cos(a), sa: Math.sin(a)};
+  }
+  // conjugate velocity (u - iv) in the ζ-plane at ζ' = ζ - μ = (px, py)
+  function wZeta(D, px, py) {
+    const r2 = px * px + py * py;
+    // 1/ζ'² = conj(ζ')² / r2²
+    const ir = (px * px - py * py) / (r2 * r2), ii = (-2 * px * py) / (r2 * r2);
+    // R² e^{iα} / ζ'²
+    const R2 = D.R * D.R;
+    const tr = R2 * (D.ca * ir - D.sa * ii), ti = R2 * (D.ca * ii + D.sa * ir);
+    // iΓ/(2π ζ') = iΓ conj(ζ') / (2π r2)
+    const g = D.G / (2 * Math.PI * r2);
+    return [U * (D.ca - tr) + g * py, U * (-D.sa - ti) + g * px];
+  }
+  // conjugate velocity in the z-plane, given ζ (absolute) and ζ'
+  function wZ(D, zr, zi, px, py) {
+    const [wr, wi] = wZeta(D, px, py);
+    // dz/dζ = 1 - 1/ζ²
+    const m2 = zr * zr + zi * zi;
+    const dr = 1 - (zr * zr - zi * zi) / (m2 * m2), di = (2 * zr * zi) / (m2 * m2);
+    const dd = dr * dr + di * di;
+    return [(wr * dr + wi * di) / dd, (wi * dr - wr * di) / dd];
+  }
+  const jk = (xr, xi) => { const m = xr * xr + xi * xi; return [xr + xr / m, xi - xi / m]; };
+  function csqrt(a, b) {
+    const m = Math.hypot(a, b);
+    const re = Math.sqrt((m + a) / 2), im = Math.sqrt(Math.max(0, (m - a) / 2));
+    return [re, b < 0 ? -im : im];
+  }
+
+  // ---------- streamlines: marching squares on a polar grid about μ ----------
+  function streamlines(D) {
+    const psi = new Float64Array(NR * NT);
+    const rr = new Float64Array(NR);
+    const dth = 2 * Math.PI / NT;
+    for (let i = 0; i < NR; i++) rr[i] = D.R * Math.pow(RMAX / D.R, i / (NR - 1));
+    rr[0] = D.R;
+    for (let i = 0; i < NR; i++) {
+      const r = rr[i], A = U * (r - D.R * D.R / r), B = D.G / (2 * Math.PI) * Math.log(r);
+      for (let j = 0; j < NT; j++) psi[i * NT + j] = A * Math.sin(j * dth - D.a) + B;
+    }
+    const psic = D.G / (2 * Math.PI) * Math.log(D.R);
+    const level = k => psic + k * dpsi + (k === 0 ? 1e-7 : 0);
+    const segs = [];                        // per level: flat [e1, e2, e1, e2, ...]
+    for (let k = -K; k <= K; k++) segs.push([]);
+    const edge = (i, j, radial) => 2 * (i * NT + ((j + NT) % NT)) + (radial ? 0 : 1);
+    for (let i = 0; i < NR - 1; i++) for (let j = 0; j < NT; j++) {
+      const j1 = (j + 1) % NT;
+      const v0 = psi[i * NT + j], v1 = psi[i * NT + j1], v2 = psi[(i + 1) * NT + j1], v3 = psi[(i + 1) * NT + j];
+      const lo = Math.min(v0, v1, v2, v3), hi = Math.max(v0, v1, v2, v3);
+      const kmin = Math.max(-K, Math.ceil((lo - psic) / dpsi - 1e-6));
+      const kmax = Math.min(K, Math.floor((hi - psic) / dpsi + 1e-6));
+      for (let k = kmin; k <= kmax; k++) {
+        const L = level(k);
+        const b0 = v0 > L, b1 = v1 > L, b2 = v2 > L, b3 = v3 > L;
+        const e = [];                       // crossed edges: 0 bottom, 1 right, 2 top, 3 left
+        if (b0 !== b1) e.push(0);
+        if (b1 !== b2) e.push(1);
+        if (b2 !== b3) e.push(2);
+        if (b3 !== b0) e.push(3);
+        if (e.length === 0) continue;
+        const id = [edge(i, j, false), edge(i, j + 1, true), edge(i + 1, j, false), edge(i, j, true)];
+        const out = segs[k + K];
+        if (e.length === 2) out.push(id[e[0]], id[e[1]]);
+        else {                              // saddle: decide with the cell center
+          const c = (v0 + v1 + v2 + v3) / 4 > L;
+          if (c === b0) out.push(id[0], id[1], id[2], id[3]);
+          else out.push(id[3], id[0], id[1], id[2]);
+        }
+      }
+    }
+    // edge id -> point (ζ' coordinates)
+    function pt(eid, L) {
+      const n = eid >> 1, i = Math.floor(n / NT), j = n % NT, radial = (eid & 1) === 0;
+      let ia = i, ja = j, ib = radial ? i + 1 : i, jb = radial ? j : j + 1;
+      const va = psi[ia * NT + ja], vb = psi[ib * NT + (jb % NT)];
+      const t = (L - va) / (vb - va);
+      const r = rr[ia] + t * (rr[ib] - rr[ia]), th = (ja + t * (jb - ja)) * dth;
+      return [r * Math.cos(th), r * Math.sin(th)];
+    }
+    // join segments into polylines
+    const lines = [];
+    for (let k = -K; k <= K; k++) {
+      const s = segs[k + K], ns = s.length / 2;
+      if (!ns) continue;
+      const L = level(k);
+      const byEdge = new Map();
+      for (let m = 0; m < ns; m++) for (const e of [s[2 * m], s[2 * m + 1]]) {
+        const a = byEdge.get(e); if (a) a.push(m); else byEdge.set(e, [m]);
+      }
+      const used = new Uint8Array(ns);
+      const other = (m, e) => (s[2 * m] === e ? s[2 * m + 1] : s[2 * m]);
+      const nextSeg = (e, m) => { const a = byEdge.get(e); return a.length > 1 ? (a[0] === m ? a[1] : a[0]) : -1; };
+      for (let m0 = 0; m0 < ns; m0++) {
+        if (used[m0]) continue;
+        used[m0] = 1;
+        const fwd = [s[2 * m0], s[2 * m0 + 1]], bwd = [];
+        let m = m0, e = s[2 * m0 + 1];
+        for (;;) { const n = nextSeg(e, m); if (n < 0 || used[n]) break; used[n] = 1; e = other(n, e); fwd.push(e); m = n; }
+        m = m0; e = s[2 * m0];
+        for (;;) { const n = nextSeg(e, m); if (n < 0 || used[n]) break; used[n] = 1; e = other(n, e); bwd.push(e); m = n; }
+        const ids = bwd.reverse().concat(fwd);
+        if (ids.length < 3) continue;
+        let pts = ids.map(id => pt(id, L));
+        // orient downstream: compare direction with the velocity at the middle
+        const h = pts.length >> 1, [ax, ay] = pts[h - 1], [bx, by] = pts[h];
+        const [wr, wi] = wZeta(D, (ax + bx) / 2, (ay + by) / 2);
+        if ((bx - ax) * wr - (by - ay) * wi < 0) pts.reverse();
+        lines.push({k, pts});
+      }
+    }
+    // absolute coordinates, both planes, plus travel time along each line
+    for (const ln of lines) {
+      const n = ln.pts.length;
+      ln.zeta = new Float64Array(2 * n); ln.z = new Float64Array(2 * n);
+      const sp1 = new Float64Array(n), sp2 = new Float64Array(n);
+      for (let m = 0; m < n; m++) {
+        const [px, py] = ln.pts[m], xr = px + S.mx, xi = py + S.my;
+        const [zr, zi] = jk(xr, xi);
+        ln.zeta[2 * m] = xr; ln.zeta[2 * m + 1] = xi; ln.z[2 * m] = zr; ln.z[2 * m + 1] = zi;
+        const w1 = wZeta(D, px, py), w2 = wZ(D, xr, xi, px, py);
+        sp1[m] = Math.max(1e-4, Math.hypot(w1[0], w1[1]));
+        sp2[m] = Math.max(1e-4, Math.hypot(w2[0], w2[1]));
+      }
+      ln.tZeta = travelTime(ln.zeta, sp1);
+      ln.tZ = travelTime(ln.z, sp2);
+    }
+    return lines;
+  }
+  // cumulative time along a polyline, zeroed where it first crosses x = XREL going right
+  function travelTime(xy, sp) {
+    const n = sp.length, t = new Float64Array(n);
+    for (let m = 1; m < n; m++) {
+      const ds = Math.hypot(xy[2 * m] - xy[2 * m - 2], xy[2 * m + 1] - xy[2 * m - 1]);
+      t[m] = t[m - 1] + ds * 0.5 * (1 / sp[m] + 1 / sp[m - 1]);
+    }
+    for (let m = 1; m < n; m++) {
+      const xa = xy[2 * m - 2], xb = xy[2 * m];
+      if (xa < XREL && xb >= XREL) {
+        const t0 = t[m - 1] + (t[m] - t[m - 1]) * (XREL - xa) / (xb - xa);
+        for (let p = 0; p < n; p++) t[p] -= t0;
+        return t;
+      }
+    }
+    return null;                            // never crosses the release line: no particles
+  }
+
+  // ---------- drawing ----------
+  const sx = x => (x - view.x0) / (view.x1 - view.x0) * panelW * dpr;
+  const sy = y => (view.y1 - y) / (view.y1 - view.y0) * panelH * dpr;
+  const ux = px => view.x0 + px / panelW * (view.x1 - view.x0);
+  const uy = py => view.y1 - py / panelH * (view.y1 - view.y0);
+
+  // Cp -> color: red above freestream pressure, blue below, white at Cp = 0
+  function cpColor(cp) {
+    let r, g, b, t;
+    if (cp >= 0) { t = Math.min(1, cp) * 0.75; r = 255 + (192 - 255) * t; g = 255 + (57 - 255) * t; b = 255 + (43 - 255) * t; }
+    else { t = Math.min(1, -cp / 3) * 0.75; r = 255 + (43 - 255) * t; g = 255 + (108 - 255) * t; b = 255 + (163 - 255) * t; }
+    return [r, g, b];
+  }
+  const small = document.createElement("canvas");
+  const sctx = small.getContext("2d");
+  let gw = 1, gh = 1;
+  function layout(inner) {
+    panelW = Math.max(200, inner < 560 ? inner : Math.floor((inner - gap) / 2));
+    panelH = Math.round(panelW * 2 / 3);
+    for (const T of [P, Q]) {
+      T.c.width = T.layer.width = panelW * dpr;
+      T.c.height = T.layer.height = panelH * dpr;
+      T.c.style.width = panelW + "px"; T.c.style.height = panelH + "px";
+    }
+    gw = small.width = Math.ceil(panelW / 2);
+    gh = small.height = Math.ceil(panelH / 2);
+  }
+  function paintPressure(ctx, D, airfoilPlane) {
+    const img = sctx.createImageData(gw, gh), d = img.data;
+    for (let py = 0; py < gh; py++) for (let px = 0; px < gw; px++) {
+      const x = ux((px + 0.5) * 2), y = uy((py + 0.5) * 2);
+      let zr = x, zi = y, ok = true;
+      if (airfoilPlane) {                   // invert z = ζ + 1/ζ, keep the root outside the circle
+        const [sr, si] = csqrt(x * x - y * y - 4, 2 * x * y);
+        const a1 = (x + sr) / 2, b1 = (y + si) / 2, a2 = (x - sr) / 2, b2 = (y - si) / 2;
+        const d1 = Math.hypot(a1 - S.mx, b1 - S.my), d2 = Math.hypot(a2 - S.mx, b2 - S.my);
+        if (d1 >= d2) { zr = a1; zi = b1; ok = d1 > D.R; } else { zr = a2; zi = b2; ok = d2 > D.R; }
+      } else ok = Math.hypot(x - S.mx, y - S.my) > D.R;
+      const o = 4 * (py * gw + px);
+      if (!ok) { d[o] = d[o + 1] = d[o + 2] = 255; d[o + 3] = 255; continue; }
+      const px_ = zr - S.mx, py_ = zi - S.my;
+      const w = airfoilPlane ? wZ(D, zr, zi, px_, py_) : wZeta(D, px_, py_);
+      const cp = 1 - (w[0] * w[0] + w[1] * w[1]) / (U * U);
+      const [r, g, b] = cpColor(cp);
+      d[o] = r; d[o + 1] = g; d[o + 2] = b; d[o + 3] = 255;
+    }
+    sctx.putImageData(img, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(small, 0, 0, gw, gh, 0, 0, panelW * dpr, panelH * dpr);
+  }
+
+  function arrow(ctx, x0, y0, x1, y1, color, lw) {
+    const hx = x1 - x0, hy = y1 - y0, L = Math.hypot(hx, hy);
+    if (L < 1) return;
+    const ux_ = hx / L, uy_ = hy / L, hs = 7 * dpr;
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = lw * dpr;
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1 - ux_ * hs * 0.8, y1 - uy_ * hs * 0.8); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 - ux_ * hs - uy_ * hs * 0.5, y1 - uy_ * hs + ux_ * hs * 0.5);
+    ctx.lineTo(x1 - ux_ * hs + uy_ * hs * 0.5, y1 - uy_ * hs - ux_ * hs * 0.5);
+    ctx.closePath(); ctx.fill();
+  }
+
+  let lines = [], D = derived(), chord = 4, body = [];
+  function recompute() {
+    D = derived();
+    lines = streamlines(D);
+    body = [];
+    chord = 0;
+    for (let m = 0; m <= 360; m++) {
+      const th = m * Math.PI / 180, xr = S.mx + D.R * Math.cos(th), xi = S.my + D.R * Math.sin(th);
+      const [zr, zi] = jk(xr, xi);
+      body.push([xr, xi, zr, zi]);
+      chord = Math.max(chord, Math.hypot(zr - 2, zi));
+    }
+    drawStatic(P, false);
+    drawStatic(Q, true);
+    updateReadout();
+    drawFrame();
+  }
+
+  function drawStatic(T, airfoilPlane) {
+    const ctx = T.lctx, W = panelW * dpr, H = panelH * dpr;
+    ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, W, H);
+    if (S.color) paintPressure(ctx, D, airfoilPlane);
+    // axes
+    ctx.strokeStyle = "rgba(0,0,0,0.12)"; ctx.lineWidth = dpr;
+    ctx.beginPath(); ctx.moveTo(0, sy(0)); ctx.lineTo(W, sy(0)); ctx.moveTo(sx(0), 0); ctx.lineTo(sx(0), H); ctx.stroke();
+    // streamlines
+    const key = airfoilPlane ? "z" : "zeta";
+    for (const ln of lines) {
+      const xy = ln[key], n = xy.length / 2;
+      ctx.beginPath(); ctx.moveTo(sx(xy[0]), sy(xy[1]));
+      for (let m = 1; m < n; m++) ctx.lineTo(sx(xy[2 * m]), sy(xy[2 * m + 1]));
+      if (ln.k === 0) { ctx.strokeStyle = "#e67700"; ctx.lineWidth = 2 * dpr; }
+      else { ctx.strokeStyle = "rgba(40,40,40,0.55)"; ctx.lineWidth = 1 * dpr; }
+      ctx.stroke();
+    }
+    // body
+    ctx.beginPath();
+    body.forEach(([a, b, c, d], m) => {
+      const X = airfoilPlane ? c : a, Y = airfoilPlane ? d : b;
+      if (m === 0) ctx.moveTo(sx(X), sy(Y)); else ctx.lineTo(sx(X), sy(Y));
+    });
+    ctx.closePath();
+    ctx.fillStyle = "#c9c6c2"; ctx.fill();
+    ctx.strokeStyle = "#1a1a1a"; ctx.lineWidth = 1.8 * dpr; ctx.stroke();
+    // stagnation points on the surface: sin(θ - α) = -Γ/(4πUR)
+    const s = -D.G / (4 * Math.PI * U * D.R);
+    if (Math.abs(s) <= 1) {
+      for (const th of [D.a + Math.asin(s), D.a + Math.PI - Math.asin(s)]) {
+        let X = S.mx + D.R * Math.cos(th), Y = S.my + D.R * Math.sin(th);
+        if (airfoilPlane) [X, Y] = jk(X, Y);
+        ctx.beginPath(); ctx.arc(sx(X), sy(Y), 4.5 * dpr, 0, 2 * Math.PI);
+        ctx.fillStyle = "#fff"; ctx.fill(); ctx.strokeStyle = "#e67700"; ctx.lineWidth = 2 * dpr; ctx.stroke();
+      }
+    }
+    // trailing edge marker, and a warning if the Kutta condition is violated
+    const [tx, ty] = airfoilPlane ? [2, 0] : [1, 0];
+    const bad = Math.abs(D.G - D.GK) > 0.02;
+    ctx.strokeStyle = bad ? "#c0392b" : "#1a1a1a"; ctx.lineWidth = 2 * dpr;
+    const r = 5 * dpr;
+    ctx.beginPath(); ctx.moveTo(sx(tx) - r, sy(ty) - r); ctx.lineTo(sx(tx) + r, sy(ty) + r);
+    ctx.moveTo(sx(tx) - r, sy(ty) + r); ctx.lineTo(sx(tx) + r, sy(ty) - r); ctx.stroke();
+    ctx.font = `${12 * dpr}px sans-serif`;
+    if (airfoilPlane && bad) {
+      ctx.fillStyle = "#c0392b";
+      ctx.fillText("U → ∞ here!", sx(tx) + 8 * dpr, sy(ty) + 18 * dpr);
+    }
+    if (!airfoilPlane) {
+      // the other critical point, and the draggable center
+      ctx.strokeStyle = "rgba(0,0,0,0.45)"; ctx.lineWidth = 1.2 * dpr;
+      ctx.beginPath(); ctx.moveTo(sx(-1) - r, sy(0) - r); ctx.lineTo(sx(-1) + r, sy(0) + r);
+      ctx.moveTo(sx(-1) - r, sy(0) + r); ctx.lineTo(sx(-1) + r, sy(0) - r); ctx.stroke();
+      ctx.beginPath(); ctx.arc(sx(S.mx), sy(S.my), 6 * dpr, 0, 2 * Math.PI);
+      ctx.fillStyle = "#4c6ef5"; ctx.fill(); ctx.strokeStyle = "#fff"; ctx.lineWidth = 2 * dpr; ctx.stroke();
+      ctx.fillStyle = "#4c6ef5";
+      ctx.fillText("μ (drag)", sx(S.mx) + 9 * dpr, sy(S.my) - 8 * dpr);
+    } else {
+      // lift arrow, perpendicular to the freestream, length ∝ C_L
+      const CL = 2 * D.G / (U * chord), Ls = Math.max(-1.9, Math.min(1.9, 0.9 * CL));   // clamped to stay on screen
+      const bx = 0, by = 0.25;
+      arrow(ctx, sx(bx), sy(by), sx(bx - D.sa * Ls), sy(by + D.ca * Ls), "#c0392b", 2.4);
+    }
+    // freestream arrow and panel label
+    arrow(ctx, sx(-3.1), sy(1.75), sx(-3.1 + 0.6 * D.ca), sy(1.75 + 0.6 * D.sa), "#2b6ca3", 2);
+    ctx.fillStyle = "#2b6ca3"; ctx.fillText("U₀", sx(-3.1) + 2 * dpr, sy(1.75) - 12 * dpr);
+    ctx.font = `600 ${13 * dpr}px sans-serif`;
+    const lab = airfoilPlane ? "airfoil plane: z = ζ + 1/ζ" : "circle plane: ζ";
+    const lw = ctx.measureText(lab).width;
+    ctx.fillStyle = "rgba(255,255,255,0.85)"; ctx.fillRect(W - lw - 14 * dpr, 4 * dpr, lw + 10 * dpr, 20 * dpr);
+    ctx.fillStyle = "#1a1a1a"; ctx.fillText(lab, W - lw - 9 * dpr, 19 * dpr);
+  }
+
+  function drawDots(T, airfoilPlane) {
+    const ctx = T.ctx, key = airfoilPlane ? "z" : "zeta", tk = airfoilPlane ? "tZ" : "tZeta";
+    ctx.fillStyle = "#1a1a1a";
+    for (const ln of lines) {
+      const t = ln[tk];
+      if (!t || ln.k === 0) continue;
+      const xy = ln[key], n = t.length;
+      let target = S.phase % TPERIOD, m = 1;
+      while (target <= t[n - 1]) {
+        while (m < n && t[m] < target) m++;
+        if (m >= n) break;
+        const f = (target - t[m - 1]) / (t[m] - t[m - 1] || 1);
+        const X = xy[2 * m - 2] + f * (xy[2 * m] - xy[2 * m - 2]), Y = xy[2 * m - 1] + f * (xy[2 * m + 1] - xy[2 * m - 1]);
+        ctx.beginPath(); ctx.arc(sx(X), sy(Y), 2.2 * dpr, 0, 2 * Math.PI); ctx.fill();
+        target += TPERIOD;
+      }
+    }
+  }
+  function drawFrame() {
+    for (const [T, af] of [[P, false], [Q, true]]) {
+      T.ctx.drawImage(T.layer, 0, 0);
+      if (S.timelines) drawDots(T, af);
+    }
+  }
+
+  function updateReadout() {
+    const CL = 2 * D.G / (U * chord);
+    const bad = Math.abs(D.G - D.GK) > 0.02;
+    const f = (v, n = 2) => (v < 0 ? "−" : "") + Math.abs(v).toFixed(n);
+    const muS = `${f(S.mx)} ${S.my < 0 ? "−" : "+"} ${Math.abs(S.my).toFixed(2)}i`;
+    readout.innerHTML =
+      `μ = ${muS} &nbsp;·&nbsp; R = ${D.R.toFixed(3)} &nbsp;·&nbsp; chord c = ${chord.toFixed(2)} &nbsp;·&nbsp; ` +
+      `Γ = ${f(D.G, 3)} ${S.kutta ? "(Kutta)" : `(Kutta would pick ${f(D.GK, 3)})`} &nbsp;·&nbsp; ` +
+      `<b>C<sub>L</sub> = ${f(CL, 3)}</b> &nbsp;·&nbsp; ` +
+      (bad ? `<span style="color:#c0392b;font-weight:600">trailing edge: infinite speed ✗</span>`
+           : `<span style="color:#2f9e44;font-weight:600">trailing edge: smooth ✓</span>`) +
+      `<br><span style="color:#495057">(all in units where U₀ = 1; for comparison, a thin flat plate gives 2π sin α = ${f(2 * Math.PI * D.sa, 3)})</span>`;
+    q('[data-o="alpha"]').textContent = S.alphaDeg.toFixed(1) + "°";
+    q('[data-o="gamma"]').textContent = f(S.kutta ? D.G : S.gammaManual, 2);
+  }
+
+  // ---------- interaction ----------
+  let pending = false;
+  const schedule = () => { if (!pending) { pending = true; requestAnimationFrame(() => { pending = false; recompute(); }); } };
+  controls.addEventListener("input", ev => {
+    const k = ev.target.dataset.k;
+    if (k === "alpha") S.alphaDeg = +ev.target.value;
+    else if (k === "gamma") S.gammaManual = +ev.target.value;
+    else if (k === "mode") {
+      S.kutta = ev.target.value === "kutta";
+      const g = q('[data-k="gamma"]');
+      g.disabled = S.kutta; q('[data-o="gwrap"]').style.opacity = S.kutta ? 0.4 : 1;
+      if (!S.kutta) { S.gammaManual = 0; g.value = 0; }
+    }
+    else if (k === "color") S.color = ev.target.checked;
+    else if (k === "timelines") { S.timelines = ev.target.checked; startLoop(); }
+    schedule();
+  });
+  controls.addEventListener("click", ev => {
+    const p = ev.target.dataset && ev.target.dataset.p;
+    if (!p) return;
+    [S.mx, S.my] = p === "plate" ? [0, 0] : p === "sym" ? [-0.1, 0] : [-0.1, 0.1];
+    schedule();
+  });
+  function setMu(ev) {
+    const rect = P.c.getBoundingClientRect();
+    let x = ux(ev.clientX - rect.left), y = uy(ev.clientY - rect.top);
+    x = Math.min(0, Math.max(-0.35, x)); y = Math.min(0.35, Math.max(-0.35, y));
+    if (Math.abs(x) < 0.015) x = 0;
+    if (Math.abs(y) < 0.015) y = 0;
+    S.mx = x; S.my = y; schedule();
+  }
+  let dragging = false;
+  P.c.addEventListener("pointerdown", ev => { dragging = true; P.c.setPointerCapture(ev.pointerId); P.c.style.cursor = "grabbing"; setMu(ev); });
+  P.c.addEventListener("pointermove", ev => { if (dragging) setMu(ev); });
+  const endDrag = () => { dragging = false; P.c.style.cursor = "grab"; };
+  P.c.addEventListener("pointerup", endDrag);
+  P.c.addEventListener("pointercancel", endDrag);
+
+  // ---------- animation (only while visible and timelines are on) ----------
+  let visible = true, raf = null, last = null;
+  function tick(ts) {
+    raf = null;
+    if (!S.timelines || !visible) { last = null; return; }
+    if (last !== null) S.phase += Math.min(0.1, (ts - last) / 1000) * 0.9;
+    last = ts;
+    drawFrame();
+    raf = requestAnimationFrame(tick);
+  }
+  function startLoop() { if (!raf && S.timelines && visible) raf = requestAnimationFrame(tick); }
+  const io = new IntersectionObserver(es => { visible = es[0].isIntersecting; startLoop(); });
+  io.observe(root);
+  invalidation.then(() => { io.disconnect(); if (raf) cancelAnimationFrame(raf); });
+
+  let lastInner = 0;
+  const ro = new ResizeObserver(es => {
+    const inner = Math.floor(es[0].contentRect.width);
+    if (inner > 0 && inner !== lastInner) { lastInner = inner; layout(inner); recompute(); }
+  });
+  ro.observe(root);
+  invalidation.then(() => ro.disconnect());
+
+  layout(panelW);
+  recompute();
+  startLoop();
+  return root;
+}
+```
+
+:::
+
+A few things worth trying, in roughly this order:
+
+1. Hit **flat plate** and set α = 0. Everything is symmetric and boring, as it should be. Then drag the center **left**. The plate puffs up into a symmetric airfoil.
+2. Drag the center **up** a bit. Now the airfoil is cambered, and notice that $C_L$ is positive *even at α = 0*. Cambered wings lift at zero angle of attack.
+3. Now switch Γ to **"I'll pick"** (it starts at Γ = 0) and look at the trailing edge. This is the interesting part, so it gets its own section.
+
+## Step 3: the Kutta condition
+
+With Γ = 0, there's no lift at all. Look closely at the rear stagnation point (the orange circle): it's sitting on the *top* surface, a little upstream of the trailing edge, not at the edge itself. It's easiest to see on the "symmetric" preset with α cranked up to 15° or so. That means the flow along the bottom surface has to whip around the sharp trailing edge and travel *backward* along the top to get there. And the speed at the trailing edge is infinite. The math says so: the velocity in the airfoil plane is
+
+$$
+\frac{dW}{dz} = \frac{dW/d\zeta}{dz/d\zeta} = \frac{dW/d\zeta}{1 - 1/\zeta^2},
+$$
+
+and the denominator is zero at the trailing edge, $\zeta = 1$.[^complexvel] Dividing by zero is how the math tells us a fluid parcel is being asked to turn a corner of zero radius.
+
+[^complexvel]: $W$ is the "complex potential," which packs the velocity potential and the stream function into one function. Its derivative gives the velocity components, $dW/dz = u - iv$. This is where the graduate-level machinery really lives, and we won't need more of it than this.
+
+Real fluid won't do this. Viscosity (even a tiny bit of it) makes that hairpin turn impossible, and the flow separates off the trailing edge instead. Now slide Γ up and watch the rear stagnation point creep backward. There's exactly one value where it lands right *on* the trailing edge. Then the top and bottom flows meet there and leave together, smoothly, and the numerator of that fraction goes to zero at the same point the denominator does. The ✗ turns into a ✓.
+
+That value is the **Kutta condition**:
+
+$$
+\Gamma = 4\pi U_0 R \sin(\alpha + \beta), \qquad \beta = \sin^{-1}\!\left(\frac{\mu_y}{R}\right),
+$$
+
+where $\mu_y$ is how far the circle's center is shifted up. The camber shows up as an extra angle $\beta$ added to the angle of attack, which is why the cambered airfoil lifts at α = 0.
+
+So this is the piece I skipped last reading. Inviscid theory offers every Γ, and viscosity (the thing we threw out to get Bernoulli!) picks one. It's a bit dubious that we need a sliver of viscosity to pick the circulation and then ignore it everywhere else... but it works remarkably well, and it's a nice example of the math not being able to decide something on its own.[^startingvortex]
+
+[^startingvortex]: How does the wing "know" to pick this Γ? When a wing starts moving, the flow briefly does whip around the trailing edge, and the resulting shear rolls up into a **starting vortex** that gets shed downstream. It carries away circulation of $-\Gamma$, leaving $+\Gamma$ bound to the wing (circulation is conserved overall). You can see this in a bathtub by dragging a plate quickly through the water.
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Take the symmetric airfoil from the first checkpoint (μ = −0.1, so R = 1.1 and β = 0), with U₀ = 1 and α = 5°. What circulation Γ does the Kutta condition pick?"
+     data-answer="1.2048" data-tol="0.02" data-units=""
+     data-hint="Γ = 4πU₀R sin(α + β). No camber means β = 0. Make sure your calculator is in the right angle mode."
+     data-solution="Γ = 4π(1)(1.1) sin(5°) = 13.82 × 0.0872 = 1.205. You can check it in the demo: 'symmetric' preset, α = 5°."
+     data-target="jk-gate-gamma"></div>
+```
+
+::: {#jk-gate-gamma .fl-hidden}
+$\Gamma \approx 1.205$. Hit the "symmetric" preset, set α = 5°, and the demo should agree.
+:::
+
+## From circulation to lift
+
+The last ingredient is a result called the **Kutta–Joukowski theorem**, which says the lift per unit span of *any* 2D body in potential flow is
+
+$$
+L' = \rho U_0 \Gamma.
+$$
+
+Any shape at all. All the details of the geometry get boiled down into the one number Γ, which is kind of amazing. Dividing by $\tfrac12\rho U_0^2 c$ (with $c$ the chord) gives the lift coefficient
+
+$$
+C_L = \frac{L'}{\tfrac12\rho U_0^2 c} = \frac{2\Gamma}{U_0 c}.
+$$
+
+A quick check on the direction: we chose Γ > 0 to mean clockwise swirl. With the flow coming from the left, clockwise swirl speeds up the top, so the top has lower pressure and the lift points up. The red arrow in the demo agrees (and flips when you push α negative).
+
+```{=html}
+<div class="fl-checkpoint"
+     data-prompt="Same airfoil: Γ = 1.205, U₀ = 1, and the chord from the first checkpoint, c = 4.033. What's the lift coefficient C_L?"
+     data-answer="0.5974" data-tol="0.02" data-units=""
+     data-hint="C_L = 2Γ/(U₀c). Everything's already in consistent units."
+     data-solution="C_L = 2(1.205)/(1 × 4.033) = 0.597."
+     data-target="jk-gate-cl"></div>
+```
+
+::: {#jk-gate-cl .fl-hidden}
+$C_L \approx 0.597$. For comparison, thin-airfoil theory for a flat plate gives $2\pi\sin\alpha = 0.548$, so the thickness (about 12% of the chord) bought us about 9% more lift. That's more-or-less what you'd expect: the Joukowski lift is $2\pi\sin(\alpha+\beta)$ times $4R/c$, and the thickness makes $R$ a bit bigger relative to the chord.
+
+Is 0.6 a reasonable number? Let's put it on a Cessna 172 taking off from Boulder Municipal. The plane weighs about 1100 kg, has 16.2 m² of wing, and the air at 83 kPa is about 1.0 kg/m³ (versus 1.225 at sea level). Setting lift equal to weight,
+
+$$
+U_0 = \sqrt{\frac{2mg}{\rho S C_L}} = \sqrt{\frac{2(1111)(9.81)}{(1.00)(16.2)(0.597)}} \approx 47 \text{ m/s} \approx 92 \text{ knots}.
+$$
+
+Real 172s cruise at about 110–120 knots, so we're in the right neighborhood. Not entirely unreasonable! (A real wing is finite, and its tips leak lift, so it needs to fly a bit faster or at a bit more α than our 2D wing.) At sea level, the same wing would get away with 43 m/s. Boulder's thin air costs about 10% in speed, which is why pilots here worry about "density altitude" on hot summer days.
+:::
+
+## Timelines and the "equal transit" story
+
+Turn on the timelines, go back to the cambered preset with Kutta on, and watch a row of particles as it goes past the airfoil. The particles over the top pull way ahead of their partners underneath. They don't reunite at the trailing edge; the top ones get there first, and the gap keeps growing downstream.
+
+Remember the popular explanation from last reading, that air over the top "has further to go" and speeds up to "meet back up" with the air underneath? The demo shows that it's wrong on its own terms. The top air *is* faster, but not because of any reunion rule. The circulation makes it faster, and the circulation is set by the trailing edge.
+
+Now switch to Γ = 0 with the same airfoil. The timelines come out much more nearly symmetric, and there's no lift. The extra speed over the top *is* the circulation.
+
+::: {.callout-important}
+## The misconception to leave behind: potential flow never stalls
+
+Crank α up to 20° with Kutta on. The demo happily gives you $C_L$ somewhere between 2 and 3, with the streamlines hugging the upper surface all the way to the trailing edge. A real wing would have stalled around 12–16°: the boundary layer on the upper surface can't handle the steep adverse pressure gradient behind the suction peak (look at how blue the nose gets!), it separates, and the lift collapses while the drag shoots up.
+
+Potential flow has no boundary layer, so it can't know about any of this. It also still predicts zero drag (d'Alembert's paradox didn't go away just because we changed shapes). So trust this picture at small angles of attack. There it's surprisingly good, and it's the basis for real airfoil design codes. Past the stall, it's fiction.
+:::
+
+## Check yourself
+
+<details><summary>Why can't potential flow, on its own, predict the lift on a wing?</summary>
+Because adding a vortex of any strength Γ to a valid potential flow around the airfoil gives another valid potential flow, with the same shape and the same freestream but a different lift ($L' = \rho U_0\Gamma$). The inviscid math has no way to choose among them. We need an extra physical condition, the Kutta condition, to pick one.
+</details>
+
+<details><summary>What does the Kutta condition actually say, in words?</summary>
+The flow leaves the sharp trailing edge smoothly: the rear stagnation point sits exactly at the trailing edge, so no fluid has to whip around the edge (which would take infinite speed). There's exactly one Γ that does this, and it's what real (slightly viscous) flow selects.
+</details>
+
+<details><summary>In the Joukowski picture, what does moving the circle's center left do? Up?</summary>
+Left adds thickness and a round nose, since the circle bulges out past ζ = −1. Up adds camber, which bends the airfoil. The circle always passes through ζ = 1, and that point becomes the sharp trailing edge.
+</details>
+
+<details><summary>A cambered airfoil at α = 0 has positive C<sub>L</sub>. Where does that show up in the Kutta formula?</summary>
+In the angle β. The Kutta condition gives $\Gamma = 4\pi U_0 R\sin(\alpha + \beta)$, and camber makes β > 0. So Γ (and so the lift) is positive even at α = 0. The zero-lift angle is α = −β, slightly nose-down.
+</details>
+
+<details><summary>Why can't we trust the demo's C<sub>L</sub> at α = 20°?</summary>
+Potential flow has no viscosity and so no boundary layer. Real wings stall around 12–16° when the upper-surface boundary layer separates under the adverse pressure gradient, and the lift collapses. The model can't see that happening.
+</details>
