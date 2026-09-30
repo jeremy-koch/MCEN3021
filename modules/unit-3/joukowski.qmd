@@ -3,7 +3,7 @@ title: "6.3 Airfoils from circles (extra)"
 ---
 
 {{< include ../_checkpoint-widget.qmd >}}
-
+<!-- 
 ::: {.callout-tip}
 This one is an **extra**. The math underneath it (complex variables, conformal maps) is graduate fluid mechanics, and you won't be asked to do any of it on an exam. But the *ideas* it makes visible are ones we care about, and the demo is fun to play with. So: read for the pictures, skim the equations.
 :::
@@ -94,7 +94,7 @@ Right: $z \approx -2.03$. That's the leading edge, and with the trailing edge at
 
 The left panel is the circle plane, and the right panel is the airfoil plane you get by pushing everything on the left through $z = \zeta + 1/\zeta$. **Drag in the left panel** to move the circle's center $\mu$. Its radius adjusts itself so the circle always passes through $\zeta = 1$ (the × on the right), which keeps the trailing edge sharp.
 
-Streamlines are the gray curves, and the orange one is the **dividing streamline**: the one that splits into "over" and "under" at the front stagnation point. The background color is the pressure coefficient $C_p = 1 - U^2/U_0^2$ from Bernoulli, red for above freestream pressure and blue for below. The "timelines" option releases rows of particles together upstream, so you can watch them race around.
+Streamlines are the gray curves, and the orange one is the **dividing streamline**: the one that splits into "over" and "under" at the front stagnation point. The background color is the pressure coefficient $C_p = 1 - U^2/U_0^2$ from Bernoulli, red for above freestream pressure and blue for below. The "timelines" option releases rows of particles together upstream, so you can watch them race around. -->
 
 ::: {.column-page}
 
@@ -585,7 +585,7 @@ Streamlines are the gray curves, and the orange one is the **dividing streamline
 
 :::
 
-A few things worth trying, in roughly this order:
+<!-- A few things worth trying, in roughly this order:
 
 1. Hit **flat plate** and set α = 0. Everything is symmetric and boring, as it should be. Then drag the center **left**. The plate puffs up into a symmetric airfoil.
 2. Drag the center **up** a bit. Now the airfoil is cambered, and notice that $C_L$ is positive *even at α = 0*. Cambered wings lift at zero angle of attack.
@@ -703,4 +703,4 @@ In the angle β. The Kutta condition gives $\Gamma = 4\pi U_0 R\sin(\alpha + \be
 
 <details><summary>Why can't we trust the demo's C<sub>L</sub> at α = 20°?</summary>
 Potential flow has no viscosity and so no boundary layer. Real wings stall around 12–16° when the upper-surface boundary layer separates under the adverse pressure gradient, and the lift collapses. The model can't see that happening.
-</details>
+</details> -->
