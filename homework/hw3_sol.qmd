@@ -23,7 +23,7 @@ $$
 p_\text{head} + \rho_b g (H+\ell) - \rho_m g h = p_\text{atm}.
 $$
 
-The weight of the air in the narrow leg is negligible, as is the gas in the headspace. The "stationary reservoir" assumption allows us to say $H+\ell$ is a fixed length and the only thing that moves is the manometer fluid in the narrow leg. Solving:
+(The weight of the air in the narrow leg is negligible, as is the gas in the headspace. The "stationary reservoir" assumption allows us to say $H+\ell$ is a fixed length and the only thing that moves is the manometer fluid in the narrow leg.) Solving:
 
 $$
 h = \frac{\rho_b}{\rho_m}(H+\ell) + \frac{p_\text{head}-p_\text{atm}}{\rho_m g}. \qquad (*)
@@ -32,10 +32,10 @@ $$
 Before fermentation $p_\text{head}=p_\text{atm}$, so only the first term survives, and
 
 $$
-h_0 = \frac{1040}{1750}(0.30+0.20)\ \text{m} = 0.30 \ \text{m}.
+h_0 = \frac{1040}{1750}(0.30+0.20)\ \text{m} = 0.297 \ \text{m}.
 $$
 
-This isn't zero because, even with the headspace at atmospheric pressure, the manometer fluid at the reservoir level is being pushed on by a 0.5 m column of biomass, and it responds by climbing the narrow leg until its own weight balances that. It is less than 0.5 m because $\rho_m>\rho_b$.
+This is less than 0.5 m because $\rho_m>\rho_b$.
 :::
 
 (b) The batch is "ready" once it has produced 0.002 mol of CO$_2$ **per liter** of biomass. Treat the CO$_2$ as an ideal gas at 30 °C. What are the gauge and absolute pressures in the headspace at that moment?
@@ -47,7 +47,7 @@ $$
 n = (0.002\ \text{mol/L})(15\ \text{L}) = 0.030\ \text{mol}.
 $$
 
-The air that was already in the headspace stays there (same amount, same volume, same temperature, so it still contributes $p_\text{atm}$). The CO$_2$ is *extra*, and it adds its own partial pressure:
+The air that was already in the headspace stays there (same amount, same volume, same temperature, so it still contributes $p_\text{atm}$). The CO$_2$ adds its own partial pressure:
 
 $$
 \Delta p = \frac{nRT}{V_\text{head}} = \frac{(0.030\ \text{mol})(8.314\ \text{J/mol K})(303\ \text{K})}{5\times 10^{-3}\ \text{m}^3} = 15.1\ \text{kPa}.
@@ -101,38 +101,21 @@ $$
 w(y) = 2\sqrt{R^2-(R-y)^2} = 2\sqrt{y(2R-y)}.
 $$
 
-(Above the center it is more intuitive to use $(y-R)^2$, but since it is squared it does not change the result.) The pressure acts perpendicular to the disk, so the total force is the integral of $p$ over the wet area. Slicing into horizontal strips of thickness $dy$ and width $w(y)$, and integrating across each strip first:
+(Above the center it is more intuitive to use $(y-R)^2$, but since it is squared it does not change the above equation, so we can continue to use it up there.) The pressure acts perpendicular to the disk, so the total force is the integral of $p$ over the wet area. Slicing into horizontal strips of thickness $dy$ and width $w(y)$:
 
 $$
-F = \int_0^H\!\!\int_0^{w(y)} \rho g\,(H-y)\; dw\, dy = \rho g\int_0^H (H-y)\,2\sqrt{R^2-(y-R)^2}\; dy.
+F = \int_0^H\!\!\int_0^{w(y)} \rho g\,(H-y)\; dw\, dy = 2\rho g\int_0^H (H-y)\sqrt{R^2-(y-R)^2}\; dy.
 $$
 
-Per my announcement: **this answer is sufficient for the problem**. (Note that this a completely set up integral that could be easily solved via a numerical integration, if we had parameter values.)
+Per my announcement: **this answer, or even the double integral with $w(y)$ clearly stated, is sufficient for the problem**. (Note that this is a completely set up integral that could be easily solved via a numerical integration, if we had parameter values.)
 
-One way to solve, if curious: the inner integral is easy becaues $p$ doesn't depend on $w$. Shift to the height above the center of the disk, $z = y-R$. Then $H-y = a - z$ with $a\equiv H-R$, and $z$ runs from $-R$ to $a$:
-
-$$
-F = \rho g\int_{-R}^{a} (a - z)\; 2\sqrt{R^2-z^2}\; dz.
-$$
-
-We split it into two integrals. The first, with $a$ pulled out, is the area of the wet part of the disk (a circular segment):
+The result, if the integration is carried out, is
 
 $$
-\int 2\sqrt{R^2-z^2}\,dz = z\sqrt{R^2-z^2} + R^2\arcsin\frac{z}{R},
+F = \rho g\left[a^2\sqrt{R^2-a^2} + aR^2\left(\frac{\pi}{2}+\arcsin\frac{a}{R}\right) + \frac{2}{3}\left(R^2-a^2\right)^{3/2}\right]
 $$
 
-and the second is an exact derivative (substitute $u=R^2-z^2$):
-
-$$
-\int 2z\sqrt{R^2-z^2}\,dz = -\tfrac{2}{3}\left(R^2-z^2\right)^{3/2}.
-$$
-
-Evaluating between $-R$ and $a$ (note $\arcsin(-1)=-\pi/2$, and the strip width vanishes at $z=-R$):
-
-$$
-\boxed{F = \rho g\left[a^2\sqrt{R^2-a^2} + aR^2\left(\frac{\pi}{2}+\arcsin\frac{a}{R}\right) + \frac{2}{3}\left(R^2-a^2\right)^{3/2}\right]}, \qquad a = H - R.
-$$
-
+for $a = H - R$.
 
 ## 3. A fire-fighting helicopter ...
 
@@ -147,71 +130,78 @@ Note that, by symmetry, the two sides of the gate experience the same forces. Al
 (a) Let's focus on the left half of the gate. First: what coordinates describe the gate's surface/what coordinates will you be integrating over?
 
 ::: {.callout-tip title="Solution" collapse="true"}
-Declare that the origin is at the center of the half-cylinder, in the plane of the bucket's bottom, with $x$ to the right, $y$ up, and $z$ out of the page (along the axis of the cylinder). The left quarter of the gate is a piece of a cylinder of radius $R$, so natural coordinates are the angle $\theta$ around the axis and the distance $z$ along it:
+Declare that the origin of our coordinate system is at the center of the half-cylinder, in the plane of the bucket's bottom, with $x$ to the right, $y$ up, and $z$ out of the page (along the axis of the cylinder). The left quarter of the gate is a piece of a cylinder of radius $R$, so natural coordinates are the angle $\theta$ around the axis and the distance $z$ along it. Thus, $dA = R\,d\theta\,dz$, with $0 \leq z \leq L$.
 
-$$
-\mathbf{r}_s = R\cos\varphi\,\hat{\mathbf{x}} + R\sin\varphi\,\hat{\mathbf{y}} + z\,\hat{\mathbf{z}}, \qquad \pi \le \varphi \le \tfrac{3\pi}{2}, \quad 0\le z \le L.
-$$
+We can choose where to define $\theta=0$. If we would like to keep the standard definition, where $\theta=0$ along the $x$-axis, we will be integrating over $\pi \leq \theta \leq 3\pi/2$. (It is also reasonable to define $\theta=0$ along the $-y$-axis, or along the $-x$-axis... the final result will be the same.) We'll use the standard definition below.
 
-(At $\varphi=\pi$ we're at the hinge at $x=-R$; at $\varphi=3\pi/2$ we're at the bottom of the gate.) The area element is $dA = R\,d\varphi\,dz$.
 :::
 
 (b) Write an equation for the surface normal.
 
 ::: {.callout-tip title="Solution" collapse="true"}
-For a cylinder the normal is radial:
+For a cylinder the normal is radial. We'll choose the one pointing from the gate *into the fluid*, i.e., back toward the axis. With $\theta=0$ along the $x$-axis:
 
 $$
-\hat{\mathbf{n}} = \cos\varphi\,\hat{\mathbf{x}} + \sin\varphi\,\hat{\mathbf{y}}.
+\hat{\mathbf{n}} = -\cos\theta\,\hat{\mathbf{x}} -\sin\theta\,\hat{\mathbf{y}}.
 $$
 
-We chose the one pointing *out of the fluid* (away from the axis), which is the direction the fluid pushes on the gate. So the force on the gate is $d\mathbf{F} = p\,\hat{\mathbf{n}}\,dA$.
+Checks:
+
+- At the bottom of the gate, we should have $\left\langle 0,1 \right\rangle$. Indeed, $\hat{\mathbf{n}} = \left\langle -\cos(3\pi/2),-\sin(3\pi/2) \right\rangle = \left\langle 0,1 \right\rangle$.
+- At the left-most part of the gate, we should have $\left\langle 1,0 \right\rangle$. Indeed, $\hat{\mathbf{n}} = \left\langle -\cos(\pi),-\sin(\pi) \right\rangle = \left\langle 1,0 \right\rangle$.
+
 :::
 
 (c) Write an equation for the pressure on the gate's surface.
 
 ::: {.callout-tip title="Solution" collapse="true"}
-The bucket is filled to $y=H$, so the gauge pressure at height $y$ is $\rho g (H-y)$. On the gate, $y=R\sin\varphi$ (which is negative), so
+The bucket is filled to a height $H$ above the hinge, so the gauge pressure at height $y$ is $\rho g(H-y)$. On the gate $y = R\sin\theta$, which is negative (the gate is below the hinge), so the pressure is *more* than $\rho g H$:
 
 $$
-p = \rho g (H - R\sin\varphi).
+p = \rho g (H - R\sin\theta).
 $$
 
-Since the atmosphere acts on the top of the water *and* on the outside of the gate, it cancels and we only need gauge pressure.
 :::
 
 (d) Write an equation for the displacement vector.
 
 ::: {.callout-tip title="Solution" collapse="true"}
-The moment is taken about the hinge, which is a line along $z$ through $(x,y)=(-R,0)$. The displacement from a point on the hinge (say at the same $z$) to the surface is
+Go from the hinge to the center of our coordinate system, and then out to a position on the gate:
 
 $$
-\mathbf{d} = \mathbf{r}_s - (-R\,\hat{\mathbf{x}}) = R(1+\cos\varphi)\,\hat{\mathbf{x}} + R\sin\varphi\,\hat{\mathbf{y}}.
+\mathbf{r}= \left\langle R,0\right\rangle 
++ R \left\langle \cos\theta,\sin\theta\right\rangle
+= \left\langle R+R\cos\theta,R\sin\theta\right\rangle
 $$
 
-(If we measured from a point on the hinge at a different $z$ there would be a $\hat{\mathbf{z}}$ component too, but it only contributes to $M_x$ and $M_y$, which the hinge supports. We only care about $M_z$, the rotation *about* the hinge.)
+Some checks:
+
+- At the hinge, $\theta=\pi$, we should have no lever arm. Indeed $\left\langle R+R\cos\pi,R\sin\pi\right\rangle = \left\langle 0,0\right\rangle$.
+- At the bottom of the gate, $\theta=3\pi/2$, the lever arm should be $\left\langle R,-R\right\rangle$. Indeed $\left\langle R+R\cos(3\pi/2),R\sin(3\pi/2)\right\rangle = \left\langle R,-R\right\rangle$.
+
 :::
 
 (e) Compute the moment necessary to keep the left gate closed. Make a small sketch that shows the direction that this moment would be applied to keep the gate closed.
 
 ::: {.callout-tip title="Solution" collapse="true"}
-The moment about the hinge is $\mathbf{M} = \int \mathbf{d}\times d\mathbf{F}$, and its $z$-component is $(\mathbf{d}\times\mathbf{F})_z = d_x F_y - d_y F_x$. Plugging in,
+The force on a patch of gate is $d\mathbf{F} = -p\,\hat{\mathbf{n}}\,dA$. The moment about the hinge is $\mathbf{M} = \int \mathbf{r}\times d\mathbf{F}$, and since the hinge is a line along $z$, we only care about the $z$-component, $(\mathbf{r}\times d\mathbf{F})_z = r_x\,dF_y - r_y\,dF_x$. Plugging in $\mathbf{r}$ from (d) and $\hat{\mathbf{n}}$ from (b),
 
 $$
 \begin{align*}
-d_x F_y - d_y F_x &= p\,dA\left[R(1+\cos\varphi)\sin\varphi - R\sin\varphi\cos\varphi\right] \\
-&= p\,R\sin\varphi \; dA.
+r_x\,dF_y - r_y\,dF_x &= -p\,dA\left[r_x n_y - r_y n_x\right] \\
+&= -p\,dA\left[R(1+\cos\theta)(-\sin\theta) - R\sin\theta(-\cos\theta)\right] \\
+&= p\,R\sin\theta \; dA.
 \end{align*}
 $$
 
-Nice: the $\cos\varphi\sin\varphi$ terms cancel. With $dA = R\,d\varphi\,dz$ and the pressure from (c),
+Note the $\cos\theta\sin\theta$ terms cancel. With $dA = R\,d\theta\,dz$ and the pressure from (c),
 
 $$
-M_z = \int_0^L\!\!\int_\pi^{3\pi/2} \rho g (H-R\sin\varphi)\,R^2\sin\varphi \; d\varphi\, dz
-= \rho g L R^2 \int_\pi^{3\pi/2} \left(H\sin\varphi - R\sin^2\varphi\right) d\varphi.
+M_z = \int_0^L\!\!\int_\pi^{3\pi/2} \rho g (H-R\sin\theta)\,R^2\sin\theta \; d\theta\, dz
+= \rho g L R^2 \int_\pi^{3\pi/2} \left(H\sin\theta - R\sin^2\theta\right) d\theta.
 $$
 
-The two integrals are $\int_\pi^{3\pi/2}\sin\varphi\,d\varphi = -1$ and $\int_\pi^{3\pi/2}\sin^2\varphi\,d\varphi = \pi/4$, so
+The two integrals are $\int_\pi^{3\pi/2}\sin\theta\,d\theta = -1$ and $\int_\pi^{3\pi/2}\sin^2\theta\,d\theta = \pi/4$, so
 
 $$
 M_z = -\rho g L R^2\left(H + \frac{\pi R}{4}\right).
@@ -223,13 +213,4 @@ $$
 |M_z| = \rho g L R^2\left(H + \frac{\pi R}{4}\right) = (1000)(9.81)(1.3)(0.3)^2\left(1.8+\frac{\pi (0.3)}{4}\right) \approx 2.3\ \text{kN}\cdot\text{m}.
 $$
 
-**Sketch.** Draw the left gate hanging below the bucket, hinged at its top-left corner, with a curved arrow around the hinge pointing *counterclockwise*: the free (bottom-center) end of the gate is being held up, into the bucket's bottom, and the fluid is trying to swing it down and to the left.
-
-A quick sanity check that doesn't use the integral: the pressure force on a circular arc points radially, so it acts through the center of the circle, and only the *vertical* part of the total force has a moment about the hinge, with lever arm $R$. The vertical force is the weight of the water above the gate, a rectangular block of $R\times H\times L$ plus the quarter-disk $\pi R^2/4 \times L$ of the gate's own contents:
-
-$$
-F_y = \rho g L\left(RH + \frac{\pi R^2}{4}\right) \implies |M_z| = R F_y = \rho g L R^2\left(H+\frac{\pi R}{4}\right).
-$$
-
-Same answer, which is comforting. (We also integrated it numerically to be sure: 2336 N$\cdot$m.)
 :::
