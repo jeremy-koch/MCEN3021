@@ -116,6 +116,7 @@ F = \rho g\left[a^2\sqrt{R^2-a^2} + aR^2\left(\frac{\pi}{2}+\arcsin\frac{a}{R}\r
 $$
 
 for $a = H - R$.
+:::
 
 ## 3. A fire-fighting helicopter ...
 
