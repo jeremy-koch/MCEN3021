@@ -1,0 +1,54 @@
+---
+title: "6.2 Exam review questions"
+---
+
+{{< include ../_checkpoint-widget.qmd >}}
+
+
+
+1. Is it possible to have a gauge pressure of -75 kPa in Boulder?
+
+2. Why does the force from pressure always point normal to a surface?
+
+3. In the simple-shear setup, if you double the speed $U$ and double the gap $h$, what happens to the required force $F$?
+
+4. The speed $c$ of a deep-water wave depends on $g$ and the wavelength $\lambda$. How does $c$ scale with $\lambda$?
+
+5. We have dimensionless groups $\text{Re}\equiv \rho U D/\mu$ and $C_\text{D} \equiv F_\text{D}/(\frac12 \rho U^2 D^2)$. Is $\mu U D/F_\text{D}$ an independendent dimensionless group?
+
+6. A 1/10-scale car is being tested in a water flow ($\nu = 1\times 10^{-6}$ m$^2$/s). The real car drives at 30 m/s in air ($\nu = 1.5\times 10^{-5}$ m$^2$/s). How can we make the lab experiment match the behavior of the real situation?
+
+7. Wind at 10 m/s blows past a 1 cm power line, and the line "sings." Using St ≈ 0.2, what frequency do you hear?
+
+8. Quick calculation: estimate the Reynolds Number of a kicked soccer ball. Relevant material parameters: $\rho=1$ kg/m$^3$, $\mu = 1.5 \times 10^{-5}$ Pa.s.
+
+9. Why must $h_\text{max}/(V_0^2/g)$ be a constant for a tossed ball (ignoring air resistance)?
+
+10. Starting from $\nabla p = \rho g$, explain what $\partial p/\partial x$, $\partial p/\partial y$, and $\partial p/\partial z$ mean physically. What does it mean, mathematically, when $\partial p/\partial x=0$?
+
+11. Quickly estimate the gauge pressure 10 m underwater.
+
+12. A submerged wall is at an angle to the vertical. What should we use for $dA$ when calculating the hydrostatic force?
+
+13. A canoe takes the shape of a half cylinder. When calculating the hydrostatic force on the curved surface, what should we use for $dA$?
+
+14. A horizontal gate of length $L$ from the hinge and width $W$ is submerged at a depth $H$. What should we use as the lever arm?
+
+
+15. What assumptions are in Bernoulli's Equation?
+
+16. Bernoulli's Equation can be interpreted as a conservation of energy equation. What are the meanings of the terms?
+
+17. Water enters a horizontal nozzle with a certain area. The area then halves. How does the mass flow rate change?
+
+18. Water enters a horizontal nozzle with a certain area. The area then halves. How does the speed change?
+
+19. A Venturi meter shows a pressure difference Δp. If Δp quadruples, by what factor does the flow rate change?
+
+20. In the tank problem we dropped U_tank from Bernoulli but not from conservation of mass. Why?
+
+21. In the tank+jet problem, why is the pressure in the free jet equal to atmospheric?
+
+22. What is a stagnation point? For flow approaching a sphere, where is the leading stagnation point located?
+
+23. In order to generate lift from an airfoil, does the flow above the airfoil need to be faster or slower than the flow below?
