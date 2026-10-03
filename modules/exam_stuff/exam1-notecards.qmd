@@ -14,7 +14,7 @@ title: "6.2 Exam review questions"
 
 4. The speed $c$ of a deep-water wave depends on $g$ and the wavelength $\lambda$. How does $c$ scale with $\lambda$?
 
-5. We have dimensionless groups $\text{Re}\equiv \rho U D/\mu$ and $C_\text{D} \equiv F_\text{D}/(\frac12 \rho U^2 D^2)$. Is $\mu U D/F_\text{D}$ an independendent dimensionless group?
+5. We have dimensionless groups $\text{Re}\equiv \rho U D/\mu$ and $C_\text{D} \equiv F_\text{D}/(\frac12 \rho U^2 D^2)$. Is $\mu U D/F_\text{D}$ an independent dimensionless group?
 
 6. A 1/10-scale car is being tested in a water flow ($\nu = 1\times 10^{-6}$ m$^2$/s). The real car drives at 30 m/s in air ($\nu = 1.5\times 10^{-5}$ m$^2$/s). How can we make the lab experiment match the behavior of the real situation?
 

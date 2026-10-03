@@ -11,7 +11,7 @@ title: "Schedule"
 | 3 | 8 Sep — [3.1 Hydrostatic Pressure](modules/unit-2/hydrostatics.qmd) | 10 Sep — [3.2 Pressure Integrals](modules/unit-2/p-int.qmd) | [3.3 Rigid-body acceleration](modules/unit-2/rigid-accel.qmd) | No HW |
 | 4 | 15 Sep — [4.1 Forces on curved surfaces](modules/unit-2/curved-int.qmd) | 17 Sep — **no class** | [4.3 Moments and some more examples](modules/unit-2/moments.qmd) | [HW3](homework/hw3.qmd) -- due 25 Sep |
 | 5 | 22 Sep — [5.1 Bernoulli's Equation](modules/unit-3/bernoulli.qmd) | 24 Sep — [5.2 Applications of Bernoulli](modules/unit-3/bernoulli-app.qmd) | | |
-| 6 | 29 Sep — [6.1 Lift and drag from Bernoulli?](modules/unit-3/lift-drag.qmd) | 1 Oct — Exam review -- no reading | [6.3 Airfoils from circles](modules/unit-3/joukowski.qmd) | [HW4](homework/hw4.qmd) -- due 2 Oct |
+| 6 | 29 Sep — [6.1 Lift and drag from Bernoulli?](modules/unit-3/lift-drag.qmd) | 1 Oct — [6.2 Exam review](modules/exam_stuff/exam1-notecards.qmd) | [6.3 Airfoils from circles](modules/unit-3/joukowski.qmd) | [HW4](homework/hw4.qmd) -- due 2 Oct |
 | 7 | 6 Oct — Midterm in class | 8 Oct — **no class** | | |
 | 8 | 13 Oct — TBD | 15 Oct — TBD | | |
 | 9 | 20 Oct — TBD | 22 Oct — TBD | | |
