@@ -36,13 +36,13 @@ $$
 At state "1" we will assume the pressure is entirely hydrostatic, and because we are considering a thermodynamics phenomenon (boiling), we need to use the **absolute pressure**. 
 
 $$
-p_1 = p_{\textrm{atm}} + \rho g z_1 = 101,325 \textrm{ Pa} + (1000 \textrm{kg/m$^3$})(9.81 \textrm{ m/s$^2$})(1 \textrm{ m}) = 111135 \textrm{ Pa} = 111.135 \textrm{ kPa}.
+p_1 = p_{\textrm{atm}} + \rho g z_1 = 101325 \textrm{ Pa} + (1000 \textrm{ kg/m$^3$})(9.81 \textrm{ m/s$^2$})(1 \textrm{ m}) = 111000 \textrm{ Pa}.
 $$
 
-Cavitation occurs when state "2" is at the boiling pressure $p_2 = 2.4$ kPa. Thus we compute the claw tip speed to be 
+Cavitation occurs when state "2" is at the boiling pressure $p_2 = 2400$ Pa. Thus we compute the claw tip speed to be 
 
 $$
-u_2 = = \sqrt{\frac{2(111,135 \textrm{ Pa} - 2400 \textrm{ Pa})}{1000 \textrm{ kg/m$^3$}}} \approx 14.7\text{ m/s}.
+u_2 = = \sqrt{\frac{2(111000 \textrm{ Pa} - 2400 \textrm{ Pa})}{1000 \textrm{ kg/m$^3$}}} \approx 14.7\text{ m/s}.
 $$
 :::
 
@@ -105,7 +105,9 @@ $$
 $$
 
 Plugging in our given values for the parameters in $Q$ yields, 
-$$Q = \sqrt{\frac{2 * 981\textrm{[cm/s$^2$]} * 100 \textrm{[cm]}}{\frac{1}{(0.05 \textrm{[cm$^2$]})^2} - \frac{1}{(10 \textrm{[cm$^2$]})^2}}} \approx 22.14 \textrm{ cm$^3$/s}.$$
+$$
+Q = \sqrt{\frac{2 (981 \textrm{ cm/s$^2$})(100 \textrm{ cm})}{\frac{1}{(0.05 \textrm{ cm$^2$})^2} - \frac{1}{(10 \textrm{ cm$^2$})^2}}} \approx 22.14 \textrm{ cm$^3$/s}.
+$$
 
 
 
@@ -128,7 +130,9 @@ $$
 $$
 
 Plugging in our given values for the parameters in $Q$ yields, 
-$$Q = \sqrt{\frac{2*100 \textrm{[kg/(cm $\cdot$ s$^2$)]}/0.001 \textrm{[kg/cm$^3$}] + 2 * 981\textrm{[cm/s$^2$]} * 100 \textrm{[cm]}}{\frac{1}{(0.05 \textrm{[cm$^2$]})^2} - \frac{1}{(10 \textrm{[cm$^2$]})^2}}} \approx 31.47 \textrm{ cm$^3$/s}.$$
+$$
+Q = \sqrt{\frac{2 (100 \textrm{ kg/(cm $\cdot$ s$^2$)})/(0.001 \textrm{ kg/cm$^3$}) + 2 (981 \textrm{ cm/s$^2$})(100 \textrm{ cm})}{\frac{1}{(0.05 \textrm{ cm$^2$})^2} - \frac{1}{(10 \textrm{ cm$^2$})^2}}} \approx 31.47 \textrm{ cm$^3$/s}.
+$$
 
 
 
@@ -140,7 +144,9 @@ $$Q = \sqrt{\frac{2*100 \textrm{[kg/(cm $\cdot$ s$^2$)]}/0.001 \textrm{[kg/cm$^3
 ::: {.callout-tip title="Solution" collapse="true"}
 Under the same assumptions as part b., we can use the same equation for volumetric flow rate with an increased $\Delta z,$
 
-$$Q = \sqrt{\frac{2 * 981\textrm{[cm/s$^2$]} * 200 \textrm{[cm]}}{\frac{1}{(0.05 \textrm{[cm$^2$]})^2} - \frac{1}{(10 \textrm{[cm$^2$]})^2}}} \approx 31.32 \textrm{ cm$^3$/s}.$$
+$$
+Q = \sqrt{\frac{2 (981 \textrm{ cm/s$^2$})(200 \textrm{ cm})}{\frac{1}{(0.05 \textrm{ cm$^2$})^2} - \frac{1}{(10 \textrm{ cm$^2$})^2}}} \approx 31.32 \textrm{ cm$^3$/s}.
+$$
 
 Thus, we see an increase in flow rate as height increases. 
 
