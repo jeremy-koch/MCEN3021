@@ -4,16 +4,16 @@ title: "7.1 The material derivative"
 
 ## The big idea
 
-Fluid mechanics is still mechanics — Newton's Laws are still relevant. When thinking about Bernoulli's Equation in a converging duct, we briefly talked about how a fluid parcel accelerates, so there must be a net force on the parcel pointing downstream, and that force comes from the fact that pressure is lower downstream. That hopefully all makes sense, but when it comes to studying the forces in fluids, do we have to keep track of every hypothetical particle? 
+Fluid mechanics is still mechanics — Newton's Laws are still relevant. When we were thinking about Bernoulli's Equation in a converging duct we briefly talked about how a fluid parcel accelerates, so there must be a net force on the parcel pointing downstream, and that force comes from the fact that pressure is lower downstream. That hopefully all makes sense, but when it comes to studying the forces in fluids, do we have to keep track of every hypothetical parcel? 
 
-We'd like to think about $\mathbf{F}=m\mathbf{a}$ applied to the entire *field* of fluid, but we'll need to be careful about how that applies to a *continuum*. Key will be the *material derivative* which, in its most notable application, allows us to describe how a fluid parcel will accelerate in a steady velocity field.
+We'd like to think about $\mathbf{F}=m\mathbf{a}$ applied to the entire *field* of fluid, but we'll need to be careful about how that applies to a *continuum*. Key will be the *material derivative* which, in its most notable application, allows us to describe how a fluid parcel will accelerate in a steady (not time-varying) velocity field.
 
 ## Classical and continuum mechanics
 
 **Classical (celestial) mechanics.** A planet orbits the sun. There's a force on the planet due gravity... Newton's Law of Gravitation is
 
 $$
-|F| = m_\text{sun}\, m\, G / r^2.
+|F| = m_\text{sun}\, m_\text{planet}\, G / r^2.
 $$
 
 It is not controversial to describe the acceleration of this planet: it is a solid object, and it's velocity vector is changing, and so there is an acceleration.
@@ -64,12 +64,12 @@ It is not controversial to describe the acceleration of this planet: it is a sol
 ```
 
 - From the **Eulerian** (lab-frame) perspective, we sit still and watch the velocity at each fixed point. Nothing changes in time, so we can fairly claim the system is "steady."
-- From the **Lagrangian** (particle) perspective, we ride along with the dyed parcel of fluid. It's moving faster and faster as the nozzle narrows, so it's accelerating... and so there must be forces acting on it.
+- From the **Lagrangian** (particle) perspective, we ride along with the dyed parcel of fluid. It's moving faster and faster as the nozzle narrows, so it's accelerating.
 
 Both statements are true at the same time. "Classical mechanics" describes the Lagrangian perspective, but "continuum mechanics"/the Eulerian perspective is what we'd prefer to deal with. 
 
 
-::: {.callout-note}
+::: {.column-margin}
 Example: in the tank and jet problem, we were thinking about the "velocity at the tank's exit"... that is an Eulerian perspective.
 :::
 
@@ -88,7 +88,7 @@ No! As we saw above with the converging duct, a fluid parcel can accelerate even
 
 ## Motivation: two geese
 
-Let's think about two geese buddies in the midst of a disagreement. One is optimistic that winter is over and is ready to fly north, the other wants to spend at least a few more days in Mexico.
+Let's think about two geese buddies in the midst of a disagreement. One is optimistic that winter is over and is ready to fly north, the other thinks it is prudent to wait a few more days (or wants to spend more time in Mexico).
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -149,27 +149,33 @@ Let's think about two geese buddies in the midst of a disagreement. One is optim
 </div>
 ```
 
-For some reason these geese have access to radio communication. The optimistic goose is going to start on the journey and measure its velocity and temperature along the way, $\mathbf{u}_\text{G}(t)$ and $T_\text{G}(t)$, relaying this back to the pessimistic goose in Mexico. (The temperature might change due to latitude, elevation, and time of day.) The pessimistic goose will get information about the *temperature field* $T(x,y,z,t),$ along the journey from this data.
+For some reason these geese have access to radio communication. The optimistic goose is going to start on the journey and measure its velocity and temperature along the way, $\mathbf{u}_\text{G}(t)$ and $T_\text{G}(t)$, relaying this information back to the pessimistic goose in Mexico. The pessimistic goose will get information about the *temperature field* $T(x,y,z,t),$ along the journey from this data.
 
 ::: {.column-margin}
-There are a lot of geese, so odds are that at least two of them can communicate over radio.
+There are a lot of geese, so odds are that at least two of them know how to communicate over radio.
 :::
+
+::: {.column-margin}
+The temperature might change due to latitude, elevation, and time of day.
+:::
+
+
 
 ### Relating the two geese
 
 As the flying goose measures a value $T_\text{G}(t)$, the goose on the ground can infer, based on the velocity it has been traveling and its wisdom about math and physics, that that measurement matches the temperature at a particular $(x,y,z,t)$ location. That is
 
 $$
-T_\text{G}(t) = T(x_\text{G},y_\text{G},z_\text{G},t).
+T_\text{G}(t) = T(x_\text{G},y_\text{G},z_\text{G},t)
 $$
 
-Let's take the time derivative of both sides:
+where $(x_\text{G},y_\text{G},z_\text{G})$ is the position of the optimistic goose. Let's take the time derivative of both sides:
 
 $$
 \frac{dT_G}{dt} = \frac{d}{dt}\Big(T\big(x_\text{G}(t),y_\text{G}(t),z_\text{G}(t),t\big)\Big)
 $$
 
-where we have highlighted the fact that $x_\text{G}$, $y_\text{G}$, and $z_\text{G}$, the goose's position, are functions of time. You should be having memories/nightmares about *the chain rule*. The way we'd carry that out is:
+where we have highlighted the fact that $x_\text{G}$, $y_\text{G}$, and $z_\text{G}$ are functions of time. You should be having memories/nightmares about *the chain rule*. The way we'd carry that out is:
 
 $$
 ... = \frac{\partial T}{\partial t} 
@@ -180,9 +186,9 @@ $$
 
 and we've dropped the subscript G because this applies for any position. Then one more piece of wisdom: $dx/dt$ is simply the $x$-component of velocity (and similar for $y$ and $z$). Thus we can write
 
-::: {.column-margin}
+<!-- ::: {.column-margin}
 We could imagine that a huge number of geese make the journey and report back to the goose on the ground in Mexico. 
-:::
+::: -->
 
 $$
 \frac{dT_G}{dt} = \frac{\partial T}{\partial t} 
@@ -199,7 +205,7 @@ The left side of this equation describes the time rate-of-change of a single par
 
 ## The material derivative
 
-This result applies to any sort of field and is given a special name: the material derivative. Mathematically:
+This result applies to any sort of field and is given a special name: the material derivative. Mathematically, we write it as
 
 $$\boxed{\;\frac{D(\ )}{Dt} = \frac{\partial(\ )}{\partial t} + \mathbf{u}\cdot\nabla(\ )\;}$$
 
@@ -214,7 +220,11 @@ $$
 \frac{D\mathbf{u}}{Dt} = \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot\nabla\mathbf{u}.
 $$
 
-(Note that $\nabla\mathbf{u}$ is a tensor — tricky, be careful!) Written out for one component, say $v$:
+::: {.column-margin}
+Note that $\nabla\mathbf{u}$ is a tensor — tricky, be careful!
+:::
+
+ Written out for one component, say $v$:
 
 $$
 \frac{Dv}{Dt} = \frac{\partial v}{\partial t} + u\frac{\partial v}{\partial x} + v\frac{\partial v}{\partial y} + w\frac{\partial v}{\partial z}.
@@ -222,7 +232,7 @@ $$
 
 
 ::: {.callout-important}
-This is the acceleration of a fluid parcel, the equivalent $\mathbf{a}$ in $\mathbf{F}=m\mathbf{a}$.
+This is the acceleration of a fluid parcel, the continuum equivalent of $\mathbf{a}$ in $\mathbf{F}=m\mathbf{a}$.
 :::
 
 ## A preview of Navier–Stokes
@@ -235,7 +245,7 @@ $$
 
 A few notes:
 
-- The left side is $\rho\,D\mathbf{u}/Dt$, a hint that this is a *per-volume* $m\mathbf{a}$. The Navier-Stokes Equations are a representation of conservation of momentum/Newton's Second Law.
+- The left side is $\rho\,D\mathbf{u}/Dt$, a *per-volume* $m\mathbf{a}$. The Navier-Stokes Equations are a representation of conservation of momentum/Newton's Second Law.
 - $\mathbf{u}\cdot\nabla\mathbf{u}$ is a **non-linear** term, which is why the Navier-Stokes Equations are so mysterious. Nearly all the techniques you learn in your differential equations class are not applicable to non-linear equations!
 - $-\nabla p$ is the force from an infinitesimal (local) difference in pressure.
 - $\mu\nabla^2\mathbf{u}$ is the **viscous stress**.
