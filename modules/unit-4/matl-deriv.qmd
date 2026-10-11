@@ -1,0 +1,243 @@
+---
+title: "7.1 The material derivative"
+---
+
+## The big idea
+
+Fluid mechanics is still mechanics — Newton's Laws are still relevant. When thinking about Bernoulli's Equation in a converging duct, we briefly talked about how a fluid parcel accelerates, so there must be a net force on the parcel pointing downstream, and that force comes from the fact that pressure is lower downstream. That hopefully all makes sense, but when it comes to studying the forces in fluids, do we have to keep track of every hypothetical particle? 
+
+We'd like to think about $\mathbf{F}=m\mathbf{a}$ applied to the entire *field* of fluid, but we'll need to be careful about how that applies to a *continuum*. Key will be the *material derivative* which, in its most notable application, allows us to describe how a fluid parcel will accelerate in a steady velocity field.
+
+## Classical and continuum mechanics
+
+**Classical (celestial) mechanics.** A planet orbits the sun. There's a force on the planet due gravity... Newton's Law of Gravitation is
+
+$$
+|F| = m_\text{sun}\, m\, G / r^2.
+$$
+
+It is not controversial to describe the acceleration of this planet: it is a solid object, and it's velocity vector is changing, and so there is an acceleration.
+
+**Continuum mechanics.** Now think back to the converging duct with a steady flow through it, with a bit of food coloring added to a spot in the fluid.
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="700" height="280" viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <defs>
+    <marker id="md-duct-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2b6ca3"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="700" height="280" fill="#ffffff"/>
+
+  <!-- the converging duct -->
+  <polygon points="130,40 530,100 530,200 130,250" fill="#a0ddd3"/>
+  <g stroke="#1a1a1a" stroke-width="2" fill="none">
+    <line x1="130" y1="40" x2="530" y2="100"/>
+    <line x1="130" y1="250" x2="530" y2="200"/>
+  </g>
+
+  <!-- inflow: slow -->
+  <g stroke="#2b6ca3" stroke-width="2" marker-end="url(#md-duct-arrow)">
+    <line x1="30" y1="75"  x2="100" y2="75"/>
+    <line x1="30" y1="145" x2="100" y2="145"/>
+    <line x1="30" y1="215" x2="100" y2="215"/>
+  </g>
+
+  <!-- outflow: fast (longer arrows) -->
+  <g stroke="#2b6ca3" stroke-width="2" marker-end="url(#md-duct-arrow)">
+    <line x1="560" y1="125" x2="670" y2="125"/>
+    <line x1="560" y1="175" x2="670" y2="175"/>
+  </g>
+
+  <!-- the dyed parcel, with its own velocity -->
+  <circle cx="210" cy="145" r="13" fill="#9c8580"/>
+  <line x1="226" y1="145" x2="278" y2="145" stroke="#2b6ca3" stroke-width="2" marker-end="url(#md-duct-arrow)"/>
+  <text x="210" y="190" font-size="14" fill="#7a5f59" text-anchor="middle">dyed parcel</text>
+
+  <text x="65" y="262" font-size="13" fill="#2b6ca3" text-anchor="middle">slow in</text>
+  <text x="615" y="215" font-size="13" fill="#2b6ca3" text-anchor="middle">fast out</text>
+</svg>
+</div>
+```
+
+- From the **Eulerian** (lab-frame) perspective, we sit still and watch the velocity at each fixed point. Nothing changes in time, so we can fairly claim the system is "steady."
+- From the **Lagrangian** (particle) perspective, we ride along with the dyed parcel of fluid. It's moving faster and faster as the nozzle narrows, so it's accelerating... and so there must be forces acting on it.
+
+Both statements are true at the same time. "Classical mechanics" describes the Lagrangian perspective, but "continuum mechanics"/the Eulerian perspective is what we'd prefer to deal with. 
+
+
+::: {.callout-note}
+Example: in the tank and jet problem, we were thinking about the "velocity at the tank's exit"... that is an Eulerian perspective.
+:::
+
+
+## The tempting wrong answer
+
+When we describe the $x$-component of velocity at a particular location in space and time
+
+$$
+u(x,y,z,t)
+$$
+
+that is an Eulerian perspective. Is the $x$-acceleration just $a_x = \partial u/\partial t$?
+
+No! As we saw above with the converging duct, a fluid parcel can accelerate even when the field is steady in time. So we are going to need to think harder about how to describe an acceleration in a continuum...
+
+## Motivation: two geese
+
+Let's think about two geese buddies in the midst of a disagreement. One is optimistic that winter is over and is ready to fly north, the other wants to spend at least a few more days in Mexico.
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="700" height="340" viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <defs>
+    <marker id="md-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2b6ca3"/>
+    </marker>
+
+    <!-- one goose, facing right, origin at the middle of the body -->
+    <g id="md-goose">
+      <!-- tail -->
+      <path d="M -30 -4 L -50 -12 L -46 2 Z" fill="#555"/>
+      <!-- far wing (peeking out behind) -->
+      <path d="M -6 -8 Q -22 -40 -48 -46 Q -34 -26 -26 -6 Z" fill="#8a8a8a"/>
+      <!-- body -->
+      <ellipse cx="0" cy="0" rx="36" ry="15" fill="#b9b2a6" stroke="#555" stroke-width="1.5"/>
+      <!-- neck -->
+      <path d="M 26 -8 Q 44 -14 40 -34" fill="none" stroke="#2b2b2b" stroke-width="7" stroke-linecap="round"/>
+      <!-- head + beak + eye -->
+      <circle cx="42" cy="-38" r="7" fill="#2b2b2b"/>
+      <path d="M 48 -40 L 62 -36 L 48 -33 Z" fill="#e08a1e"/>
+      <circle cx="44" cy="-40" r="1.6" fill="#fff"/>
+      <!-- near wing -->
+      <path d="M -4 -4 Q -14 -44 -40 -56 Q -30 -30 -24 -2 Z" fill="#6f6a60" stroke="#444" stroke-width="1"/>
+    </g>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="700" height="340" fill="#ffffff"/>
+
+  <!-- the flying (optimist) goose -->
+  <use href="#md-goose" x="330" y="95"/>
+  <g stroke="#2b6ca3" stroke-width="2" fill="none" marker-end="url(#md-arrow-blue)">
+    <line x1="440" y1="95" x2="600" y2="95" marker-end="url(#md-arrow-blue)"/>
+  </g>
+  <text x="610" y="101" font-size="18" fill="#2b6ca3">North</text>
+  <text x="318" y="170" font-size="18" fill="#7b2d8b" text-anchor="middle" xml:space="preserve"><tspan font-style="italic">T</tspan><tspan font-size="11" dy="4">G</tspan><tspan dy="-4">(</tspan><tspan font-style="italic">t</tspan><tspan>)</tspan></text>
+  <text x="318" y="194" font-size="13" fill="#7b2d8b" text-anchor="middle">“optimist” — flies north, measures T</text>
+
+  <!-- a dashed "radio link" from the flyer down to the pessimist -->
+  <path d="M 380 150 Q 330 215 240 232" fill="none" stroke="#7b2d8b" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#md-arrow-blue)"/>
+
+  <!-- ground -->
+  <path d="M 20 290 Q 350 262 680 290" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+
+  <!-- the grounded (pessimist) goose, with legs -->
+  <g stroke="#e08a1e" stroke-width="3" stroke-linecap="round">
+    <line x1="140" y1="266" x2="140" y2="285"/>
+    <line x1="160" y1="266" x2="160" y2="285"/>
+  </g>
+  <use href="#md-goose" x="150" y="250"/>
+  <text x="150" y="318" font-size="13" fill="#7b2d8b" text-anchor="middle">“pessimist” — thinks winter isn’t over</text>
+
+  <!-- the pessimist's thought -->
+  <text x="250" y="254" font-size="14" fill="#7b2d8b" xml:space="preserve">wants  <tspan font-style="italic">T</tspan>(<tspan font-style="italic">x</tspan>,<tspan font-style="italic">y</tspan>,<tspan font-style="italic">z</tspan>,<tspan font-style="italic">t</tspan>)</text>
+</svg>
+</div>
+```
+
+For some reason these geese have access to radio communication. The optimistic goose is going to start on the journey and measure its velocity and temperature along the way, $\mathbf{u}_\text{G}(t)$ and $T_\text{G}(t)$, relaying this back to the pessimistic goose in Mexico. (The temperature might change due to latitude, elevation, and time of day.) The pessimistic goose will get information about the *temperature field* $T(x,y,z,t),$ along the journey from this data.
+
+::: {.column-margin}
+There are a lot of geese, so odds are that at least two of them can communicate over radio.
+:::
+
+### Relating the two geese
+
+As the flying goose measures a value $T_\text{G}(t)$, the goose on the ground can infer, based on the velocity it has been traveling and its wisdom about math and physics, that that measurement matches the temperature at a particular $(x,y,z,t)$ location. That is
+
+$$
+T_\text{G}(t) = T(x_\text{G},y_\text{G},z_\text{G},t).
+$$
+
+Let's take the time derivative of both sides:
+
+$$
+\frac{dT_G}{dt} = \frac{d}{dt}\Big(T\big(x_\text{G}(t),y_\text{G}(t),z_\text{G}(t),t\big)\Big)
+$$
+
+where we have highlighted the fact that $x_\text{G}$, $y_\text{G}$, and $z_\text{G}$, the goose's position, are functions of time. You should be having memories/nightmares about *the chain rule*. The way we'd carry that out is:
+
+$$
+... = \frac{\partial T}{\partial t} 
++ \frac{dx}{dt}\,\frac{\partial T}{\partial x}
++ \frac{dy}{dt}\,\frac{\partial T}{\partial y}
++ \frac{dz}{dt}\,\frac{\partial T}{\partial z}
+$$
+
+and we've dropped the subscript G because this applies for any position. Then one more piece of wisdom: $dx/dt$ is simply the $x$-component of velocity (and similar for $y$ and $z$). Thus we can write
+
+::: {.column-margin}
+We could imagine that a huge number of geese make the journey and report back to the goose on the ground in Mexico. 
+:::
+
+$$
+\frac{dT_G}{dt} = \frac{\partial T}{\partial t} 
++ u\,\frac{\partial T}{\partial x}
++ v\,\frac{\partial T}{\partial y}
++ w\,\frac{\partial T}{\partial z}.
+$$
+
+::: {.callout-important}
+The left side of this equation describes the time rate-of-change of a single particle (the goose)... it is a *Lagrangian perspective*, and we feel comfortable describing mass, velocity, acceleration, and force on this one particle. The right side is the *Eulerian perspective*. We will use this equivalence to translate our conservation laws into the lab frame.
+:::
+
+
+
+## The material derivative
+
+This result applies to any sort of field and is given a special name: the material derivative. Mathematically:
+
+$$\boxed{\;\frac{D(\ )}{Dt} = \frac{\partial(\ )}{\partial t} + \mathbf{u}\cdot\nabla(\ )\;}$$
+
+where $\mathbf{u}=\langle u(x,y,z,t),\,v(x,y,z,t),\,w(x,y,z,t)\rangle$ is the flow-field velocity and $\nabla=\langle \partial/\partial x,\ \partial/\partial y,\ \partial/\partial z\rangle$. We use a special derivative symbol, the capital $D$, for this derivative.
+
+
+## The material derivative of velocity
+
+The most interesting material derivative (at least to fluid mechanics people) is the one of velocity itself, or a component of it:
+
+$$
+\frac{D\mathbf{u}}{Dt} = \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot\nabla\mathbf{u}.
+$$
+
+(Note that $\nabla\mathbf{u}$ is a tensor — tricky, be careful!) Written out for one component, say $v$:
+
+$$
+\frac{Dv}{Dt} = \frac{\partial v}{\partial t} + u\frac{\partial v}{\partial x} + v\frac{\partial v}{\partial y} + w\frac{\partial v}{\partial z}.
+$$
+
+
+::: {.callout-important}
+This is the acceleration of a fluid parcel, the equivalent $\mathbf{a}$ in $\mathbf{F}=m\mathbf{a}$.
+:::
+
+## A preview of Navier–Stokes
+
+In vector form, the Navier–Stokes equations are
+
+$$
+\rho\left(\frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot\nabla\mathbf{u}\right) = -\nabla p + \mu\nabla^2\mathbf{u} + \rho\mathbf{g}.
+$$
+
+A few notes:
+
+- The left side is $\rho\,D\mathbf{u}/Dt$, a hint that this is a *per-volume* $m\mathbf{a}$. The Navier-Stokes Equations are a representation of conservation of momentum/Newton's Second Law.
+- $\mathbf{u}\cdot\nabla\mathbf{u}$ is a **non-linear** term, which is why the Navier-Stokes Equations are so mysterious. Nearly all the techniques you learn in your differential equations class are not applicable to non-linear equations!
+- $-\nabla p$ is the force from an infinitesimal (local) difference in pressure.
+- $\mu\nabla^2\mathbf{u}$ is the **viscous stress**.
+- $\rho\mathbf{g}$ is the **weight**.
+

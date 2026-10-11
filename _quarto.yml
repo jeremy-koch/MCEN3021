@@ -68,6 +68,9 @@ website:
           - modules/exam_stuff/exam1-notecards.qmd
           - modules/unit-3/joukowski.qmd
           - modules/unit-3/unit-3-clickers.qmd
+      - section: "Unit 4 · Control volumes"
+        contents:
+          - modules/unit-4/matl-deriv.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd
