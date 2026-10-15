@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 430" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4a6fa5"/>
+    </marker>
+    <marker id="ahd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b5462f"/>
+    </marker>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a3a3a"/>
+      <stop offset="1" stop-color="#141414"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="430" fill="#ffffff"/>
+
+  <!-- incoming flow -->
+  <g stroke="#4a6fa5" stroke-width="2.5" fill="none" marker-end="url(#ah)">
+    <line x1="20" y1="120" x2="150" y2="120"/>
+    <line x1="20" y1="170" x2="150" y2="170"/>
+    <line x1="20" y1="220" x2="150" y2="220"/>
+  </g>
+  <text x="70" y="100" font-size="26" font-style="italic" fill="#4a6fa5">U</text>
+
+  <!-- ground + shadow -->
+  <ellipse cx="560" cy="364" rx="520" ry="10" fill="#000" opacity="0.12"/>
+  <line x1="0" y1="362" x2="1200" y2="362" stroke="#bbb" stroke-width="2"/>
+
+  <!-- rear wing endplate (behind everything) -->
+  <path d="M864,128 L1036,100 Q1048,99 1048,110 L1048,224 Q1048,234 1038,236 L882,254 Q868,255 866,244 Z" fill="#2b2b2b" fill-opacity="0.08" stroke="#2b2b2b" stroke-opacity="0.45" stroke-width="2"/>
+
+  <!-- rear wing pylon -->
+  <path d="M944,174 L954,174 L930,272 L912,272 Z" fill="#1c1c1c"/>
+
+  <!-- floor / plank -->
+  <path d="M150,318 L975,318 L985,330 L140,330 Z" fill="#0d0d0d"/>
+
+  <!-- main body -->
+  <path d="M62,306
+           C110,292 200,282 330,274
+           L430,264
+           C465,246 515,238 560,236
+           L605,228
+           C620,186 662,172 704,176
+           C748,184 790,222 845,250
+           L935,262 L968,282 L972,318 L140,318 L88,313 Z"
+        fill="url(#body)"/>
+
+  <!-- sidepod -->
+  <path d="M470,284 C520,264 640,260 760,272 L870,292 L872,316 L470,316 Z" fill="#262626"/>
+  <path d="M470,284 C520,264 640,260 760,272 L870,292" fill="none" stroke="#CFB87C" stroke-width="3"/>
+
+  <!-- gold livery stripe -->
+  <path d="M90,309 C180,292 300,284 430,276" fill="none" stroke="#CFB87C" stroke-width="5" stroke-linecap="round"/>
+  <path d="M640,206 C690,196 760,228 830,256" fill="none" stroke="#CFB87C" stroke-width="4" stroke-linecap="round"/>
+  <text x="640" y="304" font-size="22" font-weight="bold" fill="#CFB87C" letter-spacing="2">CU</text>
+
+  <!-- airbox inlet -->
+  <path d="M640,196 C648,184 664,180 676,184 L670,198 Z" fill="#000"/>
+
+  <!-- cockpit, driver, halo -->
+  <ellipse cx="520" cy="244" rx="52" ry="9" fill="#050505"/>
+  <circle cx="530" cy="228" r="16" fill="#CFB87C"/>
+  <path d="M520,224 L546,224 L546,232 L522,232 Z" fill="#111"/>
+  <path d="M452,250 C468,222 540,212 604,228" fill="none" stroke="#555" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- front wing -->
+  <path d="M28,338 Q90,330 168,334" fill="none" stroke="#1c1c1c" stroke-width="6" stroke-linecap="round"/>
+  <path d="M40,348 Q100,341 172,344" fill="none" stroke="#1c1c1c" stroke-width="5" stroke-linecap="round"/>
+  <rect x="26" y="322" width="10" height="32" rx="2" fill="#CFB87C"/>
+  <line x1="95" y1="311" x2="98" y2="334" stroke="#1c1c1c" stroke-width="5"/>
+
+  <!-- wheels -->
+  <g>
+    <circle cx="250" cy="298" r="62" fill="#161616"/>
+    <circle cx="250" cy="298" r="50" fill="none" stroke="#CFB87C" stroke-width="3"/>
+    <circle cx="250" cy="298" r="38" fill="#4d4d4d"/>
+    <circle cx="250" cy="298" r="10" fill="#222"/>
+  </g>
+  <g>
+    <circle cx="860" cy="298" r="62" fill="#161616"/>
+    <circle cx="860" cy="298" r="50" fill="none" stroke="#CFB87C" stroke-width="3"/>
+    <circle cx="860" cy="298" r="38" fill="#4d4d4d"/>
+    <circle cx="860" cy="298" r="10" fill="#222"/>
+  </g>
+
+  <!-- suspension arms -->
+  <g stroke="#333" stroke-width="3">
+    <line x1="250" y1="290" x2="345" y2="280"/>
+    <line x1="250" y1="304" x2="345" y2="304"/>
+    <line x1="860" y1="290" x2="790" y2="280"/>
+    <line x1="860" y1="304" x2="790" y2="306"/>
+  </g>
+
+  <!-- rear wing: thin circular-arc foil, sagging, trailing edge raised (angle of attack) -->
+  <path d="M870,170 Q950,190 1030,138" fill="none" stroke="#111" stroke-width="10" stroke-linecap="round"/>
+  <path d="M870,170 Q950,190 1030,138" fill="none" stroke="#CFB87C" stroke-width="2" stroke-linecap="round"/>
+  <!-- small beam wing -->
+  <path d="M900,248 Q945,256 990,240" fill="none" stroke="#111" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- downforce -->
+  <line x1="955" y1="40" x2="955" y2="112" stroke="#b5462f" stroke-width="4" marker-end="url(#ahd)"/>
+  <text x="968" y="66" font-size="22" fill="#b5462f">downforce</text>
+</svg>

@@ -38,6 +38,7 @@ website:
   sidebar:
     style: docked
     search: true
+    collapse-level: 1
     contents:
       - index.qmd
       - syllabus.qmd
@@ -81,6 +82,9 @@ website:
           - homework/hw3_sol.qmd
           - homework/hw4.qmd
           - homework/hw4_sol.qmd
+      - section: "Projects"
+        contents:
+          - projects/CFDproject/CFD.qmd
       # Everything not yet published lives in modules/unpublished/ (flat,
       # with superseded drafts in modules/unpublished/old/). The three
       # live units above were regrouped from the old week-based folders:
