@@ -72,6 +72,7 @@ website:
       - section: "Unit 4 · Control volumes"
         contents:
           - modules/unit-4/matl-deriv.qmd
+          - modules/unit-4/rtt.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd
