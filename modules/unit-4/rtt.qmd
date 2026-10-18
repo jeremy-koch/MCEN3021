@@ -77,44 +77,45 @@ title: "8.1 Reynolds' Transport Theorem"
 </div>
 ```
 
-Suppose we are interested in some extensive property of the fluid parcel within the control volume at a particular moment in time: $A(t)$. There is a corresponding intensive property evaluated as a field: $\alpha(\mathbf{x},t)$:
+Suppose we are interested in some extensive property of the fluid parcel within the control volume at a particular moment in time: $A(t)$. There is a corresponding intensive property evaluated as a field: $\alpha(\mathbf{x},t)$, and we could calculate the value of $A(t)$ within the fluid parcel by integrating over the **control volume surrounding the fluid parcel**
 
 $$
-\longrightarrow \quad A(t) = \int \alpha(\mathbf{x},t)\, dV
+A(t) = \int \alpha(\mathbf{x},t)\, dV.
 $$
 
-where we would integrate over the **control volume** that surrounds the fluid parcel.
+Then let's suppose we are interesting in tracking the change in $A$ with time, in terms of the lab-frame $\alpha(\mathbf{x},t)$. It's complicated! As the parcel moves, it covers a new position $\mathbf{x}$ and may have changed shape. The $\alpha$-field may have changed as well, and we are facing the same issue as we did when motivating the material derivative: our conservation laws are for particles, but we don't want to have to follow every fluid parcel in order to completely describe the flow. 
 
-Let's think about tracking the change in $A$ via its derivative $\dfrac{dA}{dt}$ while referencing the lab-frame variable $\alpha(\mathbf{x},t)$.
 
 ::: {.callout-important title="Reynolds' Transport Theorem"}
+
+Reynolds' Transport Theorem (RTT) is the tool that will help us — it is like the integration version of the material derivative. Stated mathematically:
+
 $$
 \frac{DA}{Dt} =
-\underbrace{\int_{CV} \frac{\partial \alpha}{\partial t}\, dV}_{\color{red}{\text{monitors changes in the field } \alpha(\mathbf{x},t)}}
+\int_{CV} \frac{\partial \alpha}{\partial t}\, dV
 +
-\underbrace{\int_{CS} \alpha\, \mathbf{u}\cdot\overbrace{\hat{\mathbf{n}}}^{\color{green}{\text{outward-facing normal}}}\, dS}_{\color{blue}{\text{monitors the “flux” of a property out of the CV}}}
+\int_{CS} \alpha\, \mathbf{u}\cdot\hat{\mathbf{n}}
 $$
+
+And stated in words:
+If we are following a hypothetical fluid parcel and concerned with the value of $A$ within it, we can instead consider a control volume that surrounds the hypothetical parcel. As long as we monitor how the field is changing within the control volume (the $dV$ integral) and how much of the fluid property is entering/leaving through the control surface (the $dS$ integral), it is equivalent to monitoring $DA/dt$.
 :::
 
-::: {.column-margin}
-"Flux": flow of something per area.
-:::
+Let's say a little more about the $dS$ integral: it includes, in the integrand, $\mathbf{u}\cdot\hat{\mathbf{n}}$, a dot product between the velocity field $\mathbf{u}(x,y,z,t)$ and the **outward-facing normal** of the control surface, $\hat{\mathbf{n}}(x,y,z)$.
+
+- The outward-facing normal is going to change depending on your location on the control volume surface: in the cylinder above, it will point upstream (probably $-\hat{\mathbf{z}}$) on the upstream side of the cylinder, downstream ($\hat{\mathbf{z}}$) on the downstream side, and radially outwards ($\hat{\mathbf{r}}$ on the curved part of the cylinder.
+- What is going to happen on the radial part? Assuming the tube has solid walls, flow will be proceeding downstream, in the $\hat{\mathbf{z}}$-direction. The dot-product $\hat{\mathbf{z}}\cdot\hat{\mathbf{r}}=0$... that is, the integral is zero for this part of the control surface. **This corresponds to the truth that there is no flow entering or leaving the control volume through this surface.**
+- On the downstream side, the flow direction and outward-facing normal are aligned — the dot product of those vectors is positive. This corresponds to a "flux out" of the control volume.
+On the upstread side, the flow direction and outward-facing normal are opposed — the dot product of those vectors is negative. This corresponds to a "flux in" to the control volume.
 
 ## Conservation of mass
 
-As we follow a parcel of fluid
+The Reynolds' Transport Theorem is a mathematical statement. It becomes valuable when we use it in physical laws.
 
-$$
-\frac{Dm}{Dt} = 0 \qquad\qquad
-\begin{aligned}
-m &= A \quad \text{(extensive)}\\
-\rho &= \alpha \quad \text{(intensive)}
-\end{aligned}
-$$
+The first application: If we are following a fluid parcel (as in: we somehow trace a particular set of molecules downstream), what is the value of $Dm/Dt$ (the change in mass of the parcel as it flows)? Zero! If $m$ is our extensive property, what is the corresponding intensive property? Density $\rho$!
 
-$$
-\Big\downarrow \ \text{RTT}
-$$
+Plugging these in, we have our first application of RTT:
+
 
 ::: {.callout-important title="Conservation of Mass (Integral Form)"}
 $$
@@ -122,9 +123,13 @@ $$
 $$
 :::
 
+
+
 ## Example: uniform in, parabolic out
 
-Flow enters a tube with a uniform profile and leaves with a parabolic profile. (We have to assume details about inlet/outlet.)
+With integral conservation laws, we need to make assumptions about what is happening at the inlets and outlets. But if we can make a good guess about those situations, we can compute some interesting things.
+
+Here is one example: Flow enters a tube with a uniform profile and leaves with a parabolic profile.
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -179,9 +184,13 @@ Flow enters a tube with a uniform profile and leaves with a parabolic profile. (
 </div>
 ```
 
-**0) Define the CV/CS** to include known info/info based on assumptions and also the unknown(s) to be determined.
+We'll assume the inlet flow is known $\mathbf{u}=U_0 \mathbf{\hat{z}}$ and that the outlet is $\mathbf{u}=C(1-(r/R)^2) \mathbf{\hat{z}}$, with pipe radius $R$ known. What is the value of constant $c$?
 
-**1) Conservation of mass**
+Algorithm:
+
+**0) Define the CV/CS** such that it includes known information or information that we can reasonably assume **and** it must be relevant to the unknown(s) to be determined.
+
+**1) Apply Conservation of mass.** Here it is in full form (it is a good idea to always write it out completely, then simplify):
 
 $$
 0 = \int \frac{\partial \rho}{\partial t}\, dV + \int \rho\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS
@@ -189,29 +198,35 @@ $$
 
 **2) Make assumptions:**
 
-- $\rho = \text{const} \implies \dfrac{\partial\rho}{\partial t} = 0$
+- $\rho = \text{const} \implies \dfrac{\partial\rho}{\partial t} = 0$.
+- Flow profile at the inlet $\mathbf{u}=U_0 \mathbf{\hat{z}}$.
+- Flow profile at the outlet $\mathbf{u}=C(1-(r/R)^2) \mathbf{\hat{z}}$.
 
-**3) Describe the surface integrals in terms of good coordinates**
-
-$$
-\int \cdot\ dS = \int \cdot\ dA_\text{in} + \int \cdot\ dA_\text{out} + \int \cdot\ dA_\text{wall}
-$$
-
-**4) Evaluate tractable integrals**
+**3) Describe the surface integrals in terms of good coordinates.** Here, we can break up the integral into three parts: one of them will be an integral over the curved part of a cylinder (and actually we will immediately see it evalutes to zero); the other two are integrations over circles of a cylinder.
 
 $$
-\int \rho\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dA_\text{wall} = 0 \quad \text{because } \mathbf{u} \perp \hat{\mathbf{n}}_\text{wall}
+\int (...)\ dS = \int (...)\ dA_\text{in} + \int (...)\ dA_\text{out} + \int (...)\ dA_\text{wall}.
 $$
 
-$$
-\int \rho\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dA_\text{in} = \int \rho\,(U_0\hat{\mathbf{z}})\cdot(-\hat{\mathbf{z}})\, dA_\text{in}
-$$
-
-everything in the integrand is constant
+**4) Evaluate tractable integrals.** For the "wall integral" we'd have $dA_\text{wall}=R \ d\theta \ dz$... but actually the integrand is zero:
 
 $$
-\rightarrow\ \rho U_0\, (\hat{\mathbf{z}})\cdot(-\hat{\mathbf{z}}) \int dA_\text{in} = -\rho U_0\, (\pi R^2)
+\mathbf{u}\cdot\hat{\mathbf{n}}= 0 \quad \text{because } \mathbf{u} \perp \hat{\mathbf{n}}_\text{wall}.
 $$
+
+So... done with that one. For the upstream part of the cylinder
+
+$$
+\int \rho\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dA_\text{in} = \int \rho\,(U_0\hat{\mathbf{z}})\cdot(-\hat{\mathbf{z}})\, r \ dr \ d\theta.
+$$
+
+This ends up being just $\rho U_0$ times the area of a circle
+
+$$
+\rightarrow\ \rho U_0\, (\hat{\mathbf{z}})\cdot(-\hat{\mathbf{z}}) \int r \ dr \ d\theta = -\rho U_0\, (\pi R^2).
+$$
+
+It is similar for the downstream circle, but we actually need to integrate:
 
 $$
 \begin{aligned}
@@ -222,48 +237,41 @@ $$
 \end{aligned}
 $$
 
-**5) Everything back into governing equation:**
+**5) Everything back into governing equation.** After evaluating our four integrals (two are $=0$), we can plug back in to the conservation of mass equation:
 
 $$
 0 = 0 - \rho U_0\cdot\pi R^2 + \rho C\cdot\frac{\pi}{2}R^2 + 0
 $$
 
-$$
-\implies \boxed{\; C = 2U_0 \quad (= U_\text{max}) \;}
-$$
-
-## The integral form of conservation of mass
+and then solve
 
 $$
-0 = \int_{CV} \frac{\partial \rho}{\partial t}\, dV + \int_{CS} \rho\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS
+C = 2U_0.
 $$
 
-Reynolds' Transport Theorem allows us to relate discrete conservation laws to a laboratory-frame coordinate system — basically, we can apply to fluids problems.
-
-- Very few assumptions — basically, just that the fluid is a continuum (applies to supersonic flow!)
-- Downside: we generally must make assumptions about, e.g. the velocity field at the exit/inlet.
-    - Can't use to determine profiles/distributions
 
 ## Conservation of momentum
 
-The time rate of change of momentum of a system is equal to the sum of the *external* forces acting on that system.
+If we are following a fluid parcel and its momentum changed... how would that happen? An **applied external force**:
 
 $$
-\text{Momentum:} \qquad \int_{CV} \rho\,\mathbf{u}\, dV = A, \qquad \rho\,\mathbf{u} = \alpha
+\mathbf{F}_\text{external} = m\mathbf{U}.
 $$
 
-$$
-\text{RTT:} \qquad \frac{DA}{Dt} = \int_{CV} \frac{\partial\alpha}{\partial t}\, dV + \int_{CS} \alpha\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS
-$$
+The corresponding intensive quantity is $\rho \mathbf{u}$. Plugging this in to RTT...
+
+
 
 ::: {.callout-important title="Conservation of Momentum (Integral Form)"}
 $$
-\underbrace{\frac{D\left(\int \rho\,\mathbf{u}\, dV\right)}{Dt} = \sum \mathbf{F}_\text{ext}}_{\color{red}{\text{Conservation of Momentum}}}
-= \underbrace{\int_{CV} \frac{\partial}{\partial t}(\rho\,\mathbf{u})\, dV + \int_{CS} \rho\,\mathbf{u}\,(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS}_{\color{blue}{\text{Translation via RTT}}}
+\sum \mathbf{F}_\text{ext}
+= \int_{CV} \frac{\partial}{\partial t}(\rho\,\mathbf{u})\, dV + \int_{CS} \rho\,\mathbf{u}\,(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS
 $$
 :::
 
 ## Example: force on a support
+
+Flow passes through a diverging duct that is supported by a post. Does the support experience a force due to the flow?
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
