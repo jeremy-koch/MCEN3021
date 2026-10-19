@@ -200,7 +200,7 @@ Algorithm:
 
 **0) Define the CV/CS** such that it includes known information or information that we can reasonably assume **and** it must be relevant to the unknown(s) to be determined. Here, we draw it to include the flow inlet and outlet.
 
-**1) Apply Conservation of mass.** Here it is in full form (it is a good idea to always write it out completely, then simplify):
+**1) Apply conservation of mass.** Here it is in full form (it is a good idea to always write it out completely, then simplify):
 
 $$
 0 = \int \frac{\partial \rho}{\partial t}\, dV + \int \rho\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS
@@ -357,17 +357,13 @@ Flow passes through a diverging duct that is supported by a post. Does the suppo
 </div>
 ```
 
-Find the force *on* the support, including direction.
+Find the force *on* the support, including direction. We'll streamline the steps a bit...
 
 
 **0) Define the CV/CS**. Similarly to above, we'll make sure to include the inlet and outlet in our CV.
 
 
-
-
-
-
-**1) Conservation of mass.** A common step: conservation of mass allows us to relate the velocities at the inlet and outlet. We'll ssume $\rho = \text{const}$ and assume uniform flow at the inlet and outlet.
+**1) Apply conservation of mass, with assumptions.** A common step: conservation of mass allows us to relate the velocities at the inlet and outlet. We'll ssume $\rho = \text{const}$ and assume uniform flow at the inlet and outlet.
 
 $$
 \begin{aligned}
@@ -387,7 +383,7 @@ $$
 \qquad \implies Q = Q, \qquad U_1 = \frac{Q}{A_1}, \quad U_2 = \frac{Q}{A_2}
 $$
 
-**2) Conservation of momentum:**
+**2) Apply conservation of momentum:**
 
 $$
 \begin{aligned}
@@ -412,13 +408,15 @@ $$
 \end{aligned}
 $$
 
-**Interpretation:** Because $\dfrac{1}{A_1} - \dfrac{1}{A_2} > 0$
+**3) Interprete.** Because $\dfrac{1}{A_1} - \dfrac{1}{A_2} > 0$ and 
 
 $$
-\implies \sum \mathbf{F}_\text{ext} \sim -\hat{\mathbf{z}}
+\implies \sum \mathbf{F}_\text{ext} \sim -\hat{\mathbf{z}}.
 $$
 
-The force *on* the support *from* the flow is equal and opposite to the force *on* the flow from the surroundings:
+This makes sense: the flow is slowing down, which means the acceleration points upstream.
+
+Then **the force on the support from the flow is equal and opposite to the force on the flow from the surroundings**:
 
 $$
 \implies \boxed{\; \mathbf{F}_\text{on support} = \rho Q^2\left(\frac{1}{A_1} - \frac{1}{A_2}\right)\hat{\mathbf{z}} \;}
