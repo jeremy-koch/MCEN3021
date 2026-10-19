@@ -77,13 +77,13 @@ title: "8.1 Reynolds' Transport Theorem"
 </div>
 ```
 
-Suppose we are interested in some extensive property of the fluid parcel within the control volume at a particular moment in time: $A(t)$. There is a corresponding intensive property evaluated as a field: $\alpha(\mathbf{x},t)$, and we could calculate the value of $A(t)$ within the fluid parcel by integrating over the **control volume surrounding the fluid parcel**
+Suppose we are interested in some extensive property of the fluid parcel within the control volume at a particular moment in time: $A(t)$. There is a corresponding intensive property evaluated as a field: $\alpha(\mathbf{x},t)$, and we could calculate the value of $A(t)$ within the fluid parcel by integrating over the **control volume surrounding the fluid parcel at that moment**:
 
 $$
-A(t) = \int \alpha(\mathbf{x},t)\, dV.
+A(t) = \int_{CV} \alpha(\mathbf{x},t)\, dV.
 $$
 
-Then let's suppose we are interesting in tracking the change in $A$ with time, in terms of the lab-frame $\alpha(\mathbf{x},t)$. It's complicated! As the parcel moves, it covers a new position $\mathbf{x}$ and may have changed shape. The $\alpha$-field may have changed as well, and we are facing the same issue as we did when motivating the material derivative: our conservation laws are for particles, but we don't want to have to follow every fluid parcel in order to completely describe the flow. 
+Then let's suppose we are interesting in tracking the change in $A$ with time. It's complicated! As the parcel moves, it covers a new position $\mathbf{x}$ and may have changed shape. The $\alpha$-field may have changed as well. We are facing the same issue as we did when motivating the material derivative: our conservation laws are for particles, but we don't want to have to follow every fluid parcel in order to completely describe the flow. 
 
 
 ::: {.callout-important title="Reynolds' Transport Theorem"}
@@ -94,19 +94,23 @@ $$
 \frac{DA}{Dt} =
 \int_{CV} \frac{\partial \alpha}{\partial t}\, dV
 +
-\int_{CS} \alpha\, \mathbf{u}\cdot\hat{\mathbf{n}}
+\int_{CS} \alpha\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS
 $$
 
 And stated in words:
-If we are following a hypothetical fluid parcel and concerned with the value of $A$ within it, we can instead consider a control volume that surrounds the hypothetical parcel. As long as we monitor how the field is changing within the control volume (the $dV$ integral) and how much of the fluid property is entering/leaving through the control surface (the $dS$ integral), it is equivalent to monitoring $DA/dt$.
+If we are following a hypothetical fluid parcel and concerned with the way $A$ changes within it ($DA/Dt$), we can instead consider a control volume that surrounds the hypothetical parcel. As long as we monitor how the field is changing within the control volume (the $dV$ integral) and how much of the fluid property is entering/leaving through the control surface (the $dS$ integral), it is equivalent to monitoring $DA/Dt$.
 :::
 
 Let's say a little more about the $dS$ integral: it includes, in the integrand, $\mathbf{u}\cdot\hat{\mathbf{n}}$, a dot product between the velocity field $\mathbf{u}(x,y,z,t)$ and the **outward-facing normal** of the control surface, $\hat{\mathbf{n}}(x,y,z)$.
 
-- The outward-facing normal is going to change depending on your location on the control volume surface: in the cylinder above, it will point upstream (probably $-\hat{\mathbf{z}}$) on the upstream side of the cylinder, downstream ($\hat{\mathbf{z}}$) on the downstream side, and radially outwards ($\hat{\mathbf{r}}$ on the curved part of the cylinder.
-- What is going to happen on the radial part? Assuming the tube has solid walls, flow will be proceeding downstream, in the $\hat{\mathbf{z}}$-direction. The dot-product $\hat{\mathbf{z}}\cdot\hat{\mathbf{r}}=0$... that is, the integral is zero for this part of the control surface. **This corresponds to the truth that there is no flow entering or leaving the control volume through this surface.**
+- The outward-facing normal is going to change depending on your location on the control volume surface: in the cylinder above, it will point upstream (probably $-\hat{\mathbf{z}}$) on the upstream side of the cylinder, downstream ($\hat{\mathbf{z}}$) on the downstream side, and radially outwards ($\hat{\mathbf{r}}$) on the curved part of the cylinder.
+- About the radial part of the integral... assuming the tube has solid walls, flow will be proceeding downstream, in the $\hat{\mathbf{z}}$-direction. The dot-product $\hat{\mathbf{z}}\cdot\hat{\mathbf{r}}=0$... that is, the integral is zero for this part of the control surface. **This corresponds to the truth that there is no flow entering or leaving the control volume through this surface.**
 - On the downstream side, the flow direction and outward-facing normal are aligned — the dot product of those vectors is positive. This corresponds to a "flux out" of the control volume.
 On the upstread side, the flow direction and outward-facing normal are opposed — the dot product of those vectors is negative. This corresponds to a "flux in" to the control volume.
+
+::: {.column-margin}
+A "flux" is a flow of something per area. In the integral conservation laws, the integrand of the $dS$ derivative is a flux, and then after integrating we get a (total) flow.
+:::
 
 ## Conservation of mass
 
