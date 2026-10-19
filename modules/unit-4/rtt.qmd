@@ -264,7 +264,13 @@ $$
 
 If we are following a fluid parcel and its momentum changed... how would that happen? An **applied external force** is necessary to change the momentum.
 
-The corresponding intensive quantity is $\rho \mathbf{u}$. Plugging this in to RTT...
+Here, our extensive property would be evaluated as something like
+
+$$
+\int_{CV} \rho \mathbf{u} dV
+$$
+
+and the corresponding intensive quantity is $\rho \mathbf{u}$. Plugging this in to RTT...
 
 
 
@@ -274,6 +280,12 @@ $$
 = \int_{CV} \frac{\partial}{\partial t}(\rho\,\mathbf{u})\, dV + \int_{CS} \rho\,\mathbf{u}\,(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS
 $$
 :::
+
+The meaning: 
+
+- If the flow is speeding up within the control volume (the $dV$ integral is nonzero), a force must be acting on it.
+- If you were floating in space and threw a hammer, you would move in the opposite direction of the hammer. The $dS$ integral is the continuum equivalent.
+
 
 ## Example: force on a support
 
@@ -347,20 +359,15 @@ Flow passes through a diverging duct that is supported by a post. Does the suppo
 
 Find the force *on* the support, including direction.
 
-- Assume $\rho = \text{const}$
-- Assume uniform flow at the inlet & outlet (i.e. constant $\cdot\ \hat{\mathbf{z}}$)
 
-::: {.column-margin}
-At the walls:
-$$
-\langle u_s, u_n\rangle = \langle U_0, 0\rangle
-$$
-$$
-\langle n_s, n_n\rangle = \langle 0, 1\rangle
-$$
-:::
+**0) Define the CV/CS**. Similarly to above, we'll make sure to include the inlet and outlet in our CV.
 
-**Conservation of mass:**
+
+
+
+
+
+**1) Conservation of mass.** A common step: conservation of mass allows us to relate the velocities at the inlet and outlet. We'll ssume $\rho = \text{const}$ and assume uniform flow at the inlet and outlet.
 
 $$
 \begin{aligned}
@@ -371,6 +378,7 @@ $$
 \end{aligned}
 $$
 
+Using $Q$ for the volumetric flow rate:
 $$
 \begin{aligned}
 \implies \quad \rho\, U_1 A_1 &= \rho\, U_2 A_2 \\
@@ -379,7 +387,7 @@ $$
 \qquad \implies Q = Q, \qquad U_1 = \frac{Q}{A_1}, \quad U_2 = \frac{Q}{A_2}
 $$
 
-**Conservation of momentum:**
+**2) Conservation of momentum:**
 
 $$
 \begin{aligned}
