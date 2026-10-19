@@ -116,7 +116,7 @@ A "flux" is a flow of something per area. In the integral conservation laws, the
 
 The Reynolds' Transport Theorem is a mathematical statement. It becomes valuable when we use it in physical laws.
 
-The first application: If we are following a fluid parcel (as in: we somehow trace a particular set of molecules downstream), what is the value of $Dm/Dt$ (the change in mass of the parcel as it flows)? Zero! If $m$ is our extensive property, what is the corresponding intensive property? Density $\rho$!
+The first application: If we are following a fluid parcel (as in: we somehow track a particular set of molecules downstream), what is the value of $Dm/Dt$, the change in mass of the parcel as it flows? Zero! It is the same collection of particles! If $m$ is our extensive property, what is the corresponding intensive property? Density $\rho$!
 
 Plugging these in, we have our first application of RTT:
 
@@ -127,13 +127,21 @@ $$
 $$
 :::
 
+The meaning: if there is more material flowing in than out (as described by the $dS$ integral), then we must have a change in density within the control volume over time (described in the $dV$ integral), and these things must balance (the $0$ on the left-hand side of the equation). 
 
 
 ## Example: uniform in, parabolic out
 
-With integral conservation laws, we need to make assumptions about what is happening at the inlets and outlets. But if we can make a good guess about those situations, we can compute some interesting things.
+With integral conservation laws, we need to make assumptions about what is happening at the inlets and outlets. To say it another way: **In general, we can't derive the profiles at the inlets and outlets, they must be given/assumed** 
 
-Here is one example: Flow enters a tube with a uniform profile and leaves with a parabolic profile.
+
+However, we could assume that flow is uniform or parabolic at an inlet, and then compute some interesting things. Let's assume flow enters a cylinder of radius $R$ with uniform speed $U_0$ and leaves with a parabolic profile
+
+
+
+But if we can make a good guess about those situations, we can compute some interesting things.
+
+Here is one example: Flow enters a tube with a uniform profile, $\mathbf{u}=U_0 \mathbf{\hat{z}}$, and leaves with a parabolic profile, $\mathbf{u}=C(1-(r/R)^2) \mathbf{\hat{z}}$. The question is: what is the value of $C$?
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -188,11 +196,9 @@ Here is one example: Flow enters a tube with a uniform profile and leaves with a
 </div>
 ```
 
-We'll assume the inlet flow is known $\mathbf{u}=U_0 \mathbf{\hat{z}}$ and that the outlet is $\mathbf{u}=C(1-(r/R)^2) \mathbf{\hat{z}}$, with pipe radius $R$ known. What is the value of constant $c$?
-
 Algorithm:
 
-**0) Define the CV/CS** such that it includes known information or information that we can reasonably assume **and** it must be relevant to the unknown(s) to be determined.
+**0) Define the CV/CS** such that it includes known information or information that we can reasonably assume **and** it must be relevant to the unknown(s) to be determined. Here, we draw it to include the flow inlet and outlet.
 
 **1) Apply Conservation of mass.** Here it is in full form (it is a good idea to always write it out completely, then simplify):
 
@@ -256,11 +262,7 @@ $$
 
 ## Conservation of momentum
 
-If we are following a fluid parcel and its momentum changed... how would that happen? An **applied external force**:
-
-$$
-\mathbf{F}_\text{external} = m\mathbf{U}.
-$$
+If we are following a fluid parcel and its momentum changed... how would that happen? An **applied external force** is necessary to change the momentum.
 
 The corresponding intensive quantity is $\rho \mathbf{u}$. Plugging this in to RTT...
 
