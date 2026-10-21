@@ -1,0 +1,275 @@
+---
+title: "8.2 Conservation of energy"
+---
+
+## The big idea
+
+
+## Think first
+
+**Recall**
+
+1. a
+**Look ahead**
+
+1. b
+
+
+
+
+## Conservation of energy
+
+We've got one more application of Reynolds' Transport Theorem: the conservation of energy. Stated in words: the change in energy over time for a mass of material (a "closed" system) equals the sum of the net heat transfer rate in and work rate on the system. Putting this into an equation
+
+$$
+\frac{DE_\text{sys}}{Dt} = \underbrace{\dot{Q} + \dot{W}}_{\color{green}{\text{net "in"}}} \overset{\color{red}{\text{RTT}}}{=} \int_{CV} \frac{\partial}{\partial t}(\rho e)\, dV + \int_{CS} \rho e\,(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS
+$$
+
+where the right-hand side is from RTT with intensive property $\rho e$, where $e$ is the energy per mass. What types of energy are represented within $e$?
+
+::: {.callout-note collapse="true" title="Think about the types of energy first, then click here to reveal"}
+
+We need to account for the kinetic energy per mass, $\tfrac{1}{2}|\mathbf{u}|^2$, the potential energy per mass $gz$, and the internal energy per mass, $c_v T$ (where $c_v$ is the specific heat at constant volume and $T$ is the temperature). That is
+
+$$
+e= \tfrac{1}{2}|\mathbf{u}|^2 + gz + c_v T.
+$$
+:::
+
+What types of **heat** transfer can occur in $\dot{Q}$? You'll learn this in MCEN 3022: Heat Transfer, but the three modes of heat transfer are
+
+- Conduction: heat passes through solid objects
+- Convection: a fluid passing over an object will add/remove heat from the object, e.g. blowing on a hot meatball to cool it down.
+- Radiation: light (including infrared, visible, ultraviolet, and beyond) carries energy.
+- ex: electrical resistance, flame, "red-hot"
+
+What types of **work** can occur in $\dot{W}$?
+
+- viscous work, boundary work (change in volume), turbine (shaft), pump, ...
+
+And we need to consider the amount of work it takes to push a fluid parcel into a control volume. This is called **flow work**, and it is indeed a work, but we will end up grouping it with the energy term in our integral equation because it is always present in flowing systems.
+
+## Flow work
+
+It takes energy to push fluid into a control volume.
+
+**Dimensionally?** "push" $\rightarrow$ pressure, needs a rate... $U$ or $Q$?
+
+$$
+\underset{\color{red}{\frac{F\cdot L}{T}}}{\dot{W}} = \underset{\color{red}{\frac{F}{L^2}\cdot\frac{L^3}{T}}}{P\cdot Q} \qquad \checkmark
+$$
+
+**Simple example**
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="420" height="200" viewBox="0 0 420 200" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <defs>
+    <marker id="fw-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f77e0"/>
+    </marker>
+    <marker id="fw-arrow-black" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="420" height="200" fill="#ffffff"/>
+
+  <!-- the pipe -->
+  <g stroke="#1a1a1a" stroke-width="2">
+    <line x1="80" y1="40"  x2="400" y2="40"/>
+    <line x1="80" y1="140" x2="400" y2="140"/>
+  </g>
+
+  <!-- area A -->
+  <g stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#fw-arrow-black)">
+    <line x1="100" y1="22" x2="100" y2="38"/>
+    <line x1="100" y1="160" x2="100" y2="142"/>
+  </g>
+  <text x="104" y="22" font-size="15" fill="#1a1a1a">A</text>
+
+  <!-- inflow -->
+  <line x1="50" y1="90" x2="105" y2="90" stroke="#1f77e0" stroke-width="2" marker-end="url(#fw-arrow-blue)"/>
+
+  <!-- fluid slug about to enter, and the one about to leave -->
+  <g stroke="#1f77e0" stroke-width="1.3" stroke-dasharray="3 3" fill="none">
+    <rect x="125" y="47" width="24" height="86"/>
+    <rect x="275" y="47" width="24" height="86"/>
+  </g>
+
+  <!-- control volume -->
+  <rect x="153" y="47" width="135" height="86" stroke="#e0311f" stroke-width="1.3" stroke-dasharray="3 3" fill="none"/>
+  <text x="160" y="62" font-size="11" fill="#e0311f">CV</text>
+
+  <!-- L -->
+  <line x1="127" y1="152" x2="147" y2="152" stroke="#1a1a1a" stroke-width="1.3" marker-start="url(#fw-arrow-black)" marker-end="url(#fw-arrow-black)"/>
+  <text x="132" y="172" font-size="15" fill="#1a1a1a">L</text>
+</svg>
+</div>
+```
+
+How much work is necessary to push the <span style="color:#1f77e0">blue</span> slug into the <span style="color:#e0311f">red</span> CV?
+
+$$
+(P\cdot A)\cdot L
+$$
+
+... and then we make it continuous (per time)
+
+$$
+\rightarrow (P\cdot A)\cdot U = P\cdot Q
+$$
+
+So: the flow work will be...
+
+$$
+\begin{aligned}
+\dot{W}_\text{flow} &= -\int P\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{in} - \int P\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{out} \\
+&= -\int_{CS} P\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS
+\end{aligned}
+$$
+
+So, conservation of energy looks like
+
+::: {.callout-important title="Conservation of Energy (Integral Form)"}
+$$
+\dot{Q} + \dot{W} = \int_{CV} \frac{\partial}{\partial t}(\rho e)\, dV + \int_{CS} \rho\left(e + \frac{P}{\rho}\right)(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS
+$$
+
+for
+
+$$
+e = \tfrac{1}{2}|\mathbf{u}|^2 + gz + c_v T
+$$
+:::
+
+## Common simplification in a common scenario: pipe flow
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="460" height="230" viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <defs>
+    <marker id="pf-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f77e0"/>
+    </marker>
+    <marker id="pf-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a3fd1"/>
+    </marker>
+    <marker id="pf-arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f08a00"/>
+    </marker>
+    <marker id="pf-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f8a3a"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="460" height="230" fill="#ffffff"/>
+
+  <!-- the pipe: in at upper left, down, out at lower right -->
+  <g stroke="#1a1a1a" stroke-width="2" fill="none">
+    <path d="M 70 30 L 160 30 L 160 165 L 350 165"/>
+    <path d="M 70 70 L 135 70 L 135 200 L 350 200"/>
+  </g>
+
+  <!-- control volume, just inside the walls -->
+  <path d="M 77 36 L 154 36 L 154 171 L 343 171 L 343 194 L 141 194 L 141 64 L 77 64 Z"
+        stroke="#e0311f" stroke-width="1.3" stroke-dasharray="3 3" fill="none"/>
+
+  <!-- mass flow in and out -->
+  <line x1="45" y1="50" x2="68" y2="50" stroke="#1f77e0" stroke-width="2" marker-end="url(#pf-arrow-blue)"/>
+  <text x="48" y="32" font-size="17" fill="#1f77e0">ṁ</text>
+  <line x1="355" y1="183" x2="392" y2="183" stroke="#1f77e0" stroke-width="2" marker-end="url(#pf-arrow-blue)"/>
+  <text x="370" y="165" font-size="17" fill="#1f77e0">ṁ</text>
+
+  <!-- work -->
+  <path d="M 225 110 q -8 -6 -16 0 q -8 6 -16 0 q -8 -6 -16 0 L 152 110"
+        stroke="#8a3fd1" stroke-width="1.5" fill="none" marker-end="url(#pf-arrow-purple)"/>
+  <text x="230" y="115" font-size="17" fill="#8a3fd1">Ẇ</text>
+
+  <!-- heat -->
+  <path d="M 255 125 L 255 140 q 6 5 0 10 q -6 5 0 10 L 255 182"
+        stroke="#f08a00" stroke-width="1.5" fill="none" marker-end="url(#pf-arrow-orange)"/>
+  <text x="248" y="118" font-size="17" fill="#f08a00">Q̇</text>
+
+  <!-- gravity -->
+  <line x1="280" y1="35" x2="280" y2="70" stroke="#1f8a3a" stroke-width="2" marker-end="url(#pf-arrow-green)"/>
+  <text x="288" y="62" font-size="18" fill="#1f8a3a">g</text>
+</svg>
+</div>
+```
+
+**Assumption:** $z$, $P$, $\rho$, & $T$ are uniform across the inlet face and outlet face. (And will do a trick with $|\mathbf{u}|^2$ as well.)
+
+Let's also assume steady flow.
+
+$$
+\begin{aligned}
+\dot{Q} + \dot{W} &= \cancelto{0}{\int_{CV} \frac{\partial}{\partial t}(\rho e)\, dV} + \int_{CS} \rho\left(\tfrac{1}{2}|\mathbf{u}|^2 + gz + c_v T + \frac{P}{\rho}\right)(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS \\
+&= \left(gz + c_v T + \frac{P}{\rho}\right)_\text{in} \int \rho\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{in} + \int \tfrac{1}{2}\rho|\mathbf{u}|^2\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{in} \\
+&\quad + (\text{same for "out"}) \\
+&= -\dot{m}\left(gz + c_v T + \frac{P}{\rho}\right)_\text{in} + \rho\, \underbrace{\int \tfrac{1}{2}|\mathbf{u}|^2\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{in}}_{\color{red}{\downarrow}} \\
+&\quad + (\text{same for "out"})
+\end{aligned}
+$$
+
+Typically, we will see one of these three flows:
+
+1) Uniform flow, $\mathbf{u} = U_0\,\hat{\mathbf{z}}$
+2) Parabolic flow, $\mathbf{u} = U_\text{max}\left(1 - \left(\frac{r}{R}\right)^2\right)\hat{\mathbf{z}}$
+3) Turbulent flow, $\mathbf{u} \approx U_0\,\hat{\mathbf{z}}$ (statistically)
+
+$\longrightarrow$ Catalogue the values of the integration and characterize the flows w/ "the kinetic energy coefficient"
+
+$$
+\alpha \equiv \frac{\int \tfrac{1}{2}\rho|\mathbf{u}|^2\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS}{\tfrac{1}{2}\dot{m}\,\underset{\color{red}{\uparrow \text{ avg speed}}}{\bar{U}^2}}
+$$
+
+<span style="color:#e0311f">(example below, but...)</span>
+
+| $\alpha$ | |
+|:-:|:--|
+| $1$ | for uniform flows |
+| $2$ | for parabolic flows |
+| $\approx 1$ | for turbulent flows (0.95?) |
+
+For pipe-like flows, the conservation of energy becomes:
+
+::: {.callout-important title="Conservation of Energy (Pipe-Like Flows)"}
+$$
+\begin{aligned}
+\dot{Q} + \dot{W} = \dot{m}\Bigg[&\left(\tfrac{1}{2}\alpha\, U_\text{avg}^2 + gz + c_v T + \frac{P}{\rho}\right)_\text{out} \\
+-&\left(\tfrac{1}{2}\alpha\, U_\text{avg}^2 + gz + c_v T + \frac{P}{\rho}\right)_\text{in}\Bigg]
+\end{aligned}
+$$
+:::
+
+## For the curious
+
+Parabolic flow $\longrightarrow$ $u(r) = U_\text{max}\left(1 - \left(\frac{r}{R}\right)^2\right)$
+
+::: {.column-margin}
+<span style="color:#e0311f">We will see how this ($U_\text{max}$) depends on applied pressure.</span>
+:::
+
+$$
+\bar{U} = \frac{\displaystyle\int_0^{2\pi}\!\!\int_0^R U_\text{max}\left(1 - \left(\frac{r}{R}\right)^2\right) r\, dr\, d\theta}{\pi R^2} = \frac{U_\text{max}\cdot\frac{\pi}{2}R^2}{\pi R^2}
+$$
+
+$$
+\therefore\quad \text{Avg speed} = \bar{U} = U_\text{max}/2
+$$
+
+$$
+\begin{aligned}
+\alpha \equiv \frac{\int \tfrac{1}{2}\rho|\mathbf{u}|^2\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS}{\tfrac{1}{2}\dot{m}\,\bar{U}^2}
+&= \frac{\tfrac{1}{2}\rho \displaystyle\int_0^{2\pi}\!\!\int_0^R \left[U_\text{max}\left(1 - \left(\frac{r}{R}\right)^2\right)\right]^3 r\, dr\, d\theta}{\tfrac{1}{2}\left(\rho\cdot\pi R^2\cdot\bar{U}\right)\bar{U}^2} \\
+&= \frac{\cancel{\tfrac{1}{2}}\cancel{\rho}\,(2\cancel{\pi})\, U_\text{max}^3\, \frac{\cancel{R^2}}{8}}{\cancel{\tfrac{1}{2}}\cancel{\rho}\,\cancel{\pi}\cancel{R^2}\,\bar{U}^3} \\
+&= \frac{2\,(2\bar{U})^3}{8\,\bar{U}^3} = 2
+\end{aligned}
+$$
+
+$$
+\therefore\quad \alpha = 2 \text{ for parabolic flow}
+$$
