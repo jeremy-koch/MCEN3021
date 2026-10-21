@@ -4,11 +4,8 @@ title: "8.2 Conservation of energy"
 
 ## The big idea
 
-<!-- We've used Reynolds' Transport Theorem twice now: once for mass, once for momentum. In this reading we use it a third time, for **energy**, which is the first law of thermodynamics written for a control volume. The bookkeeping looks familiar: energy can be stored in the CV (the $dV$ integral) or carried across the control surface by the flow (the $dS$ integral), and the things that *change* the energy are heat and work.
+We've used Reynolds' Transport Theorem for conservation of mass and conservation of momentum (Newton's Second Law). Now, we'll apply it to conservation of energy (first law of thermodynamics). It is a similar story: we translate a particle-based description of energy conservation into a lab-frame description using RTT. Energy can be stored in the CV (the $dV$ integral) or carried across the control surface by the flow (the $dS$ integral).
 
-There's one new wrinkle. Pushing fluid into (and out of) a control volume takes work: **flow work**. It's present in every flowing system, so rather than tracking it with the other work terms, we fold it into the energy term as $p/\rho$.
-
-Then we'll specialize to the most common engineering situation: steady flow through a pipe with one inlet and one outlet. The surface integrals collapse into "out minus in," and the only integral left over (kinetic energy) gets catalogued with a single number, the **kinetic energy coefficient** $\alpha$. The result is the pipe-flow form of the energy equation, which we'll use for the rest of the course. -->
 
 ## Think first
 
@@ -109,11 +106,8 @@ It takes energy to push fluid into a control volume... the push comes from press
   <!-- inflow -->
   <line x1="50" y1="90" x2="105" y2="90" stroke="#1f77e0" stroke-width="2" marker-end="url(#fw-arrow-blue)"/>
 
-  <!-- fluid slug about to enter, and the one about to leave -->
-  <g stroke="#1f77e0" stroke-width="1.3" stroke-dasharray="3 3" fill="none">
-    <rect x="125" y="47" width="24" height="86"/>
-    <rect x="275" y="47" width="24" height="86"/>
-  </g>
+  <!-- fluid slug about to enter -->
+  <rect x="125" y="47" width="24" height="86" stroke="#1f77e0" stroke-width="1.3" stroke-dasharray="3 3" fill="none"/>
 
   <!-- control volume -->
   <rect x="153" y="47" width="135" height="86" stroke="#e0311f" stroke-width="1.3" stroke-dasharray="3 3" fill="none"/>
