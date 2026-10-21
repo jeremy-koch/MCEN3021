@@ -4,62 +4,79 @@ title: "8.2 Conservation of energy"
 
 ## The big idea
 
+<!-- We've used Reynolds' Transport Theorem twice now: once for mass, once for momentum. In this reading we use it a third time, for **energy**, which is the first law of thermodynamics written for a control volume. The bookkeeping looks familiar: energy can be stored in the CV (the $dV$ integral) or carried across the control surface by the flow (the $dS$ integral), and the things that *change* the energy are heat and work.
+
+There's one new wrinkle. Pushing fluid into (and out of) a control volume takes work: **flow work**. It's present in every flowing system, so rather than tracking it with the other work terms, we fold it into the energy term as $p/\rho$.
+
+Then we'll specialize to the most common engineering situation: steady flow through a pipe with one inlet and one outlet. The surface integrals collapse into "out minus in," and the only integral left over (kinetic energy) gets catalogued with a single number, the **kinetic energy coefficient** $\alpha$. The result is the pipe-flow form of the energy equation, which we'll use for the rest of the course. -->
 
 ## Think first
 
 **Recall**
 
-1. a
+1. Reynolds' Transport Theorem: $\dfrac{DA}{Dt} = \displaystyle\int_{CV} \frac{\partial \alpha}{\partial t}\, dV + \int_{CS} \alpha\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS$, where $\alpha$ is the intensive version of $A$.
+2. The first law of thermodynamics: the energy of a closed system changes only by heat added and work done on it.
+3. Work is force times distance, and power is work per time.
+
 **Look ahead**
 
-1. b
-
-
-
+1. What kinds of energy does a parcel of water flowing through a pipe carry?
+2. A pump pushes water into a pipe that is already full. Does that take work, even if the water's speed and height don't change?
+3. Two pipes carry the same mass flow rate with the same average speed. One has a uniform velocity profile, the other a parabolic one. Do they carry the same kinetic energy per second?
 
 ## Conservation of energy
 
-We've got one more application of Reynolds' Transport Theorem: the conservation of energy. Stated in words: the change in energy over time for a mass of material (a "closed" system) equals the sum of the net heat transfer rate in and work rate on the system. Putting this into an equation
+We've got one more application of Reynolds' Transport Theorem: the conservation of energy. Stated in words: the change in energy over time for a mass of material (a "closed" system) equals the sum of the net heat transfer rate in and work rate on the system. Putting this into an equation:
 
 $$
-\frac{DE_\text{sys}}{Dt} = \underbrace{\dot{Q} + \dot{W}}_{\color{green}{\text{net "in"}}} \overset{\color{red}{\text{RTT}}}{=} \int_{CV} \frac{\partial}{\partial t}(\rho e)\, dV + \int_{CS} \rho e\,(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS
+\frac{DE_\text{sys}}{Dt} = \dot{Q}_\text{in}-\dot{Q}_\text{out} + \dot{W}_\text{in}-\dot{W}_\text{out} =
+ \int_{CV} \frac{\partial}{\partial t}(\rho e)\, dV + 
+ \int_{CS} \rho e\,(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS
 $$
 
-where the right-hand side is from RTT with intensive property $\rho e$, where $e$ is the energy per mass. What types of energy are represented within $e$?
+where the right-hand side is from RTT with intensive property $\rho e$, and $e$ is the energy per mass. **We will use a modified form of this equation, so keep reading.**
+
+What **types of energy** are represented within $e$?
 
 ::: {.callout-note collapse="true" title="Think about the types of energy first, then click here to reveal"}
 
-We need to account for the kinetic energy per mass, $\tfrac{1}{2}|\mathbf{u}|^2$, the potential energy per mass $gz$, and the internal energy per mass, $c_v T$ (where $c_v$ is the specific heat at constant volume and $T$ is the temperature). That is
+We need to account for:
+
+- The kinetic energy per mass, $\tfrac{1}{2}|\mathbf{u}|^2$.
+- The gravitational potential energy per mass, $gz$.
+- The internal energy per mass, $c_v T$ (where $c_v$ is the specific heat at constant volume and $T$ is the temperature).
+
+  ::: {.column-margin}
+  Strictly, $c_v T$ is internal energy measured from a reference state, assuming $c_v$ is constant. That's fine for us: only *differences* in internal energy show up in the energy equation, so the reference drops out.
+  :::
+
+That is
 
 $$
 e= \tfrac{1}{2}|\mathbf{u}|^2 + gz + c_v T.
 $$
 :::
 
-What types of **heat** transfer can occur in $\dot{Q}$? You'll learn this in MCEN 3022: Heat Transfer, but the three modes of heat transfer are
+What types of **heat** transfer can occur in $\dot{Q}$? You'll learn this in MCEN 3022: Heat Transfer, but the three modes of heat transfer are:
 
-- Conduction: heat passes through solid objects
+- Conduction: heat passes through a material by molecular contact. This is the familiar one in solids, but it happens in fluids too.
 - Convection: a fluid passing over an object will add/remove heat from the object, e.g. blowing on a hot meatball to cool it down.
 - Radiation: light (including infrared, visible, ultraviolet, and beyond) carries energy.
-- ex: electrical resistance, flame, "red-hot"
 
 What types of **work** can occur in $\dot{W}$?
 
-- viscous work, boundary work (change in volume), turbine (shaft), pump, ...
+- Viscous work
+- Boundary work (change in volume)
+- Turbine (shaft)
+- Pump
+- Electrical
+- ...
 
-And we need to consider the amount of work it takes to push a fluid parcel into a control volume. This is called **flow work**, and it is indeed a work, but we will end up grouping it with the energy term in our integral equation because it is always present in flowing systems.
+And we also need to consider the amount of work it takes to push a fluid parcel into a control volume. This is called **flow work**, and it is indeed a work, but we will end up grouping it with the energy term in our integral equation because it is always present in flowing systems.
 
 ## Flow work
 
-It takes energy to push fluid into a control volume.
-
-**Dimensionally?** "push" $\rightarrow$ pressure, needs a rate... $U$ or $Q$?
-
-$$
-\underset{\color{red}{\frac{F\cdot L}{T}}}{\dot{W}} = \underset{\color{red}{\frac{F}{L^2}\cdot\frac{L^3}{T}}}{P\cdot Q} \qquad \checkmark
-$$
-
-**Simple example**
+It takes energy to push fluid into a control volume... the push comes from pressure, and we need a rate of some sort... maybe speed $U$ or volumetric flow rate $Q$? Let's think about this picture:
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -109,42 +126,56 @@ $$
 </div>
 ```
 
-How much work is necessary to push the <span style="color:#1f77e0">blue</span> slug into the <span style="color:#e0311f">red</span> CV?
+How much work is necessary to push the <span style="color:#1f77e0">blue</span> slug into the <span style="color:#e0311f">red</span> CV? Work is force times distance, $W= p\,A\,L$, and to make this a rate, we can replace the distance $L$ with the speed $U$:
 
 $$
-(P\cdot A)\cdot L
+\dot{W} = p\,A\,U \quad (=p Q)
 $$
 
-... and then we make it continuous (per time)
+where $Q$ is the volumetric flow rate. To write this more generally:
 
-$$
-\rightarrow (P\cdot A)\cdot U = P\cdot Q
-$$
-
-So: the flow work will be...
 
 $$
 \begin{aligned}
-\dot{W}_\text{flow} &= -\int P\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{in} - \int P\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{out} \\
-&= -\int_{CS} P\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS
+\dot{W}_\text{flow} &= -\int p\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{in} - \int p\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{out} \\
+&= -\int_{CS} p\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS.
 \end{aligned}
 $$
 
-So, conservation of energy looks like
+A few notes:
+
+- The integral
+
+  $$
+  Q=\int \mathbf{u}\cdot\hat{\mathbf{n}}\, dS
+  $$
+
+  is the volumetric flow out through a particular surface. Thus our flow work basically includes two integrals that evaluate to $p\,Q$.
+- There are two terms in the first row of the equation because it takes work to push fluid into a control volume, and it requires work to push fluid out of a control volume. But we can generalize this to the second row equation, applied over the control surface.
+- Does the negative sign make sense? For flow entering a control volume, we are adding work to the CV, but $\mathbf{u}\cdot\mathbf{\hat{n}}<0$... so we need the negative sign out front to get the physics right. For flow leaving a control volume, it requires work from the CV, and $\mathbf{u}\cdot\mathbf{\hat{n}}>0$... again, we need the negative sign out front to get the physics right.
+
+## Practical statement of conservation of energy
+
+We pre-calculated the flow work, in a sense, because it always appears in flowing systems. Notably, the control surface integral matches the form of one of the integrals in the RTT description of conservation of energy from above. Thus we settle on this form of conservation of energy:
 
 ::: {.callout-important title="Conservation of Energy (Integral Form)"}
 $$
-\dot{Q} + \dot{W} = \int_{CV} \frac{\partial}{\partial t}(\rho e)\, dV + \int_{CS} \rho\left(e + \frac{P}{\rho}\right)(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS
+\dot{Q}_\text{in}-\dot{Q}_\text{out} + \dot{W}_\text{in}-\dot{W}_\text{out} = \int_{CV} \frac{\partial}{\partial t}(\rho e)\, dV + \int_{CS} \rho\left(e + \frac{p}{\rho}\right)(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS
 $$
 
 for
 
 $$
-e = \tfrac{1}{2}|\mathbf{u}|^2 + gz + c_v T
+e = \tfrac{1}{2}|\mathbf{u}|^2 + gz + c_v T.
 $$
 :::
 
+where $\dot{W}_\text{in}$ and $\dot{W}_\text{out}$ are work terms besides the flow work.
+
+
 ## Common simplification in a common scenario: pipe flow
+
+For pipe flow, the inlet and outlet are often small enough that we can reasonably claim $z$, $p$, $\rho$, and $T$ are constant across the cross-section. It is also common to assume steady flow. Then, imagine doing an analysis on this situation:
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -200,47 +231,52 @@ $$
 </div>
 ```
 
-**Assumption:** $z$, $P$, $\rho$, & $T$ are uniform across the inlet face and outlet face. (And will do a trick with $|\mathbf{u}|^2$ as well.)
-
-Let's also assume steady flow.
+The conservation of energy simplifies:
 
 $$
 \begin{aligned}
-\dot{Q} + \dot{W} &= \cancelto{0}{\int_{CV} \frac{\partial}{\partial t}(\rho e)\, dV} + \int_{CS} \rho\left(\tfrac{1}{2}|\mathbf{u}|^2 + gz + c_v T + \frac{P}{\rho}\right)(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS \\
-&= \left(gz + c_v T + \frac{P}{\rho}\right)_\text{in} \int \rho\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{in} + \int \tfrac{1}{2}\rho|\mathbf{u}|^2\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{in} \\
-&\quad + (\text{same for "out"}) \\
-&= -\dot{m}\left(gz + c_v T + \frac{P}{\rho}\right)_\text{in} + \rho\, \underbrace{\int \tfrac{1}{2}|\mathbf{u}|^2\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{in}}_{\color{red}{\downarrow}} \\
-&\quad + (\text{same for "out"})
+\dot{Q}_\text{net} + \dot{W}_\text{net} &= \cancelto{0}{\int_{CV} \frac{\partial}{\partial t}(\rho e)\, dV} + \int_{CS} \rho\left(\tfrac{1}{2}|\mathbf{u}|^2 + gz + c_v T + \frac{p}{\rho}\right)(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS \\
+&= \left(gz + c_v T + \frac{p}{\rho}\right)_\text{in} \int \rho\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{in} + \int \tfrac{1}{2}\rho|\mathbf{u}|^2\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{in} \\
+&+ \left(gz + c_v T + \frac{p}{\rho}\right)_\text{out} \int \rho\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{out} + \int \tfrac{1}{2}\rho|\mathbf{u}|^2\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{out}
 \end{aligned}
 $$
 
-Typically, we will see one of these three flows:
+and
+
+$$
+-\int \rho\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{in}= \int \rho\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS_\text{out} = \dot{m}
+$$
+
+and so the first "in" and "out" integrals can be simply replaced with $-\dot{m}$ and $\dot{m}$, where $\dot{m}$ is the mass flow rate. Regarding the kinetic energy integral, we can focus on three common flows:
 
 1) Uniform flow, $\mathbf{u} = U_0\,\hat{\mathbf{z}}$
 2) Parabolic flow, $\mathbf{u} = U_\text{max}\left(1 - \left(\frac{r}{R}\right)^2\right)\hat{\mathbf{z}}$
 3) Turbulent flow, $\mathbf{u} \approx U_0\,\hat{\mathbf{z}}$ (statistically)
 
-$\longrightarrow$ Catalogue the values of the integration and characterize the flows w/ "the kinetic energy coefficient"
+and we go ahead and evaluate these integrals, characterizing them with a kinetic energy factor $\alpha$:
 
 $$
-\alpha \equiv \frac{\int \tfrac{1}{2}\rho|\mathbf{u}|^2\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS}{\tfrac{1}{2}\dot{m}\,\underset{\color{red}{\uparrow \text{ avg speed}}}{\bar{U}^2}}
+\alpha \equiv \frac{\int \tfrac{1}{2}\rho|\mathbf{u}|^2\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS}{\tfrac{1}{2}\dot{m}\,\underset{\color{red}{\uparrow \text{ avg speed}}}{\overline{U}^2}}
 $$
 
-<span style="color:#e0311f">(example below, but...)</span>
+
+::: {.column-margin}
+At an inlet, $\mathbf{u}\cdot\hat{\mathbf{n}}<0$, so the integral in the numerator is negative while $\dot{m}$ is positive, and taken literally this definition gives a negative $\alpha$. We mean the magnitude: $\alpha$ is a property of the velocity *profile*, not of which way the surface faces. The sign is carried separately by the "out minus in" structure of the pipe-flow equation below.
+:::
 
 | $\alpha$ | |
 |:-:|:--|
 | $1$ | for uniform flows |
 | $2$ | for parabolic flows |
-| $\approx 1$ | for turbulent flows (0.95?) |
+| $\approx 1$ | for turbulent flows|
 
 For pipe-like flows, the conservation of energy becomes:
 
 ::: {.callout-important title="Conservation of Energy (Pipe-Like Flows)"}
 $$
 \begin{aligned}
-\dot{Q} + \dot{W} = \dot{m}\Bigg[&\left(\tfrac{1}{2}\alpha\, U_\text{avg}^2 + gz + c_v T + \frac{P}{\rho}\right)_\text{out} \\
--&\left(\tfrac{1}{2}\alpha\, U_\text{avg}^2 + gz + c_v T + \frac{P}{\rho}\right)_\text{in}\Bigg]
+\dot{Q}_\text{net} + \dot{W}_\text{net} = \dot{m}\Bigg[&\left(\tfrac{1}{2}\alpha\, \overline{U}^2 + gz + c_v T + \frac{p}{\rho}\right)_\text{out} \\
+-&\left(\tfrac{1}{2}\alpha\, \overline{U}^2 + gz + c_v T + \frac{p}{\rho}\right)_\text{in}\Bigg]
 \end{aligned}
 $$
 :::
@@ -249,24 +285,22 @@ $$
 
 Parabolic flow $\longrightarrow$ $u(r) = U_\text{max}\left(1 - \left(\frac{r}{R}\right)^2\right)$
 
-::: {.column-margin}
-<span style="color:#e0311f">We will see how this ($U_\text{max}$) depends on applied pressure.</span>
-:::
+
 
 $$
-\bar{U} = \frac{\displaystyle\int_0^{2\pi}\!\!\int_0^R U_\text{max}\left(1 - \left(\frac{r}{R}\right)^2\right) r\, dr\, d\theta}{\pi R^2} = \frac{U_\text{max}\cdot\frac{\pi}{2}R^2}{\pi R^2}
+\overline{U} = \frac{\displaystyle\int_0^{2\pi}\!\!\int_0^R U_\text{max}\left(1 - \left(\frac{r}{R}\right)^2\right) r\, dr\, d\theta}{\pi R^2} = \frac{U_\text{max}\cdot\frac{\pi}{2}R^2}{\pi R^2}
 $$
 
 $$
-\therefore\quad \text{Avg speed} = \bar{U} = U_\text{max}/2
+\therefore\quad \text{Avg speed} = \overline{U} = U_\text{max}/2
 $$
 
 $$
 \begin{aligned}
-\alpha \equiv \frac{\int \tfrac{1}{2}\rho|\mathbf{u}|^2\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS}{\tfrac{1}{2}\dot{m}\,\bar{U}^2}
-&= \frac{\tfrac{1}{2}\rho \displaystyle\int_0^{2\pi}\!\!\int_0^R \left[U_\text{max}\left(1 - \left(\frac{r}{R}\right)^2\right)\right]^3 r\, dr\, d\theta}{\tfrac{1}{2}\left(\rho\cdot\pi R^2\cdot\bar{U}\right)\bar{U}^2} \\
-&= \frac{\cancel{\tfrac{1}{2}}\cancel{\rho}\,(2\cancel{\pi})\, U_\text{max}^3\, \frac{\cancel{R^2}}{8}}{\cancel{\tfrac{1}{2}}\cancel{\rho}\,\cancel{\pi}\cancel{R^2}\,\bar{U}^3} \\
-&= \frac{2\,(2\bar{U})^3}{8\,\bar{U}^3} = 2
+\alpha \equiv \frac{\int \tfrac{1}{2}\rho|\mathbf{u}|^2\, \mathbf{u}\cdot\hat{\mathbf{n}}\, dS}{\tfrac{1}{2}\dot{m}\,\overline{U}^2}
+&= \frac{\tfrac{1}{2}\rho \displaystyle\int_0^{2\pi}\!\!\int_0^R \left[U_\text{max}\left(1 - \left(\frac{r}{R}\right)^2\right)\right]^3 r\, dr\, d\theta}{\tfrac{1}{2}\left(\rho\cdot\pi R^2\cdot\overline{U}\right)\overline{U}^2} \\
+&= \frac{\cancel{\tfrac{1}{2}}\cancel{\rho}\,(2\cancel{\pi})\, U_\text{max}^3\, \frac{\cancel{R^2}}{8}}{\cancel{\tfrac{1}{2}}\cancel{\rho}\,\cancel{\pi}\cancel{R^2}\,\overline{U}^3} \\
+&= \frac{2\,(2\overline{U})^3}{8\,\overline{U}^3} = 2
 \end{aligned}
 $$
 
