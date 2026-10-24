@@ -12,6 +12,7 @@ homework/*
 !homework/hw3_sol.qmd
 !homework/hw4.qmd
 !homework/hw4_sol.qmd
+!homework/hw5.qmd
 !homework/figures/
 homework/solutions/
 pdfs/
@@ -96,3 +97,6 @@ desktop.ini
 **/*.quarto_ipynb
 
 CLAUDE.md
+
+# Local-only Claude Code skills (instructor workflow; not for the public repo)
+.claude/skills/
