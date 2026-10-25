@@ -39,7 +39,7 @@ Due: Friday 30 October, 2026 11:59PM. Submitted to GradeScope.
 $$
 u_r(z) = U_0\left(1 - \frac{z}{L}\right).
 $$
-That is, the flow "out" is **radial** with dependence on the **axial** location, $z$. $U_0$ and $L$ are two known constants, the pipe radius $R$ is known, and the tube ends after the porous section. The flow "in" to this section of pipe is uniform in the axial direction.
+That is, the flow "out" is **radial** with dependence on the **axial** location, $z$. $U_0$ and $L$ are two known constants, the pipe radius $R$ is known, and the tube ends after the porous section. The flow "in" to this section of pipe is uniform in the axial direction and flow "out" occurs over the bottom half of the cylinder (e.g. over angles $0\rightarrow\pi$).
 
 ![](figures/perforated_pipe.png){width=60%}
 
