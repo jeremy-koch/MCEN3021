@@ -15,7 +15,16 @@ We'll use the Navier-Stokes equations to determine the resulting flow profiles i
 
 ## Think first
 
-What are the consequences of "$u$ does not depend on $z$"? What is $\partial u/\partial z$?
+**Recall**
+
+1. What is the no-slip condition?
+2. What are the consequences of "$u$ does not depend on $z$"? What is $\partial u/\partial z$?
+
+
+**Look ahead**
+
+1. Two parallel plates, the bottom one fixed and the top one sliding at speed $U$, with no applied pressure difference. Try to sketch $u(y)$.
+2. Now both plates are fixed and a pump pushes fluid through. Where is the fluid fastest, and what is it doing at the walls?
 
 ## Setup
 
@@ -24,7 +33,7 @@ What are the consequences of "$u$ does not depend on $z$"? What is $\partial u/\
 
 We are going to study a special situation in this lesson: unidirectional flows. We will see that, for this class of problems, the nonlinear terms in the Navier-Stokes Equations all go to zero, and we are ultimately left with a linear differential equation. You **should not** leave this lesson with the impression that the Navier-Stokes Equations are easy to solve — in fact, unidirectional flows are one of the few cases where the equations can be solved without approximation.
 
-I know not everyone has taken differential equations, so we are going to stick to one solution strategy: integrate.
+I know not everyone has taken differential equations, so we are going to stick to one calculus-based solution strategy: integrate.
 
 :::
 
@@ -234,8 +243,8 @@ viewof Lam = Inputs.range([-5, 5], {value: 2, step: 0.1, label: "Λ = h²Δp / (
 {
   const eta = Array.from({length: 101}, (_, i) => i / 100);
   const full = eta.map(e => ({eta: e, u: e + Lam * e * (1 - e)}));
-  const couette = eta.map(e => ({eta: e, u: e}));
-  const poiseuille = eta.map(e => ({eta: e, u: Lam * e * (1 - e)}));
+  const boundaryDriven = eta.map(e => ({eta: e, u: e}));
+  const pressureDriven = eta.map(e => ({eta: e, u: Lam * e * (1 - e)}));
   const etaStar = Lam === 0 ? NaN : 0.5 + 1 / (2 * Lam);
   const interior = etaStar > 0 && etaStar < 1;
   const uStar = etaStar + Lam * etaStar * (1 - etaStar);
@@ -249,18 +258,22 @@ viewof Lam = Inputs.range([-5, 5], {value: 2, step: 0.1, label: "Λ = h²Δp / (
     y: {label: "y / h", domain: [0, 1]},
     marks: [
       Plot.ruleX([0]),
-      Plot.line(couette, {x: "u", y: "eta", stroke: "firebrick", strokeDasharray: "4 3"}),
-      Plot.line(poiseuille, {x: "u", y: "eta", stroke: "royalblue", strokeDasharray: "4 3"}),
+      Plot.line(boundaryDriven, {x: "u", y: "eta", stroke: "firebrick", strokeDasharray: "4 3"}),
+      Plot.line(pressureDriven, {x: "u", y: "eta", stroke: "royalblue", strokeDasharray: "4 3"}),
       Plot.line(full, {x: "u", y: "eta", stroke: "currentColor", strokeWidth: 2.5}),
       Plot.dot(interior && Lam > 1 ? [{eta: etaStar, u: uStar}] : [], {x: "u", y: "eta", r: 5, fill: "gold", stroke: "currentColor"}),
       Plot.text([{u: 3.9, eta: 0.06, t: note}], {x: "u", y: "eta", text: "t", textAnchor: "end"}),
-      Plot.text([{u: -2.9, eta: 0.93, t: "red dashed: Couette, blue dashed: Poiseuille, solid: sum"}], {x: "u", y: "eta", text: "t", textAnchor: "start", fontSize: 11})
+      Plot.text([
+        {u: -2.9, eta: 0.95, t: "red dashed: boundary-driven"},
+        {u: -2.9, eta: 0.89, t: "blue dashed: pressure-driven"},
+        {u: -2.9, eta: 0.83, t: "solid: sum"}
+      ], {x: "u", y: "eta", text: "t", textAnchor: "start", fontSize: 11})
     ]
   });
 }
 ```
 
-## Shear stress on the plates
+<!-- ## Shear stress on the plates
 
 $$
 \tau = \mu\frac{du}{dy} = \mu\left[\frac{\Delta p}{2\mu L}(h-2y) + \frac{U}{h}\right]
@@ -285,4 +298,4 @@ $$
 y^* = \frac{h}{2} + \frac{\mu L U}{h\,\Delta p}.
 $$
 
-(If $y^*$ lands outside $0\le y\le h$, the maximum speed is at a wall instead.)
+(If $y^*$ lands outside $0\le y\le h$, the maximum speed is at a wall instead.) -->
