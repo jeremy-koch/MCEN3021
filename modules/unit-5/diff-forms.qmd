@@ -4,9 +4,9 @@ title: "9.3 Differential forms of the conservation laws"
 
 ## The big idea
 
-The *integral* forms of the conservation laws can make engineering predictions from "macroscopic" quantities, like the total force on a pipe bend, without knowing the details of the flow. However... we can't find out the details of the flow. If we are interested in the flow details (e.g. the existence of vortices and eddies, the possibility of backflow) we need to use equations that can describe the velocity and pressure at a point.
+The *integral* forms of the conservation laws can make engineering predictions from "macroscopic" quantities, like the total force on a pipe bend, without knowing the details of the flow. However... we can't find out the details of the flow. If we are interested in the flow details (e.g. the existence of vortices and eddies, the possibility of backflow) we need to use equations that can describe the velocity and pressure at a particular point.
 
-In this lesson we introduce the *differential* forms of the conservation laws, from which we can solve for $\mathbf{u}(x,y,z,t)$. That is, we can determine the velocity at every point in the domain. The Navier-Stokes Equations are conservation of momentum for a constant density and viscosity fluid, in differential form.
+In this lesson we introduce the *differential* forms of the conservation laws, from which we can solve for $\mathbf{u}(x,y,z,t)$... the velocity at every point in the domain. The Navier-Stokes Equations are conservation of momentum for a constant density and viscosity fluid, in differential form.
 
 ## Think first
 
@@ -18,7 +18,7 @@ In this lesson we introduce the *differential* forms of the conservation laws, f
 **Look ahead**
 
 1. How is the divergence of a velocity field related to conservation of mass?
-2. Can you predict the von Kármán vortex street using a single control volume and the integral equations?
+2. Can you predict the [von Kármán vortex street](https://en.wikipedia.org/wiki/K%C3%A1rm%C3%A1n_vortex_street) using a single control volume and the integral equations?
 
 
 ## The key tool: the divergence theorem
@@ -29,7 +29,7 @@ $$
 \int_{CS} \mathbf{f}\cdot\hat{\mathbf{n}}\, dS = \int_{CV} \nabla\cdot\mathbf{f}\, dV.
 $$
 
-This is **the Divergence Theorem**. The left side is the net flow out through the surface. The right side says that this must come from sources inside: if more material leaves the control volume than enters, $\left|\int \mathbf{f}\cdot\hat{\mathbf{n}}\, dS_\text{out}\right| > \left|\int \mathbf{f}\cdot\hat{\mathbf{n}}\, dS_\text{in}\right|$, then $\nabla\cdot\mathbf{f} > 0$ somewhere inside.
+This is **the Divergence Theorem**. The left side is the net flow out through the surface (it evaluates to zero if there is no net flow). The right side says that, if there is a net flow out, it must come from sources inside. That is: if more material leaves the control volume than enters, $\left|\int \mathbf{f}\cdot\hat{\mathbf{n}}\, dS_\text{out}\right| > \left|\int \mathbf{f}\cdot\hat{\mathbf{n}}\, dS_\text{in}\right|$, then $\nabla\cdot\mathbf{f} > 0$ somewhere inside.
 
 We are going to use the Divergence Theorem to turn the control surface integral in the integral forms of our conservation laws into a control volume integral. First: conservation of mass.
 
@@ -47,7 +47,13 @@ $$
 0 = \int_{CV} \frac{\partial \rho}{\partial t}\, dV + \int_{CV} \mathbf{\nabla}\cdot(\rho\mathbf{u})\, dV.
 $$
 
-Now: the conservation law does not depend on the choice of control volume... it has to be true for *any* control volume we choose. The only way this can be true is if the integrand itself is equal to zero, so...
+and group both terms under one umbrella
+
+$$
+0 = \int_{CV} \left[\frac{\partial \rho}{\partial t}+\mathbf{\nabla}\cdot(\rho\mathbf{u})\right]\, dV.
+$$
+
+Now: the conservation law does not depend on the choice of control volume, it has to be true for *any* control volume we choose. The only way this can be true is if the integrand itself is equal to zero.
 
 ::: {.callout-important title="Conservation of mass (differential form)"}
 $$
@@ -60,11 +66,10 @@ This can also be rearranged (using the product rule, then the definition of the 
 $$
 \begin{aligned}
 \frac{\partial \rho}{\partial t} + \mathbf{u}\cdot\nabla\rho+\rho \nabla\cdot\mathbf{u} &= 0\\
-\frac{D\rho}{Dt} + \rho \nabla\cdot\mathbf{u} &= 0
+\frac{D\rho}{Dt} + \rho \nabla\cdot\mathbf{u} &= 0.
 \end{aligned}
 $$
 
-which says a fluid parcel's density changes only if the flow is spreading out or squeezing in.
 
 ### Incompressible fluids
 
@@ -74,11 +79,11 @@ $$
 \nabla\cdot\mathbf{u} = 0.
 $$
 
-In MCEN 3021, we mostly deal with incompressible fluids like water and oil. Air can also be treated as incompressible as long as its flow speed is much less than the speed of sound ($\sim 340$ m/s).
+In MCEN 3021, we mostly deal with incompressible fluids like water and oil, and so we'll be using this equation. Air can also be treated as incompressible as long as its flow speed is much less than the speed of sound ($\sim 340$ m/s).
 
 ## Conservation of momentum
 
-Conservation of momentum is the same strategy, but it is a little bit more complicated mathematically. Start with the integral form:
+We will get a differential form of conservation of momentum using the same strategy, but it is a little bit more complicated mathematically. Start with the integral form:
 
 $$
 \sum \mathbf{F}_\text{ext} = \int_{CV} \frac{\partial}{\partial t}(\rho\mathbf{u})\, dV + \int_{CS} \rho\mathbf{u}\,(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS.
@@ -89,13 +94,13 @@ The external forces come in two flavors:
 1. **Body forces** are typically long-ranged and don't need molecule-to-molecule contact. Gravity is the big one, and we will write it as $\int_{CV}\rho\mathbf{g}\, dV$. Electric and magnetic fields are two other cases.
 2. **Surface forces** are short-ranged and need molecular contact: pressure (a normal force) and friction/viscosity (tangential/shear forces) are the two main examples. We generically describe surface forces with $\int_{CS} \mathbf{t}_{(\hat{n})}\, dS$, where the **traction** $\mathbf{t}$ is force per area. The subscript $(\hat{n})$ is a reminder that the physics depends on which way the surface faces.
 
-We define something known as **the stress tensor** $\mathbf{T}$ such that $\mathbf{t}_{(\hat{n})} = \mathbf{T}\cdot\hat{\mathbf{n}}$. 
+We define something known as **the stress tensor** $\mathbf{T}$ such that $\mathbf{t}_{(\hat{n})} = \mathbf{T}\cdot\hat{\mathbf{n}}$. Including these descriptions into the integral form of conservation of momentum, we have
 
 ::: {.column-margin}
-A *tensor* is like a higher-order vector that has two directions associated with it. Regarding the stress tensor: we think about a surface orientation (i.e., $\mathbf{\hat{x}}$, $\mathbf{\hat{y}}$, and $\mathbf{\hat{z}}$) and the direction of the force acting on each surface. The force from pressure will act in the -$\mathbf{\hat{x}}$-direction on a hypothetical surface with normal $\mathbf{\hat{x}}$, for example; and there will be two components of shear on that surface, in the $\mathbf{\hat{y}}$- and $\mathbf{\hat{z}}$-directions.
+A *tensor* is like a higher-order vector that has two directions associated with it. Regarding the stress tensor: we think about a surface orientation (i.e., normal in the $\mathbf{\hat{x}}$, $\mathbf{\hat{y}}$, or $\mathbf{\hat{z}}$) and then the direction of the force acting on each surface. For example: the force from pressure will act in the -$\mathbf{\hat{x}}$-direction on a hypothetical surface with normal $\mathbf{\hat{x}}$; and there will be two components of shear on that surface, in the $\mathbf{\hat{y}}$- and $\mathbf{\hat{z}}$-directions.
 :::
 
-Including these descriptions into the integral form of conservation of momentum, we have
+
 
 $$
 \int_{CV} \rho\mathbf{g}\, dV + \int_{CS} \mathbf{T}\cdot\hat{\mathbf{n}}\, dS = \int_{CV} \frac{\partial}{\partial t}(\rho\mathbf{u})\, dV + \int_{CS} (\rho\mathbf{u}\mathbf{u})\cdot\hat{\mathbf{n}}\, dS.
@@ -113,7 +118,7 @@ $$
 0= \int_{CV} \left[\frac{\partial}{\partial t}(\rho\mathbf{u})+\nabla\cdot(\rho\mathbf{u}\mathbf{u})-\rho\mathbf{g}-\nabla\cdot\mathbf{T}\right] \, dV.
 $$
 
-Same argument as before: this conservation law must hold for any $CV$, so the integrand itself must be zero. Rearranging, and using conservation of mass to turn the left-hand side into $\rho\,D\mathbf{u}/Dt$, we arrive at an intermediate result:
+Same argument as before: this conservation law must hold for any $CV$, so the integrand itself must be zero. Rearranging, and using conservation of mass and a product rule application to turn the left-hand side into $\rho\,D\mathbf{u}/Dt$, we arrive at an intermediate result:
 
 ::: {.callout-important title="Cauchy momentum equation"}
 $$
@@ -122,15 +127,19 @@ $$
 :::
 
 
-
 ## The Navier-Stokes equations
 
 Two more assumptions:
 
-- The **Newtonian viscosity model**, $\tau = \mu\,\dfrac{\partial u}{\partial y}$: shear stress is proportional to the velocity gradient. (And actually we'll need to think about the tensor form of this equation, but again, let's not get bogged-down in the math.)
-- Constant density, $\rho = \text{const}$.
+- The **Newtonian viscosity model**, $\tau = \mu\,\partial u/\partial y$: shear stress is proportional to the velocity gradient. (Actually we'll need to think about the tensor form of this equation, but again, let's not get bogged-down in the math.)
+- Constant density, $\rho = \text{constant}$.
 
 The normal components of the stress become $-\nabla p$ and the viscous part becomes $\mu\nabla^2\mathbf{u}$. Then:
+
+::: {.column-margin}
+There are a few more assumptions that go into getting $\mu\nabla^2\mathbf{u}$: that rigid-body rotations do not create stress, that is "local" (meaning the velocity gradient here creates the stress here), that there are no preferred directions, and maybe a few more.
+:::
+
 
 ::: {.callout-important title="The Navier–Stokes equations (incompressible, constant viscosity)"}
 $$
@@ -154,5 +163,5 @@ $$
 
 A couple of things to notice:
 
-- One of the gravity components is $-g$. (E.g., if $z$ is up, then $g_z = -g$ and the others are zero.)
+- One of the gravity components is $-g$. (E.g., if $z$ is up, then $g_z = -g$ and $g_x=g_y=0$.)
 - Terms like $w\,\partial u/\partial z$ are a velocity multiplying a velocity gradient: the equations are **nonlinear**.
