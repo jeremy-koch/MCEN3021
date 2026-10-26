@@ -1,0 +1,120 @@
+---
+title: "8.3 Extra: The Betz limit"
+---
+
+## The big idea
+
+A wind turbine converts the kinetic energy of wind into electrical energy. It may be tempting to claim that our goal is to extract 100% of the energy from the wind, but if we do that, the flow through the turbine stops!
+
+In this (optional) lesson, we will derive **the Betz Limit** for wind turbines: the best we can do for wind turbine efficiency is 59.3%.
+
+
+
+## Setting up
+
+Draw a control volume around all the air that "touches" the turbine. Because the flow slows down as it passes through the turbine, the "streamtube" widens as it progresses downstream.
+
+::: {.column-margin}
+We treat air as an incompressible ($\rho=\text{constant}$) fluid as long as *the Mach Number* is sufficiently small. The Mach Number is defined as $\text{Ma}\equiv u/c$, where $u$ is the flow speed and $c$ is the speed of sound, about $343$ m/s for air. We say it is safe to assume $\rho=\text{constant}$ when $\text{Ma}<0.3$.
+:::
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="460" height="220" viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <defs>
+    <marker id="bz-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f77e0"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="460" height="220" fill="#ffffff"/>
+
+  <!-- control volume (streamtube) -->
+  <path d="M 40 100 C 120 95, 150 50, 200 40 C 280 30, 360 25, 420 20 L 420 200 C 360 195, 280 190, 200 180 C 150 170, 120 125, 40 120 Z"
+        stroke="#e0311f" stroke-width="1.3" stroke-dasharray="3 3" fill="none"/>
+
+  <!-- turbine -->
+  <line x1="200" y1="40" x2="200" y2="180" stroke="#1a1a1a" stroke-width="4"/>
+  <text x="208" y="36" font-size="15" fill="#1a1a1a">A (swept area)</text>
+
+  <!-- flow arrows -->
+  <line x1="5" y1="110" x2="35" y2="110" stroke="#1f77e0" stroke-width="2" marker-end="url(#bz-arrow-blue)"/>
+  <text x="10" y="98" font-size="15" fill="#1f77e0">U₁</text>
+  <g stroke="#1f77e0" stroke-width="2" marker-end="url(#bz-arrow-blue)">
+    <line x1="385" y1="50"  x2="415" y2="50"/>
+    <line x1="385" y1="80"  x2="415" y2="80"/>
+    <line x1="385" y1="110" x2="415" y2="110"/>
+    <line x1="385" y1="140" x2="415" y2="140"/>
+    <line x1="385" y1="170" x2="415" y2="170"/>
+  </g>
+  <text x="425" y="115" font-size="15" fill="#1f77e0">U₂</text>
+</svg>
+</div>
+```
+
+**Question:** for a given upstream speed $U_1$, which downstream speed $U_2$ maximizes the power delivered to the turbine?
+
+We'll make three assumptions:
+
+1. Steady, incompressible flow.
+2. The "out" plane is far enough downstream that $U_2$ is uniform. (That also means the pressure has recovered to atmospheric, as it was upstream.)
+3. The speed *at* the turbine is the average of $U_1$ and $U_2$.
+
+## The energy equation
+
+Start from the pipe-like form of conservation of energy. There's no heat transfer, $z$ and $T$ don't change, the pressure is atmospheric at both ends, and both ends are uniform so $\alpha = 1$. Nearly everything cancels:
+
+$$
+-\dot{W}_\text{turbine} = \dot{m}\left(\tfrac{1}{2}U_2^2 - \tfrac{1}{2}U_1^2\right)
+$$
+
+(A quick sign check: the turbine takes energy out of the air, so $\dot{W}_\text{net,in}$ should be negative, and the right side is negative when $U_2 < U_1$. Good.)
+
+We'll use the speed at the turbine in the mass flow rate::
+
+$$
+\dot{m} = \rho A \overline{U}_\text{turbine} = \rho A\,\frac{U_1+U_2}{2}
+$$
+
+so
+
+$$
+\dot{W}_\text{turbine} = \rho A\left(\frac{U_1+U_2}{2}\right)\left(\tfrac{1}{2}U_1^2 - \tfrac{1}{2}U_2^2\right).
+$$
+
+## Maximizing
+
+Now we ask: for fixed $U_1$, which $U_2$ makes this biggest? Take the derivative (w.r.t. $U_2$) and set it to zero:
+
+$$
+\frac{d\dot{W}}{dU_2} = 0 = \rho A\left[\left(\tfrac{1}{2}\right)\left(\tfrac{1}{2}U_1^2 - \tfrac{1}{2}U_2^2\right) + \left(\frac{U_1+U_2}{2}\right)(-U_2)\right]
+$$
+
+which simplifies to $(U_1+U_2)(U_1 - 3U_2) = 0$, so
+
+$$
+U_2 = \tfrac{1}{3}U_1.
+$$
+
+(The other root, $U_2 = -U_1$, is nonsense.) Plugging back in:
+
+$$
+\dot{W}_\text{turbine,max} = \frac{8}{27}\,\rho A U_1^3.
+$$
+
+## Efficiency
+
+We define the efficiency based on the total kinetic energy rate carried through area $A$:$\tfrac{1}{2}\rho A U_1^3$.
+
+::: {.callout-important title="The Betz limit"}
+$$
+\eta_\text{Betz} = \frac{\tfrac{8}{27}\rho A U_1^3}{\tfrac{1}{2}\rho A U_1^3} = \frac{16}{27} \approx 59.3\%
+$$
+:::
+
+This is the best a wind turbine can do, no matter how clever we get with the blades. (Real turbines get maybe 45–50%.) 
+
+## Does the number mean anything?
+
+A big turbine with a 100 m rotor has $A = \pi (50\ \text{m})^2 \approx 7900\ \text{m}^2$. In Boulder's thin air ($\rho \approx 1.0\ \text{kg/m}^3$), and so a 10 m/s wind carries $\tfrac{1}{2}\rho A U_1^3 \approx 4$ MW through that area. The Betz limit says we can get at most about 2.4 MW of it.
