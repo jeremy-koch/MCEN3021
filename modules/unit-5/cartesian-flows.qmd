@@ -6,7 +6,7 @@ title: "9.1 Boundary-driven and pressure-driven flows in Cartesian coordinates"
 
 Recommended: take a look at [the derivation of the differential forms of our conservation laws](diff-forms.qmd). You won't need to know that derivation for an exam, but we are going to take those equations as our starting point in this lesson.
 
-There are two ways to make a fluid move:
+There are two basic ways to make a fluid move:
 
 1. **Boundary-driven flow**: the flow is imposed by a known boundary condition on the velocity (a moving wall).
 2. **Pressure-driven flow**: the flow is imposed by a pressure difference between two locations.
@@ -46,10 +46,7 @@ $$
 \mathbf{u}= \langle u, v, w\rangle = \langle u, 0, 0\rangle.
 $$
 
-We are going to study **boundary-driven** and **pressure-driven** flows. Both have the same initial steps.
-
-
-Begin by looking at **conservation of mass**:
+We are going to study **boundary-driven** and **pressure-driven** flows. Both have the same initial steps. Begin by looking at **conservation of mass**:
 
 
 $$
@@ -70,7 +67,7 @@ $$
 0 = -\frac{\partial p}{\partial y} - \rho g
 $$
 
-which tells us that the only reason pressure changes in the $\mathbf{\hat{y}}$-direction is due to hydrostatics.
+which tells us that the only reason pressure changes in the $\mathbf{\hat{y}}$-direction is due to hydrostatics. That is: the flow in the $\mathbf{\hat{x}}$-direction does not influence the pressure distribution in the $\mathbf{\hat{y}}$-direction.
 
 Now let's look at **conservation of momentum in the $\mathbf{\hat{x}}$-direction**. The full equation is
 
@@ -83,9 +80,9 @@ $$
 
 All of the following are zero, make sure you understand why!
 
-- $u \partial u/\partial x$: from conservation of mass we revealed $\partial u/\partial x=0$.
-- $v \partial u/\partial y$: we assumed unidirectional flow, $v=0$.
-- $w \partial u/\partial z$: we assumed unidirectional flow, $w=0$.
+- $u\, \partial u/\partial x$: from conservation of mass we learned $\partial u/\partial x=0$.
+- $v\, \partial u/\partial y$: we assumed unidirectional flow, $v=0$.
+- $w\, \partial u/\partial z$: we assumed unidirectional flow, $w=0$.
 - $\partial^2 u/\partial x^2$: if $\partial u/\partial x=0$ everywhere, the second derivative is zero everywhere as well.
 - $\partial^2 u/\partial z^2$: we assumed symmetry in $z$ such that nothing depends on $z$.
 
@@ -107,7 +104,7 @@ $$
 \rho\frac{\partial u}{\partial t} =  \mu\frac{\partial^2 u}{\partial y^2}.
 $$
 
-This is a famous partial differential equation: the heat or diffusion equation. I just wanted to mention it... we are also going to assume steady-state, leaving
+This is a famous partial differential equation: "the heat equation" or "the diffusion equation". There are techniques to solve it, if you ever take a PDE class! I just wanted to mention it... we are also going to assume steady-state, leaving
 
 $$
 0 =  \frac{d^2 u}{d y^2}
@@ -186,22 +183,20 @@ We'll talk more about this result later, but let's go ahead and look at pressure
 
 ## Pressure-driven flow
 
-Returning to @eq-x-reduced: let's instead say that both walls are stationary, but there is an imposed pressure on the left. We'll assume that, over a distance $L$, the pressure drops by an amount $\Delta p$. More specifically: we'll assume we have the same pressure-drop-per-distance everywhere.
-
-In such a case, we can say $\partial p/\partial x = -\Delta p/L$. Again assuming the flow is steady, our governing equation becomes 
+Returning to @eq-x-reduced: let's instead say that both walls are stationary, but there is a pump or something far upstream (on the left). We'll assume that, over a distance $L$, the pressure drops by an amount $\Delta p$. More specifically: we'll assume we have the same pressure-drop-per-distance everywhere: $\partial p/\partial x = -\Delta p/L$. Again assuming the flow is steady, our governing equation becomes 
 
 $$
 0 = \frac{\Delta p}{L} +\mu \frac{d^2 u}{dy^2}.
 $$
 
 
-Again: we'll solve by integration. The solution is
+And again, we'll solve by integration. The solution is
 
 $$
 u(y) = c_2 + c_1y- \frac{\Delta p}{2\mu L}y^2.
 $$
 
-Again, we'll use no-slip as our boundary conditions, though in this case $u(y=0)=0=u(y=h)$. Writing the system of equations: 
+We'll use no-slip as our boundary conditions, though in this case $u(y=0)=0=u(y=h)$. Writing the system of equations: 
 
 $$
 \begin{align*}
@@ -210,7 +205,11 @@ u(y=h)=&0=c_2+c_1 h-\frac{\Delta p}{2\mu L}h^2
 \end{align*}
 $$
 
-we find $c_2=0$ and $c_1=h\Delta p/(2\mu L)$. That is, our solution is
+we find $c_2=0$ and $c_1=h\Delta p/(2\mu L)$. That is, our solution is a superposition of the two solutions from above.
+
+::: {.column-margin}
+Because our governing equation was linear, we an superpose solutions.
+:::
 
 $$
 u(y) = \frac{\Delta p}{2\mu L}\,y(h-y).
