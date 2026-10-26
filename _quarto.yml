@@ -79,7 +79,8 @@ website:
       - section: "Unit 5 · Differential forms"
         contents:
           # 9.3 (differential forms) is an optional "extra" reading,
-          # published ahead of 9.1 and 9.2.
+          # published ahead of 9.2.
+          - modules/unit-5/cartesian-flows.qmd
           - modules/unit-5/diff-forms.qmd
       - section: "Homework"
         contents:
