@@ -389,21 +389,29 @@ $$
 
 ::: {.callout-important}
 
-One thing I forgot in the original version of this page: we must account for pressure acting on the control surface. Let's use absolute pressure at first, but we will see in the result that gauge pressure is also acceptable.
+One thing I forgot in the original version of this page: we must account for pressure acting on the control surface. We'll use gauge pressure throughout (see the note below for why that's OK).
 
-So: at the outlet of the control volume, we know the pressure is $p_\text{atm}$. Using Bernoulli's Equation we can determine the pressure at the inlet of the control volume:
+The outlet is open to the atmosphere, so $p_2 = 0$ (gauge). Using Bernoulli's Equation we can determine the pressure at the inlet of the control volume:
 
 $$
-p_1 + \tfrac{1}{2}\rho U_1^2 = p_\text{atm} + \tfrac{1}{2}\rho U_2^2
+p_1 + \tfrac{1}{2}\rho U_1^2 = 0 + \tfrac{1}{2}\rho U_2^2
 \quad\implies\quad
-p_1 = p_\text{atm} + \tfrac{1}{2}\rho\left(U_2^2 - U_1^2\right) = p_\text{atm} + \frac{\rho Q^2}{2}\left(\frac{1}{A_2^2} - \frac{1}{A_1^2}\right)
+p_1 = \tfrac{1}{2}\rho\left(U_2^2 - U_1^2\right) = \frac{\rho Q^2}{2}\left(\frac{1}{A_2^2} - \frac{1}{A_1^2}\right)
 $$
 
-I'll modify the equations below to include these within the $\mathbf{F}_\text{ext}$ term. The force from the duct wall on the fluid, $\mathbf{F}_\text{wall}$, we treat as one lumped unknown. The two new terms are the pressure on the inlet face, which pushes along $+\hat{\mathbf{z}}$ (since $\hat{\mathbf{n}} = -\hat{\mathbf{z}}$ there and the pressure force is $-p\hat{\mathbf{n}}A$), and the pressure on the outlet face, which pushes along $-\hat{\mathbf{z}}$:
+I'll modify the equations below to include this within the $\mathbf{F}_\text{ext}$ term. The force from the duct wall on the fluid, $\mathbf{F}_\text{wall}$, we treat as one lumped unknown. (This means we don't have to integrate pressure over the angled wall.) The one new term is the pressure on the inlet face, which pushes along $+\hat{\mathbf{z}}$ (since $\hat{\mathbf{n}} = -\hat{\mathbf{z}}$ there and the pressure force is $-p\hat{\mathbf{n}}A$). The outlet face has zero gauge pressure, so it contributes nothing:
 
 $$
-\sum \mathbf{F}_\text{ext} = \mathbf{F}_\text{wall} + p_1 A_1\,\hat{\mathbf{z}} - p_\text{atm} A_2\,\hat{\mathbf{z}}
+\sum \mathbf{F}_\text{ext} = \mathbf{F}_\text{wall} + p_1 A_1\,\hat{\mathbf{z}}
 $$
+
+:::
+
+::: {.callout-note collapse="true" title="Why is gauge pressure OK?"}
+
+The atmosphere pushes on *everything*: on our control volume, and on the outside of the duct. A uniform pressure acting on a closed control surface produces zero net force. So subtracting $p_\text{atm}$ everywhere doesn't change the force the support has to carry.
+
+(Sanity check: if we somehow increased the pressure, the support shouldn't notice.)
 
 :::
 
@@ -411,17 +419,12 @@ $$
 
 $$
 \begin{aligned}
-\mathbf{F}_\text{wall} + \left(p_1 A_1 - p_\text{atm} A_2\right)\hat{\mathbf{z}} &= \cancelto{0}{\int_{CV} \frac{\partial}{\partial t}(\rho\,\mathbf{u})\, dV} + \int_{CS} \rho\,\mathbf{u}\,(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS \\
+\mathbf{F}_\text{wall} + p_1 A_1\,\hat{\mathbf{z}} &= \cancelto{0}{\int_{CV} \frac{\partial}{\partial t}(\rho\,\mathbf{u})\, dV} + \int_{CS} \rho\,\mathbf{u}\,(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS \\
 &= \iint \underbrace{\rho\,\mathbf{u}\,(\mathbf{u}\cdot\hat{\mathbf{n}})}_{\color{blue}{\rho(U_1\hat{\mathbf{z}})\left[(U_1\hat{\mathbf{z}})\cdot(-\hat{\mathbf{z}})\right]}}\, dA_\text{in}
 + \iint \underbrace{\rho\,\mathbf{u}\,(\mathbf{u}\cdot\hat{\mathbf{n}})}_{\color{purple}{\rho(U_2\hat{\mathbf{z}})\left[(U_2\hat{\mathbf{z}})\cdot(\hat{\mathbf{z}})\right]}}\, dA_\text{out}
 \end{aligned}
 $$
 
-$$
-\color{blue}{\rho(U_1\hat{\mathbf{z}})\left[U_1(-1)\right] = -\rho U_1^2\,\hat{\mathbf{z}}}
-\qquad\qquad
-\color{purple}{= \rho U_2^2\,\hat{\mathbf{z}}}
-$$
 
 $$
 \begin{aligned}
@@ -436,12 +439,13 @@ $$
 
 $$
 \begin{aligned}
-\mathbf{F}_\text{wall} &= -\rho Q^2\left(\frac{1}{A_1} - \frac{1}{A_2}\right)\hat{\mathbf{z}} - \left(p_1 A_1 - p_\text{atm} A_2\right)\hat{\mathbf{z}} \\
-&= -\rho Q^2\left(\frac{1}{A_1} - \frac{1}{A_2}\right)\hat{\mathbf{z}} - \left[\underbrace{\tfrac{1}{2}\rho\left(U_2^2 - U_1^2\right)A_1}_{\text{gauge part of } p_1 A_1} + p_\text{atm}\left(A_1 - A_2\right)\right]\hat{\mathbf{z}}
+\mathbf{F}_\text{wall} &= -\rho Q^2\left(\frac{1}{A_1} - \frac{1}{A_2}\right)\hat{\mathbf{z}} - p_1 A_1\,\hat{\mathbf{z}} \\
+&= -\rho Q^2\left(\frac{1}{A_1} - \frac{1}{A_2}\right)\hat{\mathbf{z}} - \frac{\rho Q^2}{2}\left(\frac{1}{A_2^2} - \frac{1}{A_1^2}\right)A_1\,\hat{\mathbf{z}} \\
+&= -\left[\rho Q^2\left(\frac{1}{A_1} - \frac{1}{A_2}\right) + \frac{\rho Q^2}{2}\left(\frac{A_1}{A_2^2} - \frac{1}{A_1}\right)\right]\hat{\mathbf{z}}
 \end{aligned}
 $$
 
-The leftover $p_\text{atm}(A_1 - A_2)$ is exactly what the atmosphere pushing on the *outside* of the duct cancels (a uniform pressure on a closed surface nets to zero), so we can drop it and work in gauge pressure. Then **the force on the support from the flow is equal and opposite to the force on the flow from the surroundings**:
+Then **the force on the support from the flow is equal and opposite to the force on the flow from the duct**:
 
 $$
 \implies \boxed{\; \mathbf{F}_\text{on support} = \left[\rho Q^2\left(\frac{1}{A_1} - \frac{1}{A_2}\right) + \frac{\rho Q^2}{2}\left(\frac{A_1}{A_2^2} - \frac{1}{A_1}\right)\right]\hat{\mathbf{z}} = \frac{\rho Q^2}{2A_1}\left(1 - \frac{A_1}{A_2}\right)^2\hat{\mathbf{z}} \;}
