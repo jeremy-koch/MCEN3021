@@ -83,7 +83,7 @@ $$
 A(t) = \int_{CV} \alpha(\mathbf{x},t)\, dV.
 $$
 
-Then let's suppose we are interesting in tracking the change in $A$ with time. It's complicated! As the parcel moves, it covers a new position $\mathbf{x}$ and may have changed shape. The $\alpha$-field may have changed as well. We are facing the same issue as we did when motivating the material derivative: our conservation laws are for particles, but we don't want to have to follow every fluid parcel in order to completely describe the flow. 
+Then let's suppose we are interested in tracking the change in $A$ with time. It's complicated! As the parcel moves, it covers a new position $\mathbf{x}$ and may have changed shape. The $\alpha$-field may have changed as well. We are facing the same issue as we did when motivating the material derivative: our conservation laws are for particles, but we don't want to have to follow every fluid parcel in order to completely describe the flow. 
 
 
 ::: {.callout-important title="Reynolds' Transport Theorem"}
@@ -106,10 +106,10 @@ Let's say a little more about the $dS$ integral: it includes, in the integrand, 
 - The outward-facing normal is going to change depending on your location on the control volume surface: in the cylinder above, it will point upstream (probably $-\hat{\mathbf{z}}$) on the upstream side of the cylinder, downstream ($\hat{\mathbf{z}}$) on the downstream side, and radially outwards ($\hat{\mathbf{r}}$) on the curved part of the cylinder.
 - About the radial part of the integral... assuming the tube has solid walls, flow will be proceeding downstream, in the $\hat{\mathbf{z}}$-direction. The dot-product $\hat{\mathbf{z}}\cdot\hat{\mathbf{r}}=0$... that is, the integral is zero for this part of the control surface. **This corresponds to the truth that there is no flow entering or leaving the control volume through this surface.**
 - On the downstream side, the flow direction and outward-facing normal are aligned — the dot product of those vectors is positive. This corresponds to a "flux out" of the control volume.
-On the upstread side, the flow direction and outward-facing normal are opposed — the dot product of those vectors is negative. This corresponds to a "flux in" to the control volume.
+- On the upstream side, the flow direction and outward-facing normal are opposed — the dot product of those vectors is negative. This corresponds to a "flux in" to the control volume.
 
 ::: {.column-margin}
-A "flux" is a flow of something per area. In the integral conservation laws, the integrand of the $dS$ derivative is a flux, and then after integrating we get a (total) flow.
+A "flux" is a flow of something per area. In the integral conservation laws, the integrand of the $dS$ integral is a flux, and then after integrating we get a (total) flow.
 :::
 
 ## Conservation of mass
@@ -132,16 +132,10 @@ The meaning: if there is more material flowing in than out (as described by the 
 
 ## Example: uniform in, parabolic out
 
-With integral conservation laws, we need to make assumptions about what is happening at the inlets and outlets. To say it another way: **In general, we can't derive the profiles at the inlets and outlets, they must be given/assumed** 
+With integral conservation laws, we need to make assumptions about what is happening at the inlets and outlets. To say it another way: **In general, we can't derive the profiles at the inlets and outlets, they must be given/assumed.**
 
 
-However, we could assume that flow is uniform or parabolic at an inlet, and then compute some interesting things. Let's assume flow enters a cylinder of radius $R$ with uniform speed $U_0$ and leaves with a parabolic profile
-
-
-
-But if we can make a good guess about those situations, we can compute some interesting things.
-
-Here is one example: Flow enters a tube with a uniform profile, $\mathbf{u}=U_0 \mathbf{\hat{z}}$, and leaves with a parabolic profile, $\mathbf{u}=C(1-(r/R)^2) \mathbf{\hat{z}}$. The question is: what is the value of $C$?
+However, we could assume that flow is uniform or parabolic at an inlet, and then compute some interesting things. Let's assume flow enters a cylinder of radius $R$ with uniform velocity $\mathbf{u}=U_0 \mathbf{\hat{z}}$ and leaves with a parabolic profile $\mathbf{u}=C(1-(r/R)^2) \mathbf{\hat{z}}$. The question is: what is the value of $C$?
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -212,7 +206,7 @@ $$
 - Flow profile at the inlet $\mathbf{u}=U_0 \mathbf{\hat{z}}$.
 - Flow profile at the outlet $\mathbf{u}=C(1-(r/R)^2) \mathbf{\hat{z}}$.
 
-**3) Describe the surface integrals in terms of good coordinates.** Here, we can break up the integral into three parts: one of them will be an integral over the curved part of a cylinder (and actually we will immediately see it evalutes to zero); the other two are integrations over circles of a cylinder.
+**3) Describe the surface integrals in terms of good coordinates.** Here, we can break up the integral into three parts: one of them will be an integral over the curved part of a cylinder (and actually we will immediately see it evaluates to zero); the other two are integrations over circles of a cylinder.
 
 $$
 \int (...)\ dS = \int (...)\ dA_\text{in} + \int (...)\ dA_\text{out} + \int (...)\ dA_\text{wall}.
@@ -267,7 +261,7 @@ If we are following a fluid parcel and its momentum changed... how would that ha
 Here, our extensive property would be evaluated as something like
 
 $$
-\int_{CV} \rho \mathbf{u} dV
+\int_{CV} \rho \mathbf{u} \,dV
 $$
 
 and the corresponding intensive quantity is $\rho \mathbf{u}$. Plugging this in to RTT...
@@ -289,7 +283,7 @@ The meaning:
 
 ## Example: force on a support
 
-Flow passes through a diverging duct that is supported by a post. Does the support experience a force due to the flow?
+Flow comes from a pipe and passes through a diverging duct that is supported by a post. Does the support experience a force due to the flow?
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -317,6 +311,13 @@ Flow passes through a diverging duct that is supported by a post. Does the suppo
     <ellipse cx="420" cy="140" rx="14" ry="110"/>
   </g>
 
+  <!-- the feed pipe (same diameter as the duct inlet), cut off with a break line on the left -->
+  <g stroke="#1a1a1a" stroke-width="2" fill="none">
+    <line x1="85" y1="115" x2="160" y2="115"/>
+    <line x1="85" y1="165" x2="160" y2="165"/>
+    <path d="M 85 115 L 80 125 L 90 135 L 80 145 L 90 155 L 85 165"/>
+  </g>
+
   <!-- control surface -->
   <g stroke="#e0311f" stroke-width="1.3" stroke-dasharray="4 3" fill="none">
     <path d="M 160 121 C 260 116 330 77 418 38"/>
@@ -332,8 +333,8 @@ Flow passes through a diverging duct that is supported by a post. Does the suppo
   <path d="M 238 282 Q 250 262 262 272 Q 274 280 290 262" stroke="#1a1a1a" stroke-width="1.3" fill="none" marker-end="url(#rtt3-arrow-black)"/>
 
   <!-- inflow Q and the z direction -->
-  <text x="45" y="148" font-size="22" fill="#1f77e0">Q</text>
-  <line x1="70" y1="140" x2="185" y2="140" stroke="#1f77e0" stroke-width="2" marker-end="url(#rtt3-arrow-blue)"/>
+  <text x="40" y="148" font-size="22" fill="#1f77e0">Q</text>
+  <line x1="62" y1="140" x2="185" y2="140" stroke="#1f77e0" stroke-width="2" marker-end="url(#rtt3-arrow-blue)"/>
   <line x1="185" y1="140" x2="235" y2="140" stroke="#1a1a1a" stroke-width="2" marker-end="url(#rtt3-arrow-black)"/>
   <text x="240" y="147" font-size="20" fill="#1a1a1a">ẑ</text>
 
@@ -363,7 +364,7 @@ Find the force *on* the support, including direction. We'll streamline the steps
 **0) Define the CV/CS**. Similarly to above, we'll make sure to include the inlet and outlet in our CV.
 
 
-**1) Apply conservation of mass, with assumptions.** A common step: conservation of mass allows us to relate the velocities at the inlet and outlet. We'll ssume $\rho = \text{const}$ and assume uniform flow at the inlet and outlet.
+**1) Apply conservation of mass, with assumptions.** A common step: conservation of mass allows us to relate the velocities at the inlet and outlet. We'll assume $\rho = \text{const}$ and assume uniform flow at the inlet and outlet.
 
 $$
 \begin{aligned}
@@ -385,9 +386,32 @@ $$
 
 **2) Apply conservation of momentum:**
 
+
+::: {.callout-important}
+
+One thing I forgot in the original version of this page: we must account for pressure acting on the control surface. Let's use absolute pressure at first, but we will see in the result that gauge pressure is also acceptable.
+
+So: at the outlet of the control volume, we know the pressure is $p_\text{atm}$. Using Bernoulli's Equation we can determine the pressure at the inlet of the control volume:
+
+$$
+p_1 + \tfrac{1}{2}\rho U_1^2 = p_\text{atm} + \tfrac{1}{2}\rho U_2^2
+\quad\implies\quad
+p_1 = p_\text{atm} + \tfrac{1}{2}\rho\left(U_2^2 - U_1^2\right) = p_\text{atm} + \frac{\rho Q^2}{2}\left(\frac{1}{A_2^2} - \frac{1}{A_1^2}\right)
+$$
+
+I'll modify the equations below to include these within the $\mathbf{F}_\text{ext}$ term. The force from the duct wall on the fluid, $\mathbf{F}_\text{wall}$, we treat as one lumped unknown. The two new terms are the pressure on the inlet face, which pushes along $+\hat{\mathbf{z}}$ (since $\hat{\mathbf{n}} = -\hat{\mathbf{z}}$ there and the pressure force is $-p\hat{\mathbf{n}}A$), and the pressure on the outlet face, which pushes along $-\hat{\mathbf{z}}$:
+
+$$
+\sum \mathbf{F}_\text{ext} = \mathbf{F}_\text{wall} + p_1 A_1\,\hat{\mathbf{z}} - p_\text{atm} A_2\,\hat{\mathbf{z}}
+$$
+
+:::
+
+
+
 $$
 \begin{aligned}
-\sum \mathbf{F}_\text{ext} &= \cancelto{0}{\int_{CV} \frac{\partial}{\partial t}(\rho\,\mathbf{u})\, dV} + \int_{CS} \rho\,\mathbf{u}\,(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS \\
+\mathbf{F}_\text{wall} + \left(p_1 A_1 - p_\text{atm} A_2\right)\hat{\mathbf{z}} &= \cancelto{0}{\int_{CV} \frac{\partial}{\partial t}(\rho\,\mathbf{u})\, dV} + \int_{CS} \rho\,\mathbf{u}\,(\mathbf{u}\cdot\hat{\mathbf{n}})\, dS \\
 &= \iint \underbrace{\rho\,\mathbf{u}\,(\mathbf{u}\cdot\hat{\mathbf{n}})}_{\color{blue}{\rho(U_1\hat{\mathbf{z}})\left[(U_1\hat{\mathbf{z}})\cdot(-\hat{\mathbf{z}})\right]}}\, dA_\text{in}
 + \iint \underbrace{\rho\,\mathbf{u}\,(\mathbf{u}\cdot\hat{\mathbf{n}})}_{\color{purple}{\rho(U_2\hat{\mathbf{z}})\left[(U_2\hat{\mathbf{z}})\cdot(\hat{\mathbf{z}})\right]}}\, dA_\text{out}
 \end{aligned}
@@ -408,16 +432,19 @@ $$
 \end{aligned}
 $$
 
-**3) Interprete.** Because $\dfrac{1}{A_1} - \dfrac{1}{A_2} > 0$ and 
+**3) Interpret.** Because $\dfrac{1}{A_1} - \dfrac{1}{A_2} > 0$, the momentum flux on the right is along $-\hat{\mathbf{z}}$: the flow is slowing down, which means the acceleration points upstream. Now we solve for the unknown wall force, substituting $p_1$ from Bernoulli:
 
 $$
-\implies \sum \mathbf{F}_\text{ext} \sim -\hat{\mathbf{z}}.
+\begin{aligned}
+\mathbf{F}_\text{wall} &= -\rho Q^2\left(\frac{1}{A_1} - \frac{1}{A_2}\right)\hat{\mathbf{z}} - \left(p_1 A_1 - p_\text{atm} A_2\right)\hat{\mathbf{z}} \\
+&= -\rho Q^2\left(\frac{1}{A_1} - \frac{1}{A_2}\right)\hat{\mathbf{z}} - \left[\underbrace{\tfrac{1}{2}\rho\left(U_2^2 - U_1^2\right)A_1}_{\text{gauge part of } p_1 A_1} + p_\text{atm}\left(A_1 - A_2\right)\right]\hat{\mathbf{z}}
+\end{aligned}
 $$
 
-This makes sense: the flow is slowing down, which means the acceleration points upstream.
-
-Then **the force on the support from the flow is equal and opposite to the force on the flow from the surroundings**:
+The leftover $p_\text{atm}(A_1 - A_2)$ is exactly what the atmosphere pushing on the *outside* of the duct cancels (a uniform pressure on a closed surface nets to zero), so we can drop it and work in gauge pressure. Then **the force on the support from the flow is equal and opposite to the force on the flow from the surroundings**:
 
 $$
-\implies \boxed{\; \mathbf{F}_\text{on support} = \rho Q^2\left(\frac{1}{A_1} - \frac{1}{A_2}\right)\hat{\mathbf{z}} \;}
+\implies \boxed{\; \mathbf{F}_\text{on support} = \left[\rho Q^2\left(\frac{1}{A_1} - \frac{1}{A_2}\right) + \frac{\rho Q^2}{2}\left(\frac{A_1}{A_2^2} - \frac{1}{A_1}\right)\right]\hat{\mathbf{z}} = \frac{\rho Q^2}{2A_1}\left(1 - \frac{A_1}{A_2}\right)^2\hat{\mathbf{z}} \;}
 $$
+
+A quick check: if $A_2 = A_1$ it's a straight pipe, there's no pressure drop and no momentum change, and the force is zero. For any other area ratio it's positive, so the flow pushes the duct *downstream*.
