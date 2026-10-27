@@ -205,11 +205,8 @@ u(y=h)=&0=c_2+c_1 h-\frac{\Delta p}{2\mu L}h^2
 \end{align*}
 $$
 
-we find $c_2=0$ and $c_1=h\Delta p/(2\mu L)$. That is, our solution is a superposition of the two solutions from above.
+we find $c_2=0$ and $c_1=h\Delta p/(2\mu L)$. That is
 
-::: {.column-margin}
-Because our governing equation was linear, we an superpose solutions.
-:::
 
 $$
 u(y) = \frac{\Delta p}{2\mu L}\,y(h-y).
