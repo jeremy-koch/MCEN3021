@@ -78,9 +78,9 @@ website:
           - modules/unit-4/betz.qmd
       - section: "Unit 5 · Differential forms"
         contents:
-          # 9.3 (differential forms) is an optional "extra" reading,
-          # published ahead of 9.2.
+          # 9.3 (differential forms) is an optional "extra" reading.
           - modules/unit-5/cartesian-flows.qmd
+          - modules/unit-5/cyl-poiseuille.qmd
           - modules/unit-5/diff-forms.qmd
       - section: "Homework"
         contents:
