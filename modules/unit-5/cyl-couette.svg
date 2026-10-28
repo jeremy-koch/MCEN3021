@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="370" viewBox="0 0 600 370" font-family="Georgia, 'Times New Roman', serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c0392b"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3a8f3a"/>
+    </marker>
+    <marker id="arrow-dark" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/>
+    </marker>
+  </defs>
+
+  <!-- opaque light background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="600" height="370" fill="#ffffff"/>
+
+  <!-- view is looking down the cylinder axis (z out of the page); center at (230, 190) -->
+
+  <!-- fluid in the gap, bounded by the stationary outer cylinder -->
+  <circle cx="230" cy="190" r="150" fill="#d9f0d3" stroke="#1a1a1a" stroke-width="4"/>
+
+  <!-- rotating inner cylinder -->
+  <circle cx="230" cy="190" r="60" fill="#c9c9c9" stroke="#1a1a1a" stroke-width="2"/>
+  <path d="M 244 214.2 A 28 28 0 1 0 205.8 176" fill="none" stroke="#1a1a1a" stroke-width="1.6" marker-end="url(#arrow-dark)"/>
+  <text x="264" y="168" font-size="20" font-style="italic" fill="#1a1a1a" text-anchor="middle">&#937;</text>
+
+  <!-- velocity profile along a radial line: station line, u_theta(r) curve, arrows at r/R_in = 1.3, 1.7, 2.1 -->
+  <line x1="290" y1="190" x2="380" y2="190" stroke="#3a8f3a" stroke-width="3"/>
+  <path d="M 290.0 90.0 L 291.5 93.4 L 293.0 96.6 L 294.5 99.7 L 296.0 102.7 L 297.5 105.6 L 299.0 108.4 L 300.5 111.1 L 302.0 113.7 L 303.5 116.2 L 305.0 118.6 L 306.5 120.9 L 308.0 123.2 L 309.5 125.4 L 311.0 127.5 L 312.5 129.6 L 314.0 131.6 L 315.5 133.6 L 317.0 135.5 L 318.5 137.4 L 320.0 139.2 L 321.5 141.0 L 323.0 142.7 L 324.5 144.4 L 326.0 146.1 L 327.5 147.7 L 329.0 149.3 L 330.5 150.8 L 332.0 152.4 L 333.5 153.8 L 335.0 155.3 L 336.5 156.7 L 338.0 158.1 L 339.5 159.5 L 341.0 160.9 L 342.5 162.2 L 344.0 163.5 L 345.5 164.8 L 347.0 166.1 L 348.5 167.3 L 350.0 168.6 L 351.5 169.8 L 353.0 171.0 L 354.5 172.2 L 356.0 173.3 L 357.5 174.5 L 359.0 175.6 L 360.5 176.7 L 362.0 177.8 L 363.5 178.9 L 365.0 179.9 L 366.5 181.0 L 368.0 182.0 L 369.5 183.1 L 371.0 184.1 L 372.5 185.1 L 374.0 186.1 L 375.5 187.1 L 377.0 188.1 L 378.5 189.0 L 380.0 190.0" fill="none" stroke="#3a8f3a" stroke-width="1.5"/>
+  <line x1="290" y1="190" x2="290" y2="91" stroke="#3a8f3a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <line x1="308" y1="190" x2="308" y2="124" stroke="#3a8f3a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <line x1="332" y1="190" x2="332" y2="153" stroke="#3a8f3a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <line x1="356" y1="190" x2="356" y2="174" stroke="#3a8f3a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <text x="386" y="160" font-size="18" fill="#3a8f3a"><tspan font-style="italic">u</tspan><tspan font-size="12" dy="4" font-style="italic">&#952;</tspan><tspan dy="-4">(</tspan><tspan font-style="italic">r</tspan>)</text>
+
+  <!-- fluid properties -->
+  <text x="230" y="305" font-size="19" font-style="italic" fill="#c0392b" text-anchor="middle">&#961;, &#956;</text>
+
+  <!-- R_in: center to inner wall, along 180 deg -->
+  <line x1="230" y1="190" x2="172" y2="190" stroke="#c0392b" stroke-width="1.3" marker-end="url(#arrow)"/>
+  <text x="196" y="182" font-size="17" fill="#c0392b" text-anchor="middle"><tspan font-style="italic">R</tspan><tspan font-size="11" dy="4">in</tspan></text>
+
+  <!-- R_out: center to outer wall, along 225 deg -->
+  <line x1="230" y1="190" x2="125.4" y2="294.6" stroke="#c0392b" stroke-width="1.3" marker-end="url(#arrow)"/>
+  <text x="152" y="246" font-size="17" fill="#c0392b" text-anchor="middle"><tspan font-style="italic">R</tspan><tspan font-size="11" dy="4">out</tspan></text>
+
+  <!-- wall labels -->
+  <text x="400" y="330" font-size="15" fill="#1a1a1a">outer cylinder: stationary</text>
+  <line x1="398" y1="324" x2="340" y2="295" stroke="#1a1a1a" stroke-width="0.8"/>
+  <text x="10" y="30" font-size="15" fill="#1a1a1a">inner cylinder: spins at &#937;</text>
+  <line x1="90" y1="36" x2="196" y2="141" stroke="#1a1a1a" stroke-width="0.8"/>
+</svg>

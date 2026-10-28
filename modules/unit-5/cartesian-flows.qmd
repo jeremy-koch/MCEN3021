@@ -98,7 +98,11 @@ At this point we specialize.
 
 ## Boundary-driven flow
 
-We'll start with the case where the bottom plate is stationary and the top is moving to the right with speed $U$. In such a case, the pressure gradient term is zero and we have
+We'll start with the case where the bottom plate is stationary and the top is moving to the right with speed $U$.
+
+![Boundary-driven flow between parallel plates separated by a gap $h$. The bottom plate is stationary and the top plate moves to the right at speed $U$, dragging the fluid along with it.](channel-couette.svg)
+
+In such a case, the pressure gradient term is zero and we have
 
 $$
 \rho\frac{\partial u}{\partial t} =  \mu\frac{\partial^2 u}{\partial y^2}.
@@ -183,7 +187,11 @@ We'll talk more about this result later, but let's go ahead and look at pressure
 
 ## Pressure-driven flow
 
-Returning to @eq-x-reduced: let's instead say that both walls are stationary, but there is a pump or something far upstream (on the left). We'll assume that, over a distance $L$, the pressure drops by an amount $\Delta p$. More specifically: we'll assume we have the same pressure-drop-per-distance everywhere: $\partial p/\partial x = -\Delta p/L$. Again assuming the flow is steady, our governing equation becomes 
+Returning to @eq-x-reduced: let's instead say that both walls are stationary, but there is a pump or something far upstream (on the left). We'll assume that, over a distance $L$, the pressure drops by an amount $\Delta p$. More specifically: we'll assume we have the same pressure-drop-per-distance everywhere: $\partial p/\partial x = -\Delta p/L$.
+
+![Pressure-driven flow between stationary parallel plates separated by a gap $h$. Over a length $L$ the pressure drops from $p_0+\Delta p$ to $p_0$, driving a velocity profile $u_x(y)$.](channel-poiseuille.svg)
+
+Again assuming the flow is steady, our governing equation becomes 
 
 $$
 0 = \frac{\Delta p}{L} +\mu \frac{d^2 u}{dy^2}.

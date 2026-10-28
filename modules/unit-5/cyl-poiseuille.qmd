@@ -68,6 +68,9 @@ $$
 \mathbf{u} = \langle u_r, u_\theta, u_z\rangle = \langle 0, 0, u_z\rangle.
 $$
 
+![Pressure-driven flow in a tube of radius $R$. Over a length $L$ the pressure drops from $p_0+\Delta p$ to $p_0$, driving a velocity profile $u_z(r)$ that is fastest on the centerline (dashed) and zero at the walls.](pipe-poiseuille.svg)
+
+
 **Conservation of mass:**
 
 ::: {.callout-caution}
@@ -208,6 +211,12 @@ $$
 $$
 
 That is: it is **unidirectional** in the $\boldsymbol{\hat{\theta}}$ direction.
+
+![Flow between concentric cylinders, looking down the axis. The inner cylinder (radius $R_\text{in}$) spins at angular velocity $\Omega$ and the outer cylinder (radius $R_\text{out}$) is stationary. The fluid in the gap circles around, with speed $u_\theta(r)$ going from $\Omega R_\text{in}$ at the inner wall to zero at the outer wall.](cyl-couette.svg)
+
+
+
+
 
 **Conservation of mass:**
 
