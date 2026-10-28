@@ -80,7 +80,7 @@ $$
     \end{align*}
 $$
 
-    we recognize $z=-1$ (based on the F dimension) and so $x=-1$ (based on the T dimension). Then, after balancing the L dimension:
+we recognize $z=-1$ (based on the F dimension) and so $x=-1$ (based on the T dimension). Then, after balancing the L dimension:
 
 $$
         \Pi_2 =\frac{(\Delta p/\ell)R^4}{Q \mu}.
