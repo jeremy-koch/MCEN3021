@@ -1,0 +1,79 @@
+# Homework 6
+
+Due: Friday 6 November, 2026 11:59PM. Submitted to GradeScope.
+
+$$
+\newcommand{\pd}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\pdd}[2]{\dfrac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\bnabla}{\boldsymbol{\nabla}}
+\newcommand{\unit}[1]{\mathbf{\hat{#1}}}
+$$
+
+
+## 1. Two fluids are stacked between two plates...
+
+... in the boundary-driven Cartesian geometry from the reading. The plates are separated by a distance $h$. Fluid "A" (with known $\rho_\text{A}$, $\mu_\text{A}$) sits on top of fluid "B" ($\rho_\text{B}$, $\mu_\text{B}$), and their interface is a distance $h_\text{AB}$ above the bottom plate. The bottom plate is stationary, the top plate moves with speed $U$, and the system has reached steady state.
+
+Assume that both fluids move horizontally and that their interface remains at a constant height above the bottom plate.
+
+(a) For fluid "A", write out the full conservation of mass and $\unit{x}$-momentum equations and then simplify them, stating the assumption/reason you eliminate each term. (The simplification for "B" is exactly the same, so you don't need to repeat it.)
+
+(b) Clearly state the ordinary differential equation you will solve for both "A" and "B", and the boundary conditions (expressed mathematically). *(Hint: there is no slip at the interface, and at steady state the shear stress must match across the interface.)*
+
+(c) Solve for the velocity distributions. 
+
+(d) Sketch the profiles when $\mu_\text{B}=10\mu_\text{A}$.
+
+
+
+## 2. A wall shakes back and forth...
+
+... underneath a semi-infinite bath of fluid. The fluid fills $y>0$ and the wall is located at $y=0$. The wall oscillates left-to-right with a speed $U\cos(\omega t)$, where $U$ and $\omega$ are known constants. Far from the wall, the fluid is stationary. The flow has constant $\rho$ and $\nu\equiv \mu/\rho$ (kinematic viscosity), and gravity can be neglected.
+
+(a) Write the simplified form of the Navier-Stokes equations that applies to this situation. You only need to consider mass and $\unit{x}$-momentum, and do NOT need to solve them — just arrive at the simplified governing equations.
+
+(b) State the boundary conditions for $u$. (Don't worry about the initial condition.)
+
+(c) There is an exact solution to this situation, a little tricky to get to, given by:
+$$
+u(y,t)=U\exp\left[-y\sqrt{\frac{\omega}{2\nu}}\right]\cos\left[\omega t-y\sqrt{\frac{\omega}{2\nu}}\right].
+$$
+Don't worry about where it comes from (PDE witchcraft), but do verify that it satisfies
+
+  i. conservation of mass,
+  ii. the simplified governing equation you found in (a), and
+  iii. the boundary conditions you found in (b).
+
+(d) There is a location $y^*$ beyond which $|u|\leq 0.01 U$ for all times. Find $y^*$. *(Hint: what is the absolute biggest the cosine term could be?)*
+
+
+
+## 3. A fluid flows between two concentric cylinders...
+
+... with density $\rho$ and viscosity $\mu$. The inner cylinder has radius $R_\text{in}$, the outer cylinder has radius $R_\text{out}$, and both cylinders are stationary and infinitely long. An applied pressure gradient drives the fluid axially, such that the pressure drops by $\Delta p$ over an axial distance $L$.
+
+Determine the velocity distribution, assuming steady flow. Make a plot of the distribution.
+
+
+
+## Note on cylindrical coordinates
+
+Conservation of mass:
+$$
+\bnabla\cdot\mathbf{u}=0=\frac{1}{r}\pd{(ru_r)}{r}+\frac{1}{r}\pd{u_\theta}{\theta}+\pd{u_z}{z}
+$$
+
+Conservation of momentum in $\unit{r}$:
+$$
+\rho\left( \pd{u_r}{t} + u_r \pd{u_r}{r} + \frac{u_{\theta}}{r} \pd{u_r}{\theta} + u_z\pd{u_r}{z} - \frac{u_{\theta}^2}{r}\right) = - \pd{p}{r} + \mu \left( \pd{}{r} \left[ \frac{1}{r} \pd{(r u_r)}{r} \right] + \frac{1}{r^2} \pdd{u_r}{\theta} - \frac{2}{r^2} \pd{u_{\theta}}{\theta} + \pdd{u_r}{z} \right)
+$$
+
+Conservation of momentum in $\unit{\boldsymbol{\theta}}$:
+$$
+\rho \left(\pd{u_{\theta}}{t} + u_r \pd{u_{\theta}}{r} + \frac{u_{\theta}}{r} \pd{u_{\theta}}{\theta} + u_z \pd{u_{\theta}}{z} + \frac{u_r u_{\theta}}{r}\right) = -\frac{1}{r}\pd{p}{\theta}+ \mu \left( \pd{}{r} \left[ \frac{1}{r} \pd{(r u_{\theta})}{r}\right] + \frac{1}{r^2} \pdd{u_{\theta}}{\theta} + \frac{2}{r^2} \pd{u_r}{\theta} + \pdd{u_{\theta}}{z} \right)
+$$
+
+Conservation of momentum in $\unit{z}$:
+$$
+\rho \left(\pd{u_z}{t} + u_r \pd{u_z}{r} + \frac{u_{\theta}}{r} \pd{u_z}{\theta} + u_z \pd{u_z}{z}\right) = -\pd{p}{z} + \mu \left( \pdd{u_z}{r} + \frac{1}{r}\pd{u_z}{r} + \frac{1}{r^2} \pdd{u_z}{\theta} + \pdd{u_z}{z} \right)
+$$
