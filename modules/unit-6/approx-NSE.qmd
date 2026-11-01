@@ -2,14 +2,9 @@
 title: "10.3 Approximate solutions to the NSE"
 ---
 
+## The big idea
 
-There are few cases in which we can solve the Navier-Stokes Equations exactly, mostly "unidirectional flows". In this class of flows, the nonlinear term
-
-$$
-\underbrace{(\mathbf{u}\cdot\nabla)\mathbf{u}}_{\text{nonlinear}}
-$$
-
-becomes zero. The NSE in the flow direction turns into a linear ODE, and we can solve it.
+There are few cases in which we can solve the Navier-Stokes Equations (NSE) exactly, mostly "unidirectional flows". In this class of flows, the nonlinear term $(\mathbf{u}\cdot\nabla)\mathbf{u}$ becomes zero. The NSE in the flow direction turns into a linear ODE, and we can solve it.
 
 Aside from these special cases, the Navier-Stokes Equations, in their full form, are practically unsolvable because of that nonlinear term.
 
@@ -21,10 +16,10 @@ Aside from these special cases, the Navier-Stokes Equations, in their full form,
 Another approach: find a way to argue that certain terms in the NSE are negligible, and then the "approximate equation" is more tractable. It is typical to look through the prism of the Reynolds number:
 
 $$
-Re = \frac{\rho U L}{\mu} = \frac{\overbrace{\rho U^2}^{\text{momentum or inertia}}}{\underbrace{\mu U/L}_{\text{viscous stress or dissipation}}}
+Re = \frac{\rho U L}{\mu} = \frac{\rho U^2}{\mu U/L}=\frac{\text{momentum}}{\text{viscous dissipation}}
 $$
 
-$\text{Re}$ is a ratio of inertia to dissipation, and we can often estimate it at the start of a problem.
+$\text{Re}$ is a ratio of momentum to dissipation, and we can often estimate it at the start of a problem.
 
 ### Calculating Re
 
@@ -51,7 +46,7 @@ $$
 \underbrace{\rho\frac{D\mathbf{u}}{Dt}}_{\approx 0} = -\nabla p + \mu\nabla^2\mathbf{u}.
 $$
 
-"The Stokes Equations" are $0=-\nabla p + \mu\nabla^2\mathbf{u}$. These are linear PDEs and, though solving them is beyond the level of this class, there are many solution strategies. We can use the Stokes Equations to determine the solution for flow around a sphere:
+"The Stokes Equations" are $0=-\nabla p + \mu\nabla^2\mathbf{u}$ (with $\nabla\cdot\mathbf{u}=0$). These are coupled linear PDEs and there are many solution strategies (beyond the level of this class). For example, we can use the Stokes Equations to determine the solution for flow around a sphere:
 
 $$
 \begin{align*}
@@ -61,30 +56,27 @@ p &= p_\infty - \frac{3\mu U R}{2r^2}\cos\theta
 \end{align*}
 $$
 
-for a sphere of radius $R$ in a uniform stream of speed $U$, using spherical coordinates with $\theta$ measured from the direction of the incoming flow.
-
-Integrating the pressure and viscous stresses over the sphere's surface gives the drag force, known as **Stokes drag**: $F_D = 6\pi\mu U R$.
+for a sphere of radius $R$ in a uniform stream of speed $U$, using spherical coordinates. Integrating the pressure and viscous stresses over the sphere's surface gives the drag force, known as **Stokes drag**: $F_D = 6\pi\mu U R$.
 
 
 
 **Example when this occurs:** *H. pylori* bacteria swimming in the stomach.
 
 $$
-Re = \frac{\left(1000\ \tfrac{\text{kg}}{\text{m}^3}\right)\left(10^{-5}\ \tfrac{\text{m}}{\text{s}}\right)\left(10^{-5}\ \text{m}\right)}{\left(1\ \text{Pa}\cdot\text{s}\right)} = 10^{-7}
+Re = \frac{\left(1000\ \tfrac{\text{kg}}{\text{m}^3}\right)\left(10^{-5}\ \tfrac{\text{m}}{\text{s}}\right)\left(10^{-5}\ \text{m}\right)}{\left(1\ \text{Pa}\cdot\text{s}\right)} = 10^{-7}.
 $$
 
+Very low Reynolds Number, and so we might study this flow using Stokes Equations. Further, we know that high Reynolds Number phenomena such as turbulence and wakes are not relevant to swimming bacteria because $\text{Re}\ll 1$.
 
 ### High Reynolds number
 
-**Claim:** If $Re \gg 1$, viscosity is *probably* negligible (?)
+**Claim:** If $Re \gg 1$, viscosity is *probably* negligible (more on this soon).
 
 $$
 \rho\frac{D\mathbf{u}}{Dt} = -\nabla p + \underbrace{\mu\nabla^2\mathbf{u}}_{\approx 0} + \rho\mathbf{g}
 $$
 
-"The Euler Equations" are $\rho\frac{D\mathbf{u}}{Dt} = -\nabla p + \rho\mathbf{g}$. These are still nonlinear PDEs, so they are hard to solve directly.
-
-However, it can be shown that if $\mu = 0$ and the incoming flow has no rotation (e.g. a uniform stream), then $\nabla\times\mathbf{u} = 0$ everywhere. We call vector fields with zero curl "conservative" or "potential" fields, and they can be written as $\mathbf{u} = \nabla\phi$, where $\phi$ is the "velocity potential". Plugging this into conservation of mass gives
+"The Euler Equations" are $\rho\frac{D\mathbf{u}}{Dt} = -\nabla p + \rho\mathbf{g}$. These are still nonlinear PDEs, so they are hard to solve directly. However, it can be shown that: if $\mu = 0$ and the incoming flow has no rotation (e.g. a uniform stream), then $\nabla\times\mathbf{u} = 0$ everywhere. We call vector fields with zero curl "conservative" or "potential" fields, and they can be written as $\mathbf{u} = \nabla\phi$, where $\phi$ is the "velocity potential". Plugging this into conservation of mass gives
 
 $$
 \nabla\cdot\mathbf{u} = 0 \implies \nabla\cdot\nabla\phi = 0 \implies \nabla^2\phi = 0.
@@ -92,13 +84,13 @@ $$
 
 This is a classical linear PDE (Laplace's equation) with many solution strategies. This is the equation that is solved in [the airfoil simulation](../unit-3/joukowski.qmd#the-demo).
 
-However, potential flow does not predict wakes or turbulence or drag! We need to consider "boundary layer" physics. Namely, we hypothesize that, near surfaces (< 1 cm or so), viscosity actually is important.
+Potential flow works well for streamlined bodies (like the airfoil), but it does not predict wakes or turbulence or drag! We need to consider "boundary layer" physics. Namely, we hypothesize that, near surfaces (within 1 cm or so), viscosity actually is important.
 
 ## Boundary layers
 
-Before getting back into the math, let's give a bit of history. We learned about [d'Alembert's Paradox](../unit-3/lift-drag.qmd#the-pressure-on-the-surface), which is essentially the claim that there is no drag at high Reynolds Number. If a fluid has no viscosity, as we (naively) approximate at high Reynolds Number, there is no no-slip condition... physically, we'd expect there to be some "grab" at surfaces, even if the flow is fast. In 1904, Prandtl published a paper describing the **boundary layer**: a thin region near surfaces where viscosity is important (and thus we do have no slip). 
+Before getting back into the math, let's give a bit of history. We learned about [d'Alembert's Paradox](../unit-3/lift-drag.qmd#the-pressure-on-the-surface), which is essentially the claim that there is no drag at high Reynolds Number. If a fluid has no viscosity, as we (naively) approximate at high Reynolds Number, there is no no-slip condition... but intuitively, we'd expect there to be some "grab" at surfaces, even if the flow is fast. In 1904, Prandtl published a paper describing the **boundary layer**: a thin region near surfaces where viscosity is important. Thus, no slip is relevant.
 
-After some careful consideration of the magnitude of terms, we can write "The Bounday Layer Equations", an approximate form of the Navier-Stokes Equations:
+After some careful consideration of the magnitude of terms, we can write "The Bounday Layer Equations":
 
 $$
 \begin{align*}
@@ -108,9 +100,15 @@ $$
 \end{align*}
 $$
 
-The key assumption in arriving at these equations is that the boundary layer region is thin. 
+These are an approximate form of the Navier-Stokes Equations. The key assumption in arriving at these equations is that the boundary layer region is thin. Then we'd expect
 
-The bad news: these equations are still nonlinear, and thus we can't solve to get an analytical expression for $\mathbf{u}(x,y)$. The good news: for many model geometries, these equations can be solved numerically.
+$$
+\frac{\partial u}{\partial y} \gg \frac{\partial u}{\partial x}.
+$$
+
+Thus, we keep the $\partial^2 u/\partial y^2$ term in these equations, but neglect $\partial^2 u/\partial x^2$.
+
+The bad news: these equations are still nonlinear, and so we can't solve to get an analytical expression for $\mathbf{u}(x,y)$. The good news: for many model geometries, these equations can be solved numerically.
 
 We'll talk about some practicalities in the [boundary layer reading](boundary-layers.qmd).
 

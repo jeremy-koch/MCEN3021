@@ -5,46 +5,21 @@ title: "10.1 Boundary layers"
 {{< include ../_checkpoint-widget.qmd >}}
 
 
-<!-- The simplest configuration is the flat plate boundary layer:
-
-![](flat-plate-bl.png){width=100% fig-alt="Flat plate boundary layer. Uniform flow U (density ρ, kinematic viscosity ν ≡ μ/ρ) approaches a flat plate starting at x = 0. Velocity profiles show U unaffected by the wall far above, slowing to zero at the plate. A dashed curve marks the boundary layer thickness δ(x), which grows with x."}
-
-The boundary layer thickness $\delta$ increases with...
-
-- increasing distance along the plate $x$,
-- increasing value of $\nu \equiv \mu/\rho$ (kinematic viscosity) — the plate more easily "grabs flow",
-- decreasing free stream speed $U$.
-
-Dimensional analysis $\rightarrow$
-
-$$
-\frac{\delta}{x} \sim \frac{1}{\sqrt{Re_x}}
-$$
-
-and from computations
-
-$$
-\frac{\delta}{x} \approx \frac{5.0}{\sqrt{Re_x}}, \qquad Re_x = \frac{Ux}{\nu} = \frac{\rho U x}{\mu}.
-$$ -->
-
-
-
-
 
 ## Big picture
 
 I recommend reading [Approximate solutions to the NSE](approx-NSE.qmd) first. There, we introduce the idea of simplifying the Navier-Stokes Equations to get a set of equations that are approximate, but easier to analyze.
 
-The **boundary layer** is a region very near surfaces (within a centimeter or so) where *viscosity is important* (even though we might calculate $\text{Re}\approx 3000$, suggesting inertia is 3000 times more important than viscous dissipation). This idea helps us to understand why high-speed flows have drag, why flow separation occurs, and why wakes exist. 
+The **boundary layer** is a region very near surfaces (within a centimeter or so) where *viscosity is important* (even though the flow is $\text{Re}>1000$, suggesting that momentum is $1000\times$ more significant than viscous dissipation). This idea helps us to understand why high-speed flows have drag, why flow separation occurs, and why wakes exist. 
 
 ## Boundary layers
 
 Let's start with the simplest configuration: the "Flat Plate Boundary Layer".
 
-![](flat-plate-drag.png){width=100% fig-alt="Flat plate boundary layer. Uniform flow U (density ρ, kinematic viscosity ν ≡ μ/ρ). Above the dashed boundary layer thickness δ(x), the flow is not yet influenced. Velocity is zero at the plate (no-slip condition). Shear stress decreases as we progress downstream."}
+![](flat-plate-profiles.svg){width=100% fig-alt="Flat plate boundary layer. A uniform velocity profile approaches a flat plate whose leading edge is at the origin of the x-y axes. Two velocity profiles on the plate go from zero at the surface to the free-stream speed. A dashed curve marks the boundary layer thickness δ(x), which grows with distance x along the plate; the downstream profile is thicker."}
 
 
-Flow enters from the left with uniform speed $U$ (in $\boldsymbol{\hat{x}}$). It encounters a flat plate with its *leading edge* at $x=0$. The no-slip condition occurs at the surface, meaning $u(x>0,y=0)=0$. That is: at the surface we have zero speed, and far above the surface the flow is still at $U$, and so we have a velocity distribution $0\rightarrow U$.
+Flow enters from the left with uniform speed $U$ (in $\boldsymbol{\hat{x}}$). It encounters a flat plate with its *leading edge* at $x=0$. The no-slip condition occurs at the surface, meaning $u(x>0,y=0)=0$. That is: at the surface we have zero speed, and far above the surface the flow is still at $U$. So we have a velocity distribution that spans $0\rightarrow U$.
 
 How far above the plate do we need to be for the flow to still be at $U$? We can use a scaling analysis to determine the **boundary layer thickness** $\delta$ (a distance). We expect it to depend on where we are along the plate and on the flow (the influence of the wall diffuses upwards as the flow progresses), so for starters we will think about $\delta(x, U, \rho, \mu)$.
 
@@ -92,14 +67,22 @@ For each checkpoint below: enter **+1** if $\delta$ increases, **−1** if $\del
 ::: {#bl-scaling-combine .fl-hidden}
 The boundary layer thickness $\delta$ increases with...
 
-- increasing distance along the plate $x$,
-- increasing value of $\nu \equiv \mu/\rho$ (kinematic viscosity) — the plate more easily "grabs flow",
-- decreasing free stream speed $U$.
+- increasing distance along the plate $x$, as the effect on the flow takes some time to diffuse from the surface.
+- decreasing free stream speed $U$. The advection downstream is competing with the diffusion perpendicular to the flow, so faster flow means $\delta$ grows more slowly.
+- increasing value of $\mu$ — the plate more easily "grabs flow".
+- decreasing value of $\rho$ — "heavier" fluids have more inertia, and so slowing them down is more difficult.
+
 
 Then, via a scaling analysis,
 
 $$
-\frac{\delta}{x} \sim \frac{1}{\sqrt{Re_x}}.
+\delta \sim \sqrt{\frac{\mu x}{\rho U}}
+$$
+
+which can be rewritten as
+
+$$
+\frac{\delta}{x} \sim \sqrt{\frac{\mu}{\rho U x}}=\frac{1}{\sqrt{Re_x}}.
 $$
 
 The Boundary Layer Equations (from [the previous reading](approx-NSE.qmd))
@@ -126,45 +109,54 @@ $$
 
 We can also use the numerical solution to determine the drag force via
 
-
-
-
 $$
-F_D = \int_0^w\!\!\int_0^L \tau(x, 0, z)\, dx\, dz \qquad \text{with} \qquad \tau = \mu\frac{\partial u}{\partial y}
+F_D = \int_0^w\!\!\int_0^L \tau(x, 0, z)\, dx\, dz \qquad \text{with} \qquad \tau = \mu\frac{\partial u}{\partial y}.
 $$
 
+We'll talk about how it is catalogued in the next section.
 
+## Boundary layer evolution
 
-## Boundary layer physics: $Re \gtrsim 1000$
+![](bl-transition.svg){width=100% fig-alt="Boundary layer over a flat plate with free stream U∞. The boundary layer thickness δ(x) grows like the square root of x in the laminar region, thickens quickly through a transition region that begins at Re_crit ≈ 5×10^5, and then grows faster in the turbulent region, which is filled with eddies."}
 
-![](bl-transition.png){width=100% fig-alt="Boundary layer over a flat plate with free stream U∞. The edge of the boundary layer δ(x) is where u = 0.99 U∞. A laminar boundary layer (yellow) is followed by a transition region (green) near Re_crit ≈ 5×10^5 and then a turbulent boundary layer (red) with eddies. The turbulent profile has a sharper gradient in velocity after transitioning, so τ increases."}
-
-In all flow geometries (flat plate BL, flow over a sphere, pipe flow, etc.) the transition to turbulence occurs at a critical value of $Re$. For a flat plate,
-
-$$
-Re_x \equiv \frac{\rho U x}{\mu}, \qquad Re_\text{crit} \approx 5\times 10^5,
-$$
-
-where $x$ is the distance from the leading edge.
-
-## Boundary layer practicalities — determining drag on a flat surface
-
-Relevant: $F_D$, $L$, $w$, $\mu$, $\rho$, $U$, $\epsilon$ (surface roughness, [mm]).
+In all flow geometries (flat plate BL, flow over a sphere, pipe flow, etc.) the transition to turbulence occurs at a critical value of $\text{Re}$. For a flat plate, we define the Reynolds Number based on the distance from the leading edge, and the critical value is
 
 $$
-\left.\begin{aligned} n &= 7 \\ r &= 3 \end{aligned}\right\} \rightarrow 4 \text{ independent dimensionless groups}
+\text{Re}_x \equiv \frac{\rho U x}{\mu}, \qquad \text{Re}_\text{crit} \approx 5\times 10^5.
 $$
+
+After the transition to turbulence, the flow becomes completely three-dimensional. Consequently, the boundary layer thickness grows at a greater rate ($\sim x^{4/5}$) and the gradient of the (average) velocity becomes steeper at the plate's surface. The latter implies a greater shear stress at the surface (greater drag).
+
+
+## Determining drag on a flat surface
+
+For the problem of determining the drag, with turbulence and surface roughness being posibly relevant, we look to Buckingham-$\Pi$ to catalog the results. Our relevant parameters are 
+
+- $F_\text{D}$, the drag force.
+- $L$, the distance from the leading edge.
+- $w$, the plate width.
+- $\mu$
+- $\rho$
+- $U$
+- and $\epsilon$, the surface roughness, typically measured in mm.
+
+That is: $n=7$ parameters/variables, and it will take $n=3$ fundamental dimensions to describe them. From Buckingham-$\Pi$, we should expect $n-r=4$ independent dimensionless groups. They are
 
 Dimensionless groups:
 
-- The Reynolds number: $\displaystyle Re_L \equiv \frac{\rho U L}{\mu}$
-- The friction coefficient: $\displaystyle C_f \equiv \frac{F_D}{\tfrac{1}{2}\rho U^2 \cdot L\cdot w}$
-- The relative roughness: $\displaystyle \frac{\epsilon}{L}$
-- The aspect ratio: $\displaystyle \frac{w}{L}$ (assume not relevant)
+- The Reynolds number: $\text{Re}_L \equiv \frac{\rho U L}{\mu}$
+- The friction coefficient: $\displaystyle C_\text{f} \equiv \frac{F_D}{\tfrac{1}{2}\rho U^2 \cdot L\cdot w}$
+- The relative roughness: $\epsilon/L$
+- The aspect ratio: $w/L$ (which we assume is not relevant to the physics).
+
+That is:
 
 $$
-\implies C_f\left(Re_L, \frac{\epsilon}{L}\right)
+\implies C_f\left(\text{Re}_L, \frac{\epsilon}{L}\right).
 $$
+
+Here are some typical values for $\epsilon$:
+
 
 | Material          | Roughness $\epsilon$ [mm] |
 |-------------------|---------------------------|
@@ -177,11 +169,13 @@ $$
 | Drawn tubing      | 0.0015                    |
 | Plastic, glass    | $\sim 0$                  |
 
-e.g. concrete, $L = 1$ m patch:
+e.g. for a $L = 1$ m patch of concrete
 
 $$
-\frac{\epsilon}{L} = \frac{1\ \text{mm}}{1\ \text{m}} = 0.001
+\frac{\epsilon}{L} = \frac{1\ \text{mm}}{1\ \text{m}} = 0.001.
 $$
+
+And here are correlations for the friction coefficient:
 
 | $C_f$                                                  | Regime                                         |
 |--------------------------------------------------------|------------------------------------------------|
@@ -190,16 +184,4 @@ $$
 | $0.455/(\log Re_L)^{2.58}$                             | turbulent                                      |
 | $\left[1.89 - 1.62\log\left(\frac{\epsilon}{L}\right)\right]^{-2.5}$ | turbulent due to roughness       |
 
-Here $\log$ is base 10.
-
-Or: from a chart.
-
-![](cf-chart.png){width=80% fig-alt="Friction coefficient C_Df versus Re_ℓ from 10^5 to 10^9 for a flat plate, with curves for laminar, transitional, turbulent smooth plate, and completely turbulent flow at relative roughness ε/ℓ from 1×10^-6 to 5×10^-3. An example reading at Re_ℓ = 10^8 and ε/ℓ = 1×10^-3 gives C_Df ≈ 0.0085."}
-
-Compute $Re_L = \dfrac{\rho\cdot U\cdot L}{\mu}$ to read the chart, then unpack
-
-$$
-C_f = \frac{F_D}{\tfrac{1}{2}\rho U^2\cdot w\cdot L}
-$$
-
-to get $F_D$ in Newtons.
+(Here $\log$ is base 10.)
