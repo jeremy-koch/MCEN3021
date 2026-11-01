@@ -36,6 +36,15 @@ homework.qmd
 tools.qmd
 reference.qmd
 
+# Unit 6 draft not yet published (10.4) and the figures only it uses.
+modules/unit-6/knuckleball.qmd
+modules/unit-6/knuckleball.png
+modules/unit-6/knuckleball-seams.png
+modules/unit-6/pitching-schedules.png
+modules/unit-6/sphere-*.png
+modules/unit-6/cd-*.png
+modules/unit-6/couette-poiseuille.png
+
 # ── Python build & cache artifacts ──────────────────────────────────
 __pycache__/
 *.py[cod]

@@ -13,6 +13,7 @@ project:
     - "!homework/solutions/"
     - "!conceptests/"
     - "!modules/unpublished/"
+    - "!modules/unit-6/knuckleball.qmd"
   pre-render: python scripts/make_bundle.py
   resources:
     - fluidtools_bundle.py
@@ -82,6 +83,11 @@ website:
           - modules/unit-5/cartesian-flows.qmd
           - modules/unit-5/cyl-poiseuille.qmd
           - modules/unit-5/diff-forms.qmd
+      - section: "Unit 6 · Boundary layers"
+        contents:
+          # 10.3 (approximate solutions to the NSE) is an optional "extra" reading.
+          - modules/unit-6/boundary-layers.qmd
+          - modules/unit-6/approx-NSE.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd
