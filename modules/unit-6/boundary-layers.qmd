@@ -180,7 +180,7 @@ And here are correlations for the friction coefficient:
 | $C_f$                                                  | Regime                                         |
 |--------------------------------------------------------|------------------------------------------------|
 | $1.328/Re_L^{0.5}$                                     | laminar flow                                   |
-| $0.455/(\log Re_L)^{2.58} - 1700/Re_L$                 | transitional ($5\times 10^5 \pm 10\%$?)        |
+| $0.455/(\log Re_L)^{2.58} - 1700/Re_L$                 | transitional ($\text{Re}_L>\sim 5\times 10^5$)        |
 | $0.455/(\log Re_L)^{2.58}$                             | turbulent                                      |
 | $\left[1.89 - 1.62\log\left(\frac{\epsilon}{L}\right)\right]^{-2.5}$ | turbulent due to roughness       |
 
