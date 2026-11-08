@@ -88,6 +88,9 @@ website:
           # 10.3 (approximate solutions to the NSE) is an optional "extra" reading.
           - modules/unit-6/boundary-layers.qmd
           - modules/unit-6/approx-NSE.qmd
+      - section: "Unit 7 · Pipe flows"
+        contents:
+          - modules/unit-7/pipe-losses.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd

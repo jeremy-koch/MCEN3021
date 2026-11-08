@@ -110,3 +110,6 @@ CLAUDE.md
 
 # Local-only Claude Code skills (instructor workflow; not for the public repo)
 .claude/skills/
+
+# Unit 7 draft, not ready to publish
+modules/unit-7/parallel-flow.qmd
