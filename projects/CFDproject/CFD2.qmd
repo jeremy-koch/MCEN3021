@@ -4,7 +4,7 @@ title: "CFD Project 2"
 
 Computational Fluid Dynamics (CFD) is one of the most important tools an engineer has in their toolkit. If you ever "do" fluid dynamics in your work, there is a very decent chance it will be CFD. And even if you do not work directly in fluid dynamics, understanding the capabilities of CFD and having some idea of how to interpret the results of your team members will be a valuable skill.
 
-In this project you will think of a question that can potentially be answered by CFD (list of ideas below, and you can propose your own) and will run a set of simulations to investigate. The final submission will be a short 2--3 page report summarizing: your question and background (e.g., the theory), your simulation setup (e.g., the variables you examined, the variables you kept constant), and your data (not just pictures of the simulation results, try to plot something). You will end the report by commenting on the comparison of theory to "experiment" (your CFD results), including some discussion of the usefulness of theory and of CFD.
+In this project you will think of a question that can potentially be answered by CFD (list of ideas below, and you can propose your own) and will run a set of simulations to investigate. The final submission will be a short 3--4 page report summarizing: your question and background (e.g., the theory), your simulation setup (e.g., the variables you examined, the variables you kept constant), and your data (not just pictures of the simulation results -- try to plot something). You will end the report by commenting on the comparison of theory to "experiment" (your CFD results), including some discussion of the usefulness of theory and of CFD.
 
 I have talked with folks in industry about CFD. One comment that really stuck with me: most engineers can run the simulations and come up with some plots, but they are unable to explain the results. Try to be thoughtful about the fundamentals -- yes, the CFD is likely a more detailed representation of reality, but the simplified theoretical results we have been discussing all semester are meaningful and will help you understand the results.
 
@@ -24,9 +24,9 @@ $$
 C_\text{D} \equiv \frac{F_\text{D}}{\frac{1}{2}\rho U_\infty^2 A}, \qquad C_\text{L} \equiv \frac{F_\text{L}}{\frac{1}{2}\rho U_\infty^2 A}
 $$
 
-for high-Reynolds number flows. The implication is that the drag and lift will increase with the square of the velocity. Build a $C_\text{D}$ and $C_\text{L}$ vs. Re chart (or $F_\text{D}$ and $F_\text{L}$ vs. $U_\infty$, but dimensionless is preferred) to see the range over which this scaling is valid.
+for high-Reynolds-number flows. The implication is that the drag and lift will increase with the square of the velocity. Build a $C_\text{D}$ and $C_\text{L}$ vs. Re chart (or $F_\text{D}$ and $F_\text{L}$ vs. $U_\infty$, but dimensionless is preferred) to see the range over which this scaling is valid. Sharp-edged bodies (a flat plate normal to the incoming flow, a cube) supposedly have $C_\text{D}$ independent of $\text{Re}$, but rounded bodies (sphere, cylinder) have a "drag crisis" around $\text{Re}=3\times 10^5$. Does the turbulence model in SimScale predict this? Maybe not!
 
-### The Joukowsky airfoil
+<!-- ### The Joukowsky airfoil
 
 In 2D airfoil theory, the "Joukowsky airfoil" has lift-per-width
 
@@ -34,25 +34,25 @@ $$
 \frac{F_\text{L}}{w} = \pi \rho U_\infty^2 \ell \sin\left(\alpha + \frac{2h}{\ell}\right)
 $$
 
-where $\ell$ is the chord length, $\alpha$ the angle of attack, and $h$ the camber/curvature of the wing. Maybe you can CAD one of these airfoils and test one or two of these parameters -- e.g., does the lift really vary with angle of attack in this way? What is the limit on the angle of attack before the airfoil stalls and stops producing lift?
+where $\ell$ is the chord length, $\alpha$ the angle of attack, and $h$ the camber/curvature of the wing. Maybe you can CAD one of these airfoils and test one or two of these parameters -- e.g., does the lift really vary with angle of attack in this way? What is the limit on the angle of attack before the airfoil stalls and stops producing lift? -->
 
 ### Winglets
 
-We saw wingtip vortices in the example I did in class. These are related to the top-to-bottom imbalance in pressure and are generally considered undesirable as they reduce lift. "Winglets" are often added to wingtips to block this flow, and they can even help to generate more lift and thrust. Can you demonstrate this in CFD? How big do the winglets need to be?
+We saw wingtip vortices in the example I did in class. These are related to the top-to-bottom imbalance in pressure and are generally considered undesirable as they reduce lift. "Winglets" are often added to wingtips to block this flow, and they can even help to generate more lift and thrust. Can you demonstrate this in CFD? How big do the winglets need to be? You'll probably need to refine the mesh near the tip/in the wake to see the results you expect.
 
 ### Flying in formation
 
-On the other hand, geese fly in a V-formation because they *use* the wingtip vortex phenomenon. The trailing goose positions itself to "capture" the vortex created by the leading goose, which means the trailing goose can generate more lift with less effort. Can we harness this effect with airfoils too -- can you see an increase in lift for the trailing wing? Is there an ideal location for a given speed?
+On the other hand, geese fly in a V-formation because they *use* the wingtip vortex phenomenon. The trailing goose positions itself to "capture" the vortex created by the leading goose, which means the trailing goose can generate more lift with less effort. Can we harness this effect with airfoils too -- can you see an increase in lift for the trailing wing? Is there an ideal location for a given speed? You'll probably need to refine the mesh near the tip/in the wake to see the results you expect.
 
 ### Minor losses in pipe fittings
 
-We will see after break that pipes with bends, contractions, expansions, etc., have pressure losses associated with those geometries, characterized by the "minor loss coefficient"
+Pipes with bends, contractions, expansions, etc., have pressure losses associated with those geometries, characterized by the "minor loss coefficient"
 
 $$
 K_\text{L} \equiv \frac{\Delta p}{\frac{1}{2}\rho \overline{U}^2}.
 $$
 
-This coefficient is typically taken as a constant for the given geometry -- e.g., a $90^\circ$ bend might have $K_\text{L} = 0.7$. Is it really constant? How is it affected by the radius of curvature or pipe diameter?
+This coefficient is typically taken as a constant for the given geometry -- e.g., a $90^\circ$ bend might have $K_\text{L} = 0.7$. Is it really constant? How is it affected by the radius of curvature or pipe diameter? Does CFD give the same values as are catalogued?
 
 ::: {.column-margin}
 If you are interested in this one, let me know -- you will need to set up an "entrance length" in your simulation.
@@ -62,13 +62,24 @@ If you are interested in this one, let me know -- you will need to set up an "en
 
 For flow entering a tee junction, it is easy to claim the flow splits into two uniform streams. The flow is actually very complex and includes a recirculation region near the junction, which can trap particles. How big is this region? Does it depend on speed?
 
-### Testing an assumption
+### Skydiver positioning
 
-We make a lot of assumptions in fluid mechanics to make theoretical progress -- how valid are they? Choose a case and try to test the limits of when an assumption is reasonable.
+Skydivers reorient themselves to adjust their speed and trajectory. Explore these changes with a simplified model of a human. Estimate terminal velocity in different positions. (Talk to our course assistant JM about this one.)
 
-### Something else in SimScale
 
-There are a lot of next-level features built into SimScale, and I haven't explored them all. Rotating zones could be used to model turbines and pumps. The simulation type can be set to "Multiphase" -- could this be used to analyze the siphon problem in more detail? If you want to try something a little different than the internal and external flows described above, let's talk about it!
+
+
+<!-- ### Testing an assumption
+
+We make a lot of assumptions in fluid mechanics to make theoretical progress -- how valid are they? Choose a case and try to test the limits of when an assumption is reasonable. -->
+
+<!-- ### Something else in SimScale
+
+There are a lot of next-level features built into SimScale, and I haven't explored them all. Rotating zones could be used to model turbines and pumps. The simulation type can be set to "Multiphase" -- could this be used to analyze the siphon problem in more detail? If you want to try something a little different than the internal and external flows described above, let's talk about it! -->
+
+### Design your own
+
+Think of something that can be framed as a question and that can produce a plot (not just a screenshot of the output from SimScale). Let's talk about ideas! I would avoid unsteady or multiphase problems...
 
 ## What I'm looking for
 
@@ -76,9 +87,10 @@ In your submission, I will be looking for:
 
 1. **Success in setting up and post-processing CFD results**, including an understanding of what the boundary conditions should be and retrieving valuable engineering information from the simulations (e.g., the lift).
 2. **Thoughtful design of "experiment"**, including a statement of what variables will be tested, some comment (perhaps with a citation) about the expected results according to theory, and well-defined control variables.
-3. **Clear presentation of data**, including plot labels and units (dimensionless is preferred, if possible).
-4. **Knowledgeable discussion** of the fluids phenomenon and the CFD results.
-5. **A succinct conclusion**, including summarizing numbers and an informed comment on theory vs. computations.
+3. **Check with a refined mesh.** In at least one test case, check with two mesh sizes. If they agree, you can proceed with the coarser mesh.
+4. **Clear presentation of data**, including plot labels and units (dimensionless is preferred, if possible).
+5. **Knowledgeable discussion** of the fluids phenomenon and the CFD results.
+6. **A succinct conclusion**, including summarizing numbers and an informed comment on theory vs. computations.
 
 ::: {.column-margin}
 On summarizing numbers: "The data matches well with theory" is not as good as "the theory is $<10\%$ from the computational data for much of the range, but the error increases dramatically past $\mathrm{Re} = 10^6$."
