@@ -26,7 +26,7 @@ The fillets may be slightly adjusted if your parameter choices cause a conflict.
 According to 2D airfoil theory, the lift of this circular-arc airfoil per width at a particular speed, $U$, for air with density, $\rho$, is given by
 
 $$
-\frac{F_L}{w} = \pi \rho U^2 \ell \sin\left(\alpha + \frac{2h}{\ell}\right).
+\frac{F_\text{L}}{w} = \pi \rho U^2 \ell \sin\left(\alpha + \frac{2h}{\ell}\right).
 $$
 
 This expression indicates that the lift will increase with increasing angle of attack ($\alpha$), camber ($h$), and incoming fluid speed ($U$). But of course there are limits! Most intuitively: flow will not smoothly slip over an airfoil with an extreme angle of attack and will instead create a large wake region, thus destroying the pressure differential that is responsible for generating lift while also generating huge form drag.

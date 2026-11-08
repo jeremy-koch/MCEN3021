@@ -106,6 +106,7 @@ website:
       - section: "Projects"
         contents:
           - projects/CFDproject/CFD.qmd
+          - projects/CFDproject/CFD2.qmd
       # Everything not yet published lives in modules/unpublished/ (flat,
       # with superseded drafts in modules/unpublished/old/). The three
       # live units above were regrouped from the old week-based folders:
