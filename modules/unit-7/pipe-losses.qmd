@@ -14,7 +14,7 @@ In this lesson we are going to study those same issues in pipe flow. Flow throug
 - **"Major losses"** — friction along the pipe walls.
 - **"Minor losses"** — obstacles in the way of the flow (bends, valves, entrances, expansions).
 
-The engineering questions we want to answer are:
+By characterizing these, we can answer these engineering questions:
 
 1. How much pressure do we need to deliver flow rate $Q$?
 2. How much flow rate do we get if we supply a given $\Delta p/L$?
@@ -30,7 +30,7 @@ The engineering questions we want to answer are:
 **Look ahead**
 
 1. Can we analyze turbulent flows, even though there are no nice theoretical descriptions of the flow profiles?
-2. How do we calculate the flow through a pipe, given an upstream pressure, a downstream pressure, the geometry, and the pumps/turbines along the way?
+2. How do we calculate the flow rate through a pipe, given an upstream pressure, a downstream pressure, the geometry, and the pumps/turbines along the way?
 3. What if we are given a pressure instead?
 
 ## Entrance regions and turbulence
@@ -47,20 +47,29 @@ For the flat plate boundary layer, the transition to turbulence occurs at $\text
 
 ### Entrance region
 
-The boundary layer structure is present in pipe flow as well, at least near the pipe inlet. Uniform flow enters a pipe, and there is a region near the wall that is affected by the no-slip condition. It grows as the flow proceeds downstream, but, unlike the flat plate boundary layer, this geometry is confined — eventually, the boundary layer thickness reaches the center of the pipe. At this point, we say the flow is fully developed.
+The boundary layer structure is present in pipe flow as well, at least near the pipe inlet. Uniform flow enters a pipe, and there is a region near the wall that is affected by the no-slip condition. It grows as the flow proceeds downstream, but, unlike the flat plate boundary layer, this geometry is confined — eventually, the boundary layer thickness reaches the center of the pipe. At this point, we say the flow is fully developed. We estimate the **entrance length** as
 
-Also similar to the flat plate boundary layer: a critical Reynolds Number determines whether the flow becomes turbulent. However, for pipe flow, we use the pipe diameter as the characteristic length:
+$$
+\frac{\ell_\text{e}}{D} \approx
+\begin{cases}
+0.06\,\text{Re}_D & \text{laminar} \\
+4.4\,\text{Re}_D^{1/6} & \text{turbulent}
+\end{cases}
+$$
+
+where
 
 $$
 \text{Re}_D \equiv \frac{\rho \overline{U} D}{\mu}
 $$
 
-and, because we have a velocity distribution in the pipe (if it is laminar and fully developed the profile is [parabolic](../unit-5/cyl-poiseuille.qmd#pressure-driven-flow-in-a-cylindrical-tube)), we use the average velocity $\overline{U}$ instead of the uniform free-stream velocity. (I'm going to drop the overline and just use $U$ in the rest of the reading, but for pipe flow it is **the average speed** $Q/A$.)
-
+is the Reynolds Number used for pipe flow, with the pipe diameter as the characteristic length. (We use the average velocity $\overline{U}=Q/A$ instead of the uniform free-stream velocity. In the following, I'm going to drop the overline and just use $U$.)
 
 ::: {.callout-important}
 
-The critical Reynolds Number for the transition to turbulence in pipe flow is $\text{Re}_{D,\text{crit}}=2300$. In general, the Reynolds Number is used to determine when a flow transitions to turbulence, but the critical value depends on the flow geometry.
+Similar to the flat plate boundary layer, a critical Reynolds Number determines whether the flow is turbulent. For pipe flow $\text{Re}_{D,\text{crit}}=2300$. In the entrance length correlation above, we use the laminar result when $\text{Re}_D<2300$ and the turbulent result when $\text{Re}_D>2300$.
+
+In general, the Reynolds Number is used to determine when a flow transitions to turbulence, but the critical value depends on the flow geometry.
 
 :::
 
@@ -86,7 +95,7 @@ We might use this equation to analyze a system like this:
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
-<svg width="660" height="370" style="max-width:100%; height:auto;" viewBox="0 0 660 370" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" role="img" aria-label="Piping system. Water leaves a tank through a sharp-edged entrance into horizontal pipe section 1 (diameter D1, length L1), turns upward at a 90 degree threaded elbow into vertical section 2 (D2, L2), turns right at a second 90 degree threaded elbow into horizontal section 3 (D3, L3), which contains a half-open gate valve, then passes through a sudden expansion into the wider section 4 (D4, L4) and exits. A gravity vector g points downward in the corner.">
+<svg width="660" height="370" style="max-width:100%; height:auto;" viewBox="0 0 660 370" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" role="img" aria-label="Piping system. Water leaves a tank through a sharp-edged entrance into horizontal pipe section 1 (diameter D1, length L1), turns upward at a 90 degree threaded elbow into vertical section 2 (D2, L2), which contains a pump, turns right at a second 90 degree threaded elbow into horizontal section 3 (D3, L3), which contains a half-open gate valve, then passes through a sudden expansion into the wider section 4 (D4, L4) and exits. A gravity vector g points downward in the corner.">
   <defs>
     <marker id="pl-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#e0311f"/>
@@ -96,6 +105,9 @@ We might use this equation to analyze a system like this:
     </marker>
     <marker id="pl-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f8a3a"/>
+    </marker>
+    <marker id="pl-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a3fd1"/>
     </marker>
     <marker id="pl-arrow-black" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/>
@@ -134,6 +146,12 @@ We might use this equation to analyze a system like this:
     <line x1="351" y1="54" x2="369" y2="54"/>
   </g>
 
+  <!-- pump on the vertical section (circle with triangle pointing in the flow direction) -->
+  <circle cx="259" cy="160" r="17" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+  <path d="M 249 168 L 269 168 L 259 148 Z" fill="#1a1a1a"/>
+  <line x1="205" y1="150" x2="239" y2="157" stroke="#8a3fd1" stroke-width="1.2" marker-end="url(#pl-arrow-purple)"/>
+  <text x="200" y="152" font-size="13" fill="#8a3fd1" text-anchor="end">pump</text>
+
   <!-- flow direction -->
   <line x1="130" y1="300" x2="165" y2="300" stroke="#1f77e0" stroke-width="2" marker-end="url(#pl-arrow-blue)"/>
   <line x1="606" y1="81" x2="642" y2="81" stroke="#1f77e0" stroke-width="2" marker-end="url(#pl-arrow-blue)"/>
@@ -162,8 +180,8 @@ We might use this equation to analyze a system like this:
   <g stroke="#e0311f" stroke-width="1.3">
     <line x1="205" y1="270" x2="205" y2="289" marker-end="url(#pl-arrow-red)"/>
     <line x1="205" y1="330" x2="205" y2="311" marker-end="url(#pl-arrow-red)"/>
-    <line x1="226" y1="190" x2="248" y2="190" marker-end="url(#pl-arrow-red)"/>
-    <line x1="292" y1="190" x2="270" y2="190" marker-end="url(#pl-arrow-red)"/>
+    <line x1="226" y1="208" x2="248" y2="208" marker-end="url(#pl-arrow-red)"/>
+    <line x1="292" y1="208" x2="270" y2="208" marker-end="url(#pl-arrow-red)"/>
     <line x1="410" y1="48" x2="410" y2="70" marker-end="url(#pl-arrow-red)"/>
     <line x1="410" y1="114" x2="410" y2="92" marker-end="url(#pl-arrow-red)"/>
     <line x1="560" y1="44" x2="560" y2="64" marker-end="url(#pl-arrow-red)"/>
@@ -171,7 +189,7 @@ We might use this equation to analyze a system like this:
   </g>
   <g fill="#e0311f" font-size="16">
     <text x="211" y="276"><tspan font-style="italic">D</tspan><tspan dy="4" font-size="11">1</tspan></text>
-    <text x="200" y="195"><tspan font-style="italic">D</tspan><tspan dy="4" font-size="11">2</tspan></text>
+    <text x="200" y="213"><tspan font-style="italic">D</tspan><tspan dy="4" font-size="11">2</tspan></text>
     <text x="416" y="118"><tspan font-style="italic">D</tspan><tspan dy="4" font-size="11">3</tspan></text>
     <text x="566" y="122"><tspan font-style="italic">D</tspan><tspan dy="4" font-size="11">4</tspan></text>
   </g>
@@ -198,6 +216,8 @@ We might use this equation to analyze a system like this:
 </svg>
 </div>
 ```
+
+
 
 We'll assume no heat exchange ($\dot{Q} = 0$) and no temperature change. Work could come from a pump, or go towards a turbine. We also can have work due to friction or "losses".
 
@@ -226,7 +246,7 @@ Our variables are $U$, $\Delta p/L$, $\epsilon$, $D$, $\mu$, and $\rho$. That's 
 - Relative roughness: $\displaystyle \frac{\epsilon}{D}$
 - Friction factor: $\displaystyle f = \frac{\Delta p}{\frac{1}{2}\rho U^2}\cdot\frac{D}{L}$
 
-The first is probably expected: pretty much any flow problem is going to have $\displaystyle \text{Re}_D$ as a dimensionless number. The second is reasonable as well: how much smaller is the surface roughness in comparison to the pipe diameter. Then the third is something new: we give it the symbol $f$, for friction factor. It needs to include $\Delta p/L$ (we otherwise did not use that variable) and we choose to write it in terms of the dynamic pressure $\rho U^2/2$, as we saw when learning about [Bernoulli's Equation](../unit-3/bernoulli-app.qmd#pitot-tube). To get it to be non-dimensional, we include $D$ as well.
+The first is probably expected: pretty much any flow problem is going to have $\displaystyle \text{Re}_D$ as a dimensionless number. The second is reasonable as well: how large is the surface roughness in comparison to the pipe diameter? Then the third is something new: we give it the symbol $f$, for friction factor. It needs to include $\Delta p/L$ (we otherwise did not use that variable in our dimensional analysis) and we choose to write it in terms of the dynamic pressure $\rho U^2/2$, as we saw when learning about [Bernoulli's Equation](../unit-3/bernoulli-app.qmd#pitot-tube). To get it to be non-dimensional, we include $D$ as well.
 
 
 So Buckingham-$\Pi$ tells us we can write the friction factor as a function of the Reynolds Number and the relative roughness:
@@ -244,13 +264,13 @@ $$
 
 ![The Moody diagram. Diagram by S Beck and R Collins, University of Sheffield; SVG by Marc.derumaux. Via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Moody_EN.svg), licensed [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).](moody-diagram.svg){width=100% fig-alt="Moody diagram: friction factor f (log scale, 0.008 to 0.1) versus Reynolds number Re (log scale, 10^3 to 10^8). A straight laminar line f = 64/Re on the left ends at a shaded transition region near Re = 2000-4000. To the right, a family of curves for relative roughness ε/D from 10^-6 (bottom, labeled smooth pipe) to 0.05 (top) each decrease with Re and then flatten out. A dashed line marks the onset of complete turbulence where the curves become flat. An inset table lists roughness ε in mm for common materials."}
 
-[The Moody diagram](https://en.wikipedia.org/wiki/Moody_chart) plots exactly that: $f$ versus $\text{Re}_D$, with one curve for each value of $\epsilon/D$. The curves are fit to experimental data by the
+[The Moody diagram](https://en.wikipedia.org/wiki/Moody_chart) plots $f$ versus $\text{Re}_D$, with one curve for each value of $\epsilon/D$. The curves are fit to experimental data by the
 
 $$
 \text{Colebrook equation:}\quad \frac{1}{\sqrt{f}} = -2\log_{10}\left(\frac{\epsilon/D}{3.7} + \frac{2.51}{\text{Re}_D\sqrt{f}}\right)
 $$
 
-This is an implicit equation for $f$! We can't plug in a value for $\text{Re}_D$ and $\epsilon/D$ and immediately get $f$ as an output; we need to use a numerical technique to find it. Or... [Wolfram Alpha](https://www.wolframalpha.com/) can help.
+This is an implicit equation for $f$! We can't plug in a value for $\text{Re}_D$ and $\epsilon/D$ and immediately get $f$ as an output; we need to use a numerical technique to find it. Or... [Wolfram Alpha](https://www.wolframalpha.com/input?i=colebrook+equation) can help.
 
 An alternative version with slightly worse accuracy is the
 
@@ -258,13 +278,14 @@ $$
 \text{Haaland equation:}\quad \frac{1}{\sqrt{f}} = -1.8\log_{10}\left[\left(\frac{\epsilon/D}{3.7}\right)^{1.11} + \frac{6.9}{\text{Re}_D}\right]
 $$
 
+but this one is explicit: given $\text{Re}_D$ and $\epsilon/D$, you can directly calculate $f$.
 
 ### Work from friction
 
 We've seen this relationship before, when we talked about [flow work](../unit-4/energy-eqn.qmd#flow-work):
 
 $$
-\dot{W} = \Delta p \cdot Q,
+\dot{W} = \Delta p \cdot Q
 $$
 
 where $Q$ is the volumetric flow rate. Using the definition of $f$ to replace $\Delta p$,
@@ -296,7 +317,7 @@ $$
 As an example, a partially closed valve may have $K_\text{L}=50$; a pipe with a 90°-bend might have $K_\text{L}=1.5$. (We look up and sometimes calculate the values of $K_\text{L}$.)
 
 ::: {.column-margin}
-Someone just decided to label frictional losses as "major" and obstacle losses as "minor", maybe because in water distribution analyses (a major application), frictional losses are larger. But in other applications, it might be that the "minor" losses are actually more significant!
+Someone just decided to label frictional losses as "major" and obstacle losses as "minor", maybe because in water distribution analyses frictional losses are larger. But in other applications, it might be that the "minor" losses are actually more significant!
 :::
 
 ## The Head Equation
@@ -352,7 +373,7 @@ are called "head". What are the units of head?
 
 The Head Equation described above applies to single-path flows (we will do parallel flows in the next reading). All problems involve:
 
-- Collecting $K_\text{L}$ and $\epsilon$ values from tables, and if a pump is involved, get its pump curve (more on this in a later reading). (I've never heard the term "turbine curve" but we would need some information about the turbine too.)
+- Collecting $K_\text{L}$ and $\epsilon$ values from tables, and if a pump is involved, get its pump curve (more on this in a later reading). (I've never heard the term "turbine curve" but we would need some information about a turbine too, if one is present.)
 - Recognizing $Q=\text{constant}$ throughout the system. If the flow proceeds from a larger diameter pipe to a smaller diameter pipe, $Q_1 = Q_2$... the smaller diameter pipe will have faster flow.
 
 **Problem type 1:** find the necessary $\Delta p$ from a given $Q$.
