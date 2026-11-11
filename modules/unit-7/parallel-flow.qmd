@@ -9,19 +9,19 @@ Ohm's Law is a metaphor for fluid flow:
 - Current → flow rate
 - Resistance → losses
 
-Last lesson we talked about "resistors in series" (e.g., loss due to friction in a pipe, then because of a bend, then another pipe, ...) and could write
+Last lesson we talked about "resistors in series" (e.g., losses due to friction in a pipe, followed by losses due to a bend, then losses due to friction in another pipe, ...) and could write
 
 $$
 \Delta p_\text{total} = \sum \Delta p_i
 $$
 
-just as we would with voltages in a circuit. In this lesson we'll talk about "resistors in parallel". What can we say about the voltage drop across two resistors in parallel? It is the same! Same metaphor: the pressure drop is the same along two parallel paths.
+just as we would with voltages in a circuit. In this lesson we'll talk about "resistors in parallel". What can we say about the voltage drop across two resistors in parallel? It is the same across both! Same metaphor: the pressure drop in pipe flow is the same along two parallel paths.
 
 ::: {.column-margin}
 If the pressure drops were not the same and the flows reconvened, one path would be at a higher pressure than the other. That means there would be a net force, and some transient behavior would occur until we reach equilibrium. We are just going to study steady flows here.
 :::
 
-We'll also introduce pumping curves: pumps increase head, but increasing the flow speed through a pump will decrease the amount of head that is added. This means we can't directly set the flow rate or the pressure rise — it depends on what else is going on in the system.
+We'll also introduce pumping curves. When discussion conservation of energy, we generically said pumps increase the energy of a system. They can be used to help surmount an elevation change, or to increase speed, or to increase pressure. We will see that we can't directly set the flow rate or the pressure rise — it depends on what else is going on in the system.
 
 ## Think first
 
@@ -32,7 +32,7 @@ We'll also introduce pumping curves: pumps increase head, but increasing the flo
 
 **Look ahead**
 
-1. If a pipe splits into two branches and then rejoins, how does the flow decide how much goes each way?
+1. If a pipe splits into two branches and then rejoins, how does the system decide how much flow goes each path?
 2. A pump adds head to the flow, but how much? Can we just pick the flow rate we want?
 3. If one pump isn't enough, should the second pump go in series or in parallel?
 
@@ -149,12 +149,15 @@ Here's an example:
 </div>
 ```
 
+(Let's assume the vertical sections are short such that the distance along path A is just $L_\text{A}$ and the distance along path B is just $L_\text{B}$.)
+
 We can write a head equation along path "A", including the elements before/after the parallel paths:
 
 $$
 \begin{aligned}
 \left(\frac{\alpha}{2g}U^2 + z + \frac{p}{\rho g}\right)_\text{in}
-&= \left(\frac{\alpha}{2g}U^2 + z + \frac{p}{\rho g}\right)_\text{out} + H_\text{L,shared} \\
+&= \left(\frac{\alpha}{2g}U^2 + z + \frac{p}{\rho g}\right)_\text{out} \\
+&\quad + \frac{U_\text{in}^2}{2g}\,f_\text{in}\frac{L_\text{in}}{D_\text{in}} + \frac{U_\text{out}^2}{2g}\,f_\text{out}\frac{L_\text{out}}{D_\text{out}} \\
 &\quad + \frac{U_\text{A}^2}{2g}\left(f_\text{A}\frac{L_\text{A}}{D_\text{A}} + \sum K_\text{L,A}\right),
 \end{aligned}
 $$
@@ -164,14 +167,15 @@ and we can do the same for path "B":
 $$
 \begin{aligned}
 \left(\frac{\alpha}{2g}U^2 + z + \frac{p}{\rho g}\right)_\text{in}
-&= \left(\frac{\alpha}{2g}U^2 + z + \frac{p}{\rho g}\right)_\text{out} + H_\text{L,shared} \\
+&= \left(\frac{\alpha}{2g}U^2 + z + \frac{p}{\rho g}\right)_\text{out} \\
+&\quad + \frac{U_\text{in}^2}{2g}\,f_\text{in}\frac{L_\text{in}}{D_\text{in}} + \frac{U_\text{out}^2}{2g}\,f_\text{out}\frac{L_\text{out}}{D_\text{out}} \\
 &\quad + \frac{U_\text{B}^2}{2g}\left(f_\text{B}\frac{L_\text{B}}{D_\text{B}} + \sum K_\text{L,B}\right).
 \end{aligned}
 $$
 
-Here $H_\text{L,shared}$ collects the losses in the pipes before the split and after the rejoin (they carry all of $Q_\text{total}$, so they're the same in both equations). The sum $\sum K_\text{L,A}$ includes the gate valve, the two elbows, and the two tees on path "A"; path "B" has the same, minus the valve. And each path has its own speed, $U_\text{A} = Q_\text{A}/(\pi D_\text{A}^2/4)$ and $U_\text{B} = Q_\text{B}/(\pi D_\text{B}^2/4)$.
+The second line is the friction in the inlet pipe before the split and the outlet pipe after the rejoin. Both carry all of the flow, so $U_\text{in} = Q_\text{total}/(\pi D_\text{in}^2/4)$ and $U_\text{out} = Q_\text{total}/(\pi D_\text{out}^2/4)$, and that line is the same in both equations. (If those pipes had fittings of their own, their $K_\text{L}$'s would go on this line too.) The sum $\sum K_\text{L,A}$ includes the gate valve, the two elbows, and the two tees on path "A"; path "B" has the same, minus the valve. And each path has its own speed, $U_\text{A} = Q_\text{A}/(\pi D_\text{A}^2/4)$ and $U_\text{B} = Q_\text{B}/(\pi D_\text{B}^2/4)$.
 
-Notice the left-hand sides are identical, and so are the first terms on the right. Subtracting one equation from the other, everything cancels except the statement we started with: the head loss is the same along both paths,
+Notice the left-hand sides are identical, and so are the first two lines on the right. Subtracting one equation from the other, everything cancels except the statement we started with: the head loss is the same along both paths,
 
 $$
 \frac{U_\text{A}^2}{2g}\left(f_\text{A}\frac{L_\text{A}}{D_\text{A}} + \sum K_\text{L,A}\right) = \frac{U_\text{B}^2}{2g}\left(f_\text{B}\frac{L_\text{B}}{D_\text{B}} + \sum K_\text{L,B}\right),
@@ -261,15 +265,15 @@ Same story with pumps, but we will think in terms of their pumping curves.
 
 **Pumps placed in parallel:** can move more flow. We stack their pump curves side by side, to the right.
 
-Whether it is "worth it" to add extra pumps depends on the intersection with the flow curve and needs of the application, as depicted in Fig. -@fig-parallel-pump.
+Whether it is "worth it" to add extra pumps depends on the intersection with the flow curve and needs of the application.
 
-![Pumps in series sum their heads, pumps in parallel sum their flow rates. For flow curves that are sharply "upwards", as in the blue curve labeled $Q_1$, having two pumps in series can generate an appreciable increase in head, and a more modest increase in flow rate. However, pumps in parallel have a nearly inconsequential effect on either. Conversely, for "flatter" flow curves, pumps in parallel can generate a significant increase in flow and head, while pumps in series can have a negligible effect on either.](parallel-pump.svg){#fig-parallel-pump width=80% fig-align="center" fig-alt="Schematic of head H versus flow rate Q with three red pump curves: a dashed single-pump curve, a series curve at twice the single-pump head, and a parallel curve at twice the single-pump flow rate. Two blue flow curves rise from the origin, a steep one labeled Q1 and a flat one labeled Q2. On Q1, an arrow from the single-pump point to the series point spans a large rise in head, while the parallel point sits almost on top of the single-pump point. On Q2, an arrow to the parallel point spans a large increase in flow, while the series point is close to the single-pump point."}
+<!-- as depicted in Fig. -@fig-parallel-pump. -->
 
-### Net Positive Suction Head and other limitations
+<!-- ![Pumps in series sum their heads, pumps in parallel sum their flow rates. For flow curves that are sharply "upwards", as in the blue curve labeled $Q_1$, having two pumps in series can generate an appreciable increase in head, and a more modest increase in flow rate. However, pumps in parallel have a nearly inconsequential effect on either. Conversely, for "flatter" flow curves, pumps in parallel can generate a significant increase in flow and head, while pumps in series can have a negligible effect on either.](parallel-pump.svg){#fig-parallel-pump width=80% fig-align="center" fig-alt="Schematic of head H versus flow rate Q with three red pump curves: a dashed single-pump curve, a series curve at twice the single-pump head, and a parallel curve at twice the single-pump flow rate. Two blue flow curves rise from the origin, a steep one labeled Q1 and a flat one labeled Q2. On Q1, an arrow from the single-pump point to the series point spans a large rise in head, while the parallel point sits almost on top of the single-pump point. On Q2, an arrow to the parallel point spans a large increase in flow, while the series point is close to the single-pump point."}
 
-Many pumping curves will include a line labeled "NPSH" for "Net Positive Suction Head". This is related to pump cavitation and is an essential consideration in many applications so that the pump is not destroyed! The head referenced here is the [absolute]{.underline} pressure (divided by $\rho g$) seen at the pump inlet.
+Note  -->
 
-There are other practical limitations, for example: pumps typically rely on fluid flow to carry away heat, and so they should not be used, or at least not for long, in situations where $Q$ is nearly zero. The precise limit is sometimes given in the pumping chart.
+
 
 ## Demo
 
@@ -279,7 +283,15 @@ $$
 H_\text{flow} = \Delta z + K Q^2,
 $$
 
-so the elevation gain sets the $y$-intercept, and the losses set how quickly the parabola climbs (more losses squeeze it to the left). The "losses" slider is the head loss at 10 L/s, which is just a friendlier way of dialing $K$. Each dot is a flow state: the one place where the pump and the flow curve agree.
+so the elevation gain sets the $y$-intercept, and the losses set how quickly the parabola climbs (more losses squeeze it to the left). The "losses" slider is the head loss at 10 L/s, which is just a friendlier way of dialing $K$. The dot is the system solution — this is the actual flow rate we would see.
+
+Notice that, depending on the parameters, adding a pump in series or parallel doesn't do much for the system performance. E.g.
+
+- Try adding a pump in series, and then setting $\Delta z=0\text{ m}$ and $\text{losses}=1\text{ m}$. The flow state hardly changes from the one-pump case.
+
+- Try adding a pump in parallel, and then setting $\Delta z=15\text{ m}$ and $\text{losses}=49\text{ m}$. The flow state hardly changes from the one-pump case.
+
+But you can get significant changes as well!
 
 ```{ojs}
 //| echo: false
@@ -370,3 +382,12 @@ Things to try:
 - Raise $\Delta z$ above 30 m. What happens with one pump? Which second pump rescues you, and why can't the other one?
 
 
+
+
+
+
+### Net Positive Suction Head and other limitations
+
+Many pumping curves will include a line labeled "NPSH" for "Net Positive Suction Head". This is related to pump cavitation and is an essential consideration in many applications so that the pump is not destroyed! The head referenced here is the [absolute]{.underline} pressure (divided by $\rho g$) seen at the pump inlet.
+
+There are other practical limitations, for example: pumps typically rely on fluid flow to carry away heat, and so they should not be used, or at least not for long, in situations where $Q$ is nearly zero. The precise limit is sometimes given in the pumping chart.
