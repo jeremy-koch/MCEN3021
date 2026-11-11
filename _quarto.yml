@@ -91,6 +91,9 @@ website:
       - section: "Unit 7 · Pipe flows"
         contents:
           - modules/unit-7/pipe-losses.qmd
+          - modules/unit-7/parallel-flow.qmd
+          - modules/unit-7/pipe-examples.qmd
+          - modules/unit-7/minor-loss-coefficients.qmd
       - section: "Homework"
         contents:
           - homework/hw1.qmd

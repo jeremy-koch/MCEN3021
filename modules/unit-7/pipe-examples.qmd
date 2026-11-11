@@ -1,0 +1,16 @@
+---
+title: "11.3 Pipe flow examples"
+---
+
+A few examples done by hand and with computational assistance. Coming soon.
+
+
+<!-- ## Example 1: Determining flow rate from a water tower
+
+This one we covered in class... I'll add some more detail here, and get some extra numbers.
+
+Water is stored in a reservoir
+
+
+
+## Example 2:  -->

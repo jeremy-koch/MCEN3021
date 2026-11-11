@@ -1,0 +1,372 @@
+---
+title: "11.2 Parallel flow and pumps"
+---
+## Big picture
+
+Ohm's Law is a metaphor for fluid flow:
+
+- Voltage → pressure difference
+- Current → flow rate
+- Resistance → losses
+
+Last lesson we talked about "resistors in series" (e.g., loss due to friction in a pipe, then because of a bend, then another pipe, ...) and could write
+
+$$
+\Delta p_\text{total} = \sum \Delta p_i
+$$
+
+just as we would with voltages in a circuit. In this lesson we'll talk about "resistors in parallel". What can we say about the voltage drop across two resistors in parallel? It is the same! Same metaphor: the pressure drop is the same along two parallel paths.
+
+::: {.column-margin}
+If the pressure drops were not the same and the flows reconvened, one path would be at a higher pressure than the other. That means there would be a net force, and some transient behavior would occur until we reach equilibrium. We are just going to study steady flows here.
+:::
+
+We'll also introduce pumping curves: pumps increase head, but increasing the flow speed through a pump will decrease the amount of head that is added. This means we can't directly set the flow rate or the pressure rise — it depends on what else is going on in the system.
+
+## Think first
+
+**Recall**
+
+1. The head equation from last lesson includes the head at the inlet against the head at the outlet, plus the losses along the way. Both kinds of losses scale with $U^2$: major losses as $f\frac{L}{D}\frac{U^2}{2g}$, and minor losses as $K_\text{L}\frac{U^2}{2g}$.
+2. For two resistors in parallel, the voltage drop across each one is the same, and the currents add up to the total current.
+
+**Look ahead**
+
+1. If a pipe splits into two branches and then rejoins, how does the flow decide how much goes each way?
+2. A pump adds head to the flow, but how much? Can we just pick the flow rate we want?
+3. If one pump isn't enough, should the second pump go in series or in parallel?
+
+## Piping problems with elements in parallel
+
+For problems in which there are elements in parallel (e.g., fluid may take one branch or another in the network before reconvening at the same outlet conditions), we must make a wise observation: the pressure drop (or head loss) must be the same regardless of the path the fluid takes. This means that the head equation can be written for both flow paths, with an added complication: we don't know how much flow goes through path "A" and how much through path "B".
+
+Here's an example:
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="660" height="365" style="max-width:100%; height:auto;" viewBox="0 0 660 365" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" role="img" aria-label="Two pipe paths in parallel. A single pipe carrying Q total reaches a tee at point 1 and splits into an upper path A (narrower, diameter D A, length L A, containing a gate valve, carrying Q A) and a lower path B (wider, diameter D B, length L B, carrying Q B). The two paths rejoin at a second tee at point 2 and leave through a single pipe carrying Q total. The pressure drop from point 1 to point 2 is the same along either path.">
+  <defs>
+    <marker id="pf-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e0311f"/>
+    </marker>
+    <marker id="pf-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f77e0"/>
+    </marker>
+    <marker id="pf-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f8a3a"/>
+    </marker>
+    <marker id="pf-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a3fd1"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="660" height="365" fill="#ffffff"/>
+
+  <!-- pipe network, drawn twice: wide dark strokes make the walls, narrower water strokes open up the junctions -->
+  <g fill="none" stroke="#1a1a1a" stroke-linejoin="miter">
+    <path d="M 20 190 L 170 190" stroke-width="31"/>
+    <path d="M 490 190 L 640 190" stroke-width="31"/>
+    <path d="M 170 174.5 L 170 285 L 490 285 L 490 174.5" stroke-width="31"/>
+    <path d="M 170 180 L 170 95 L 490 95 L 490 180" stroke-width="23"/>
+  </g>
+  <g fill="none" stroke="#a8e4f0" stroke-linejoin="miter">
+    <path d="M 20 190 L 170 190" stroke-width="26"/>
+    <path d="M 490 190 L 640 190" stroke-width="26"/>
+    <path d="M 170 177 L 170 285 L 490 285 L 490 177" stroke-width="26"/>
+    <path d="M 170 180 L 170 95 L 490 95 L 490 180" stroke-width="18"/>
+  </g>
+
+  <!-- gate valve on path A -->
+  <g stroke="#1a1a1a" stroke-width="2" fill="#ffffff">
+    <path d="M 275 78 L 290 95 L 275 112 Z"/>
+    <path d="M 305 78 L 290 95 L 305 112 Z"/>
+  </g>
+  <g stroke="#1a1a1a" stroke-width="2">
+    <line x1="290" y1="95" x2="290" y2="68"/>
+    <line x1="281" y1="68" x2="299" y2="68"/>
+  </g>
+  <line x1="290" y1="141" x2="290" y2="116" stroke="#1f8a3a" stroke-width="1.2" marker-end="url(#pf-arrow-green)"/>
+  <text x="290" y="155" font-size="13" fill="#1f8a3a" text-anchor="middle">gate valve</text>
+
+  <!-- flow direction and flow rates -->
+  <g stroke="#1f77e0" stroke-width="2">
+    <line x1="60" y1="190" x2="100" y2="190" marker-end="url(#pf-arrow-blue)"/>
+    <line x1="365" y1="95" x2="400" y2="95" marker-end="url(#pf-arrow-blue)"/>
+    <line x1="365" y1="285" x2="400" y2="285" marker-end="url(#pf-arrow-blue)"/>
+    <line x1="560" y1="190" x2="600" y2="190" marker-end="url(#pf-arrow-blue)"/>
+  </g>
+  <g fill="#1f77e0" font-size="16" text-anchor="middle">
+    <text x="80" y="165"><tspan font-style="italic">Q</tspan><tspan dy="4" font-size="11">total</tspan></text>
+    <text x="382" y="77"><tspan font-style="italic">Q</tspan><tspan dy="4" font-size="11">A</tspan></text>
+    <text x="382" y="261"><tspan font-style="italic">Q</tspan><tspan dy="4" font-size="11">B</tspan></text>
+    <text x="580" y="165"><tspan font-style="italic">Q</tspan><tspan dy="4" font-size="11">total</tspan></text>
+  </g>
+
+  <!-- path names -->
+  <g fill="#1a1a1a" font-size="14" text-anchor="middle">
+    <text x="445" y="77">path A</text>
+    <text x="445" y="261">path B</text>
+  </g>
+
+  <!-- the two junctions and the shared pressure drop -->
+  <circle cx="170" cy="190" r="4" fill="#1a1a1a"/>
+  <circle cx="490" cy="190" r="4" fill="#1a1a1a"/>
+  <g fill="#1a1a1a" font-size="16">
+    <text x="191" y="195"><tspan font-style="italic">p</tspan><tspan dy="4" font-size="11">1</tspan></text>
+    <text x="469" y="195" text-anchor="end"><tspan font-style="italic">p</tspan><tspan dy="4" font-size="11">2</tspan></text>
+  </g>
+  <line x1="220" y1="212" x2="440" y2="212" stroke="#8a3fd1" stroke-width="1.2" marker-end="url(#pf-arrow-purple)"/>
+  <text x="330" y="204" font-size="13" fill="#8a3fd1" text-anchor="middle">same pressure drop along A or B</text>
+
+  <!-- lengths (red dimension lines, measured along the centerline) -->
+  <g stroke="#e0311f" stroke-width="1.3" fill="none">
+    <line x1="170" y1="36" x2="490" y2="36" marker-start="url(#pf-arrow-red)" marker-end="url(#pf-arrow-red)"/>
+    <line x1="170" y1="334" x2="490" y2="334" marker-start="url(#pf-arrow-red)" marker-end="url(#pf-arrow-red)"/>
+    <!-- extension lines -->
+    <line x1="170" y1="30" x2="170" y2="78" stroke-dasharray="2 2"/>
+    <line x1="490" y1="30" x2="490" y2="78" stroke-dasharray="2 2"/>
+    <line x1="170" y1="306" x2="170" y2="340" stroke-dasharray="2 2"/>
+    <line x1="490" y1="306" x2="490" y2="340" stroke-dasharray="2 2"/>
+  </g>
+  <g fill="#e0311f" font-size="16" text-anchor="middle">
+    <text x="330" y="28"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">A</tspan></text>
+    <text x="330" y="355"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">B</tspan></text>
+  </g>
+
+  <!-- diameters (arrows pointing at the walls) -->
+  <g stroke="#e0311f" stroke-width="1.3">
+    <line x1="225" y1="62" x2="225" y2="82" marker-end="url(#pf-arrow-red)"/>
+    <line x1="225" y1="128" x2="225" y2="108" marker-end="url(#pf-arrow-red)"/>
+    <line x1="225" y1="248" x2="225" y2="268" marker-end="url(#pf-arrow-red)"/>
+    <line x1="225" y1="322" x2="225" y2="302" marker-end="url(#pf-arrow-red)"/>
+  </g>
+  <g fill="#e0311f" font-size="16">
+    <text x="232" y="67"><tspan font-style="italic">D</tspan><tspan dy="4" font-size="11">A</tspan></text>
+    <text x="232" y="253"><tspan font-style="italic">D</tspan><tspan dy="4" font-size="11">B</tspan></text>
+  </g>
+</svg>
+</div>
+```
+
+We can write a head equation along path "A", including the elements before/after the parallel paths:
+
+$$
+\begin{aligned}
+\left(\frac{\alpha}{2g}U^2 + z + \frac{p}{\rho g}\right)_\text{in}
+&= \left(\frac{\alpha}{2g}U^2 + z + \frac{p}{\rho g}\right)_\text{out} + H_\text{L,shared} \\
+&\quad + \frac{U_\text{A}^2}{2g}\left(f_\text{A}\frac{L_\text{A}}{D_\text{A}} + \sum K_\text{L,A}\right),
+\end{aligned}
+$$
+
+and we can do the same for path "B":
+
+$$
+\begin{aligned}
+\left(\frac{\alpha}{2g}U^2 + z + \frac{p}{\rho g}\right)_\text{in}
+&= \left(\frac{\alpha}{2g}U^2 + z + \frac{p}{\rho g}\right)_\text{out} + H_\text{L,shared} \\
+&\quad + \frac{U_\text{B}^2}{2g}\left(f_\text{B}\frac{L_\text{B}}{D_\text{B}} + \sum K_\text{L,B}\right).
+\end{aligned}
+$$
+
+Here $H_\text{L,shared}$ collects the losses in the pipes before the split and after the rejoin (they carry all of $Q_\text{total}$, so they're the same in both equations). The sum $\sum K_\text{L,A}$ includes the gate valve, the two elbows, and the two tees on path "A"; path "B" has the same, minus the valve. And each path has its own speed, $U_\text{A} = Q_\text{A}/(\pi D_\text{A}^2/4)$ and $U_\text{B} = Q_\text{B}/(\pi D_\text{B}^2/4)$.
+
+Notice the left-hand sides are identical, and so are the first terms on the right. Subtracting one equation from the other, everything cancels except the statement we started with: the head loss is the same along both paths,
+
+$$
+\frac{U_\text{A}^2}{2g}\left(f_\text{A}\frac{L_\text{A}}{D_\text{A}} + \sum K_\text{L,A}\right) = \frac{U_\text{B}^2}{2g}\left(f_\text{B}\frac{L_\text{B}}{D_\text{B}} + \sum K_\text{L,B}\right),
+$$
+
+and conservation of mass tells us
+
+$$
+Q_\text{total}= Q_\text{A} + Q_\text{B}.
+$$
+
+
+**For problems where inlet speed or flow rate is given**, we do not necessarily know what fraction of that flow passes through each path. We'll use an iterative scheme to determine the flow through each path that ensures the pressure drops match.
+
+**For problems where the overall pressure drop is given**, it is even more complex: we know neither $Q_\text{total}$, nor the fraction along each path. So our iterative scheme must have two layers: guess the overall flow rate and guess the fraction that passes through each path, then confirm that the pressure drop across each path is the same AND that the total pressure drop matches the given pressure drop.
+
+I'll add some pipe flow analysis problems to [11.3 Pipe flow examples](pipe-examples.qmd) soon.
+
+## Pumping curves
+
+Here's the piping figure from last lesson.
+
+{{< include _piping-diagram.qmd >}}
+
+::: {.column-margin}
+This is actually a bad spot for a pump! Suction at the pump inlet can [cavitate](../../homework/hw4.qmd#water-boils-at-94c-in-boulder) the fluid, which may damage the pump (they are designed to pump liquids, not vapor). Having a large hydrostatic pressure at the inlet (i.e., having the pump located at low elevation) helps to prevent cavitation. See "NPSH" below.
+:::
+
+A pump is included along the vertical pipe, providing energy to the flow to get it through that elevation change (depending on $\Delta p$ and $\Delta z$, the flow might not happen without a pump). Additionally, the goal of including the pump might be to get the flow to a certain speed or pressure.
+
+However, pumps do not provide a particular amount of pressure, nor do they provide a particular flow rate: the head they add depends on the flow rate through the pump.
+
+How does that look? The head equation can be written to look like
+
+$$
+H_\text{pump}= H_\text{out}-H_\text{in}+H_\text{losses}
+$$ {#eq-pump-head}
+
+where
+
+$$
+\begin{align*}
+H_\text{in} &\equiv \left(\frac{\alpha}{2g}U^2 + z + \frac{p}{\rho g}\right)_\text{in}\\
+H_\text{out} &\equiv \left(\frac{\alpha}{2g}U^2 + z + \frac{p}{\rho g}\right)_\text{out}
+\end{align*}
+$$
+
+and
+
+$$
+H_\text{losses}=\sum_i\frac{1}{2g}U_i^2\frac{f_iL_i}{D_i}+\sum_j\frac{1}{2g}U_j^2 K_{\text{L},j}.
+$$
+
+Notice that these three terms all include $U^2$ terms... if we were to make a plot of $H_\text{out}-H_\text{in}+H_\text{losses}$ as a function of $Q$, we should basically see a parabola.
+
+The $H_\text{pump}$ term depends on the pump design, but there is a general rule: if the flow is moving slowly, the pump can add more head; and if the flow is fast, it can't add as much head.
+
+
+So, here is an illustration of @eq-pump-head:
+
+![Hypothetical pumping curve (red), including a flow curve (blue). Pumping curves generally have an inverse relationship between head and flow rate, whereas flow curves increase in head loss with $\sim Q^2$. The intersection between these two curves sets the flow state. The Net Positive Suction Head curve, related to the cavitation limit of the pump, sits at low values of $H$.](pump-chart.svg){#fig-pump-chart width=50% fig-align="center" fig-alt="Schematic of head H versus flow rate Q. A red pump curve starts high at Q = 0 and falls with increasing Q. A blue flow curve starts low and rises as Q squared. They cross at a single marked point. A purple NPSH curve rises gently near the bottom of the plot, below both."}
+
+The solution to the equation is where the two curves intersect: the amount of head added by the pump matches the head difference (out − in) plus the head losses at that particular flow rate.
+
+
+::: {.callout-important}
+
+We don't directly control the flow rate or the head added by the pump: the system chooses for us.
+
+:::
+
+
+### Back to Ohm's Law
+
+
+::: {.callout-note}
+## Reminder
+**For two resistors in series:** the total voltage drop is the sum of the voltage drop across each resistor. Both resistors have the same current passing through them.
+
+**For two resistors in parallel:** the total current is the sum of the currents through each resistor. Both resistors cause the same voltage drop.
+:::
+
+
+Same story with pumps, but we will think in terms of their pumping curves.
+
+**Pumps placed in series:** can generate more total head. We stack their pump curves on top of each other.
+
+**Pumps placed in parallel:** can move more flow. We stack their pump curves side by side, to the right.
+
+Whether it is "worth it" to add extra pumps depends on the intersection with the flow curve and needs of the application, as depicted in Fig. -@fig-parallel-pump.
+
+![Pumps in series sum their heads, pumps in parallel sum their flow rates. For flow curves that are sharply "upwards", as in the blue curve labeled $Q_1$, having two pumps in series can generate an appreciable increase in head, and a more modest increase in flow rate. However, pumps in parallel have a nearly inconsequential effect on either. Conversely, for "flatter" flow curves, pumps in parallel can generate a significant increase in flow and head, while pumps in series can have a negligible effect on either.](parallel-pump.svg){#fig-parallel-pump width=80% fig-align="center" fig-alt="Schematic of head H versus flow rate Q with three red pump curves: a dashed single-pump curve, a series curve at twice the single-pump head, and a parallel curve at twice the single-pump flow rate. Two blue flow curves rise from the origin, a steep one labeled Q1 and a flat one labeled Q2. On Q1, an arrow from the single-pump point to the series point spans a large rise in head, while the parallel point sits almost on top of the single-pump point. On Q2, an arrow to the parallel point spans a large increase in flow, while the series point is close to the single-pump point."}
+
+### Net Positive Suction Head and other limitations
+
+Many pumping curves will include a line labeled "NPSH" for "Net Positive Suction Head". This is related to pump cavitation and is an essential consideration in many applications so that the pump is not destroyed! The head referenced here is the [absolute]{.underline} pressure (divided by $\rho g$) seen at the pump inlet.
+
+There are other practical limitations, for example: pumps typically rely on fluid flow to carry away heat, and so they should not be used, or at least not for long, in situations where $Q$ is nearly zero. The precise limit is sometimes given in the pumping chart.
+
+## Demo
+
+Here's a generic pump (30 m of head at zero flow, max flow 25 L/s) pushing water up some elevation gain $\Delta z$, through some losses. The flow curve is
+
+$$
+H_\text{flow} = \Delta z + K Q^2,
+$$
+
+so the elevation gain sets the $y$-intercept, and the losses set how quickly the parabola climbs (more losses squeeze it to the left). The "losses" slider is the head loss at 10 L/s, which is just a friendlier way of dialing $K$. Each dot is a flow state: the one place where the pump and the flow curve agree.
+
+```{ojs}
+//| echo: false
+viewof pp_dz = Inputs.range([0, 50], {value: 10, step: 1, label: "elevation gain Δz (m)"})
+viewof pp_loss = Inputs.range([1, 60], {value: 10, step: 1, label: "losses: head loss at 10 L/s (m)"})
+viewof pp_extra = Inputs.checkbox(["in series", "in parallel"], {label: "add a second pump"})
+```
+
+```{ojs}
+//| echo: false
+pp_model = {
+  const H0 = 30, Qmax = 25;            // one pump: H = H0 (1 - (Q/Qmax)^2), Q in L/s
+  const K = pp_loss / 100;             // flow curve: H = dz + K Q^2, so K*10^2 = loss at 10 L/s
+  const pumps = [
+    {name: "one pump",        h0: H0,     qmax: Qmax,     color: "firebrick", on: true},
+    {name: "two in series",   h0: 2 * H0, qmax: Qmax,     color: "#8a3fd1",   on: pp_extra.includes("in series")},
+    {name: "two in parallel", h0: H0,     qmax: 2 * Qmax, color: "darkorange", on: pp_extra.includes("in parallel")}
+  ].filter(p => p.on);
+  // Where pump meets flow curve: h0 (1 - Q^2/qmax^2) = dz + K Q^2, solved for Q.
+  const operating = p => {
+    const lift = p.h0 - pp_dz;
+    if (lift <= 0) return {...p, Q: null, H: null};
+    const Q = Math.sqrt(lift / (K + p.h0 / p.qmax ** 2));
+    return {...p, Q, H: pp_dz + K * Q * Q};
+  };
+  return {K, pumps: pumps.map(operating)};
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const n = 120;
+  const pumpPts = pp_model.pumps.flatMap(p =>
+    Array.from({length: n + 1}, (_, i) => {
+      const Q = p.qmax * i / n;
+      return {Q, H: p.h0 * (1 - (Q / p.qmax) ** 2), name: p.name};
+    }));
+  const flowPts = Array.from({length: 221}, (_, i) => {
+    const Q = 55 * i / 220;
+    return {Q, H: pp_dz + pp_model.K * Q * Q, name: "flow curve"};
+  }).filter(d => d.H <= 70);
+  const dots = pp_model.pumps.filter(p => p.Q !== null);
+  return Plot.plot({
+    height: 400, marginLeft: 50, grid: true,
+    x: {label: "flow rate Q (L/s) →", domain: [0, 55]},
+    y: {label: "↑ head H (m)", domain: [0, 70]},
+    color: {
+      legend: true,
+      domain: ["flow curve", "one pump", "two in series", "two in parallel"],
+      range: ["royalblue", "firebrick", "#8a3fd1", "darkorange"]
+    },
+    marks: [
+      Plot.ruleY([0]),
+      Plot.ruleX([0]),
+      Plot.line(flowPts, {x: "Q", y: "H", stroke: "name", strokeWidth: 2.5}),
+      Plot.line(pumpPts, {x: "Q", y: "H", z: "name", stroke: "name", strokeWidth: 2.5}),
+      Plot.text([{Q: 1, H: pp_dz}], {x: "Q", y: "H", text: () => "Δz", dy: -9, textAnchor: "start", fill: "royalblue"}),
+      Plot.dot(dots, {x: "Q", y: "H", r: 6, fill: "color", stroke: "currentColor", strokeWidth: 1.5})
+    ]
+  });
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const one = pp_model.pumps[0];
+  const fmt = (v, d = 1) => v === null ? "—" : v.toFixed(d);
+  const vsOne = p => (p === one || p.Q === null) ? ""
+    : one.Q === null ? "flows where one pump can't"
+    : `${p.Q >= one.Q ? "+" : ""}${(100 * (p.Q / one.Q - 1)).toFixed(0)}% flow vs. one pump`;
+  return html`<table style="max-width: 560px;">
+    <thead><tr><th></th><th style="text-align:right">Q (L/s)</th><th style="text-align:right">H (m)</th><th></th></tr></thead>
+    <tbody>${pp_model.pumps.map(p => html`<tr>
+      <td><span style="color:${p.color}; font-weight:600;">●</span> ${p.name}</td>
+      <td style="text-align:right">${fmt(p.Q)}</td>
+      <td style="text-align:right">${fmt(p.H)}</td>
+      <td>${p.Q === null ? "no flow: Δz is more than this setup's head at zero flow" : vsOne(p)}</td>
+    </tr>`)}</tbody>
+  </table>`;
+}
+```
+
+Things to try:
+
+- Turn on both extra pumps, then slide the losses from low to high. When does series win? When does parallel win? (Compare with Fig. -@fig-parallel-pump.)
+- Raise $\Delta z$ above 30 m. What happens with one pump? Which second pump rescues you, and why can't the other one?
+
+
