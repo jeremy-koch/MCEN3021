@@ -173,7 +173,7 @@ $$
 \end{aligned}
 $$
 
-The second line is the friction in the inlet pipe before the split and the outlet pipe after the rejoin. Both carry all of the flow, so $U_\text{in} = Q_\text{total}/(\pi D_\text{in}^2/4)$ and $U_\text{out} = Q_\text{total}/(\pi D_\text{out}^2/4)$, and that line is the same in both equations. (If those pipes had fittings of their own, their $K_\text{L}$'s would go on this line too.) The sum $\sum K_\text{L,A}$ includes the gate valve, the two elbows, and the two tees on path "A"; path "B" has the same, minus the valve. And each path has its own speed, $U_\text{A} = Q_\text{A}/(\pi D_\text{A}^2/4)$ and $U_\text{B} = Q_\text{B}/(\pi D_\text{B}^2/4)$.
+The second line is the friction in the inlet pipe before the split and the outlet pipe after the rejoin. Both carry all of the flow, so $U_\text{in} = Q_\text{total}/(\pi D_\text{in}^2/4)$ and $U_\text{out} = Q_\text{total}/(\pi D_\text{out}^2/4)$, and that line is the same in both equations. The sum $\sum K_\text{L,A}$ includes the gate valve, the two elbows, and the two tees on path "A"; path "B" has the same, minus the valve. And each path has its own speed, $U_\text{A} = Q_\text{A}/(\pi D_\text{A}^2/4)$ and $U_\text{B} = Q_\text{B}/(\pi D_\text{B}^2/4)$.
 
 Notice the left-hand sides are identical, and so are the first two lines on the right. Subtracting one equation from the other, everything cancels except the statement we started with: the head loss is the same along both paths,
 
@@ -184,11 +184,11 @@ $$
 and conservation of mass tells us
 
 $$
-Q_\text{total}= Q_\text{A} + Q_\text{B}.
+Q_\text{total}= \frac{\pi D_\text{A}^2}{4}\,U_\text{A} + \frac{\pi D_\text{B}^2}{4}\,U_\text{B}.
 $$
 
 
-**For problems where inlet speed or flow rate is given**, we do not necessarily know what fraction of that flow passes through each path. We'll use an iterative scheme to determine the flow through each path that ensures the pressure drops match.
+**For problems where the flow rate $Q_\text{total}$ is given**, we do not necessarily know what fraction of that flow passes through each path. We'll use an iterative scheme to determine the flow through each path that ensures the pressure drops match, e.g.: guess a $U_\text{A}$, then that sets $U_\text{B}$ via conservation of mass, then calculate $f_\text{A}$ and $f_\text{B}$ and check if the two sides of the loss equation match. If they don't, guess a new $U_\text{A}$.
 
 **For problems where the overall pressure drop is given**, it is even more complex: we know neither $Q_\text{total}$, nor the fraction along each path. So our iterative scheme must have two layers: guess the overall flow rate and guess the fraction that passes through each path, then confirm that the pressure drop across each path is the same AND that the total pressure drop matches the given pressure drop.
 
@@ -208,7 +208,7 @@ A pump is included along the vertical pipe, providing energy to the flow to get 
 
 However, pumps do not provide a particular amount of pressure, nor do they provide a particular flow rate: the head they add depends on the flow rate through the pump.
 
-How does that look? The head equation can be written to look like
+How does that work out? The head equation can be written to look like
 
 $$
 H_\text{pump}= H_\text{out}-H_\text{in}+H_\text{losses}
@@ -229,14 +229,11 @@ $$
 H_\text{losses}=\sum_i\frac{1}{2g}U_i^2\frac{f_iL_i}{D_i}+\sum_j\frac{1}{2g}U_j^2 K_{\text{L},j}.
 $$
 
-Notice that these three terms all include $U^2$ terms... if we were to make a plot of $H_\text{out}-H_\text{in}+H_\text{losses}$ as a function of $Q$, we should basically see a parabola.
+Notice that these three terms all include $U^2$ terms... if we were to make a plot of $H_\text{out}-H_\text{in}+H_\text{losses}$ as a function of $Q$, we should see a parabola (more or less, the $f$ terms tweak that a bit). This collection of terms, when plotted, is sometimes called "the system curve" or "flow curve"
 
-The $H_\text{pump}$ term depends on the pump design, but there is a general rule: if the flow is moving slowly, the pump can add more head; and if the flow is fast, it can't add as much head.
+The $H_\text{pump}$ term depends on the pump design, but there is a general rule: if the flow is moving slowly, the pump can add more head; and if the flow is fast, it can't add as much head. Here is a possible illustration of @eq-pump-head, with a hypothetical pump curve:
 
-
-So, here is an illustration of @eq-pump-head:
-
-![Hypothetical pumping curve (red), including a flow curve (blue). Pumping curves generally have an inverse relationship between head and flow rate, whereas flow curves increase in head loss with $\sim Q^2$. The intersection between these two curves sets the flow state. The Net Positive Suction Head curve, related to the cavitation limit of the pump, sits at low values of $H$.](pump-chart.svg){#fig-pump-chart width=50% fig-align="center" fig-alt="Schematic of head H versus flow rate Q. A red pump curve starts high at Q = 0 and falls with increasing Q. A blue flow curve starts low and rises as Q squared. They cross at a single marked point. A purple NPSH curve rises gently near the bottom of the plot, below both."}
+![Hypothetical pumping curve (red), including a flow curve (blue). Pumping curves generally have an inverse relationship between head and flow rate, whereas flow curves increase have a head loss that increases with $\sim Q^2$. The intersection between these two curves sets the flow state. The Net Positive Suction Head curve, related to the cavitation limit of the pump, sits at low values of $H$.](pump-chart.svg){#fig-pump-chart width=50% fig-align="center" fig-alt="Schematic of head H versus flow rate Q. A red pump curve starts high at Q = 0 and falls with increasing Q. A blue flow curve starts low and rises as Q squared. They cross at a single marked point. A purple NPSH curve rises gently near the bottom of the plot, below both."}
 
 
 ::: {.column-margin}
@@ -251,7 +248,7 @@ The solution to the equation is where the two curves intersect: the amount of he
 
 ::: {.callout-important}
 
-We don't directly control the flow rate or the head added by the pump: the system chooses for us.
+We don't directly control the flow rate or the head added by the pump: the system chooses for us!
 
 :::
 

@@ -2,19 +2,19 @@
 title: "11.4 Minor loss coefficients"
 ---
 
-A lookup page. Every value here goes into
+A lookup page for 
 
 $$
-h_\text{L,minor} = K_\text{L}\,\frac{U^2}{2g},
+H_\text{L,minor} = K_\text{L}\,\frac{U^2}{2g},
 $$
 
-with $U$ the speed in the attached pipe (or in the *smaller* pipe, when the size changes). These are typical values for turbulent flow, and they're rough: expect up to ±50% between manufacturers, and don't be shocked when two textbooks disagree about the same elbow. If you have the manufacturer's number for your actual part, use that.
+with $U$ the speed in the attached pipe (or in the *smaller* pipe, when the size changes). These are typical estimates for turbulent flow.
 
 ## Entrances and exits
 
 ![Loss coefficients for flow from a tank into a pipe, and from a pipe into a tank. $U$ is the speed in the pipe.](minor-entrances.svg){#fig-entrances width=100% fig-alt="Five cross-sections. Re-entrant entrance, pipe protruding into the tank: K_L = 0.8. Sharp-edged entrance: K_L = 0.5. Slightly rounded entrance, r/D about 0.1: K_L = 0.12 to 0.2. Well rounded entrance, r/D at least 0.15: K_L = 0.03 to 0.04. Pipe exit into a tank: K_L = alpha, about 1."}
 
-The exit is the kinetic-energy correction factor $\alpha$, since all of the pipe's kinetic energy gets dissipated in the tank: about 1 for turbulent flow, and 2 for laminar.
+
 
 ## Sudden area changes
 
@@ -31,7 +31,7 @@ The expansion is one of the few entries we can actually derive (with mass, momen
 
 ## Gradual area changes
 
-Easing into the change helps a lot, especially for contractions. Again, use the speed in the smaller pipe.
+Easing into the area change may help, especially for contractions. Again, use the speed in the smaller pipe.
 
 ![The included angle $\theta$ of a gradual expansion and a gradual contraction.](minor-gradual.svg){#fig-gradual width=100% fig-alt="Two cross-sections with the cone walls extended by dashed lines to an apex on the centerline. The angle between the dashed lines is the included angle theta. A gradual expansion is drawn at theta = 20 degrees, and a gradual contraction at theta = 45 degrees."}
 
@@ -83,7 +83,7 @@ Easing into the change helps a lot, especially for contractions. Again, use the 
 | Swing check | forward flow | 2 |
 | | backward flow | ∞ (that's its job) |
 
-## Size matters
+<!-- ## Size matters
 
 Those single numbers hide a real trend: small fittings are generally worse. Here's the same hardware across nominal pipe sizes.
 
@@ -131,7 +131,7 @@ Those single numbers hide a real trend: small fittings are generally worse. Here
 | `tee_branch_flow` | 1.0 | `entrance_reentrant` | 0.8 |
 | `gate_valve_open` | 0.15 | `entrance_rounded` | 0.03 |
 | `gate_valve_half` | 2.1 | `exit` | 1 |
-| `strainer` | 2 | `flow_meter_orifice` | 2.5 |
+| `strainer` | 2 | `flow_meter_orifice` | 2.5 | -->
 
 ## Where these came from
 
