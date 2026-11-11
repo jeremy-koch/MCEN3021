@@ -238,6 +238,14 @@ So, here is an illustration of @eq-pump-head:
 
 ![Hypothetical pumping curve (red), including a flow curve (blue). Pumping curves generally have an inverse relationship between head and flow rate, whereas flow curves increase in head loss with $\sim Q^2$. The intersection between these two curves sets the flow state. The Net Positive Suction Head curve, related to the cavitation limit of the pump, sits at low values of $H$.](pump-chart.svg){#fig-pump-chart width=50% fig-align="center" fig-alt="Schematic of head H versus flow rate Q. A red pump curve starts high at Q = 0 and falls with increasing Q. A blue flow curve starts low and rises as Q squared. They cross at a single marked point. A purple NPSH curve rises gently near the bottom of the plot, below both."}
 
+
+::: {.column-margin}
+Many pumping curves will include a line labeled "NPSH" for "Net Positive Suction Head". This is related to pump cavitation and is an essential consideration in many applications so that the pump is not destroyed! The head referenced here is the [absolute]{.underline} pressure (divided by $\rho g$) seen at the pump inlet.
+
+There are other practical limitations, for example: pumps typically rely on fluid flow to carry away heat, and so they should not be used, or at least not for long, in situations where $Q$ is nearly zero. The precise limit is sometimes given in the pumping chart.
+:::
+
+
 The solution to the equation is where the two curves intersect: the amount of head added by the pump matches the head difference (out − in) plus the head losses at that particular flow rate.
 
 
@@ -283,20 +291,20 @@ $$
 H_\text{flow} = \Delta z + K Q^2,
 $$
 
-so the elevation gain sets the $y$-intercept, and the losses set how quickly the parabola climbs (more losses squeeze it to the left). The "losses" slider is the head loss at 10 L/s, which is just a friendlier way of dialing $K$. The dot is the system solution — this is the actual flow rate we would see.
+so the elevation gain sets the $y$-intercept, and the losses set how quickly the parabola climbs (more losses squeeze it to the left). The dot is the system solution — this is the actual flow rate we would see.
 
-Notice that, depending on the parameters, adding a pump in series or parallel doesn't do much for the system performance. E.g.
+Notice that, depending on the parameters, adding a pump in series or parallel might not do much for the system performance. E.g.
 
-- Try adding a pump in series, and then setting $\Delta z=0\text{ m}$ and $\text{losses}=1\text{ m}$. The flow state hardly changes from the one-pump case.
+- Try adding a pump in series, and then setting $\Delta z=0$ and $\text{losses}=1$. The flow state hardly changes from the one-pump case.
 
-- Try adding a pump in parallel, and then setting $\Delta z=15\text{ m}$ and $\text{losses}=49\text{ m}$. The flow state hardly changes from the one-pump case.
+- Try adding a pump in parallel, and then setting $\Delta z=15$ and $\text{losses}=49$. The flow state hardly changes from the one-pump case.
 
-But you can get significant changes as well!
+But you can get significant changes as well! A parallel pump has a large effect in the first case, and a series pump has a large effect in the second!
 
 ```{ojs}
 //| echo: false
 viewof pp_dz = Inputs.range([0, 50], {value: 10, step: 1, label: "elevation gain Δz (m)"})
-viewof pp_loss = Inputs.range([1, 60], {value: 10, step: 1, label: "losses: head loss at 10 L/s (m)"})
+viewof pp_loss = Inputs.range([1, 60], {value: 10, step: 1, label: "losses"})
 viewof pp_extra = Inputs.checkbox(["in series", "in parallel"], {label: "add a second pump"})
 ```
 
@@ -376,18 +384,6 @@ pp_model = {
 }
 ```
 
-Things to try:
-
-- Turn on both extra pumps, then slide the losses from low to high. When does series win? When does parallel win? (Compare with Fig. -@fig-parallel-pump.)
-- Raise $\Delta z$ above 30 m. What happens with one pump? Which second pump rescues you, and why can't the other one?
 
 
 
-
-
-
-### Net Positive Suction Head and other limitations
-
-Many pumping curves will include a line labeled "NPSH" for "Net Positive Suction Head". This is related to pump cavitation and is an essential consideration in many applications so that the pump is not destroyed! The head referenced here is the [absolute]{.underline} pressure (divided by $\rho g$) seen at the pump inlet.
-
-There are other practical limitations, for example: pumps typically rely on fluid flow to carry away heat, and so they should not be used, or at least not for long, in situations where $Q$ is nearly zero. The precise limit is sometimes given in the pumping chart.
