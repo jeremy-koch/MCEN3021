@@ -27,7 +27,7 @@ These depend on the area ratio. Use the speed in the smaller pipe for both.
 | Contraction, $K_\text{L}\approx 0.5\,(1-A_\text{small}/A_\text{large})$ | 0.50 | 0.40 | 0.30 | 0.20 | 0.10 | 0 |
 | Expansion, $K_\text{L}= (1-A_\text{small}/A_\text{large})^2$ | 1.00 | 0.64 | 0.36 | 0.16 | 0.04 | 0 |
 
-The expansion is one of the few entries we can actually derive (with mass, momentum, and energy). The contraction is empirical, and other fits exist.^[White's fit, for example, is $K_\text{L}\approx 0.42\,(1-d^2/D^2)$ for $d/D\leq 0.76$, switching to the expansion formula for larger $d/D$. Remember that $d^2/D^2$ is the same thing as the area ratio.]
+
 
 ## Gradual area changes
 
@@ -81,7 +81,7 @@ Easing into the area change may help, especially for contractions. Again, use th
 | | ⅓ closed | 5.5 |
 | | ⅔ closed | 210 |
 | Swing check | forward flow | 2 |
-| | backward flow | ∞ (that's its job) |
+| | backward flow | ∞  |
 
 <!-- ## Size matters
 
@@ -133,6 +133,6 @@ Those single numbers hide a real trend: small fittings are generally worse. Here
 | `gate_valve_half` | 2.1 | `exit` | 1 |
 | `strainer` | 2 | `flow_meter_orifice` | 2.5 | -->
 
-## Where these came from
+<!-- ## Where these came from
 
-Compiled from [LMNO Engineering's table](https://lmnoeng.com/surface.htm), [EngineerExcel's fitting tables](https://engineerexcel.com/loss-coefficient/) (the size-by-size numbers), [notes by R. S. Subramanian](https://lin-web.clarkson.edu/projects/subramanian/ch330/notes/Minor%20Losses.pdf), and the standard undergraduate fluids texts.
+Compiled from [LMNO Engineering's table](https://lmnoeng.com/surface.htm), [EngineerExcel's fitting tables](https://engineerexcel.com/loss-coefficient/) (the size-by-size numbers), [notes by R. S. Subramanian](https://lin-web.clarkson.edu/projects/subramanian/ch330/notes/Minor%20Losses.pdf), and the standard undergraduate fluids texts. -->

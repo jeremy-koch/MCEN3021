@@ -229,7 +229,7 @@ $$
 H_\text{losses}=\sum_i\frac{1}{2g}U_i^2\frac{f_iL_i}{D_i}+\sum_j\frac{1}{2g}U_j^2 K_{\text{L},j}.
 $$
 
-Notice that these three terms all include $U^2$ terms... if we were to make a plot of $H_\text{out}-H_\text{in}+H_\text{losses}$ as a function of $Q$, we should see a parabola (more or less, the $f$ terms tweak that a bit). This collection of terms, when plotted, is sometimes called "the system curve" or "flow curve"
+Notice that these three terms all include $U^2$... if we were to make a plot of $H_\text{out}-H_\text{in}+H_\text{losses}$ as a function of $Q$, we should see a parabola (more or less, the $f$ terms tweak that a bit). This collection of terms, when plotted, is sometimes called "the system curve" or "flow curve"
 
 The $H_\text{pump}$ term depends on the pump design, but there is a general rule: if the flow is moving slowly, the pump can add more head; and if the flow is fast, it can't add as much head. Here is a possible illustration of @eq-pump-head, with a hypothetical pump curve:
 
