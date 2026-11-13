@@ -5,7 +5,7 @@ project:
     # The site is stripped down to course bureaucracy (index/syllabus)
     # plus the readings published so far. Project, Homework, Tools, and
     # Reference pages are gitignored and excluded here; restore each as
-    # it's ready.
+    # it's ready. 
     - "!project.qmd"
     - "!homework.qmd"
     - "!tools.qmd"

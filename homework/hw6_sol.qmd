@@ -23,7 +23,7 @@ $$
 \pd{u_\text{A}}{x}+\pd{v_\text{A}}{y}+\pd{w_\text{A}}{z}=0.
 $$
 
-The fluids move horizontally, so $v_\text{A}=0$, and we assume nothing happens in $z$, so $w_\text{A}=0$. That leaves
+The fluids move horizontally, so $v_\text{A}=0$, and we assume nothing happens in $z$, so $w_\text{A}=0$. That leaves 
 
 $$
 \pd{u_\text{A}}{x}=0

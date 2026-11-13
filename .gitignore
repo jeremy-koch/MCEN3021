@@ -112,3 +112,8 @@ CLAUDE.md
 
 # Local-only Claude Code skills (instructor workflow; not for the public repo)
 .claude/skills/
+
+# Local pipeflow project drafts (not for publication)
+projects/pipeflow/NEW-REPO-CLAUDE.md
+projects/pipeflow/pipe-project.qmd
+projects/pipeflow/pipeflow-tour.ipynb

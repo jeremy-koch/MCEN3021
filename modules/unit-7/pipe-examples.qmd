@@ -2,15 +2,522 @@
 title: "11.3 Pipe flow examples"
 ---
 
-A few examples done by hand and with computational assistance. Coming soon.
+A few examples done by hand and with computational assistance. All four use water at 20 °C: $\rho = 998\ \text{kg/m}^3$, $\nu = 1.00\times10^{-6}\ \text{m}^2/\text{s}$. Loss coefficients come from [11.1b Minor loss coefficients](minor-loss-coefficients.qmd) and roughness values from the table in [11.1 Pipe losses](pipe-losses.qmd).
 
 
-<!-- ## Example 1: Determining flow rate from a water tower
+## Example 1: Given the flow rate, find the inlet pressure
 
-This one we covered in class... I'll add some more detail here, and get some extra numbers.
+We want to fill a 20 L bucket in 50 s (so $Q = 0.4$ L/s) from a tap on the second floor. Water comes from the building's supply at point 1, travels $L_1 = 10$ m horizontally, turns up through a threaded elbow, rises $L_2 = 4$ m, turns right through a second threaded elbow, and travels $L_3 = 3$ m through a fully open gate valve before leaving as a free jet. The pipe is drawn copper tubing ($\epsilon = 0.0025$ mm) with $D = 2$ cm the whole way. What gauge pressure $p_1$ does the supply need to provide?
 
-Water is stored in a reservoir
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="660" height="310" style="max-width:100%; height:auto;" viewBox="0 0 660 310" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" role="img" aria-label="Single pipe of diameter D. Water at point 1, where a pressure gauge reads p1 (unknown), flows right through horizontal length L1, turns up at a 90 degree threaded elbow, rises through vertical length L2, turns right at a second threaded elbow, passes through a fully open gate valve in horizontal length L3, and leaves the open end as a free jet to the atmosphere at point 2. The flow rate Q is given.">
+  <defs>
+    <marker id="pe1-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e0311f"/>
+    </marker>
+    <marker id="pe1-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f77e0"/>
+    </marker>
+    <marker id="pe1-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f8a3a"/>
+    </marker>
+    <marker id="pe1-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a3fd1"/>
+    </marker>
+    <marker id="pe1-arrow-black" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="660" height="310" fill="#ffffff"/>
+
+  <!-- water in the pipe (centerline 40,240 -> 360,240 -> 360,80 -> 560,80) and the free jet -->
+  <polygon points="40,231 351,231 351,71 560,71 560,89 369,89 369,249 40,249" fill="#a8e4f0"/>
+  <path d="M 560 71 Q 615 72 636 130 L 618 130 Q 602 92 560 89 Z" fill="#a8e4f0"/>
+
+  <!-- pipe walls -->
+  <g stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linejoin="miter">
+    <path d="M 40 249 L 369 249 L 369 89 L 560 89"/>
+    <path d="M 40 231 L 351 231 L 351 71 L 560 71"/>
+  </g>
+  <!-- break mark: the pipe continues upstream to the supply -->
+  <path d="M 40 224 L 34 234 L 46 246 L 40 256" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+  <text x="50" y="278" font-size="13" fill="#1a1a1a">from supply</text>
+
+  <!-- pressure gauge at point 1 -->
+  <line x1="70" y1="231" x2="70" y2="207" stroke="#1a1a1a" stroke-width="2"/>
+  <circle cx="70" cy="195" r="12" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+  <line x1="70" y1="195" x2="77" y2="188" stroke="#1a1a1a" stroke-width="1.5"/>
+  <text x="90" y="200" font-size="16" fill="#8a3fd1"><tspan font-style="italic">p</tspan><tspan dy="4" font-size="11">1</tspan><tspan dy="-4">&#160;=&#160;?</tspan></text>
+
+  <!-- gate valve on section 3 -->
+  <g stroke="#1a1a1a" stroke-width="2" fill="#ffffff">
+    <path d="M 446 66 L 460 80 L 446 94 Z"/>
+    <path d="M 474 66 L 460 80 L 474 94 Z"/>
+  </g>
+  <g stroke="#1a1a1a" stroke-width="2">
+    <line x1="460" y1="80" x2="460" y2="54"/>
+    <line x1="451" y1="54" x2="469" y2="54"/>
+  </g>
+
+  <!-- flow direction and flow rate -->
+  <line x1="130" y1="240" x2="165" y2="240" stroke="#1f77e0" stroke-width="2" marker-end="url(#pe1-arrow-blue)"/>
+  <text x="148" y="222" font-size="16" fill="#1f77e0" text-anchor="middle"><tspan font-style="italic">Q</tspan><tspan>&#160;(given)</tspan></text>
+
+  <!-- stations -->
+  <circle cx="70" cy="240" r="4" fill="#1a1a1a"/>
+  <circle cx="560" cy="80" r="4" fill="#1a1a1a"/>
+  <text x="566" y="105" font-size="16" fill="#1a1a1a">2</text>
+  <text x="640" y="152" font-size="13" fill="#1f77e0" text-anchor="end">free jet, <tspan font-style="italic">p</tspan><tspan dy="4" font-size="9">atm</tspan></text>
+
+  <!-- lengths (red dimension lines, measured along the centerline) -->
+  <g stroke="#e0311f" stroke-width="1.3" fill="none">
+    <line x1="70" y1="290" x2="360" y2="290" marker-start="url(#pe1-arrow-red)" marker-end="url(#pe1-arrow-red)"/>
+    <line x1="400" y1="80" x2="400" y2="240" marker-start="url(#pe1-arrow-red)" marker-end="url(#pe1-arrow-red)"/>
+    <line x1="360" y1="30" x2="560" y2="30" marker-start="url(#pe1-arrow-red)" marker-end="url(#pe1-arrow-red)"/>
+    <!-- extension lines -->
+    <line x1="70" y1="255" x2="70" y2="296" stroke-dasharray="2 2"/>
+    <line x1="360" y1="255" x2="360" y2="296" stroke-dasharray="2 2"/>
+    <line x1="375" y1="240" x2="406" y2="240" stroke-dasharray="2 2"/>
+    <line x1="360" y1="24" x2="360" y2="66" stroke-dasharray="2 2"/>
+    <line x1="560" y1="24" x2="560" y2="66" stroke-dasharray="2 2"/>
+  </g>
+  <g fill="#e0311f" font-size="16">
+    <text x="215" y="285" text-anchor="middle"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">1</tspan></text>
+    <text x="406" y="165"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">2</tspan></text>
+    <text x="460" y="22" text-anchor="middle"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">3</tspan></text>
+  </g>
+
+  <!-- diameter -->
+  <g stroke="#e0311f" stroke-width="1.3">
+    <line x1="230" y1="210" x2="230" y2="229" marker-end="url(#pe1-arrow-red)"/>
+    <line x1="230" y1="270" x2="230" y2="251" marker-end="url(#pe1-arrow-red)"/>
+  </g>
+  <text x="236" y="214" font-size="16" fill="#e0311f"><tspan font-style="italic">D</tspan></text>
+
+  <!-- minor loss elements -->
+  <g stroke="#1f8a3a" stroke-width="1.2">
+    <line x1="420" y1="262" x2="372" y2="251" marker-end="url(#pe1-arrow-green)"/>
+    <line x1="300" y1="52" x2="348" y2="68" marker-end="url(#pe1-arrow-green)"/>
+    <line x1="460" y1="122" x2="460" y2="97" marker-end="url(#pe1-arrow-green)"/>
+  </g>
+  <g fill="#1f8a3a" font-size="13">
+    <text x="424" y="268">90° threaded elbow</text>
+    <text x="296" y="52" text-anchor="end">90° threaded elbow</text>
+    <text x="460" y="136" text-anchor="middle">gate valve (fully open)</text>
+  </g>
+
+  <!-- gravity -->
+  <line x1="620" y1="200" x2="620" y2="255" stroke="#1a1a1a" stroke-width="2" marker-end="url(#pe1-arrow-black)"/>
+  <text x="630" y="234" font-size="17" font-style="italic" fill="#1a1a1a">g</text>
+</svg>
+</div>
+```
+
+<!-- This is the friendly kind of problem. $Q$ and $D$ give us $U$ directly, so $\text{Re}_D$ and $f$ follow without any guessing, and the head equation from 1 to 2 has exactly one unknown left in it.
+
+<details>
+<summary>Answer to check against</summary>
+
+$U = 1.27$ m/s, $\text{Re}_D \approx 25{,}000$, $f \approx 0.025$, and the head loss is about 2.0 m (friction and fittings together). Since the pipe diameter doesn't change, the kinetic energy terms at 1 and 2 cancel, leaving $p_1/\rho g = L_2 + H_\text{losses}$, so $p_1 \approx 59$ kPa gauge (about 8.5 psi). In Boulder that's $59 + 83 \approx 142$ kPa absolute.
+
+</details> -->
 
 
+## Example 2: Determining flow rate from a water tower
 
-## Example 2:  -->
+This one we basically covered in class... let's put some numbers to it.
+
+Water leaves an elevated tank through a sharp-edged entrance in its floor. The free surface sits $h = 5$ m above the tank floor, and it's wide enough that $U \approx 0$ there. The pipe drops $L_1 = 20$ m, turns right and runs $L_2 = 30$ m, turns down for a short $L_3 = 3$ m, then turns right again for $L_4 = 15$ m and discharges as a free jet. All three elbows are flanged; the pipe is structural steel ($\epsilon = 0.025$ mm) with $D = 5$ cm. What flow rate does the tank supply?
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="660" height="400" style="max-width:100%; height:auto;" viewBox="0 0 660 400" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" role="img" aria-label="Elevated tank with free surface at height h above its floor, where U is approximately zero and the pressure is atmospheric. A pipe of diameter D leaves the tank floor through a sharp-edged entrance and drops vertically through length L1, turns right at a flanged elbow into horizontal length L2, turns down at a second flanged elbow for a short vertical length L3, turns right at a third flanged elbow into horizontal length L4, and leaves as a free jet to the atmosphere. The flow rate Q is unknown.">
+  <defs>
+    <marker id="pe2-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e0311f"/>
+    </marker>
+    <marker id="pe2-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f77e0"/>
+    </marker>
+    <marker id="pe2-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f8a3a"/>
+    </marker>
+    <marker id="pe2-arrow-black" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="660" height="400" fill="#ffffff"/>
+
+  <!-- tank -->
+  <rect x="40" y="40" width="120" height="80" fill="#a8e4f0"/>
+  <g stroke="#1a1a1a" stroke-width="2.5" fill="none">
+    <path d="M 40 15 L 40 120 L 89 120"/>
+    <path d="M 111 120 L 160 120 L 160 15"/>
+  </g>
+  <line x1="40" y1="40" x2="160" y2="40" stroke="#1f77e0" stroke-width="1.5"/>
+  <path d="M 93 28 L 107 28 L 100 38 Z" fill="none" stroke="#1f77e0" stroke-width="1.3"/>
+  <text x="70" y="34" font-size="16" fill="#1a1a1a" text-anchor="middle">1</text>
+  <text x="170" y="38" font-size="13" fill="#1f77e0"><tspan font-style="italic">U</tspan> ≈ 0, <tspan font-style="italic">p</tspan><tspan dy="4" font-size="9">atm</tspan></text>
+
+  <!-- water in the pipe (centerline 100,120 -> 100,260 -> 380,260 -> 380,320 -> 580,320) and the free jet -->
+  <polygon points="89,120 111,120 111,249 391,249 391,309 580,309 580,331 369,331 369,271 89,271" fill="#a8e4f0"/>
+  <path d="M 580 309 Q 628 310 645 365 L 627 365 Q 614 333 580 331 Z" fill="#a8e4f0"/>
+
+  <!-- pipe walls -->
+  <g stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linejoin="miter">
+    <path d="M 89 120 L 89 271 L 369 271 L 369 331 L 580 331"/>
+    <path d="M 111 120 L 111 249 L 391 249 L 391 309 L 580 309"/>
+  </g>
+
+  <!-- flow direction -->
+  <line x1="100" y1="150" x2="100" y2="185" stroke="#1f77e0" stroke-width="2" marker-end="url(#pe2-arrow-blue)"/>
+  <line x1="450" y1="320" x2="490" y2="320" stroke="#1f77e0" stroke-width="2" marker-end="url(#pe2-arrow-blue)"/>
+  <text x="470" y="300" font-size="16" fill="#1f77e0" text-anchor="middle"><tspan font-style="italic">Q</tspan><tspan>&#160;=&#160;?</tspan></text>
+
+  <!-- exit station -->
+  <circle cx="580" cy="320" r="4" fill="#1a1a1a"/>
+  <text x="575" y="303" font-size="16" fill="#1a1a1a" text-anchor="end">2</text>
+  <text x="655" y="388" font-size="13" fill="#1f77e0" text-anchor="end">free jet, <tspan font-style="italic">p</tspan><tspan dy="4" font-size="9">atm</tspan></text>
+
+  <!-- lengths (red dimension lines) -->
+  <g stroke="#e0311f" stroke-width="1.3" fill="none">
+    <line x1="25" y1="40" x2="25" y2="120" marker-start="url(#pe2-arrow-red)" marker-end="url(#pe2-arrow-red)"/>
+    <line x1="60" y1="120" x2="60" y2="260" marker-start="url(#pe2-arrow-red)" marker-end="url(#pe2-arrow-red)"/>
+    <line x1="100" y1="215" x2="380" y2="215" marker-start="url(#pe2-arrow-red)" marker-end="url(#pe2-arrow-red)"/>
+    <line x1="420" y1="260" x2="420" y2="320" marker-start="url(#pe2-arrow-red)" marker-end="url(#pe2-arrow-red)"/>
+    <line x1="380" y1="370" x2="580" y2="370" marker-start="url(#pe2-arrow-red)" marker-end="url(#pe2-arrow-red)"/>
+    <!-- extension lines -->
+    <line x1="19" y1="40" x2="38" y2="40" stroke-dasharray="2 2"/>
+    <line x1="19" y1="120" x2="38" y2="120" stroke-dasharray="2 2"/>
+    <line x1="54" y1="260" x2="83" y2="260" stroke-dasharray="2 2"/>
+    <line x1="380" y1="209" x2="380" y2="243" stroke-dasharray="2 2"/>
+    <line x1="397" y1="260" x2="426" y2="260" stroke-dasharray="2 2"/>
+    <line x1="380" y1="337" x2="380" y2="376" stroke-dasharray="2 2"/>
+    <line x1="580" y1="337" x2="580" y2="376" stroke-dasharray="2 2"/>
+  </g>
+  <g fill="#e0311f" font-size="16">
+    <text x="18" y="86" text-anchor="end"><tspan font-style="italic">h</tspan></text>
+    <text x="53" y="195" text-anchor="end"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">1</tspan></text>
+    <text x="240" y="207" text-anchor="middle"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">2</tspan></text>
+    <text x="428" y="295"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">3</tspan></text>
+    <text x="480" y="390" text-anchor="middle"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">4</tspan></text>
+  </g>
+
+  <!-- diameter -->
+  <g stroke="#e0311f" stroke-width="1.3">
+    <line x1="250" y1="228" x2="250" y2="247" marker-end="url(#pe2-arrow-red)"/>
+    <line x1="250" y1="292" x2="250" y2="273" marker-end="url(#pe2-arrow-red)"/>
+  </g>
+  <text x="256" y="298" font-size="16" fill="#e0311f"><tspan font-style="italic">D</tspan></text>
+
+  <!-- minor loss elements -->
+  <g stroke="#1f8a3a" stroke-width="1.2">
+    <line x1="122" y1="136" x2="113" y2="123" marker-end="url(#pe2-arrow-green)"/>
+    <line x1="122" y1="296" x2="92" y2="274" marker-end="url(#pe2-arrow-green)"/>
+    <line x1="420" y1="236" x2="394" y2="247" marker-end="url(#pe2-arrow-green)"/>
+    <line x1="330" y1="348" x2="366" y2="334" marker-end="url(#pe2-arrow-green)"/>
+  </g>
+  <g fill="#1f8a3a" font-size="13">
+    <text x="125" y="148">sharp-edged entrance</text>
+    <text x="125" y="306">flanged 90° elbow</text>
+    <text x="424" y="238">flanged elbow</text>
+    <text x="326" y="356" text-anchor="end">flanged elbow</text>
+  </g>
+
+  <!-- gravity -->
+  <line x1="610" y1="90" x2="610" y2="145" stroke="#1a1a1a" stroke-width="2" marker-end="url(#pe2-arrow-black)"/>
+  <text x="620" y="124" font-size="17" font-style="italic" fill="#1a1a1a">g</text>
+</svg>
+</div>
+```
+<!-- 
+Now $Q$ is the unknown, which means $U$, $\text{Re}_D$, and $f$ are all unknown too. The head equation from the free surface (1) to the jet (2) gives us one equation for $U$, but $f$ depends on $U$... so we guess $f$, solve for $U$, update $f$, and repeat. (A good first guess: the fully rough value for this $\epsilon/D$, where the Moody curve goes flat.)
+
+<details>
+<summary>Answer to check against</summary>
+
+The total drop from free surface to jet is $h + L_1 + L_3 = 28$ m. Without any losses, that would give $U = \sqrt{2g \cdot 28} \approx 23$ m/s. With losses, it converges to $U \approx 4.45$ m/s ($\text{Re}_D \approx 2.2\times10^5$, $f \approx 0.019$), so $Q \approx 8.7$ L/s. Friction and fittings eat about 27 of the 28 m; only 1 m of head is left over as kinetic energy in the jet!
+
+</details> -->
+
+
+## Example 3: Parallel paths
+
+A cast iron line ($\epsilon = 0.15$ mm) carries $Q_\text{total} = 10$ L/s. At point 1 it splits at a threaded tee: path A continues straight through (20 m long, with a fully open gate valve), and path B turns the corner, drops down, runs across, and comes back up to rejoin at a second tee at point 2 (50 m along its centerline, with two threaded elbows). Every pipe has $D = 5$ cm. How does the flow split between the two paths, and what is the pressure drop from 1 to 2?
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="660" height="345" style="max-width:100%; height:auto;" viewBox="0 0 660 345" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" role="img" aria-label="Two parallel pipe paths of equal diameter D. A pipe carrying Q total reaches a tee at point 1. Path A continues straight through the tee and runs horizontally through length L A, passing a fully open gate valve, to a second tee at point 2. Path B turns the corner at the first tee, drops down, turns at a threaded elbow, runs horizontally, turns up at a second threaded elbow, and rejoins at the second tee; its length L B is measured along the whole path. The flows Q A and Q B are unknown. The head loss from 1 to 2 is the same along either path.">
+  <defs>
+    <marker id="pe3-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e0311f"/>
+    </marker>
+    <marker id="pe3-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f77e0"/>
+    </marker>
+    <marker id="pe3-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f8a3a"/>
+    </marker>
+    <marker id="pe3-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a3fd1"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="660" height="345" fill="#ffffff"/>
+
+  <!-- pipe network, drawn twice: wide dark strokes make the walls, narrower water strokes open up the junctions -->
+  <g fill="none" stroke="#1a1a1a" stroke-linejoin="miter">
+    <path d="M 20 120 L 640 120" stroke-width="27"/>
+    <path d="M 170 120 L 170 270 L 490 270 L 490 120" stroke-width="27"/>
+  </g>
+  <g fill="none" stroke="#a8e4f0" stroke-linejoin="miter">
+    <path d="M 20 120 L 640 120" stroke-width="22"/>
+    <path d="M 170 120 L 170 270 L 490 270 L 490 120" stroke-width="22"/>
+  </g>
+
+  <!-- gate valve on path A -->
+  <g stroke="#1a1a1a" stroke-width="2" fill="#ffffff">
+    <path d="M 315 103 L 330 120 L 315 137 Z"/>
+    <path d="M 345 103 L 330 120 L 345 137 Z"/>
+  </g>
+  <g stroke="#1a1a1a" stroke-width="2">
+    <line x1="330" y1="120" x2="330" y2="93"/>
+    <line x1="321" y1="93" x2="339" y2="93"/>
+  </g>
+
+  <!-- flow direction and flow rates -->
+  <g stroke="#1f77e0" stroke-width="2">
+    <line x1="55" y1="120" x2="95" y2="120" marker-end="url(#pe3-arrow-blue)"/>
+    <line x1="395" y1="120" x2="430" y2="120" marker-end="url(#pe3-arrow-blue)"/>
+    <line x1="395" y1="270" x2="430" y2="270" marker-end="url(#pe3-arrow-blue)"/>
+    <line x1="560" y1="120" x2="600" y2="120" marker-end="url(#pe3-arrow-blue)"/>
+  </g>
+  <g fill="#1f77e0" font-size="16" text-anchor="middle">
+    <text x="75" y="98"><tspan font-style="italic">Q</tspan><tspan dy="4" font-size="11">total</tspan></text>
+    <text x="412" y="98"><tspan font-style="italic">Q</tspan><tspan dy="4" font-size="11">A</tspan><tspan dy="-4">&#160;=&#160;?</tspan></text>
+    <text x="412" y="248"><tspan font-style="italic">Q</tspan><tspan dy="4" font-size="11">B</tspan><tspan dy="-4">&#160;=&#160;?</tspan></text>
+    <text x="580" y="98"><tspan font-style="italic">Q</tspan><tspan dy="4" font-size="11">total</tspan></text>
+  </g>
+
+  <!-- the two junctions -->
+  <circle cx="170" cy="120" r="4" fill="#1a1a1a"/>
+  <circle cx="490" cy="120" r="4" fill="#1a1a1a"/>
+  <g fill="#1a1a1a" font-size="16">
+    <text x="160" y="100" text-anchor="end"><tspan font-style="italic">p</tspan><tspan dy="4" font-size="11">1</tspan></text>
+    <text x="500" y="100"><tspan font-style="italic">p</tspan><tspan dy="4" font-size="11">2</tspan></text>
+  </g>
+  <g fill="#1a1a1a" font-size="14" text-anchor="middle">
+    <text x="255" y="160">path A</text>
+    <text x="255" y="255">path B</text>
+  </g>
+  <line x1="220" y1="215" x2="440" y2="215" stroke="#8a3fd1" stroke-width="1.2" marker-end="url(#pe3-arrow-purple)"/>
+  <text x="330" y="207" font-size="13" fill="#8a3fd1" text-anchor="middle">same head loss from 1 to 2 along A or B</text>
+
+  <!-- lengths -->
+  <g stroke="#e0311f" stroke-width="1.3" fill="none">
+    <line x1="170" y1="40" x2="490" y2="40" marker-start="url(#pe3-arrow-red)" marker-end="url(#pe3-arrow-red)"/>
+    <line x1="170" y1="34" x2="170" y2="100" stroke-dasharray="2 2"/>
+    <line x1="490" y1="34" x2="490" y2="100" stroke-dasharray="2 2"/>
+    <!-- L_B follows the whole path -->
+    <path d="M 140 142 L 140 300 L 520 300 L 520 142" stroke-dasharray="5 3" marker-start="url(#pe3-arrow-red)" marker-end="url(#pe3-arrow-red)"/>
+  </g>
+  <g fill="#e0311f" font-size="16" text-anchor="middle">
+    <text x="250" y="32"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">A</tspan></text>
+    <text x="330" y="322"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">B</tspan><tspan dy="-4" font-size="13">&#160;(along the whole path)</tspan></text>
+  </g>
+
+  <!-- diameter -->
+  <g stroke="#e0311f" stroke-width="1.3">
+    <line x1="122" y1="152" x2="122" y2="133" marker-end="url(#pe3-arrow-red)"/>
+    <line x1="122" y1="88" x2="122" y2="107" marker-end="url(#pe3-arrow-red)"/>
+  </g>
+  <text x="116" y="166" font-size="16" fill="#e0311f" text-anchor="end"><tspan font-style="italic">D</tspan><tspan font-size="13">&#160;(all pipes)</tspan></text>
+
+  <!-- minor loss elements -->
+  <g stroke="#1f8a3a" stroke-width="1.2">
+    <line x1="330" y1="166" x2="330" y2="141" marker-end="url(#pe3-arrow-green)"/>
+    <line x1="210" y1="178" x2="184" y2="138" marker-end="url(#pe3-arrow-green)"/>
+    <line x1="450" y1="178" x2="476" y2="138" marker-end="url(#pe3-arrow-green)"/>
+    <line x1="112" y1="300" x2="156" y2="284" marker-end="url(#pe3-arrow-green)"/>
+    <line x1="548" y1="300" x2="504" y2="284" marker-end="url(#pe3-arrow-green)"/>
+  </g>
+  <g fill="#1f8a3a" font-size="13">
+    <text x="330" y="180" text-anchor="middle">gate valve (open)</text>
+    <text x="212" y="192">tee</text>
+    <text x="448" y="192" text-anchor="end">tee</text>
+    <text x="108" y="314" text-anchor="end">elbow</text>
+    <text x="552" y="314">elbow</text>
+  </g>
+</svg>
+</div>
+```
+<!-- 
+The tees are where the paths differ in a sneaky way: A goes straight through both of them (threaded, line flow, $K_\text{L} = 0.9$ each) while B turns the corner at both (branch flow, $K_\text{L} = 2.0$ each). Before calculating anything, which path do you expect to carry more flow? (Path B is longer *and* has more fittings, but A has the valve.)
+
+Since $Q_\text{total}$ is given, this is the first kind of parallel problem from [11.2](parallel-flow.qmd): guess $Q_\text{A}$, get $Q_\text{B} = Q_\text{total} - Q_\text{A}$, compute both head losses, and adjust until they match.
+
+<details>
+<summary>Answer to check against</summary>
+
+$\sum K_\text{L,A} = 0.9 + 0.15 + 0.9 = 1.95$ and $\sum K_\text{L,B} = 2.0 + 1.5 + 1.5 + 2.0 = 7.0$. The losses match at $Q_\text{A} \approx 6.2$ L/s and $Q_\text{B} \approx 3.8$ L/s ($U_\text{A} = 3.17$ m/s, $U_\text{B} = 1.93$ m/s, both $f \approx 0.027$). The head loss along either path is 6.5 m, so $p_1 - p_2 \approx 64$ kPa.
+
+A fun follow-up: half-close the gate valve ($K_\text{L} = 2.1$). Path A still carries 6.0 L/s! The valve is a small resistance compared to everything else on A, so the split barely changes, and $\Delta p$ only rises to about 70 kPa.
+
+</details> -->
+
+
+## Example 4: A pump curve
+
+Now we pump water from a lower reservoir to an upper one whose free surface sits $\Delta z = 12$ m higher. Water leaves the lower tank through a sharp-edged entrance, passes through the pump, turns up through a flanged elbow, rises, turns right through a second flanged elbow, passes a fully open gate valve, and exits into the upper tank. The pipe is cast iron ($\epsilon = 0.15$ mm), $D = 10$ cm, with a total length $L_1 + L_2 + L_3 = 150$ m. The pump is the same generic one from the demo in [11.2](parallel-flow.qmd#demo):
+
+$$
+H_\text{pump} = 30\ \text{m}\left[1 - \left(\frac{Q}{25\ \text{L/s}}\right)^2\right].
+$$
+
+What flow rate does the system deliver, and how much head does the pump add?
+
+```{=html}
+<div style="display:flex; justify-content:center; margin: 1.5em 0;">
+<svg width="660" height="370" style="max-width:100%; height:auto;" viewBox="0 0 660 370" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" role="img" aria-label="Pumping between two reservoirs. Water leaves a lower tank through a sharp-edged entrance into horizontal pipe length L1, which contains a pump, turns up at a flanged elbow into vertical length L2, turns right at a second flanged elbow into horizontal length L3, which contains a fully open gate valve, and exits into an upper tank below its free surface. The upper free surface is delta z above the lower free surface. The pipe diameter is D and the flow rate Q is unknown.">
+  <defs>
+    <marker id="pe4-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e0311f"/>
+    </marker>
+    <marker id="pe4-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f77e0"/>
+    </marker>
+    <marker id="pe4-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f8a3a"/>
+    </marker>
+    <marker id="pe4-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a3fd1"/>
+    </marker>
+    <marker id="pe4-arrow-black" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/>
+    </marker>
+  </defs>
+
+  <!-- opaque background so the diagram stays legible in dark mode too -->
+  <rect x="0" y="0" width="660" height="370" fill="#ffffff"/>
+
+  <!-- lower tank -->
+  <rect x="20" y="250" width="110" height="80" fill="#a8e4f0"/>
+  <g stroke="#1a1a1a" stroke-width="2.5" fill="none">
+    <path d="M 20 230 L 20 330 L 130 330 L 130 315"/>
+    <path d="M 130 295 L 130 230"/>
+  </g>
+  <line x1="20" y1="250" x2="130" y2="250" stroke="#1f77e0" stroke-width="1.5"/>
+  <path d="M 43 238 L 57 238 L 50 248 Z" fill="none" stroke="#1f77e0" stroke-width="1.3"/>
+  <text x="30" y="246" font-size="16" fill="#1a1a1a">1</text>
+
+  <!-- upper tank -->
+  <rect x="500" y="60" width="130" height="70" fill="#a8e4f0"/>
+  <g stroke="#1a1a1a" stroke-width="2.5" fill="none">
+    <path d="M 500 100 L 500 130 L 630 130 L 630 20"/>
+    <path d="M 500 80 L 500 20"/>
+  </g>
+  <line x1="500" y1="60" x2="630" y2="60" stroke="#1f77e0" stroke-width="1.5"/>
+  <path d="M 573 48 L 587 48 L 580 58 Z" fill="none" stroke="#1f77e0" stroke-width="1.3"/>
+  <text x="610" y="56" font-size="16" fill="#1a1a1a">2</text>
+
+  <!-- water in the pipe (centerline 130,305 -> 260,305 -> 260,90 -> 500,90) -->
+  <polygon points="130,295 250,295 250,80 500,80 500,100 270,100 270,315 130,315" fill="#a8e4f0"/>
+
+  <!-- pipe walls -->
+  <g stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linejoin="miter">
+    <path d="M 130 315 L 270 315 L 270 100 L 500 100"/>
+    <path d="M 130 295 L 250 295 L 250 80 L 500 80"/>
+  </g>
+
+  <!-- pump (circle with triangle pointing in the flow direction) -->
+  <circle cx="190" cy="305" r="15" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
+  <path d="M 183 296 L 183 314 L 200 305 Z" fill="#1a1a1a"/>
+  <line x1="214" y1="266" x2="200" y2="291" stroke="#8a3fd1" stroke-width="1.2" marker-end="url(#pe4-arrow-purple)"/>
+  <text x="212" y="262" font-size="13" fill="#8a3fd1">pump</text>
+
+  <!-- gate valve on L3 -->
+  <g stroke="#1a1a1a" stroke-width="2" fill="#ffffff">
+    <path d="M 366 74 L 380 90 L 366 106 Z"/>
+    <path d="M 394 74 L 380 90 L 394 106 Z"/>
+  </g>
+  <g stroke="#1a1a1a" stroke-width="2">
+    <line x1="380" y1="90" x2="380" y2="64"/>
+    <line x1="371" y1="64" x2="389" y2="64"/>
+  </g>
+
+  <!-- flow direction -->
+  <line x1="260" y1="225" x2="260" y2="190" stroke="#1f77e0" stroke-width="2" marker-end="url(#pe4-arrow-blue)"/>
+  <line x1="420" y1="90" x2="455" y2="90" stroke="#1f77e0" stroke-width="2" marker-end="url(#pe4-arrow-blue)"/>
+  <text x="438" y="72" font-size="16" fill="#1f77e0" text-anchor="middle"><tspan font-style="italic">Q</tspan><tspan>&#160;=&#160;?</tspan></text>
+
+  <!-- elevation difference between the free surfaces -->
+  <g stroke="#e0311f" stroke-width="1.3" fill="none">
+    <line x1="135" y1="250" x2="651" y2="250" stroke-dasharray="2 4"/>
+    <line x1="633" y1="60" x2="651" y2="60" stroke-dasharray="2 2"/>
+    <line x1="645" y1="60" x2="645" y2="250" marker-start="url(#pe4-arrow-red)" marker-end="url(#pe4-arrow-red)"/>
+  </g>
+  <text x="638" y="196" font-size="16" fill="#e0311f" text-anchor="end">Δ<tspan font-style="italic">z</tspan></text>
+
+  <!-- lengths (red dimension lines, measured along the centerline) -->
+  <g stroke="#e0311f" stroke-width="1.3" fill="none">
+    <line x1="130" y1="350" x2="260" y2="350" marker-start="url(#pe4-arrow-red)" marker-end="url(#pe4-arrow-red)"/>
+    <line x1="300" y1="90" x2="300" y2="305" marker-start="url(#pe4-arrow-red)" marker-end="url(#pe4-arrow-red)"/>
+    <line x1="260" y1="45" x2="500" y2="45" marker-start="url(#pe4-arrow-red)" marker-end="url(#pe4-arrow-red)"/>
+    <!-- extension lines -->
+    <line x1="130" y1="333" x2="130" y2="356" stroke-dasharray="2 2"/>
+    <line x1="260" y1="321" x2="260" y2="356" stroke-dasharray="2 2"/>
+    <line x1="276" y1="305" x2="306" y2="305" stroke-dasharray="2 2"/>
+    <line x1="260" y1="39" x2="260" y2="74" stroke-dasharray="2 2"/>
+  </g>
+  <g fill="#e0311f" font-size="16">
+    <text x="195" y="345" text-anchor="middle"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">1</tspan></text>
+    <text x="306" y="175"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">2</tspan></text>
+    <text x="320" y="37" text-anchor="middle"><tspan font-style="italic">L</tspan><tspan dy="4" font-size="11">3</tspan></text>
+  </g>
+
+  <!-- diameter -->
+  <g stroke="#e0311f" stroke-width="1.3">
+    <line x1="228" y1="160" x2="248" y2="160" marker-end="url(#pe4-arrow-red)"/>
+    <line x1="292" y1="140" x2="272" y2="140" marker-end="url(#pe4-arrow-red)"/>
+  </g>
+  <text x="222" y="165" font-size="16" fill="#e0311f" text-anchor="end"><tspan font-style="italic">D</tspan></text>
+
+  <!-- minor loss elements -->
+  <g stroke="#1f8a3a" stroke-width="1.2">
+    <line x1="90" y1="224" x2="127" y2="292" marker-end="url(#pe4-arrow-green)"/>
+    <line x1="283" y1="330" x2="272" y2="318" marker-end="url(#pe4-arrow-green)"/>
+    <line x1="238" y1="64" x2="248" y2="78" marker-end="url(#pe4-arrow-green)"/>
+    <line x1="380" y1="130" x2="380" y2="109" marker-end="url(#pe4-arrow-green)"/>
+    <line x1="490" y1="148" x2="499" y2="104" marker-end="url(#pe4-arrow-green)"/>
+  </g>
+  <g fill="#1f8a3a" font-size="13">
+    <text x="22" y="220">sharp-edged entrance</text>
+    <text x="286" y="340">flanged elbow</text>
+    <text x="236" y="62" text-anchor="end">flanged elbow</text>
+    <text x="380" y="144" text-anchor="middle">gate valve (open)</text>
+    <text x="490" y="162" text-anchor="middle">exit into tank</text>
+  </g>
+
+  <!-- gravity -->
+  <line x1="440" y1="205" x2="440" y2="260" stroke="#1a1a1a" stroke-width="2" marker-end="url(#pe4-arrow-black)"/>
+  <text x="450" y="239" font-size="17" font-style="italic" fill="#1a1a1a">g</text>
+</svg>
+</div>
+```
+<!-- 
+Writing the head equation between the two free surfaces (both at $p_\text{atm}$ with $U \approx 0$), the flow curve is $H = \Delta z + H_\text{losses}(Q)$. The operating point is wherever that curve crosses the pump curve. We can find it graphically, or by guessing $Q$ and checking whether $H_\text{pump}(Q) = \Delta z + H_\text{losses}(Q)$.
+
+<details>
+<summary>Answer to check against</summary>
+
+$\sum K_\text{L} = 0.5 + 0.3 + 0.3 + 0.15 + 1.0 = 2.25$ (the exit into the tank costs one full velocity head). The curves cross at $Q \approx 15.2$ L/s and $H_\text{pump} \approx 19.0$ m: 12 m of that lifts the water, and about 7.0 m goes to losses ($U = 1.93$ m/s, $f \approx 0.023$). The pump delivers $\rho g Q H \approx 2.8$ kW to the water (the motor has to supply more than that, once we account for the pump's efficiency).
+
+A quick sanity check: the pump can make 30 m at zero flow and we only need 12 m to lift the water, so we should get a healthy fraction of the 25 L/s maximum... and 15 L/s is about 60%. Seems right!
+
+</details> -->
