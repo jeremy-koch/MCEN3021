@@ -7,7 +7,7 @@ A few examples done by hand and with computational assistance. All four use wate
 
 ## Example 1: Given the flow rate, find the inlet pressure
 
-We want to fill a 20 L bucket in 50 s (so $Q = 0.4$ L/s) from a tap on the second floor. Water comes from the building's supply at point 1, travels $L_1 = 10$ m horizontally, turns up through a threaded elbow, rises $L_2 = 4$ m, turns right through a second threaded elbow, and travels $L_3 = 3$ m through a fully open gate valve before leaving as a free jet. The pipe is drawn copper tubing ($\epsilon = 0.0025$ mm) with $D = 2$ cm the whole way. What gauge pressure $p_1$ does the supply need to provide?
+We need to deliver $Q = 0.4$ L/s from a tap. Water begins , travels $L_1 = 10$ m horizontally, turns up through a threaded elbow, rises $L_2 = 4$ m, turns right through a second threaded elbow, and travels $L_3 = 3$ m through a fully open gate valve before leaving as a free jet. The pipe is drawn copper tubing ($\epsilon = 0.0025$ mm) with $D = 2$ cm the whole way. What gauge pressure $p_1$ does the supply need to provide?
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -115,6 +115,67 @@ We want to fill a 20 L bucket in 50 s (so $Q = 0.4$ L/s) from a tap on the secon
 </svg>
 </div>
 ```
+
+<details>
+<summary>Solution by hand</summary>
+
+Start with the full head equation with **three sections of pipe** and **three minor losses**:
+
+$$
+\begin{align*}
+\left[\frac{1}{2g}\alpha_1 U_1^2 + z_1 + \frac{p_1}{\rho g}\right] = \left[\frac{1}{2g}\alpha_2 U_2^2 + z_2 + \frac{p_2}{\rho g}\right] &+ \frac{U_1^2}{2g}\frac{f_1L_1}{D} + \frac{U_2^2}{2g}\frac{f_2L_2}{D} + \frac{U_3^2}{2g}\frac{f_3L_3}{D} \\
+&+ \frac{U^2}{2g}K_\text{L,elbow} + \frac{U^2}{2g}K_\text{L,elbow} + \frac{U^2}{2g}K_\text{L,valve}.
+\end{align*}
+$$
+
+We assume $z_\text{1}=0$ and $p_2=0$ (gauge), and $z_2=L_2=4\text{ m}$. We also note that, since the three sections of pipe are all the same diameter, they'll have the same $\text{Re}$, same $\epsilon/D=0.0025\text{ mm}/20\text{ mm}=1.25\times10^{-4}$, same $f$, and so we can combine the major loss terms into one term with total length $L_1+L_2+L_3$. After rearranging to solve for $p_1$, we have
+
+$$
+p_1 = \rho g L_2 + \tfrac{1}{2}\rho U^2\left[\left(\alpha_2-\alpha_1\right) + \frac{f\left(L_1+L_2+L_3\right)}{D} + 2K_\text{L,elbow} + K_\text{L,valve}\right].
+$$
+
+Calculate the Reynolds Number
+
+$$
+\begin{align*}
+U &= \frac{Q}{\frac{\pi}{4}D^2} = \frac{0.4\times10^{-3}\ \text{m}^3/\text{s}}{\frac{\pi}{4}\left(0.02\ \text{m}\right)^2} = 1.27\ \text{m/s} \\
+\text{Re}_D &= \frac{\rho U D}{\mu} = \frac{UD}{\nu} = \frac{\left(1.27\ \text{m/s}\right)\left(0.02\ \text{m}\right)}{1.00\times10^{-6}\ \text{m}^2/\text{s}} = 2.5\times10^{4}.
+\end{align*}
+$$
+
+Note that, since $\text{Re}_D>2300$, the flow is turbulent and $\alpha_1=\alpha_2\approx 1$.
+
+For this example, let's use a Moody Diagram: the $\text{Re}=2.5\times10^{4}$, $\epsilon/D=1.25\times10^{-4}$ point falls here on the diagram
+
+```{=html}
+<div style="position:relative; background:#fff; padding:4px; margin:1em 0;">
+  <div style="position:relative;">
+    <img src="moody-diagram.svg" style="display:block; width:100%; height:auto;" alt="Moody diagram with the operating point for Example 1 marked: Reynolds number 2.5 times 10^4 on the horizontal axis, relative roughness 1.25 times 10^-4 (just above the smooth pipe curve), reading a friction factor of about 0.025 on the vertical axis.">
+    <svg viewBox="0 0 731.96065 452.90348" style="position:absolute; left:0; top:0; width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" aria-hidden="true">
+      <g stroke="#e0311f" fill="none">
+        <line x1="244.5" y1="405.7" x2="244.5" y2="214.5" stroke-width="1.3" stroke-dasharray="4 3"/>
+        <line x1="48.3" y1="214.5" x2="244.5" y2="214.5" stroke-width="1.3" stroke-dasharray="4 3"/>
+        <circle cx="244.5" cy="214.5" r="4.5" stroke-width="1.8"/>
+      </g>
+      <rect x="254" y="184" width="150" height="19" rx="3" fill="#ffffff" stroke="#e0311f" stroke-width="0.8"/>
+      <text x="329" y="197.5" font-size="11.5" fill="#e0311f" text-anchor="middle">Re = 2.5×10⁴ → <tspan font-style="italic">f</tspan> ≈ 0.025</text>
+    </svg>
+  </div>
+</div>
+```
+
+and so we see $f=0.025$. Plugging all this information into the head equation, we find
+
+$$
+\begin{align*}
+p_1 &= \left(998\ \tfrac{\text{kg}}{\text{m}^3}\right)\left(9.81\ \tfrac{\text{m}}{\text{s}^2}\right)\left(4\ \text{m}\right) + \tfrac{1}{2}\left(998\ \tfrac{\text{kg}}{\text{m}^3}\right)\left(1.27\ \tfrac{\text{m}}{\text{s}}\right)^2\left[0 + \frac{0.025\left(17\ \text{m}\right)}{0.02\ \text{m}} + 2\left(1.5\right) + 0.15\right] \\
+&= 39.2\ \text{kPa} + \left(0.81\ \text{kPa}\right)\left[21.3 + 3.15\right] \\
+&= 58.9\ \text{kPa (gauge)}.
+\end{align*}
+$$
+
+</details>
+
 
 <!-- This is the friendly kind of problem. $Q$ and $D$ give us $U$ directly, so $\text{Re}_D$ and $f$ follow without any guessing, and the head equation from 1 to 2 has exactly one unknown left in it.
 
