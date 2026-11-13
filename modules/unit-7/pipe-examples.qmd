@@ -7,7 +7,7 @@ A few examples done by hand and with computational assistance. All four use wate
 
 ## Example 1: Given the flow rate, find the inlet pressure
 
-We need to deliver $Q = 0.4$ L/s from a tap. Water begins , travels $L_1 = 10$ m horizontally, turns up through a threaded elbow, rises $L_2 = 4$ m, turns right through a second threaded elbow, and travels $L_3 = 3$ m through a fully open gate valve before leaving as a free jet. The pipe is drawn copper tubing ($\epsilon = 0.0025$ mm) with $D = 2$ cm the whole way. What gauge pressure $p_1$ does the supply need to provide?
+We need to deliver $Q = 0.4$ L/s from a tap. Water begins at the pressure gauge (point 1), travels $L_1 = 10$ m horizontally, turns up through a threaded elbow, rises $L_2 = 4$ m, turns right through a second threaded elbow, and travels $L_3 = 3$ m through a fully open gate valve before leaving as a free jet (point 2). The pipe is drawn copper tubing ($\epsilon = 0.0025$ mm) with $D = 2$ cm the whole way. What gauge pressure $p_1$ does the supply need to provide?
 
 ```{=html}
 <div style="display:flex; justify-content:center; margin: 1.5em 0;">
@@ -164,7 +164,7 @@ For this example, let's use a Moody Diagram: the $\text{Re}=2.5\times10^{4}$, $\
 </div>
 ```
 
-and so we see $f=0.025$. We also look up the minor loss coefficients: for a 90° threaded elbow, $K_\text{L}=$, and for a fully open gate valve $K_\text{L}=$. Plugging all this information into the head equation, we find
+and so we see $f=0.025$. We also look up the minor loss coefficients: for a 90° threaded elbow, $K_\text{L}=1.5$, and for a fully open gate valve $K_\text{L}=0.15$. Plugging all this information into the head equation, we find
 
 $$
 \begin{align*}
@@ -177,14 +177,7 @@ $$
 :::
 
 
-<!-- This is the friendly kind of problem. $Q$ and $D$ give us $U$ directly, so $\text{Re}_D$ and $f$ follow without any guessing, and the head equation from 1 to 2 has exactly one unknown left in it.
 
-<details>
-<summary>Answer to check against</summary>
-
-$U = 1.27$ m/s, $\text{Re}_D \approx 25{,}000$, $f \approx 0.025$, and the head loss is about 2.0 m (friction and fittings together). Since the pipe diameter doesn't change, the kinetic energy terms at 1 and 2 cancel, leaving $p_1/\rho g = L_2 + H_\text{losses}$, so $p_1 \approx 59$ kPa gauge (about 8.5 psi). In Boulder that's $59 + 83 \approx 142$ kPa absolute.
-
-</details> -->
 
 
 ## Example 2: Determining flow rate from a water tower
@@ -348,15 +341,7 @@ One thing we should probably check: with $U_2=4.45\text{ m/s}$, the Reynolds Num
 
 :::
 
-<!-- 
-Now $Q$ is the unknown, which means $U$, $\text{Re}_D$, and $f$ are all unknown too. The head equation from the free surface (1) to the jet (2) gives us one equation for $U$, but $f$ depends on $U$... so we guess $f$, solve for $U$, update $f$, and repeat. (A good first guess: the fully rough value for this $\epsilon/D$, where the Moody curve goes flat.)
 
-<details>
-<summary>Answer to check against</summary>
-
-The total drop from free surface to jet is $h + L_1 + L_3 = 28$ m. Without any losses, that would give $U = \sqrt{2g \cdot 28} \approx 23$ m/s. With losses, it converges to $U \approx 4.45$ m/s ($\text{Re}_D \approx 2.2\times10^5$, $f \approx 0.019$), so $Q \approx 8.7$ L/s. Friction and fittings eat about 27 of the 28 m; only 1 m of head is left over as kinetic energy in the jet!
-
-</details> -->
 
 
 ## Example 3: Parallel paths
@@ -470,31 +455,28 @@ A cast iron line ($\epsilon = 0.15$ mm) carries $Q_\text{total} = 10$ L/s. At po
 </svg>
 </div>
 ```
-<!-- 
-The tees are where the paths differ in a sneaky way: A goes straight through both of them (threaded, line flow, $K_\text{L} = 0.9$ each) while B turns the corner at both (branch flow, $K_\text{L} = 2.0$ each). Before calculating anything, which path do you expect to carry more flow? (Path B is longer *and* has more fittings, but A has the valve.)
 
-Since $Q_\text{total}$ is given, this is the first kind of parallel problem from [11.2](parallel-flow.qmd): guess $Q_\text{A}$, get $Q_\text{B} = Q_\text{total} - Q_\text{A}$, compute both head losses, and adjust until they match.
-
-<details>
-<summary>Answer to check against</summary>
-
-$\sum K_\text{L,A} = 0.9 + 0.15 + 0.9 = 1.95$ and $\sum K_\text{L,B} = 2.0 + 1.5 + 1.5 + 2.0 = 7.0$. The losses match at $Q_\text{A} \approx 6.2$ L/s and $Q_\text{B} \approx 3.8$ L/s ($U_\text{A} = 3.17$ m/s, $U_\text{B} = 1.93$ m/s, both $f \approx 0.027$). The head loss along either path is 6.5 m, so $p_1 - p_2 \approx 64$ kPa.
-
-A fun follow-up: half-close the gate valve ($K_\text{L} = 2.1$). Path A still carries 6.0 L/s! The valve is a small resistance compared to everything else on A, so the split barely changes, and $\Delta p$ only rises to about 70 kPa.
-
-</details> -->
 
 ::: {.callout-note collapse="true"}
 ## Solution by hand
 
 We start by recognizing the head loss through path "A" must match the head loss through path "B":
 
+
 $$
-\begin{align*}
-H_\text{A} &= H_\text{B}, \quad \text{where} \\
-H_\text{A} &= \frac{U_\text{A}^2}{2g}\left[\frac{f_\text{A}L_\text{A}}{D} + K_\text{L,tee,line} + K_\text{L,gate} + K_\text{L,tee,line}\right] = \frac{U_\text{A}^2}{2g}\left[f_\text{A}\,\frac{20\ \text{m}}{0.05\ \text{m}} + 0.9 + 0.15 + 0.9\right], \\
-H_\text{B} &= \frac{U_\text{B}^2}{2g}\left[\frac{f_\text{B}L_\text{B}}{D} + 2K_\text{L,tee,branch} + 2K_\text{L,elbow}\right] = \frac{U_\text{B}^2}{2g}\left[f_\text{B}\,\frac{50\ \text{m}}{0.05\ \text{m}} + 2\left(2.0\right) + 2\left(1.5\right)\right].
-\end{align*}
+H_\text{A} &= H_\text{B}
+$$
+
+where
+
+$$
+H_\text{A} = \frac{U_\text{A}^2}{2g}\left[\frac{f_\text{A}L_\text{A}}{D} + K_\text{L,tee,line} + K_\text{L,gate} + K_\text{L,tee,line}\right] = \frac{U_\text{A}^2}{2g}\left[f_\text{A}\,\frac{20\ \text{m}}{0.05\ \text{m}} + 0.9 + 0.15 + 0.9\right]
+$$
+
+and
+
+$$
+H_\text{B} = \frac{U_\text{B}^2}{2g}\left[\frac{f_\text{B}L_\text{B}}{D} + 2K_\text{L,tee,branch} + 2K_\text{L,elbow}\right] = \frac{U_\text{B}^2}{2g}\left[f_\text{B}\,\frac{50\ \text{m}}{0.05\ \text{m}} + 2\left(2.0\right) + 2\left(1.5\right)\right].
 $$
 
 Here we've looked up the loss coefficients for a threaded tee with line flow ($K_\text{L}=0.9$), a threaded tee with branch flow ($K_\text{L}=2.0$), a threaded 90° elbow ($K_\text{L}=1.5$), and a fully open gate valve ($K_\text{L}=0.15$). Path A goes straight through both tees, and path B turns the corner at both.
@@ -528,7 +510,7 @@ Again, the friction factors depend on speed, and so the equations are impossible
 
 :::
 
-Let's again build a table of results, starting with $U_\text{A}=1\text{ m/s}$. We'll calculate the left-hand side and right-hand side of $H_\text{A}=H_\text{B}$ separately, and iterate until they are approximately equal. We look up $\epsilon=0.15\text{ mm}$ and so $\epsilon/D=0.15/50=3\times10^{-3}$ for all cases below. This time we'll use a numerical technique to determine the friction factor... note on that below
+Let's again build a table of results, starting with $U_\text{A}=1\text{ m/s}$. We'll calculate the left-hand side and right-hand side of $H_\text{A}=H_\text{B}$ separately, and iterate until they are approximately equal. We look up $\epsilon=0.15\text{ mm}$ and so $\epsilon/D=0.15/50=3\times10^{-3}$ for all cases below. This time we'll use a numerical technique to determine the friction factor (details in the note below).
 
 | $U_\text{A}$ (m/s) | $Q_\text{A}$ (L/s) | $Q_\text{B}$ (L/s) | $U_\text{B}$ (m/s) | $\text{Re}_\text{A}$ | $\text{Re}_\text{B}$ | $f_\text{A}$ | $f_\text{B}$ | $H_\text{A}$ (m) | $H_\text{B}$ (m) |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -556,10 +538,10 @@ $$
 The Colebrook Equation
 
 $$
-state the equation here
+\frac{1}{\sqrt{f}} = -2\log_{10}\left(\frac{\epsilon/D}{3.7} + \frac{2.51}{\text{Re}_D\sqrt{f}}\right)
 $$
 
-... has $f$ on both sides, we can't solve for $f$ explicitly. We, as humans, can guess and check. We can also use numerical algorithms to determine it, e.g. here is some Python code to solve using the "fixed-point iteration method". 
+... has $f$ on both sides, so we can't solve for $f$ explicitly. We, as humans, can guess and check. We can also use numerical algorithms to determine it, e.g. here is some Python code to solve using the "fixed-point iteration method". 
 
 ```python
 from math import log10, sqrt, pi
@@ -571,6 +553,8 @@ def colebrook(Re, rel_rough, f=0.03, tol=1e-10):
         if abs(f_new - f) < tol:
             return f_new
         f = f_new
+
+print(colebrook(1.5e5, 0.003))
 ```
 
 :::
@@ -714,17 +698,7 @@ What flow rate does the system deliver, and how much head does the pump add?
 </svg>
 </div>
 ```
-<!-- 
-Writing the head equation between the two free surfaces (both at $p_\text{atm}$ with $U \approx 0$), the flow curve is $H = \Delta z + H_\text{losses}(Q)$. The operating point is wherever that curve crosses the pump curve. We can find it graphically, or by guessing $Q$ and checking whether $H_\text{pump}(Q) = \Delta z + H_\text{losses}(Q)$.
 
-<details>
-<summary>Answer to check against</summary>
-
-$\sum K_\text{L} = 0.5 + 0.3 + 0.3 + 0.15 + 1.0 = 2.25$ (the exit into the tank costs one full velocity head). The curves cross at $Q \approx 15.2$ L/s and $H_\text{pump} \approx 19.0$ m: 12 m of that lifts the water, and about 7.0 m goes to losses ($U = 1.93$ m/s, $f \approx 0.023$). The pump delivers $\rho g Q H \approx 2.8$ kW to the water (the motor has to supply more than that, once we account for the pump's efficiency).
-
-A quick sanity check: the pump can make 30 m at zero flow and we only need 12 m to lift the water, so we should get a healthy fraction of the 25 L/s maximum... and 15 L/s is about 60%. Seems right!
-
-</details> -->
 
 ::: {.callout-note collapse="true"}
 ## Solution by hand
@@ -752,6 +726,6 @@ With $\epsilon/D=0.15/100=1.5\times10^{-3}$, the friction factors come from the 
 | 15.0 | 19.2 | 1.91 | $1.9\times10^5$ | 0.0228 | +0.41 |
 | 15.2 | 18.91 | 1.94 | $1.9\times10^5$ | 0.0228 | −0.06 |
 
-Thus, the system delivers $Q\approx15.2\text{ L/s}$, and the pump adds $H_\text{pump}\approx18.9\text{ m}$: 12 m of that lifts the water and the other 6.9 m goes to losses. A quick sanity check: the pump can make 30 m at zero flow and we only need 12 m to lift the water.
+Thus, the system delivers $Q\approx15.2\text{ L/s}$, and the pump adds $H_\text{pump}\approx18.9\text{ m}$: 12 m of that lifts the water and the other 6.9 m goes to losses. A quick sanity check: the pump can make 30 m at zero flow and we only need 12 m to lift the water. We should expect the flow rate to be a decent way to the 25 L/s flow maximum for this pump.
 
 :::
